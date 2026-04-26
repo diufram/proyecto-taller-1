@@ -1,0 +1,187 @@
+<p-dialog
+    [(visible)]="visible"
+    [header]="modalTitle"
+    [modal]="true"
+    [style]="{ width: '35rem' }"
+    [breakpoints]="{ '960px': '75vw', '640px': '95vw' }"
+    [closable]="true"
+    [closeOnEscape]="true"
+    (onHide)="close()"
+    styleClass="custom-modal p-fluid"
+    [contentStyle]="{ 'overflow-y': 'auto', 'max-height': '80vh' }"
+>
+    <ng-container>
+        <form [formGroup]="form" class="flex flex-col gap-6 pt-5">
+            <div class="flex flex-col">
+                <p-floatLabel variant="on">
+                    <input
+                        pInputText
+                        id="nombre_input"
+                        formControlName="nombre"
+                        class="w-full"
+                        [invalid]="isInvalid('nombre')"
+                    />
+                    <label for="nombre_input">Nombre <span class="text-red-500">*</span></label>
+                </p-floatLabel>
+                @if (isInvalid('nombre')) {
+                    <p-message severity="error" size="small" variant="simple" class="mt-1">
+                        El nombre es requerido.
+                    </p-message>
+                }
+            </div>
+
+            <div class="flex flex-col">
+                <p-floatLabel variant="on">
+                    <textarea
+                        pTextarea
+                        id="descripcion_input"
+                        formControlName="descripcion"
+                        rows="3"
+                        autoResize="true"
+                        class="w-full"
+                    ></textarea>
+                    <label for="descripcion_input">Descripción</label>
+                </p-floatLabel>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <p-datepicker
+                            inputId="fecha_inicio_input"
+                            formControlName="fecha_inicio"
+                            [showTime]="true"
+                            [showIcon]="true"
+                            dateFormat="yy-mm-dd"
+                            styleClass="w-full"
+                            [inputStyle]="{ width: '100%' }"
+                        ></p-datepicker>
+                        <label for="fecha_inicio_input">Fecha Inicio <span class="text-red-500">*</span></label>
+                    </p-floatLabel>
+                    @if (isInvalid('fecha_inicio')) {
+                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                            La fecha de inicio es requerida.
+                        </p-message>
+                    }
+                </div>
+
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <p-datepicker
+                            inputId="fecha_fin_input"
+                            formControlName="fecha_fin"
+                            [showTime]="true"
+                            [showIcon]="true"
+                            dateFormat="yy-mm-dd"
+                            styleClass="w-full"
+                            [inputStyle]="{ width: '100%' }"
+                        ></p-datepicker>
+                        <label for="fecha_fin_input">Fecha Fin <span class="text-red-500">*</span></label>
+                    </p-floatLabel>
+                    @if (isInvalid('fecha_fin')) {
+                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                            La fecha de fin es requerida.
+                        </p-message>
+                    }
+                    @if (hasDateValidationError()) {
+                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                            La fecha de fin debe ser posterior a la fecha de inicio.
+                        </p-message>
+                    }
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4">
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <p-select
+                            inputId="nivel_input"
+                            [options]="niveles"
+                            formControlName="nivel_dificultad"
+                            placeholder="Seleccione"
+                            styleClass="w-full"
+                        ></p-select>
+                        <label for="nivel_input">Nivel <span class="text-red-500">*</span></label>
+                    </p-floatLabel>
+                    @if (isInvalid('nivel_dificultad')) {
+                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                            El nivel es requerido.
+                        </p-message>
+                    }
+                </div>
+
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <p-select
+                            inputId="estado_input"
+                            [options]="estados"
+                            formControlName="estado"
+                            placeholder="Seleccione"
+                            styleClass="w-full"
+                        ></p-select>
+                        <label for="estado_input">Estado <span class="text-red-500">*</span></label>
+                    </p-floatLabel>
+                    @if (isInvalid('estado')) {
+                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                            El estado es requerido.
+                        </p-message>
+                    }
+                </div>
+
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <p-select
+                            inputId="tipo_input"
+                            [options]="tipos"
+                            formControlName="tipo"
+                            placeholder="Seleccione"
+                            styleClass="w-full"
+                        ></p-select>
+                        <label for="tipo_input">Tipo <span class="text-red-500">*</span></label>
+                    </p-floatLabel>
+                    @if (isInvalid('tipo')) {
+                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                            El tipo es requerido.
+                        </p-message>
+                    }
+                </div>
+            </div>
+
+            <div class="flex flex-col">
+                <p-floatLabel variant="on">
+                    <p-inputNumber
+                        inputId="max_input"
+                        formControlName="max_participantes"
+                        [min]="0"
+                        styleClass="w-full"
+                        [inputStyle]="{ width: '100%' }"
+                    ></p-inputNumber>
+                    <label for="max_input">Max. Participantes <span class="text-red-500">*</span></label>
+                </p-floatLabel>
+                @if (isInvalid('max_participantes')) {
+                    <p-message severity="error" size="small" variant="simple" class="mt-1">
+                        Debe ser un número válido.
+                    </p-message>
+                }
+            </div>
+        </form>
+    </ng-container>
+
+    <ng-template pTemplate="footer">
+        <div class="flex w-full justify-end gap-2">
+            <p-button
+                label="Cancelar"
+                [text]="true"
+                severity="secondary"
+                (onClick)="close()"
+            ></p-button>
+            <p-button
+                label="Guardar"
+                icon="pi pi-save"
+                [loading]="saving"
+                (onClick)="save()"
+                styleClass="w-full md:w-auto flex justify-center bg-gray-900 border-gray-900 text-white hover:bg-gray-800 hover:border-gray-800"
+            ></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

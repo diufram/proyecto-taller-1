@@ -1,0 +1,180 @@
+:host {
+    display: block;
+}
+
+:host ::ng-deep {
+    .competencias-page {
+        width: 100%;
+    }
+
+    .competencias-table-wrap {
+        display: none;
+    }
+
+    .competencias-mobile-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .competencia-mobile-card {
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        padding: 0.95rem;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .competencia-mobile-card.is-skeleton {
+        gap: 0.6rem;
+    }
+
+    .competencia-mobile-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .label {
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-color-secondary);
+        font-weight: 600;
+    }
+
+    .value {
+        font-size: 1.28rem;
+        font-weight: 500;
+        color: var(--text-color);
+        line-height: 1.2;
+    }
+
+    .competencia-mobile-actions,
+    .competencia-mobile-actions-skeleton {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .mobile-empty {
+        border: 1px dashed var(--surface-border);
+        border-radius: 12px;
+        padding: 1.1rem;
+        text-align: center;
+        color: var(--text-color-secondary);
+    }
+
+    .competencias-skeleton-desktop {
+        display: none;
+    }
+
+    .competencias-skeleton-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .skeleton-row {
+        display: grid;
+        grid-template-columns: 1.5fr 100px 100px 80px 100px 100px 80px 120px;
+        align-items: center;
+        gap: 0.85rem;
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: 12px;
+        padding: 0.75rem 0.9rem;
+    }
+
+    .desktop-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.35rem;
+    }
+
+    .actions-container > * {
+        width: 100%;
+    }
+
+    .actions-container p-button .p-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .p-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .p-toolbar-group-left,
+    .p-toolbar-group-right {
+        width: 100%;
+    }
+
+    @media (min-width: 960px) {
+        .competencias-table-wrap {
+            display: block;
+        }
+
+        .competencias-mobile-list,
+        .competencias-skeleton-mobile {
+            display: none;
+        }
+
+        .competencias-skeleton-desktop {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .skeleton-row {
+            display: grid;
+            grid-template-columns: 1.5fr 100px 100px 80px 100px 100px 80px 120px;
+            align-items: center;
+            gap: 0.85rem;
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: 0.75rem 0.9rem;
+        }
+
+        .actions-container {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .actions-container > * {
+            width: auto;
+        }
+
+        .actions-container p-button .p-button {
+            width: auto;
+        }
+
+        .p-toolbar {
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .p-toolbar-group-left,
+        .p-toolbar-group-right {
+            width: auto;
+        }
+
+        .competencias-table {
+            .p-datatable-thead > tr > th {
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--text-color-secondary);
+            }
+
+            .p-datatable-tbody > tr > td {
+                vertical-align: middle;
+            }
+        }
+    }
+}

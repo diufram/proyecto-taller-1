@@ -1,0 +1,162 @@
+<div class="flex justify-content-center p-4">
+    <div class="w-full max-w-6xl bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col md:flex-row transition-all duration-300">
+        <div class="relative w-full md:w-72 bg-slate-50 dark:bg-slate-800 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center p-6 text-center group">
+            <div
+                class="w-40 h-40 rounded-full bg-white dark:bg-slate-900 border-4 border-indigo-50 dark:border-slate-700 shadow-sm flex items-center justify-center mb-4 relative overflow-hidden group-hover:scale-105 transition-transform duration-500"
+            >
+                <span class="text-6xl font-black text-indigo-300 dark:text-slate-600 uppercase select-none">
+                    {{ userInitials }}
+                </span>
+
+                <div class="absolute bottom-2 right-4 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
+                    {{ userRole }}
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">
+                {{ infoForm.get('name')?.value }}
+            </h3>
+            <p class="text-sm text-slate-500 font-medium mb-4">
+                {{ infoForm.get('email')?.value }}
+            </p>
+
+            <div class="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 flex items-center gap-1">
+                <i class="pi pi-verified"></i>
+                <span>CUENTA ACTIVA</span>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col min-w-0 bg-white dark:bg-slate-900">
+            <p-tabs value="0" class="flex-1">
+                <p-tablist>
+                    <p-tab value="0">
+                        <div class="flex items-center gap-2 px-3 py-1">
+                            <i class="pi pi-user text-slate-400"></i>
+                            <span class="font-bold text-slate-700 dark:text-slate-200">Datos Personales</span>
+                        </div>
+                    </p-tab>
+                    <p-tab value="1">
+                        <div class="flex items-center gap-2 px-3 py-1">
+                            <i class="pi pi-shield text-slate-400"></i>
+                            <span class="font-bold text-slate-700 dark:text-slate-200">Seguridad</span>
+                        </div>
+                    </p-tab>
+                </p-tablist>
+
+                <p-tabpanels class="p-0">
+                    <p-tabpanel value="0">
+                        <div class="p-6 md:p-8">
+                            <div class="flex items-center gap-3 mb-6">
+                                <h2 class="text-2xl font-bold text-slate-900 dark:text-white leading-tight m-0">Información Básica</h2>
+                                <span class="h-px flex-1 bg-slate-100 dark:bg-slate-700"></span>
+                            </div>
+
+                            <form [formGroup]="infoForm" (ngSubmit)="onUpdateInfo()">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Nombre</label>
+                                        <input pInputText formControlName="name" class="w-full p-3 bg-slate-50 border-slate-200 text-slate-800 font-medium focus:border-indigo-500 focus:bg-white transition-all" />
+                                    </div>
+
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Apellidos</label>
+                                        <input pInputText formControlName="last_name" class="w-full p-3 bg-slate-50 border-slate-200 text-slate-800 font-medium focus:border-indigo-500 focus:bg-white transition-all" />
+                                    </div>
+
+                                    <div class="flex flex-col gap-2 md:col-span-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Correo Electrónico</label>
+                                        <div class="relative">
+                                            <i class="pi pi-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                                            <input pInputText formControlName="email" class="w-full p-3 pl-10 bg-slate-100 border-slate-200 text-slate-500" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2 md:col-span-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Teléfono</label>
+                                        <div class="relative">
+                                            <i class="pi pi-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                                            <input pInputText formControlName="phone" class="w-full p-3 pl-10 bg-slate-50 border-slate-200 text-slate-800 font-medium focus:border-indigo-500 focus:bg-white transition-all" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-8 flex justify-end pt-6 border-t border-slate-100 dark:border-slate-800">
+                                    <button
+                                        pButton
+                                        label="Guardar Cambios"
+                                        icon="pi pi-check"
+                                        type="submit"
+                                        [loading]="loading"
+                                        [disabled]="infoForm.invalid || infoForm.pristine"
+                                        class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white border-none font-bold rounded-xl shadow-lg shadow-indigo-200 transition-all"
+                                    ></button>
+                                </div>
+                            </form>
+                        </div>
+                    </p-tabpanel>
+
+                    <p-tabpanel value="1">
+                        <div class="p-6 md:p-8">
+                            <div class="flex items-center gap-3 mb-6">
+                                <h2 class="text-2xl font-bold text-slate-900 dark:text-white leading-tight m-0">Credenciales</h2>
+                                <span class="h-px flex-1 bg-slate-100 dark:bg-slate-700"></span>
+                            </div>
+
+                            <div class="bg-orange-50 border border-orange-100 rounded-xl p-4 mb-6 flex items-start gap-3">
+                                <i class="pi pi-info-circle text-orange-500 mt-1"></i>
+                                <div>
+                                    <h4 class="text-sm font-bold text-orange-800 m-0">Recomendación de seguridad</h4>
+                                    <p class="text-xs text-orange-600 m-0 mt-1">Utiliza al menos 8 caracteres, combinando letras mayúsculas y números.</p>
+                                </div>
+                            </div>
+
+                            <form [formGroup]="passForm" (ngSubmit)="onChangePassword()">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="flex flex-col gap-2 md:col-span-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Contraseña Actual</label>
+                                        <p-password formControlName="current_password" [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full p-3 bg-slate-50 border-slate-200 rounded-lg focus:border-indigo-500">
+                                        </p-password>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Nueva Contraseña</label>
+                                        <p-password
+                                            formControlName="new_password"
+                                            [toggleMask]="true"
+                                            promptLabel="Escribe..."
+                                            weakLabel="Débil"
+                                            mediumLabel="Media"
+                                            strongLabel="Fuerte"
+                                            styleClass="w-full"
+                                            inputStyleClass="w-full p-3 bg-slate-50 border-slate-200 rounded-lg focus:border-indigo-500"
+                                        >
+                                        </p-password>
+                                    </div>
+
+                                    <div class="flex flex-col gap-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Confirmar</label>
+                                        <p-password formControlName="confirm_password" [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full p-3 bg-slate-50 border-slate-200 rounded-lg focus:border-indigo-500">
+                                        </p-password>
+                                        <span class="text-xs text-red-500 font-bold flex items-center gap-1" *ngIf="passForm.hasError('notMatching') && passForm.get('confirm_password')?.dirty"> <i class="pi pi-times-circle"></i> No coinciden </span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-8 flex justify-end pt-6 border-t border-slate-100 dark:border-slate-800">
+                                    <button
+                                        pButton
+                                        label="Actualizar Contraseña"
+                                        icon="pi pi-lock"
+                                        type="submit"
+                                        [loading]="loading"
+                                        [disabled]="passForm.invalid"
+                                        class="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white border-none font-bold rounded-xl shadow-lg transition-all"
+                                    ></button>
+                                </div>
+                            </form>
+                        </div>
+                    </p-tabpanel>
+                </p-tabpanels>
+            </p-tabs>
+        </div>
+    </div>
+</div>
