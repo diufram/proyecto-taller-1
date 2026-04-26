@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module'; // Importas tu nuevo módulo
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './features/auth/auth.module';
+import { CompetenciasModule } from './features/competencias/competencias.module';
 
 @Module({
   imports: [
@@ -14,7 +16,9 @@ import { AppService } from './app.service';
     // 2. Infraestructura de Base de Datos
     DatabaseModule,
 
-    // 3. Aquí irán tus Features (UsersModule, ProblemsModule, etc.)
+    // 3. Features
+    AuthModule,
+    CompetenciasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

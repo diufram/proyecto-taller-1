@@ -28,9 +28,7 @@
     "strict": true,
     "noImplicitAny": false,
 
-    "forceConsistentCasingInFileNames": true,
-
-    "ignoreDeprecations": "6.0"
+    "forceConsistentCasingInFileNames": true
   },
   "exclude": ["node_modules", "dist", "test", "**/*.spec.ts"]
 }

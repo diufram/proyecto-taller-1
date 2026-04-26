@@ -7,6 +7,18 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
+type ValidationErrorItem = {
+  campo: string;
+  codigo: string;
+  mensaje: string;
+};
+
+type ExceptionResponseShape = {
+  message?: unknown;
+  error?: string;
+  statusCode?: number;
+};
+
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
@@ -20,34 +32,35 @@ export class AllExceptionsFilter implements ExceptionFilter {
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
     // Extraer la respuesta original de NestJS (útil para validaciones)
-    const exceptionResponse: any =
+    const exceptionResponse =
       exception instanceof HttpException ? exception.getResponse() : null;
 
     // 1. Manejo de Errores del Cliente (4XX) -> "fail"
     if (status >= 400 && status < 500) {
-      // Formatear los errores de validación si existen (típico del ValidationPipe de Nest)
-      let erroresValidacion = [];
-      if (
-        typeof exceptionResponse === 'object' &&
-        Array.isArray(exceptionResponse.message)
-      ) {
-        erroresValidacion = exceptionResponse.message.map(
-          (msg: string, index: number) => ({
-            campo: msg.split(' ')[0], // Aproximación, depende de tu validador
-            codigo: `E400-${index}`,
-            mensaje: msg,
-          }),
-        );
-      }
+      const parsedException =
+        typeof exceptionResponse === 'object' && exceptionResponse !== null
+          ? (exceptionResponse as ExceptionResponseShape)
+          : null;
+
+      const erroresValidacion = this.mapValidationErrors(
+        parsedException?.message,
+        status,
+      );
+
+      const data =
+        erroresValidacion.length > 0
+          ? { errores_validacion: erroresValidacion }
+          : this.buildClientErrorData(parsedException);
+
+      const message =
+        status === HttpStatus.UNPROCESSABLE_ENTITY
+          ? 'Fallo en la validacion de la solicitud.'
+          : parsedException?.error || 'Fallo en la peticion del cliente.';
 
       return response.status(status).json({
-        status: 'fail', // Obligatorio. Siempre debe ser "fail". [cite: 50]
-        data:
-          erroresValidacion.length > 0
-            ? { errores_validacion: erroresValidacion }
-            : exceptionResponse, // [cite: 31, 51]
-        message:
-          exceptionResponse?.error || 'Fallo en la petición del cliente.', // [cite: 49]
+        status: 'fail',
+        data,
+        message,
       });
     }
 
@@ -55,15 +68,73 @@ export class AllExceptionsFilter implements ExceptionFilter {
     // Generamos un ID de correlación único para buscar en logs [cite: 61, 65]
     const traceId = `T${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // Aquí deberías registrar el error real en tu sistema de logs (ej. Winston o Pino)
     console.error(`[${traceId}] Error Interno:`, exception);
 
     return response.status(status).json({
-      status: 'error', // Obligatorio. Siempre debe ser "error". [cite: 63]
-      code: `E${status}`, // Código de error interno del servidor [cite: 59]
+      status: 'error',
+      code: `E${status}`,
       message:
-        'Ha ocurrido un error inesperado. Por favor, contacte a soporte con el código de traza.', // Mensaje genérico seguro [cite: 60, 64]
-      trace_id: traceId, // ID de correlación [cite: 61, 65]
+        'Ha ocurrido un error inesperado. Por favor, contacte a soporte con el codigo de traza.',
+      trace_id: traceId,
     });
+  }
+
+  private mapValidationErrors(
+    rawMessage: unknown,
+    status: number,
+  ): ValidationErrorItem[] {
+    if (!Array.isArray(rawMessage)) {
+      return [];
+    }
+
+    return rawMessage.map((item, index) => {
+      if (typeof item === 'string') {
+        const firstToken = item.trim().split(' ')[0] || 'general';
+        return {
+          campo: firstToken,
+          codigo: `E${status}-${index + 1}`,
+          mensaje: item,
+        };
+      }
+
+      if (typeof item === 'object' && item !== null) {
+        const validationItem = item as {
+          property?: string;
+          constraints?: Record<string, string>;
+        };
+
+        const constraintMessage = validationItem.constraints
+          ? Object.values(validationItem.constraints)[0]
+          : 'Error de validacion.';
+
+        return {
+          campo: validationItem.property || 'general',
+          codigo: `E${status}-${index + 1}`,
+          mensaje: constraintMessage,
+        };
+      }
+
+      return {
+        campo: 'general',
+        codigo: `E${status}-${index + 1}`,
+        mensaje: 'Error de validacion.',
+      };
+    });
+  }
+
+  private buildClientErrorData(
+    parsedException: ExceptionResponseShape | null,
+  ): Record<string, unknown> {
+    if (!parsedException) {
+      return {};
+    }
+
+    if (typeof parsedException.message === 'string') {
+      return {
+        detalle: parsedException.message,
+      };
+    }
+
+    return {};
   }
 }

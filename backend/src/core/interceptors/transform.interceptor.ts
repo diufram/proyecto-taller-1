@@ -13,6 +13,11 @@ export interface Response<T> {
   message?: string;
 }
 
+type ResponseWithMessage = {
+  message?: string;
+  [key: string]: unknown;
+};
+
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<
   T,
@@ -24,16 +29,23 @@ export class TransformInterceptor<T> implements NestInterceptor<
   ): Observable<Response<T>> {
     return next.handle().pipe(
       map((data) => {
-        // Si el controlador ya envía un mensaje personalizado, lo extraemos
-        const message = data?.message;
+        let message: string | undefined;
+        let payload = data;
+
         if (data && typeof data === 'object' && 'message' in data) {
-          delete data.message;
+          const responseData = data as ResponseWithMessage;
+          if (typeof responseData.message === 'string') {
+            message = responseData.message;
+          }
+
+          const { message: _message, ...rest } = responseData;
+          payload = rest as T;
         }
 
         return {
-          status: 'success', // Obligatorio. Siempre debe ser "success".
-          data: data || {}, // Si es 204 No Content, devuelve objeto vacío [cite: 21]
-          ...(message && { message }), // Opcional: Mensaje de confirmación [cite: 17]
+          status: 'success',
+          data: (payload ?? {}) as T,
+          ...(message ? { message } : {}),
         };
       }),
     );
