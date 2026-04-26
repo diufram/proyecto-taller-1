@@ -7,22 +7,12 @@
 /* Leaflet Map Styles */
 @use 'leaflet/dist/leaflet.css';
 .logo-mask {
-    /* Dimensiones del logo */
     width: 54px;
     height: 40px;
     display: inline-block;
     
-    /* EL SECRETO: Usamos una variable de color de PrimeNG.
-       --text-color: será negro en tema claro y blanco en tema oscuro.
-       --primary-color: será el color principal (azul/verde/etc) de tu tema.
-    */
-    background-color: var(--text-color); 
-
-    /* Configuración de la máscara usando tu imagen */
-    -webkit-mask: url('/assets/img/logo.png') no-repeat center;
-    mask: url('/assets/img/logo.png') no-repeat center;
-    
-    /* Asegura que la imagen quepa completa dentro del div */
-    -webkit-mask-size: contain;
-    mask-size: contain;
+    background-image: url('/icono_p.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }

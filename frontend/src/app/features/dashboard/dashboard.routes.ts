@@ -5,7 +5,7 @@ export const DASHBOARD_ROUTES: Routes = [
   { 
     path: '', 
     component: DashboardPage,
-    title: 'INE - Dashboard'
+    title: 'Dashboard'
     // data: { title: 'Dashboard' } // Opcional: si usas breadcrumbs o títulos dinámicos
   }
 ];

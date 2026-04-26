@@ -4,7 +4,15 @@ import { MainLayout } from './app/core/layout/component/app.layout';
 import { Notfound } from './app/pages/notfound/notfound';
 
 export const appRoutes: Routes = [
-    { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
+    { path: '', redirectTo: '/landing', pathMatch: 'full' },
+
+    {
+        path: 'landing',
+        loadChildren: () =>
+            import('./app/features/landing/landing.routes').then(
+                (m) => m.LANDING_ROUTES,
+            ),
+    },
 
     {
         path: 'auth',

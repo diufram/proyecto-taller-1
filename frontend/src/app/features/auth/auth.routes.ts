@@ -11,11 +11,11 @@ export const AUTH_ROUTES: Routes = [
     {
         path: 'login',
         component: LoginComponent,
-        title: 'INE - Iniciar Sesion',
+        title: 'Iniciar Sesión',
     },
     {
         path: 'register',
         component: RegisterComponent,
-        title: 'INE - Crear Cuenta',
+        title: 'Crear Cuenta',
     },
 ];

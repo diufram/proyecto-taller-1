@@ -20,8 +20,8 @@ import { AuthService } from '@/features/auth/services/auth.service';
                 <i class="pi pi-bars"></i>
             </button>
             <a class="layout-topbar-logo" routerLink="/dashboard">
-                <div class="logo-mask" role="img" aria-label="Logo INE"></div>
-                <span>Iglesia Nueva Esperanza</span>
+                <div class="logo-mask" role="img" aria-label="Logo"></div>
+                <span>Compex</span>
             </a>
         </div>
 

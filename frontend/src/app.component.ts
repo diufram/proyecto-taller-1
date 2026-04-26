@@ -14,6 +14,6 @@ export class AppComponent {
     // 2. Agregas el constructor para inyectar el servicio
     constructor(private titleService: Title) {
         // 3. Fijas el nombre de tu App
-        this.titleService.setTitle('INE');
+        this.titleService.setTitle('Competencias');
     }
 }
