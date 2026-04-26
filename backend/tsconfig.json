@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2021",
+
+    "outDir": "./dist",
+    "rootDir": "./src",
+
+    "sourceMap": true,
+    "declaration": false,
+    "removeComments": true,
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@entities/*": ["src/database/entities/*"],
+      "@features/*": ["src/features/*"]
+    },
+
+    "incremental": true,
+    "skipLibCheck": true,
+
+    "strict": true,
+    "noImplicitAny": false,
+
+    "forceConsistentCasingInFileNames": true,
+
+    "ignoreDeprecations": "6.0"
+  },
+  "exclude": ["node_modules", "dist", "test", "**/*.spec.ts"]
+}
