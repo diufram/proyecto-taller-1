@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1777176194989 implements MigrationInterface {
-    name = 'Init1777176194989'
+export class Init1777234153640 implements MigrationInterface {
+    name = 'Init1777234153640'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "grupos" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "nombre" character varying NOT NULL, CONSTRAINT "PK_34de64ec8a5ecd99afb23b2bd62" PRIMARY KEY ("id"))`);
@@ -19,6 +19,7 @@ export class Init1777176194989 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "retroalimentacion_problemas" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "retroalimentacion" text NOT NULL, "usuarioId" integer, "problemaId" integer, CONSTRAINT "PK_136bd74d10d8c4495befdbdef5a" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TYPE "public"."usuarios_rol_enum" AS ENUM('user', 'admin')`);
         await queryRunner.query(`CREATE TABLE "usuarios" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "nombre_usuario" character varying NOT NULL, "correo_electronico" character varying NOT NULL, "contrasena" character varying NOT NULL, "rol" "public"."usuarios_rol_enum" NOT NULL DEFAULT 'user', CONSTRAINT "UQ_e871b7157e4b74290df9baa9c93" UNIQUE ("correo_electronico"), CONSTRAINT "PK_d7281c63c176e152e4c531594a8" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "refresh_tokens" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "token_hash" character varying(255) NOT NULL, "expires_at" TIMESTAMP NOT NULL, "revoked_at" TIMESTAMP, "usuario_id" integer NOT NULL, CONSTRAINT "UQ_a7838d2ba25be1342091b6695f1" UNIQUE ("token_hash"), CONSTRAINT "PK_7d8bee0204106019488c4c50ffa" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "personas" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "nombre" character varying NOT NULL, "apellido" character varying NOT NULL, "celular" character varying NOT NULL, "correo" character varying NOT NULL, "usuarioId" integer, CONSTRAINT "REL_7c8c9bafba93459a6217ef8277" UNIQUE ("usuarioId"), CONSTRAINT "PK_714aa5d028f8f3e6645e971cecd" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "soluciones" ADD CONSTRAINT "FK_a0ae4081c1192b4c388f9b4f647" FOREIGN KEY ("problemaId") REFERENCES "problemas"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "soluciones" ADD CONSTRAINT "FK_91d627a9126ee3c478ea58e2f2a" FOREIGN KEY ("usuarioId") REFERENCES "usuarios"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -30,11 +31,13 @@ export class Init1777176194989 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "inscripciones" ADD CONSTRAINT "FK_7c5910a932d331413f8bd96871d" FOREIGN KEY ("competenciaId") REFERENCES "competencias"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "retroalimentacion_problemas" ADD CONSTRAINT "FK_fbec8f76b8573a4bfaca6a302a7" FOREIGN KEY ("usuarioId") REFERENCES "usuarios"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "retroalimentacion_problemas" ADD CONSTRAINT "FK_fd7638ef4b10174c9e1e59c72b5" FOREIGN KEY ("problemaId") REFERENCES "problemas"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "refresh_tokens" ADD CONSTRAINT "FK_c8349fdadc1bc791125bdd8c855" FOREIGN KEY ("usuario_id") REFERENCES "usuarios"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "personas" ADD CONSTRAINT "FK_7c8c9bafba93459a6217ef82774" FOREIGN KEY ("usuarioId") REFERENCES "usuarios"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "personas" DROP CONSTRAINT "FK_7c8c9bafba93459a6217ef82774"`);
+        await queryRunner.query(`ALTER TABLE "refresh_tokens" DROP CONSTRAINT "FK_c8349fdadc1bc791125bdd8c855"`);
         await queryRunner.query(`ALTER TABLE "retroalimentacion_problemas" DROP CONSTRAINT "FK_fd7638ef4b10174c9e1e59c72b5"`);
         await queryRunner.query(`ALTER TABLE "retroalimentacion_problemas" DROP CONSTRAINT "FK_fbec8f76b8573a4bfaca6a302a7"`);
         await queryRunner.query(`ALTER TABLE "inscripciones" DROP CONSTRAINT "FK_7c5910a932d331413f8bd96871d"`);
@@ -46,6 +49,7 @@ export class Init1777176194989 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "soluciones" DROP CONSTRAINT "FK_91d627a9126ee3c478ea58e2f2a"`);
         await queryRunner.query(`ALTER TABLE "soluciones" DROP CONSTRAINT "FK_a0ae4081c1192b4c388f9b4f647"`);
         await queryRunner.query(`DROP TABLE "personas"`);
+        await queryRunner.query(`DROP TABLE "refresh_tokens"`);
         await queryRunner.query(`DROP TABLE "usuarios"`);
         await queryRunner.query(`DROP TYPE "public"."usuarios_rol_enum"`);
         await queryRunner.query(`DROP TABLE "retroalimentacion_problemas"`);

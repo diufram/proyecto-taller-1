@@ -20,10 +20,12 @@ export async function crearAdminYObtenerToken(
   });
   await usuarioRepository.save(admin);
 
-  const loginResponse = await request(app.getHttpServer()).post('/auth/login').send({
-    correo_electronico: email,
-    contrasena,
-  });
+  const loginResponse = await request(app.getHttpServer())
+    .post('/auth/login')
+    .send({
+      correo_electronico: email,
+      contrasena,
+    });
 
   return loginResponse.body.data.access_token as string;
 }
