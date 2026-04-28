@@ -1,16 +1,41 @@
-/* You can add global styles to this file, and also import other style files */
+/* 1. TODOS los @use al principio del archivo */
 @use './tailwind.css';
 @use './layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './demo/demo.scss';
+@use '@angular/material' as mat;
+@use 'leaflet/dist/leaflet.css'; // <--- Movido aquí arriba
 
-/* Leaflet Map Styles */
-@use 'leaflet/dist/leaflet.css';
+/* 2. Configuración de Angular Material */
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+/* 3. Estilos globales */
+html, body {
+  height: 100%;
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
 .logo-mask {
     width: 54px;
     height: 40px;
     display: inline-block;
-    
     background-image: url('/icono_p.png');
     background-repeat: no-repeat;
     background-position: center;

@@ -16,14 +16,14 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Rol } from '../../database/entities/usuario.entity';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { CompetenciasService } from './competencias.service';
-import { CreateCompetenciaDto } from './dto/create-competencia.dto';
-import { QueryCompetenciasDto } from './dto/query-competencias.dto';
-import { UpdateCompetenciaDto } from './dto/update-competencia.dto';
+import { Rol } from '../../../database/entities/usuario.entity';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../auth/guards/roles.guard';
+import { CompetenciasService } from '../competencias.service';
+import { CreateCompetenciaDto } from '../dto/create-competencia.dto';
+import { QueryCompetenciasDto } from '../dto/query-competencias.dto';
+import { UpdateCompetenciaDto } from '../dto/update-competencia.dto';
 
 @ApiTags('Competencias')
 @Controller('competencias')
