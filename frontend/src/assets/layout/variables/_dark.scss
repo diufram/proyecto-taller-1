@@ -1,11 +1,11 @@
 :root[class*='app-dark'],
 :root.dark {
-    --surface-ground: var(--p-surface-950);
-    --surface-card: var(--p-surface-900);
-    --surface-border: var(--p-surface-700);
-    --surface-hover: var(--p-surface-800);
-    --text-color: var(--p-surface-0);
-    --text-color-secondary: var(--p-surface-400);
-    --code-background: var(--p-surface-800);
-    --code-color: var(--p-surface-100);
+    --surface-ground: #0a0a0f;
+    --surface-card: #12121a;
+    --surface-border: #1e1e2e;
+    --surface-hover: #1a1a2e;
+    --text-color: #ffffff;
+    --text-color-secondary: #9ca3af;
+    --code-background: #0d1117;
+    --code-color: #e5e7eb;
 }

@@ -51,106 +51,11 @@ type SurfacesType = {
         <div class="flex flex-col gap-5">
             <!-- THEME MODE -->
             <div class="flex flex-col gap-2">
-                <span class="text-sm text-muted-color font-semibold"
-                    >Theme</span
-                >
+                <span class="text-sm text-muted-color font-semibold">Tema</span>
                 <p-selectbutton
                     [options]="themeModeOptions"
                     [ngModel]="themePref()"
                     (ngModelChange)="onThemePrefChange($event)"
-                    [allowEmpty]="false"
-                    size="small"
-                />
-                <small class="text-xs text-muted-color">
-                    System sigue el tema del dispositivo. Light/Dark lo fija.
-                </small>
-            </div>
-
-            <!-- PRIMARY -->
-            <div>
-                <span class="text-sm text-muted-color font-semibold"
-                    >Primary</span
-                >
-                <div class="pt-2 flex gap-2 flex-wrap justify-start">
-                    @for (
-                        primaryColor of primaryColors();
-                        track primaryColor.name
-                    ) {
-                        <button
-                            type="button"
-                            [title]="primaryColor.name"
-                            (click)="
-                                updateColors($event, 'primary', primaryColor)
-                            "
-                            [ngClass]="{
-                                'outline outline-primary':
-                                    primaryColor.name ===
-                                    selectedPrimaryColor(),
-                            }"
-                            class="cursor-pointer w-6 h-6 rounded-full flex shrink-0 items-center justify-center outline-offset-1 shadow"
-                            [style]="{
-                                'background-color':
-                                    primaryColor?.name === 'noir'
-                                        ? 'var(--text-color)'
-                                        : primaryColor?.palette?.['500'],
-                            }"
-                        ></button>
-                    }
-                </div>
-            </div>
-
-            <!-- SURFACE -->
-            <div>
-                <span class="text-sm text-muted-color font-semibold"
-                    >Surface</span
-                >
-                <div class="pt-2 flex gap-2 flex-wrap justify-start">
-                    @for (surface of surfaces; track surface.name) {
-                        <button
-                            type="button"
-                            [title]="surface.name"
-                            (click)="updateColors($event, 'surface', surface)"
-                            class="cursor-pointer w-6 h-6 rounded-full flex shrink-0 items-center justify-center p-0 outline-offset-1"
-                            [ngClass]="{
-                                'outline outline-primary':
-                                    selectedSurfaceColor()
-                                        ? selectedSurfaceColor() ===
-                                          surface.name
-                                        : layoutService.layoutConfig().darkTheme
-                                          ? surface.name === 'zinc'
-                                          : surface.name === 'slate',
-                            }"
-                            [style]="{
-                                'background-color': surface?.palette?.['500'],
-                            }"
-                        ></button>
-                    }
-                </div>
-            </div>
-
-            <!-- PRESETS -->
-            <div class="flex flex-col gap-2">
-                <span class="text-sm text-muted-color font-semibold"
-                    >Presets</span
-                >
-                <p-selectbutton
-                    [options]="presetOptions"
-                    [ngModel]="selectedPreset()"
-                    (ngModelChange)="onPresetChange($event)"
-                    [allowEmpty]="false"
-                    size="small"
-                />
-            </div>
-
-            <!-- MENU MODE -->
-            <div *ngIf="showMenuModeButton()" class="flex flex-col gap-2">
-                <span class="text-sm text-muted-color font-semibold"
-                    >Menu Mode</span
-                >
-                <p-selectbutton
-                    [ngModel]="menuMode()"
-                    (ngModelChange)="onMenuModeChange($event)"
-                    [options]="menuModeOptions"
                     [allowEmpty]="false"
                     size="small"
                 />

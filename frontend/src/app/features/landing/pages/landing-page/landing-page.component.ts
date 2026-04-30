@@ -137,9 +137,7 @@ import { CommonModule } from '@angular/common';
                 </div>
 
                 <!-- Hero Floating Code Window -->
-                <div
-                    class="w-full max-w-4xl mx-auto mt-20 relative z-20"
-                >
+                <div class="w-full max-w-4xl mx-auto mt-20 relative z-20">
                     <div
                         class="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl opacity-30"
                     ></div>
@@ -158,8 +156,7 @@ import { CommonModule } from '@angular/common';
                             <div
                                 class="w-3 h-3 rounded-full bg-green-500/80"
                             ></div>
-                            <span
-                                class="text-xs font-mono text-gray-500 ml-4"
+                            <span class="text-xs font-mono text-gray-500 ml-4"
                                 >solucion.ts</span
                             >
                         </div>
@@ -201,9 +198,7 @@ import { CommonModule } from '@angular/common';
                                         "
                                     ></i>
                                 </div>
-                                <h3
-                                    class="text-xl font-bold text-white mb-3"
-                                >
+                                <h3 class="text-xl font-bold text-white mb-3">
                                     {{ card.title }}
                                 </h3>
                                 <p
@@ -252,7 +247,9 @@ import { CommonModule } from '@angular/common';
                                     <span
                                         class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-4"
                                     >
-                                        <i class="pi pi-sparkles text-[10px]"></i>
+                                        <i
+                                            class="pi pi-sparkles text-[10px]"
+                                        ></i>
                                         {{ feature.tag }}
                                     </span>
                                     <h3
@@ -266,7 +263,10 @@ import { CommonModule } from '@angular/common';
                                         {{ feature.description }}
                                     </p>
                                     <ul class="space-y-3">
-                                        @for (item of feature.items; track item) {
+                                        @for (
+                                            item of feature.items;
+                                            track item
+                                        ) {
                                             <li
                                                 class="flex items-center gap-3 text-gray-300"
                                             >
@@ -277,9 +277,10 @@ import { CommonModule } from '@angular/common';
                                                         class="pi pi-check text-xs text-emerald-400"
                                                     ></i>
                                                 </div>
-                                                <span class="font-medium text-sm">{{
-                                                    item
-                                                }}</span>
+                                                <span
+                                                    class="font-medium text-sm"
+                                                    >{{ item }}</span
+                                                >
                                             </li>
                                         }
                                     </ul>
@@ -341,7 +342,11 @@ import { CommonModule } from '@angular/common';
                         ></div>
 
                         <div class="grid md:grid-cols-3 gap-8 relative z-10">
-                            @for (step of steps; track step.number; let i = $index) {
+                            @for (
+                                step of steps;
+                                track step.number;
+                                let i = $index
+                            ) {
                                 <div class="relative text-center">
                                     <div
                                         class="w-20 h-20 rounded-2xl bg-[#12121a] border border-white/10 flex items-center justify-center mx-auto mb-6 shadow-xl"
@@ -393,9 +398,7 @@ import { CommonModule } from '@angular/common';
                                         >competencia?</span
                                     >
                                 </h2>
-                                <p
-                                    class="text-gray-400 mb-8 max-w-xl mx-auto"
-                                >
+                                <p class="text-gray-400 mb-8 max-w-xl mx-auto">
                                     Únete a miles de programadores que ya están
                                     mejorando su lógica y velocidad con Compex.
                                 </p>
@@ -435,9 +438,7 @@ import { CommonModule } from '@angular/common';
                             <div
                                 class="w-6 h-6 rounded bg-white/10 flex items-center justify-center"
                             >
-                                <i
-                                    class="pi pi-code text-gray-400 text-xs"
-                                ></i>
+                                <i class="pi pi-code text-gray-400 text-xs"></i>
                             </div>
                             <span class="text-sm font-bold text-gray-300">
                                 Compex
@@ -447,20 +448,24 @@ import { CommonModule } from '@angular/common';
                         <div
                             class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-gray-500 text-sm"
                         >
-                            <a href="#" class="hover:text-emerald-400 transition-colors"
+                            <a
+                                href="#"
+                                class="hover:text-emerald-400 transition-colors"
                                 >Términos</a
                             >
-                            <a href="#" class="hover:text-emerald-400 transition-colors"
+                            <a
+                                href="#"
+                                class="hover:text-emerald-400 transition-colors"
                                 >Privacidad</a
                             >
-                            <a href="#" class="hover:text-emerald-400 transition-colors"
+                            <a
+                                href="#"
+                                class="hover:text-emerald-400 transition-colors"
                                 >Contacto</a
                             >
                         </div>
 
-                        <div class="text-gray-600 text-sm">
-                            © 2024 Compex
-                        </div>
+                        <div class="text-gray-600 text-sm">© 2024 Compex</div>
                     </div>
                 </div>
             </footer>

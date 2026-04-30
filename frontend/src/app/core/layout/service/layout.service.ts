@@ -34,9 +34,9 @@ export class LayoutService {
 
     // ✅ defaults deseados
     private readonly DEFAULT_PRESET = 'Aura';
-    private readonly DEFAULT_PRIMARY = 'noir';
+    private readonly DEFAULT_PRIMARY = 'emerald';
     private readonly DEFAULT_LIGHT_SURFACE = 'slate';
-    private readonly DEFAULT_DARK_SURFACE = 'ocean';
+    private readonly DEFAULT_DARK_SURFACE = 'zinc';
     private readonly DEFAULT_MENU_MODE = 'static';
 
     // breakpoint típico del template (ajústalo si quieres)
