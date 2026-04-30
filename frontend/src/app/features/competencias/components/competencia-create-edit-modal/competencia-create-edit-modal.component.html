@@ -8,7 +8,7 @@
     [closeOnEscape]="true"
     (onHide)="close()"
     styleClass="custom-modal p-fluid"
-    [contentStyle]="{ 'overflow-y': 'auto', 'max-height': '80vh' }"
+    [contentStyle]="{ 'overflow': 'visible' }"
 >
     <ng-container>
         <form [formGroup]="form" class="flex flex-col gap-6 pt-5">
@@ -100,6 +100,7 @@
                             formControlName="nivel_dificultad"
                             placeholder="Seleccione"
                             styleClass="w-full"
+                            [appendTo]="'body'"
                         ></p-select>
                         <label for="nivel_input">Nivel <span class="text-red-500">*</span></label>
                     </p-floatLabel>
@@ -118,6 +119,7 @@
                             formControlName="estado"
                             placeholder="Seleccione"
                             styleClass="w-full"
+                            [appendTo]="'body'"
                         ></p-select>
                         <label for="estado_input">Estado <span class="text-red-500">*</span></label>
                     </p-floatLabel>
@@ -136,6 +138,7 @@
                             formControlName="tipo"
                             placeholder="Seleccione"
                             styleClass="w-full"
+                            [appendTo]="'body'"
                         ></p-select>
                         <label for="tipo_input">Tipo <span class="text-red-500">*</span></label>
                     </p-floatLabel>
