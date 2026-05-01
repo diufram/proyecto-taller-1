@@ -7,8 +7,8 @@
     [closable]="true"
     [closeOnEscape]="true"
     (onHide)="close()"
-    styleClass="custom-modal p-fluid"
-    [contentStyle]="{ 'overflow': 'visible' }"
+    class="custom-modal p-fluid"
+    [contentStyle]="{ overflow: 'visible' }"
 >
     <ng-container>
         <form [formGroup]="form" class="flex flex-col gap-6 pt-5">
@@ -20,11 +20,20 @@
                         formControlName="nombre"
                         class="w-full"
                         [invalid]="isInvalid('nombre')"
+                        variant="filled"
+                        pSize="small"
                     />
-                    <label for="nombre_input">Nombre <span class="text-red-500">*</span></label>
+                    <label for="nombre_input"
+                        >Nombre <span class="text-red-500">*</span></label
+                    >
                 </p-floatLabel>
-                @if (isInvalid('nombre')) {
-                    <p-message severity="error" size="small" variant="simple" class="mt-1">
+                @if (isInvalid("nombre")) {
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        class="mt-1"
+                    >
                         El nombre es requerido.
                     </p-message>
                 }
@@ -40,11 +49,20 @@
                         autoResize="true"
                         class="w-full"
                         [invalid]="isInvalid('descripcion')"
+                        variant="filled"
+                        pSize="small"
                     ></textarea>
-                    <label for="descripcion_input">Descripción <span class="text-red-500">*</span></label>
+                    <label for="descripcion_input"
+                        >Descripción <span class="text-red-500">*</span></label
+                    >
                 </p-floatLabel>
-                @if (isInvalid('descripcion')) {
-                    <p-message severity="error" size="small" variant="simple" class="mt-1">
+                @if (isInvalid("descripcion")) {
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        class="mt-1"
+                    >
                         La descripción es requerida.
                     </p-message>
                 }
@@ -56,16 +74,26 @@
                         <p-datepicker
                             inputId="fecha_inicio_input"
                             formControlName="fecha_inicio"
-                            [showTime]="true"
-                            [showIcon]="true"
                             dateFormat="yy-mm-dd"
-                            styleClass="w-full"
+                            class="w-full"
+                            [invalid]="isInvalid('fecha_inicio')"
+                            showIcon
+                            iconDisplay="input"
                             [inputStyle]="{ width: '100%' }"
+                            size="small"
                         ></p-datepicker>
-                        <label for="fecha_inicio_input">Fecha Inicio <span class="text-red-500">*</span></label>
+                        <label for="fecha_inicio_input"
+                            >Fecha Inicio
+                            <span class="text-red-500">*</span></label
+                        >
                     </p-floatLabel>
-                    @if (isInvalid('fecha_inicio')) {
-                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                    @if (isInvalid("fecha_inicio")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
                             La fecha de inicio es requerida.
                         </p-message>
                     }
@@ -76,22 +104,38 @@
                         <p-datepicker
                             inputId="fecha_fin_input"
                             formControlName="fecha_fin"
-                            [showTime]="true"
-                            [showIcon]="true"
                             dateFormat="yy-mm-dd"
-                            styleClass="w-full"
+                            class="w-full"
+                            showIcon
+                            iconDisplay="input"
+                            [invalid]="isInvalid('fecha_fin')"
                             [inputStyle]="{ width: '100%' }"
+                            size="small"
                         ></p-datepicker>
-                        <label for="fecha_fin_input">Fecha Fin <span class="text-red-500">*</span></label>
+                        <label for="fecha_fin_input"
+                            >Fecha Fin
+                            <span class="text-red-500">*</span></label
+                        >
                     </p-floatLabel>
-                    @if (isInvalid('fecha_fin')) {
-                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                    @if (isInvalid("fecha_fin")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
                             La fecha de fin es requerida.
                         </p-message>
                     }
                     @if (hasDateValidationError()) {
-                        <p-message severity="error" size="small" variant="simple" class="mt-1">
-                            La fecha de fin debe ser posterior a la fecha de inicio.
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
+                            La fecha de fin debe ser posterior a la fecha de
+                            inicio.
                         </p-message>
                     }
                 </div>
@@ -104,13 +148,23 @@
                             inputId="nivel_input"
                             [options]="niveles"
                             formControlName="nivel_dificultad"
-                            styleClass="w-full"
+                            [invalid]="isInvalid('nivel_dificultad')"
+                            class="w-full"
                             [appendTo]="'body'"
+                            variant="filled"
+                            size="small"
                         ></p-select>
-                        <label for="nivel_input">Nivel <span class="text-red-500">*</span></label>
+                        <label for="nivel_input"
+                            >Nivel <span class="text-red-500">*</span></label
+                        >
                     </p-floatLabel>
-                    @if (isInvalid('nivel_dificultad')) {
-                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                    @if (isInvalid("nivel_dificultad")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
                             El nivel es requerido.
                         </p-message>
                     }
@@ -122,13 +176,23 @@
                             inputId="estado_input"
                             [options]="estados"
                             formControlName="estado"
-                            styleClass="w-full"
+                            [invalid]="isInvalid('estado')"
+                            class="w-full"
                             [appendTo]="'body'"
+                            variant="filled"
+                            size="small"
                         ></p-select>
-                        <label for="estado_input">Estado <span class="text-red-500">*</span></label>
+                        <label for="estado_input"
+                            >Estado <span class="text-red-500">*</span></label
+                        >
                     </p-floatLabel>
-                    @if (isInvalid('estado')) {
-                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                    @if (isInvalid("estado")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
                             El estado es requerido.
                         </p-message>
                     }
@@ -140,13 +204,23 @@
                             inputId="tipo_input"
                             [options]="tipos"
                             formControlName="tipo"
-                            styleClass="w-full"
+                            [invalid]="isInvalid('tipo')"
+                            class="w-full"
                             [appendTo]="'body'"
+                            variant="filled"
+                            size="small"
                         ></p-select>
-                        <label for="tipo_input">Tipo <span class="text-red-500">*</span></label>
+                        <label for="tipo_input"
+                            >Tipo <span class="text-red-500">*</span></label
+                        >
                     </p-floatLabel>
-                    @if (isInvalid('tipo')) {
-                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                    @if (isInvalid("tipo")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
                             El tipo es requerido.
                         </p-message>
                     }
@@ -160,13 +234,23 @@
                             inputId="max_input"
                             formControlName="max_participantes"
                             [min]="1"
-                            styleClass="w-full"
+                            class="w-full"
                             [inputStyle]="{ width: '100%' }"
+                            variant="filled"
+                            size="small"
                         ></p-inputNumber>
-                        <label for="max_input">Max. Participantes <span class="text-red-500">*</span></label>
+                        <label for="max_input"
+                            >Max. Participantes
+                            <span class="text-red-500">*</span></label
+                        >
                     </p-floatLabel>
-                    @if (isInvalid('max_participantes')) {
-                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                    @if (isInvalid("max_participantes")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
                             Debe ser un número válido.
                         </p-message>
                     }
@@ -188,7 +272,7 @@
                 icon="pi pi-save"
                 [loading]="saving"
                 (onClick)="save()"
-                styleClass="w-full md:w-auto flex justify-center bg-gray-900 border-gray-900 text-white hover:bg-gray-800 hover:border-gray-800"
+                class="w-full md:w-auto flex justify-center bg-gray-900 border-gray-900 text-white hover:bg-gray-800 hover:border-gray-800"
             ></p-button>
         </div>
     </ng-template>

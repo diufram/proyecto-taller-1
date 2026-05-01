@@ -1,15 +1,12 @@
 export interface Profile {
-    // Datos de Person (solo lectura)
     person_id: number;
     first_name: string;
     last_name: string;
     photo?: string;
-    
-    // Datos de User
+
     user_id: number;
     email: string;
     username: string;
-    url_image?: string;
     is_verified: boolean;
 }
 

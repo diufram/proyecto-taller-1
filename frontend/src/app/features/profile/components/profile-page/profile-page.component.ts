@@ -8,20 +8,15 @@ import {
 } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
-// PrimeNG
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { CardModule } from 'primeng/card';
-import { DividerModule } from 'primeng/divider';
-import { MessageModule } from 'primeng/message';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { AvatarModule } from 'primeng/avatar';
-import { ToastModule } from 'primeng/toast';
-import { TooltipModule } from 'primeng/tooltip';
-import { PanelModule } from 'primeng/panel';
 import { TagModule } from 'primeng/tag';
-import { ToastService } from '@/core/services/toast.service';
+import { ToastModule } from 'primeng/toast';
 
+import { ToastService } from '@/core/services/toast.service';
 import { ProfileService } from '../../services/profile.service';
 import { Profile } from '../../models/profile.model';
 import { environment } from '../../../../../environments/environment';
@@ -36,14 +31,10 @@ import { AuthService } from '@/features/auth/services/auth.service';
         ButtonModule,
         InputTextModule,
         PasswordModule,
-        CardModule,
-        DividerModule,
-        MessageModule,
+        FloatLabelModule,
         AvatarModule,
-        ToastModule,
-        TooltipModule,
-        PanelModule,
         TagModule,
+        ToastModule,
     ],
     templateUrl: './profile-page.component.html',
 })
@@ -111,6 +102,15 @@ export class ProfilePageComponent implements OnInit {
             });
     }
 
+    isInvalid(fieldName: string, form: FormGroup): boolean {
+        const control = form.get(fieldName);
+        return !!(
+            control &&
+            control.invalid &&
+            (control.dirty || control.touched)
+        );
+    }
+
     checkUsernameAvailability() {
         const username = this.usernameForm.get('username')?.value;
         if (!username || username === this.profile?.username) {
@@ -133,7 +133,10 @@ export class ProfilePageComponent implements OnInit {
     }
 
     onUsernameSubmit() {
-        if (this.usernameForm.invalid || !this.usernameAvailable) return;
+        if (this.usernameForm.invalid || !this.usernameAvailable) {
+            this.usernameForm.markAllAsTouched();
+            return;
+        }
 
         this.savingUsername = true;
         this.profileService
@@ -156,7 +159,10 @@ export class ProfilePageComponent implements OnInit {
     }
 
     onPasswordSubmit() {
-        if (this.passwordForm.invalid) return;
+        if (this.passwordForm.invalid) {
+            this.passwordForm.markAllAsTouched();
+            return;
+        }
 
         this.savingPassword = true;
         this.profileService
@@ -177,12 +183,20 @@ export class ProfilePageComponent implements OnInit {
             });
     }
 
-    private passwordMatchValidator(
+    passwordMatchValidator(
         group: FormGroup,
     ): { [key: string]: boolean } | null {
         const newPassword = group.get('new_password')?.value;
         const confirmPassword = group.get('confirm_password')?.value;
         return newPassword === confirmPassword ? null : { mismatch: true };
+    }
+
+    hasPasswordMismatch(): boolean {
+        return !!(
+            this.passwordForm.errors?.['mismatch'] &&
+            this.passwordForm.get('confirm_password')?.dirty &&
+            this.passwordForm.get('confirm_password')?.touched
+        );
     }
 
     getPhotoUrl(): string {
@@ -193,7 +207,6 @@ export class ProfilePageComponent implements OnInit {
         return '';
     }
 
-    // Helper para verificar si tiene foto (útil para el avatar)
     hasPhoto(): boolean {
         return !!this.profile?.photo;
     }
