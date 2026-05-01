@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { RefreshToken } from '../../database/entities/refresh-token.entity';
+import { Persona } from '../../database/entities/persona.entity';
 import { Usuario } from '../../database/entities/usuario.entity';
 
 @Injectable()
@@ -11,11 +12,18 @@ export class AuthRepository {
     private readonly usuarioRepository: Repository<Usuario>,
     @InjectRepository(RefreshToken)
     private readonly refreshTokenRepository: Repository<RefreshToken>,
+    @InjectRepository(Persona)
+    private readonly personaRepository: Repository<Persona>,
   ) {}
 
   async crearUsuario(data: Partial<Usuario>): Promise<Usuario> {
     const usuario = this.usuarioRepository.create(data);
     return this.usuarioRepository.save(usuario);
+  }
+
+  async crearPersona(data: Partial<Persona>): Promise<Persona> {
+    const persona = this.personaRepository.create(data);
+    return this.personaRepository.save(persona);
   }
 
   async buscarUsuarioPorCorreo(correo: string): Promise<Usuario | null> {

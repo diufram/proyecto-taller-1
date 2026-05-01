@@ -10,11 +10,8 @@ export class Persona extends BaseEntity {
   @Column()
   apellido!: string;
 
-  @Column()
-  celular!: string;
-
-  @Column()
-  correo!: string;
+  @Column({ nullable: true })
+  celular?: string;
 
   @OneToOne(() => Usuario)
   @JoinColumn()

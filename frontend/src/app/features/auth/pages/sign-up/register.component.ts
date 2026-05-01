@@ -1,11 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import {
+    FormBuilder,
+    FormGroup,
+    Validators,
+    ReactiveFormsModule,
+} from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '@/core/services/toast.service';
 import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconfigurator';
@@ -14,25 +20,49 @@ import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconf
     selector: 'app-register',
     standalone: true,
     imports: [
+        CommonModule,
+        ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
         PasswordModule,
-        FormsModule,
+        FloatLabelModule,
         RouterModule,
         MyFloatingConfigurator,
     ],
     templateUrl: './register.component.html',
 })
 export class RegisterComponent implements OnInit {
-    nombre_usuario: string = '';
-    correo_electronico: string = '';
-    contrasena: string = '';
-    confirmarContrasena: string = '';
-    loading: boolean = false;
-
+    private fb = inject(FormBuilder);
     private router = inject(Router);
     private authService = inject(AuthService);
     private toast = inject(ToastService);
+
+    form: FormGroup;
+    loading = false;
+
+    constructor() {
+        this.form = this.fb.group(
+            {
+                nombre: ['', Validators.required],
+                apellido: ['', Validators.required],
+                nombre_usuario: [
+                    '',
+                    [Validators.required, Validators.minLength(3)],
+                ],
+                correo_electronico: [
+                    '',
+                    [Validators.required, Validators.email],
+                ],
+                celular: [''],
+                contrasena: [
+                    '',
+                    [Validators.required, Validators.minLength(8)],
+                ],
+                confirmarContrasena: ['', Validators.required],
+            },
+            { validators: this.passwordMatchValidator },
+        );
+    }
 
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
@@ -40,29 +70,54 @@ export class RegisterComponent implements OnInit {
         }
     }
 
-    onRegister() {
-        if (!this.nombre_usuario || !this.correo_electronico || !this.contrasena) {
-            this.toast.warn('Atencion', 'Complete todos los campos.');
-            return;
-        }
+    passwordMatchValidator(group: FormGroup) {
+        const password = group.get('contrasena')?.value;
+        const confirm = group.get('confirmarContrasena')?.value;
+        return password === confirm ? null : { mismatch: true };
+    }
 
-        if (this.contrasena !== this.confirmarContrasena) {
-            this.toast.warn('Atencion', 'Las contrasenas no coinciden.');
-            return;
-        }
+    isInvalid(fieldName: string): boolean {
+        const control = this.form.get(fieldName);
+        return !!(
+            control &&
+            control.invalid &&
+            (control.dirty || control.touched)
+        );
+    }
 
-        if (this.contrasena.length < 8) {
-            this.toast.warn('Atencion', 'La contrasena debe tener al menos 8 caracteres.');
+    hasPasswordMismatch(): boolean {
+        return !!(
+            this.form.errors?.['mismatch'] &&
+            this.form.get('confirmarContrasena')?.dirty &&
+            this.form.get('confirmarContrasena')?.touched
+        );
+    }
+
+    onRegister(): void {
+        if (this.form.invalid) {
+            this.form.markAllAsTouched();
             return;
         }
 
         this.loading = true;
 
+        const {
+            nombre,
+            apellido,
+            nombre_usuario,
+            correo_electronico,
+            celular,
+            contrasena,
+        } = this.form.value;
+
         this.authService
             .register({
-                nombre_usuario: this.nombre_usuario,
-                correo_electronico: this.correo_electronico,
-                contrasena: this.contrasena,
+                nombre,
+                apellido,
+                nombre_usuario,
+                correo_electronico,
+                celular: celular || undefined,
+                contrasena,
             })
             .subscribe({
                 next: () => {

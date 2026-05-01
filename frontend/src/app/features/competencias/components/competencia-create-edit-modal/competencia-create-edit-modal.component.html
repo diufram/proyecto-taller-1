@@ -39,9 +39,15 @@
                         rows="3"
                         autoResize="true"
                         class="w-full"
+                        [invalid]="isInvalid('descripcion')"
                     ></textarea>
-                    <label for="descripcion_input">Descripción</label>
+                    <label for="descripcion_input">Descripción <span class="text-red-500">*</span></label>
                 </p-floatLabel>
+                @if (isInvalid('descripcion')) {
+                    <p-message severity="error" size="small" variant="simple" class="mt-1">
+                        La descripción es requerida.
+                    </p-message>
+                }
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -98,7 +104,6 @@
                             inputId="nivel_input"
                             [options]="niveles"
                             formControlName="nivel_dificultad"
-                            placeholder="Seleccione"
                             styleClass="w-full"
                             [appendTo]="'body'"
                         ></p-select>
@@ -117,7 +122,6 @@
                             inputId="estado_input"
                             [options]="estados"
                             formControlName="estado"
-                            placeholder="Seleccione"
                             styleClass="w-full"
                             [appendTo]="'body'"
                         ></p-select>
@@ -136,7 +140,6 @@
                             inputId="tipo_input"
                             [options]="tipos"
                             formControlName="tipo"
-                            placeholder="Seleccione"
                             styleClass="w-full"
                             [appendTo]="'body'"
                         ></p-select>
@@ -150,23 +153,25 @@
                 </div>
             </div>
 
-            <div class="flex flex-col">
-                <p-floatLabel variant="on">
-                    <p-inputNumber
-                        inputId="max_input"
-                        formControlName="max_participantes"
-                        [min]="0"
-                        styleClass="w-full"
-                        [inputStyle]="{ width: '100%' }"
-                    ></p-inputNumber>
-                    <label for="max_input">Max. Participantes <span class="text-red-500">*</span></label>
-                </p-floatLabel>
-                @if (isInvalid('max_participantes')) {
-                    <p-message severity="error" size="small" variant="simple" class="mt-1">
-                        Debe ser un número válido.
-                    </p-message>
-                }
-            </div>
+            @if (isGrupal) {
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <p-inputNumber
+                            inputId="max_input"
+                            formControlName="max_participantes"
+                            [min]="1"
+                            styleClass="w-full"
+                            [inputStyle]="{ width: '100%' }"
+                        ></p-inputNumber>
+                        <label for="max_input">Max. Participantes <span class="text-red-500">*</span></label>
+                    </p-floatLabel>
+                    @if (isInvalid('max_participantes')) {
+                        <p-message severity="error" size="small" variant="simple" class="mt-1">
+                            Debe ser un número válido.
+                        </p-message>
+                    }
+                </div>
+            }
         </form>
     </ng-container>
 

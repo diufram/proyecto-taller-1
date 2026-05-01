@@ -58,7 +58,7 @@ async function bootstrap() {
 
   console.log(`Backend iniciado en: http://localhost:${port}`);
   if (swaggerEnabled) {
-    console.log(`Swagger disponible en: http://localhost:${port}/api/docs`);
+    console.log(`Swagger disponible en: http://localhost:${port}/docs`);
   }
 }
 void bootstrap();

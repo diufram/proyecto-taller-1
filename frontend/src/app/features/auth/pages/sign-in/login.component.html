@@ -35,51 +35,51 @@
                     >
                 </div>
 
-                <div>
-                    <label
-                        for="email1"
-                        class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-                        >Correo electrónico</label
-                    >
-                    <input
-                        pInputText
-                        id="email1"
-                        type="text"
-                        placeholder="Tu correo electrónico"
-                        class="w-full md:w-120 mb-8"
-                        [(ngModel)]="correo_electronico"
-                    />
+                <form [formGroup]="form" (ngSubmit)="onLogin()">
+                    <div class="mb-4">
+                        <p-floatlabel variant="on">
+                            <input
+                                pInputText
+                                id="correo_electronico"
+                                type="email"
+                                formControlName="correo_electronico"
+                                class="w-full md:w-120"
+                            />
+                            <label for="correo_electronico"
+                                >Correo electrónico</label
+                            >
+                        </p-floatlabel>
+                        @if (isInvalid("correo_electronico")) {
+                            <small class="text-red-500 mt-1 block"
+                                >Correo electrónico inválido</small
+                            >
+                        }
+                    </div>
 
-                    <label
-                        for="password1"
-                        class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
-                        >Contraseña</label
-                    >
-                    <p-password
-                        id="password1"
-                        [(ngModel)]="contrasena"
-                        placeholder="Contraseña"
-                        [toggleMask]="true"
-                        styleClass="mb-4"
-                        [fluid]="true"
-                        [feedback]="false"
-                    >
-                    </p-password>
-
-                    <!-- <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-                        <div class="flex items-center">
-                            <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
-                            <label for="rememberme1">Remember me</label>
-                        </div>
-                        <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot
-                            password?</span>
-                    </div> -->
+                    <div class="mb-6">
+                        <p-floatlabel variant="on">
+                            <input
+                                pInputText
+                                inputId="contrasena"
+                                type="password"
+                                formControlName="contrasena"
+                                class="w-full md:w-120"
+                            />
+                            <label for="contrasena">Contraseña</label>
+                        </p-floatlabel>
+                        @if (isInvalid("contrasena")) {
+                            <small class="text-red-500 mt-1 block"
+                                >La contraseña es requerida</small
+                            >
+                        }
+                    </div>
 
                     <p-button
+                        type="submit"
                         label="Iniciar Sesión"
                         styleClass="w-full"
                         [loading]="loading"
-                        (onClick)="onLogin()"
+                        [disabled]="form.invalid"
                     >
                     </p-button>
 
@@ -93,7 +93,7 @@
                             >Regístrate</a
                         >
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

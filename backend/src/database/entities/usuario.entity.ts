@@ -22,6 +22,12 @@ export class Usuario extends BaseEntity {
   @Column({ type: 'enum', enum: Rol, default: Rol.USER })
   rol!: Rol;
 
+  @Column({ name: 'esta_verificado', default: false })
+  esta_verificado!: boolean;
+
+  @Column({ nullable: true })
+  foto?: string;
+
   @OneToMany(() => Inscripcion, (i) => i.usuario)
   inscripciones!: Inscripcion[];
 

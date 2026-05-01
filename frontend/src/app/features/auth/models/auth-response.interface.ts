@@ -4,8 +4,11 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
+    nombre: string;
+    apellido: string;
     nombre_usuario: string;
     correo_electronico: string;
+    celular?: string;
     contrasena: string;
 }
 

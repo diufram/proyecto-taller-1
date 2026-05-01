@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -57,20 +57,35 @@ export class CompetenciaCreateEditModalComponent implements OnChanges {
     constructor() {
         this.form = this.fb.group({
             nombre: ['', Validators.required],
-            descripcion: [''],
+            descripcion: ['', Validators.required],
             fecha_inicio: [null, Validators.required],
             fecha_fin: [null, Validators.required],
             nivel_dificultad: [null, Validators.required],
             estado: [null, Validators.required],
             tipo: [null, Validators.required],
-            max_participantes: [0, [Validators.required, Validators.min(0)]],
+            max_participantes: [1, [Validators.required, Validators.min(1)]],
         });
+    }
+
+    get isGrupal(): boolean {
+        return this.form.get('tipo')?.value === 'Grupal';
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['visible'] && this.visible) {
             this.resetState();
         }
+    }
+
+    ngOnInit(): void {
+        this.form.get('tipo')?.valueChanges.subscribe((tipo) => {
+            if (tipo === 'Individual') {
+                this.form.patchValue({ max_participantes: 1 });
+                this.form.get('max_participantes')?.disable();
+            } else {
+                this.form.get('max_participantes')?.enable();
+            }
+        });
     }
 
     get modalTitle(): string {
@@ -81,7 +96,7 @@ export class CompetenciaCreateEditModalComponent implements OnChanges {
         return false;
     }
 
-    resetState(): void {
+resetState(): void {
         this.saving = false;
         if (this.mode === 'create') {
             this.form.reset({
@@ -92,9 +107,11 @@ export class CompetenciaCreateEditModalComponent implements OnChanges {
                 nivel_dificultad: null,
                 estado: null,
                 tipo: null,
-                max_participantes: 0,
+                max_participantes: 1,
             });
+            this.form.get('max_participantes')?.disable();
         } else if (this.data) {
+            const isGrupal = this.data.tipo === 'Grupal';
             this.form.patchValue({
                 nombre: this.data.nombre,
                 descripcion: this.data.descripcion,
@@ -105,6 +122,11 @@ export class CompetenciaCreateEditModalComponent implements OnChanges {
                 tipo: this.data.tipo,
                 max_participantes: this.data.max_participantes,
             });
+            if (isGrupal) {
+                this.form.get('max_participantes')?.enable();
+            } else {
+                this.form.get('max_participantes')?.disable();
+            }
         }
     }
 
@@ -145,7 +167,7 @@ export class CompetenciaCreateEditModalComponent implements OnChanges {
             nivel_dificultad: formValues.nivel_dificultad,
             estado: formValues.estado,
             tipo: formValues.tipo,
-            max_participantes: formValues.max_participantes ?? 0,
+            max_participantes: formValues.max_participantes ?? 1,
         };
 
         const obs = this.mode === 'create'

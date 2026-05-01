@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { $t, updatePreset, updateSurfacePalette } from '@primeuix/themes';
+import { $t, updatePreset, updateSurfacePalette, definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import Lara from '@primeuix/themes/lara';
 import Nora from '@primeuix/themes/nora';
@@ -21,6 +21,24 @@ const presets = {
     Lara,
     Nora,
 } as const;
+
+const EmeraldPreset = definePreset(Aura, {
+    semantic: {
+        primary: {
+            50: '#ecfdf5',
+            100: '#d1fae5',
+            200: '#a7f3d0',
+            300: '#6ee7b7',
+            400: '#34d399',
+            500: '#10b981',
+            600: '#059669',
+            700: '#047857',
+            800: '#065f46',
+            900: '#064e3b',
+            950: '#022c22',
+        },
+    },
+});
 
 type ThemePreference = 'system' | 'light' | 'dark';
 type KeyOfType<T> = keyof T extends infer U ? U : never;
@@ -448,7 +466,7 @@ export class MyConfigurator {
         }
     }
     onPresetChange(event: any) {
-        this.layoutService.setPreset(event); // ✅ persiste
+        this.layoutService.setPreset(event);
 
         const preset = presets[event as KeyOfType<typeof presets>];
         const surfacePalette = this.surfaces.find(
@@ -456,8 +474,8 @@ export class MyConfigurator {
         )?.palette;
 
         $t()
+            .preset(EmeraldPreset)
             .preset(preset)
-            .preset(this.getPresetExt())
             .surfacePalette(surfacePalette)
             .use({ useDefaultOptions: true });
     }

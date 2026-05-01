@@ -43,6 +43,13 @@ export class AuthService {
       contrasena: passwordHash,
     });
 
+    await this.authRepository.crearPersona({
+      nombre: dto.nombre,
+      apellido: dto.apellido,
+      celular: dto.celular,
+      usuario,
+    });
+
     const tokens = await this.generarTokens(usuario);
     return {
       usuario: this.serializarUsuario(usuario),

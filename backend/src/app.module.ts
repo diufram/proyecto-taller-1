@@ -1,24 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from './database/database.module'; // Importas tu nuevo módulo
+import { DatabaseModule } from './database/database.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './features/auth/auth.module';
 import { CompetenciasModule } from './features/competencias/competencias.module';
+import { ProfileModule } from './features/profile/profile.module';
 
 @Module({
   imports: [
-    // 1. Configuración global (.env)
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
-    // 2. Infraestructura de Base de Datos
     DatabaseModule,
-
-    // 3. Features
     AuthModule,
     CompetenciasModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
