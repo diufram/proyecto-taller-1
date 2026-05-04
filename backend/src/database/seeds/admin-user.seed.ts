@@ -14,6 +14,7 @@ const dataSource = new DataSource({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     entities: [__dirname + '/../entities/*.entity{.ts,.js}'],
+    synchronize: true,
 });
 
 export const adminUserSeed: Seed = {
@@ -31,6 +32,7 @@ export const adminUserSeed: Seed = {
 
         if (existing) {
             console.log('ℹ️  El usuario admin@gmail.com ya existe, omitiendo.');
+            await dataSource.destroy();
             return;
         }
 

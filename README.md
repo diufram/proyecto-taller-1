@@ -103,10 +103,10 @@ pnpm run db:seed                # sembrar datos iniciales
 cp .env.example .env  # ajustar valores si es necesario
 
 # Levantar todo (db + backend + frontend)
-docker compose up -d
+docker compose up -d --build
 
 # Bajar todo
-docker compose down
+docker compose down -v
 ```
 
 Para desarrollo local, usar los comandos de arriba de backend/frontend por separado.
