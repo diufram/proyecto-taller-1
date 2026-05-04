@@ -19,6 +19,8 @@ async function bootstrap() {
     }),
   );
 
+  app.setGlobalPrefix('api');
+
   const configService = app.get(ConfigService);
 
   const swaggerEnabled =
