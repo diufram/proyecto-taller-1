@@ -1,7 +1,7 @@
 services:
   frontend:
     ports:
-      - "80:4200"
+      - "4200:4200"
 
   seed:
     build:

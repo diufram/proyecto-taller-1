@@ -144,7 +144,7 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml down
 
 Notas producción:
 
-- Frontend se publica en puerto `80`
+- Frontend se publica en puerto `4200`
 - Backend y DB no se publican al host (solo red interna Docker)
 - El servicio `seed` corre antes del backend para crear datos iniciales
 - Configura `ALLOWED_ORIGIN` con la URL pública real del frontend
