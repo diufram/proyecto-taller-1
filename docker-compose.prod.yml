@@ -1,0 +1,12 @@
+services:
+  frontend:
+    ports:
+      - "80:4200"
+
+  backend:
+    expose:
+      - "3000"
+
+  db:
+    expose:
+      - "5432"
