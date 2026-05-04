@@ -146,6 +146,7 @@ Notas producción:
 
 - Frontend se publica en puerto `80`
 - Backend y DB no se publican al host (solo red interna Docker)
+- El servicio `seed` corre antes del backend para crear datos iniciales
 - Configura `ALLOWED_ORIGIN` con la URL pública real del frontend
   - Ejemplo: `http://1.1.1.1` o `https://tu-dominio.com`
 - El frontend consume la API por `/api` (proxy Nginx)
