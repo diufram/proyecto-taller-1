@@ -50,7 +50,9 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate([
+                this.authService.isAdmin() ? '/dashboard' : '/competencias',
+            ]);
         }
     }
 
@@ -80,7 +82,9 @@ export class LoginComponent implements OnInit {
                     'Sesión iniciada correctamente',
                 );
                 this.loading = false;
-                this.router.navigate(['/dashboard']);
+                this.router.navigate([
+                    this.authService.isAdmin() ? '/dashboard' : '/competencias',
+                ]);
             },
             error: (err) => {
                 console.error('Error en login:', err);

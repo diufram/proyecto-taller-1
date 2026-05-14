@@ -68,6 +68,8 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
     rowsPerPageOptions: number[] = [8];
 
     rowActions: RowAction[] = [];
+    inscritas = new Set<number>();
+    inscribiendoCompetenciaId: number | null = null;
 
     createEditVisible = false;
     createEditMode: ModalMode = 'create';
@@ -103,6 +105,9 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
                     this.competencias = response.items;
                     this.totalRecords = response.meta.total;
                     this.currentPage = page;
+                    if (!this.isAdmin) {
+                        this.loadMisInscripciones();
+                    }
                     this.loading = false;
                 },
                 error: (err) => {
@@ -174,6 +179,11 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
     }
 
     private setupActions(): void {
+        if (!this.isAdmin) {
+            this.rowActions = [];
+            return;
+        }
+
         const allActions: RowAction[] = [
             {
                 key: 'edit',
@@ -190,6 +200,44 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
         ];
 
         this.rowActions = allActions;
+    }
+
+    isInscrito(competenciaId: number): boolean {
+        return this.inscritas.has(competenciaId);
+    }
+
+    inscribirse(competencia: Competencia): void {
+        if (this.inscribiendoCompetenciaId || this.isInscrito(competencia.id)) {
+            return;
+        }
+
+        this.inscribiendoCompetenciaId = competencia.id;
+
+        this.competenciasService.inscribirse(competencia.id).subscribe({
+            next: () => {
+                this.inscritas.add(competencia.id);
+                this.toast.success('Éxito', 'Te inscribiste correctamente a la competencia');
+                this.inscribiendoCompetenciaId = null;
+            },
+            error: (err) => {
+                const msg = err?.message || 'No se pudo completar la inscripción';
+                this.toast.error('Error', msg);
+                this.inscribiendoCompetenciaId = null;
+            },
+        });
+    }
+
+    private loadMisInscripciones(): void {
+        this.competenciasService.misInscripciones().subscribe({
+            next: (response) => {
+                this.inscritas = new Set(
+                    (response.inscripciones || []).map((item) => item.competencia_id),
+                );
+            },
+            error: () => {
+                this.inscritas = new Set<number>();
+            },
+        });
     }
 
     getEstadoSeverity(

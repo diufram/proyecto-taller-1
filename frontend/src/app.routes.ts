@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from '@/core/guards/auth.guard';
+import { roleGuard } from '@/core/guards/role.guard';
 import { MainLayout } from './app/core/layout/component/app.layout';
 import { Notfound } from './app/pages/notfound/notfound';
 
@@ -28,7 +29,7 @@ export const appRoutes: Routes = [
         children: [
             {
                 path: 'dashboard',
-                canActivate: [authGuard],
+                canActivate: [authGuard, roleGuard(['admin'])],
                 loadChildren: () =>
                     import('./app/features/dashboard/dashboard.routes').then(
                         (m) => m.DASHBOARD_ROUTES,

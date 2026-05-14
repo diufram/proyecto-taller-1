@@ -15,6 +15,7 @@ export class CompetenciasService {
     private api = inject(ApiService);
 
     private endpoint = 'competencias';
+    private inscripcionesEndpoint = 'inscripciones';
 
     getAll(params?: {
         page?: number;
@@ -48,5 +49,29 @@ export class CompetenciasService {
 
     delete(id: number): Observable<{ message: string }> {
         return this.api.delete(`${this.endpoint}/${id}`);
+    }
+
+    inscribirse(competenciaId: number): Observable<{
+        inscripcion: {
+            id: number;
+            competencia_id: number;
+            fecha_inscripcion: string;
+        };
+        message: string;
+    }> {
+        return this.api.post(this.inscripcionesEndpoint, {
+            competencia_id: competenciaId,
+        });
+    }
+
+    misInscripciones(): Observable<{
+        inscripciones: Array<{
+            id: number;
+            competencia_id: number;
+            competencia_nombre: string;
+            fecha_inscripcion: string;
+        }>;
+    }> {
+        return this.api.get(`${this.inscripcionesEndpoint}/me`);
     }
 }
