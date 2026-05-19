@@ -2,6 +2,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { Problema } from './problema.entity';
 import { Inscripcion } from './inscripcion.entity';
 import { Ranking } from './ranking.entity';
+import { Grupo } from './grupo.entity';
 import { BaseEntity } from '../../core/entities/base.entity';
 
 export enum Nivel {
@@ -56,4 +57,7 @@ export class Competencia extends BaseEntity {
 
   @OneToMany(() => Ranking, (r) => r.competencia)
   rankings!: Ranking[];
+
+  @OneToMany(() => Grupo, (g) => g.competencia)
+  grupos!: Grupo[];
 }

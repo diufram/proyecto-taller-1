@@ -83,7 +83,7 @@ export class InscripcionesService {
   async my(user: JwtPayload) {
     const inscripciones = await this.inscripcionRepository.find({
       where: { usuario: { id: user.sub } },
-      relations: { competencia: true },
+      relations: { competencia: true, grupo: true },
       order: { createdAt: 'DESC' },
     });
 
@@ -92,7 +92,14 @@ export class InscripcionesService {
         id: inscripcion.id,
         competencia_id: inscripcion.competencia.id,
         competencia_nombre: inscripcion.competencia.nombre,
+        competencia_tipo: inscripcion.competencia.tipo,
         fecha_inscripcion: inscripcion.fecha_inscripcion,
+        grupo: inscripcion.grupo
+          ? {
+              id: inscripcion.grupo.id,
+              nombre: inscripcion.grupo.nombre,
+            }
+          : null,
       })),
     };
   }

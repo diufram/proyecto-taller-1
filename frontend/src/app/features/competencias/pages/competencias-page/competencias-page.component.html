@@ -244,17 +244,14 @@
                             </div>
 
                             <div class="competencia-user-actions">
-                                @if (isInscrito(comp.id)) {
-                                    <p-tag value="Ya inscrito" severity="success"></p-tag>
-                                } @else {
-                                    <p-button
-                                        label="Inscribirme"
-                                        icon="pi pi-user-plus"
-                                        severity="primary"
-                                        [loading]="inscribiendoCompetenciaId === comp.id"
-                                        (onClick)="inscribirse(comp)"
-                                    ></p-button>
-                                }
+                                <p-button
+                                    label="Ver Detalle"
+                                    icon="pi pi-arrow-right"
+                                    iconPos="right"
+                                    severity="secondary"
+                                    [outlined]="true"
+                                    (onClick)="verDetalle(comp)"
+                                ></p-button>
                             </div>
                         </article>
                     }

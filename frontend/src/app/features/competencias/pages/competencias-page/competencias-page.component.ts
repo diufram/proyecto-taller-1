@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TableModule, Table } from 'primeng/table';
@@ -55,6 +56,7 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
     private competenciasService = inject(CompetenciasService);
     private authService = inject(AuthService);
     private toast = inject(ToastService);
+    private router = inject(Router);
 
     @ViewChild('dt') dt?: Table;
 
@@ -255,5 +257,9 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
             default:
                 return 'secondary';
         }
+    }
+
+    verDetalle(competencia: Competencia): void {
+        this.router.navigate(['/competencias', competencia.id]);
     }
 }
