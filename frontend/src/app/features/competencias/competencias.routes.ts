@@ -1,4 +1,6 @@
-export const COMPETENCIAS_ROUTES = [
+import { Routes } from '@angular/router';
+
+export const COMPETENCIAS_ROUTES: Routes = [
     {
         path: '',
         loadComponent: () =>
@@ -15,6 +17,15 @@ export const COMPETENCIAS_ROUTES = [
                 (m) => m.CompetenciaDetalleComponent,
             ),
         title: 'Detalle de Competencia',
-        data: { breadcrumb: 'Detalle' },
+        data: { breadcrumb: 'Competencia' },
+    },
+    {
+        path: 'problemas/:competenciaId',
+        loadComponent: () =>
+            import('../problemas/pages/problemas-page/problemas-page.component').then(
+                (m) => m.ProblemasPageComponent,
+            ),
+        title: 'Problemas',
+        data: { breadcrumb: 'Problemas' },
     },
 ];

@@ -1,0 +1,234 @@
+<p-dialog
+    [(visible)]="visible"
+    [header]="modalTitle"
+    [modal]="true"
+    [style]="{ width: '35rem' }"
+    [breakpoints]="{ '960px': '75vw', '640px': '95vw' }"
+    [closable]="true"
+    [closeOnEscape]="true"
+    (onHide)="close()"
+    class="custom-modal p-fluid"
+    [contentStyle]="{ overflow: 'visible' }"
+>
+    <ng-container>
+        <form [formGroup]="form" class="flex flex-col gap-6 pt-5">
+            <div class="flex flex-col">
+                <p-floatLabel variant="on">
+                    <input
+                        pInputText
+                        id="titulo_input"
+                        formControlName="titulo"
+                        class="w-full"
+                        [invalid]="isInvalid('titulo')"
+                        variant="filled"
+                        pSize="small"
+                    />
+                    <label for="titulo_input"
+                        >Titulo <span class="text-red-500">*</span></label
+                    >
+                </p-floatLabel>
+                @if (isInvalid("titulo")) {
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        class="mt-1"
+                    >
+                        El titulo es requerido.
+                    </p-message>
+                }
+            </div>
+
+            <div class="flex flex-col">
+                <p-floatLabel variant="on">
+                    <textarea
+                        pTextarea
+                        id="descripcion_input"
+                        formControlName="descripcion"
+                        rows="3"
+                        autoResize="true"
+                        class="w-full"
+                        [invalid]="isInvalid('descripcion')"
+                        variant="filled"
+                        pSize="small"
+                    ></textarea>
+                    <label for="descripcion_input"
+                        >Descripción <span class="text-red-500">*</span></label
+                    >
+                </p-floatLabel>
+                @if (isInvalid("descripcion")) {
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        class="mt-1"
+                    >
+                        La descripción es requerida.
+                    </p-message>
+                }
+            </div>
+
+            <div class="flex flex-col">
+                <p-floatLabel variant="on">
+                    <p-select
+                        inputId="dificultad_input"
+                        [options]="dificultades"
+                        formControlName="dificultad"
+                        [invalid]="isInvalid('dificultad')"
+                        class="w-full"
+                        [appendTo]="'body'"
+                        variant="filled"
+                        size="small"
+                    ></p-select>
+                    <label for="dificultad_input"
+                        >Dificultad <span class="text-red-500">*</span></label
+                    >
+                </p-floatLabel>
+                @if (isInvalid("dificultad")) {
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        class="mt-1"
+                    >
+                        La dificultad es requerida.
+                    </p-message>
+                }
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <input
+                            pInputText
+                            id="formato_entrada_input"
+                            formControlName="formato_entrada"
+                            class="w-full"
+                            [invalid]="isInvalid('formato_entrada')"
+                            variant="filled"
+                            pSize="small"
+                        />
+                        <label for="formato_entrada_input"
+                            >Formato Entrada <span class="text-red-500">*</span></label
+                        >
+                    </p-floatLabel>
+                    @if (isInvalid("formato_entrada")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
+                            El formato de entrada es requerido.
+                        </p-message>
+                    }
+                </div>
+
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <input
+                            pInputText
+                            id="formato_salida_input"
+                            formControlName="formato_salida"
+                            class="w-full"
+                            [invalid]="isInvalid('formato_salida')"
+                            variant="filled"
+                            pSize="small"
+                        />
+                        <label for="formato_salida_input"
+                            >Formato Salida <span class="text-red-500">*</span></label
+                        >
+                    </p-floatLabel>
+                    @if (isInvalid("formato_salida")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
+                            El formato de salida es requerido.
+                        </p-message>
+                    }
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <textarea
+                            pTextarea
+                            id="ejemplo_entrada_input"
+                            formControlName="ejemplo_entrada"
+                            rows="2"
+                            autoResize="true"
+                            class="w-full"
+                            [invalid]="isInvalid('ejemplo_entrada')"
+                            variant="filled"
+                            pSize="small"
+                        ></textarea>
+                        <label for="ejemplo_entrada_input"
+                            >Ejemplo Entrada <span class="text-red-500">*</span></label
+                        >
+                    </p-floatLabel>
+                    @if (isInvalid("ejemplo_entrada")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
+                            El ejemplo de entrada es requerido.
+                        </p-message>
+                    }
+                </div>
+
+                <div class="flex flex-col">
+                    <p-floatLabel variant="on">
+                        <textarea
+                            pTextarea
+                            id="ejemplo_salida_input"
+                            formControlName="ejemplo_salida"
+                            rows="2"
+                            autoResize="true"
+                            class="w-full"
+                            [invalid]="isInvalid('ejemplo_salida')"
+                            variant="filled"
+                            pSize="small"
+                        ></textarea>
+                        <label for="ejemplo_salida_input"
+                            >Ejemplo Salida <span class="text-red-500">*</span></label
+                        >
+                    </p-floatLabel>
+                    @if (isInvalid("ejemplo_salida")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            class="mt-1"
+                        >
+                            El ejemplo de salida es requerido.
+                        </p-message>
+                    }
+                </div>
+            </div>
+        </form>
+    </ng-container>
+
+    <ng-template pTemplate="footer">
+        <div class="flex w-full justify-end gap-2">
+            <p-button
+                label="Cancelar"
+                [text]="true"
+                severity="secondary"
+                (onClick)="close()"
+            ></p-button>
+            <p-button
+                [label]="mode === 'create' ? 'Crear' : 'Guardar'"
+                icon="pi pi-save"
+                [loading]="saving"
+                (onClick)="save()"
+                class="w-full md:w-auto flex justify-center bg-gray-900 border-gray-900 text-white hover:bg-gray-800 hover:border-gray-800"
+            ></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

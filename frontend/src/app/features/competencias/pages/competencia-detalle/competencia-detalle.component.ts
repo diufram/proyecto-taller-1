@@ -89,6 +89,16 @@ import { GruposService, Grupo } from '../../../grupos/services/grupos.service';
                                 ></p-button>
                             }
                         }
+
+                        @if (isAdmin) {
+                            <p-button
+                                label="Gestionar Problemas"
+                                icon="pi pi-list"
+                                severity="warn"
+                                [outlined]="true"
+                                (onClick)="irAGestionarProblemas()"
+                            ></p-button>
+                        }
                     </div>
                 </ng-template>
             </p-toolbar>
@@ -421,6 +431,13 @@ export class CompetenciaDetalleComponent implements OnInit {
                 this.toast.error(err);
                 this.inscribiendose = false;
             },
+        });
+    }
+
+    irAGestionarProblemas(): void {
+        if (!this.competencia) return;
+        this.router.navigate(['/competencias/problemas', this.competencia.id], {
+            state: { competenciaNombre: this.competencia.nombre },
         });
     }
 

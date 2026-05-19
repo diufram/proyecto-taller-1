@@ -1,0 +1,187 @@
+<p-toast></p-toast>
+
+<div class="problemas-page">
+    <div class="mb-3 pl-1">
+        <h3 class="text-2xl font-bold text-color m-0">{{ competenciaNombre }}</h3>
+    </div>
+
+    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
+        <ng-template pTemplate="left">
+            <div class="actions-container flex flex-col md:flex-row w-full gap-2 items-stretch md:items-center">
+                <p-button
+                    icon="pi pi-arrow-left"
+                    label="Volver"
+                    severity="secondary"
+                    [outlined]="true"
+                    class="w-full md:w-auto"
+                    (onClick)="volver()"
+                ></p-button>
+                <p-button
+                    label="Nuevo Problema"
+                    icon="pi pi-plus"
+                    severity="success"
+                    class="w-full md:w-auto"
+                    (onClick)="openCreateModal()"
+                ></p-button>
+            </div>
+        </ng-template>
+    </p-toolbar>
+
+    @if (loading) {
+        <div class="problemas-skeleton-desktop">
+            @for (i of [].constructor(5); track $index) {
+                <div class="skeleton-row">
+                    <p-skeleton width="60%" height="1.1rem"></p-skeleton>
+                    <p-skeleton width="80px" height="2rem"></p-skeleton>
+                    <p-skeleton width="100px" height="2rem"></p-skeleton>
+                </div>
+            }
+        </div>
+
+        <div class="problemas-skeleton-mobile">
+            @for (i of [].constructor(5); track $index) {
+                <div class="problema-mobile-card is-skeleton">
+                    <div class="problema-mobile-field">
+                        <span class="label">Titulo</span>
+                        <p-skeleton width="70%" height="1.1rem"></p-skeleton>
+                    </div>
+                    <div class="problema-mobile-field">
+                        <span class="label">Dificultad</span>
+                        <p-skeleton width="40%" height="2rem"></p-skeleton>
+                    </div>
+                    <div class="problema-mobile-field">
+                        <span class="label">Acciones</span>
+                        <div class="problema-mobile-actions-skeleton">
+                            <p-skeleton width="2rem" height="2rem"></p-skeleton>
+                            <p-skeleton width="2rem" height="2rem"></p-skeleton>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    } @else {
+        <div class="problemas-table-wrap">
+            <p-table
+                [value]="problemas"
+                responsiveLayout="scroll"
+                styleClass="problemas-table"
+                [tableStyle]="{ 'min-width': '100%' }"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 5rem">ID</th>
+                        <th>Titulo</th>
+                        <th style="width: 10rem">Dificultad</th>
+                        <th class="text-right" style="width: 120px">Acciones</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-problema>
+                    <tr>
+                        <td>{{ problema.id }}</td>
+                        <td>
+                            <span class="font-semibold">{{ problema.titulo }}</span>
+                        </td>
+                        <td>
+                            <p-tag
+                                [value]="problema.dificultad"
+                                [severity]="getDificultadSeverity(problema.dificultad)"
+                            ></p-tag>
+                        </td>
+                        <td>
+                            <div class="desktop-actions">
+                                <p-button
+                                    icon="pi pi-pencil"
+                                    severity="warn"
+                                    [text]="true"
+                                    [rounded]="true"
+                                    [pTooltip]="'Editar'"
+                                    tooltipPosition="top"
+                                    (onClick)="openEditModal(problema)"
+                                ></p-button>
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    [text]="true"
+                                    [rounded]="true"
+                                    [pTooltip]="'Eliminar'"
+                                    tooltipPosition="top"
+                                    (onClick)="openDeleteModal(problema)"
+                                ></p-button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="4" class="text-center p-5">
+                            <span class="font-medium text-color-secondary">No se encontraron registros</span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div class="problemas-mobile-list">
+            @if (problemas.length === 0) {
+                <div class="mobile-empty">No hay problemas creados para esta competencia.</div>
+            } @else {
+                @for (problema of problemas; track problema.id) {
+                    <article class="problema-mobile-card">
+                        <div class="problema-mobile-field">
+                            <span class="label">Titulo</span>
+                            <span class="value">{{ problema.titulo }}</span>
+                        </div>
+
+                        <div class="problema-mobile-field">
+                            <span class="label">Dificultad</span>
+                            <p-tag
+                                [value]="problema.dificultad"
+                                [severity]="getDificultadSeverity(problema.dificultad)"
+                            ></p-tag>
+                        </div>
+
+                        <div class="problema-mobile-field">
+                            <span class="label">Acciones</span>
+                            <div class="problema-mobile-actions">
+                                <p-button
+                                    icon="pi pi-pencil"
+                                    severity="warn"
+                                    [text]="true"
+                                    [rounded]="true"
+                                    [pTooltip]="'Editar'"
+                                    tooltipPosition="top"
+                                    (onClick)="openEditModal(problema)"
+                                ></p-button>
+                                <p-button
+                                    icon="pi pi-trash"
+                                    severity="danger"
+                                    [text]="true"
+                                    [rounded]="true"
+                                    [pTooltip]="'Eliminar'"
+                                    tooltipPosition="top"
+                                    (onClick)="openDeleteModal(problema)"
+                                ></p-button>
+                            </div>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+    }
+</div>
+
+<app-problema-create-edit-modal
+    [(visible)]="createEditVisible"
+    [mode]="createEditMode"
+    [competenciaId]="competenciaId"
+    [data]="selectedProblema"
+    (onSaved)="onSaved()"
+></app-problema-create-edit-modal>
+
+<app-problema-delete-modal
+    [(visible)]="deleteVisible"
+    [target]="deleteTarget"
+    (onDeleted)="onDeleted()"
+></app-problema-delete-modal>

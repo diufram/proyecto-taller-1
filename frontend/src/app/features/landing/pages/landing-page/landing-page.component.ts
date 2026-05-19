@@ -50,7 +50,7 @@ import { CommonModule } from '@angular/common';
 
                         <div class="flex items-center gap-4">
                             <a
-                                href="#"
+                                routerLink="/auth/login"
                                 class="hidden md:block text-sm font-medium text-gray-400 hover:text-white transition-colors"
                                 >Login</a
                             >

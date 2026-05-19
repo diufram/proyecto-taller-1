@@ -161,6 +161,11 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
                 this.deleteTarget = comp;
                 this.deleteVisible = true;
                 break;
+            case 'problemas':
+                this.router.navigate(['/competencias/problemas', comp.id], {
+                    state: { competenciaNombre: comp.nombre },
+                });
+                break;
         }
     }
 
@@ -187,6 +192,12 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
         }
 
         const allActions: RowAction[] = [
+            {
+                key: 'problemas',
+                icon: 'pi pi-list',
+                severity: 'warn',
+                tooltip: 'Problemas',
+            },
             {
                 key: 'edit',
                 icon: 'pi pi-pencil',
