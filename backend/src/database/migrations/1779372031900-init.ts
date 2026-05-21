@@ -1,10 +1,9 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1777600056833 implements MigrationInterface {
-    name = 'Init1777600056833'
+export class Init1779372031900 implements MigrationInterface {
+    name = 'Init1779372031900'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "grupos" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "nombre" character varying NOT NULL, CONSTRAINT "PK_34de64ec8a5ecd99afb23b2bd62" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TYPE "public"."soluciones_estado_enum" AS ENUM('Pendiente', 'Correcto', 'Incorrecto', 'En revisión')`);
         await queryRunner.query(`CREATE TYPE "public"."soluciones_lenguaje_programacion_enum" AS ENUM('Python', 'Java', 'C', 'JavaScript', 'Pseudocodigo', 'Otro')`);
         await queryRunner.query(`CREATE TABLE "soluciones" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "respuesta" text NOT NULL, "estado" "public"."soluciones_estado_enum" NOT NULL, "lenguaje_programacion" "public"."soluciones_lenguaje_programacion_enum" NOT NULL, "resultado_validacion" boolean NOT NULL DEFAULT false, "problemaId" integer, "usuarioId" integer, CONSTRAINT "PK_f0f37e6a7ad8e96ffe202ca3758" PRIMARY KEY ("id"))`);
@@ -15,6 +14,7 @@ export class Init1777600056833 implements MigrationInterface {
         await queryRunner.query(`CREATE TYPE "public"."competencias_estado_enum" AS ENUM('Abierta', 'En curso', 'Finalizada', 'Cancelada')`);
         await queryRunner.query(`CREATE TYPE "public"."competencias_tipo_enum" AS ENUM('Individual', 'Grupal')`);
         await queryRunner.query(`CREATE TABLE "competencias" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "nombre" character varying NOT NULL, "descripcion" text NOT NULL, "fecha_inicio" TIMESTAMP NOT NULL, "fecha_fin" TIMESTAMP NOT NULL, "nivel_dificultad" "public"."competencias_nivel_dificultad_enum" NOT NULL, "estado" "public"."competencias_estado_enum" NOT NULL, "tipo" "public"."competencias_tipo_enum" NOT NULL, "max_participantes" integer NOT NULL DEFAULT '0', CONSTRAINT "PK_5200c17b2042a1db2e495f3af37" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "grupos" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "nombre" character varying NOT NULL, "competenciaId" integer, CONSTRAINT "PK_34de64ec8a5ecd99afb23b2bd62" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "inscripciones" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "fecha_inscripcion" TIMESTAMP NOT NULL, "usuarioId" integer, "grupoId" integer, "competenciaId" integer, CONSTRAINT "PK_17a12f6ab342f6762d81e940d19" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "retroalimentacion_problemas" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "retroalimentacion" text NOT NULL, "usuarioId" integer, "problemaId" integer, CONSTRAINT "PK_136bd74d10d8c4495befdbdef5a" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TYPE "public"."usuarios_rol_enum" AS ENUM('user', 'admin')`);
@@ -26,6 +26,7 @@ export class Init1777600056833 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "problemas" ADD CONSTRAINT "FK_0dd21502398bb8e62724fe5389c" FOREIGN KEY ("competenciaId") REFERENCES "competencias"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "rankings" ADD CONSTRAINT "FK_94873b84e9132a029f305bf9857" FOREIGN KEY ("usuarioId") REFERENCES "usuarios"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "rankings" ADD CONSTRAINT "FK_73d39512a12359c3144d117b02a" FOREIGN KEY ("competenciaId") REFERENCES "competencias"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "grupos" ADD CONSTRAINT "FK_dd49250e2e3ce093887c2850d52" FOREIGN KEY ("competenciaId") REFERENCES "competencias"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "inscripciones" ADD CONSTRAINT "FK_fd351e2c00391ca09f6a39044eb" FOREIGN KEY ("usuarioId") REFERENCES "usuarios"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "inscripciones" ADD CONSTRAINT "FK_e68059dd1e1ddf336ff6e9b1281" FOREIGN KEY ("grupoId") REFERENCES "grupos"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "inscripciones" ADD CONSTRAINT "FK_7c5910a932d331413f8bd96871d" FOREIGN KEY ("competenciaId") REFERENCES "competencias"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -43,6 +44,7 @@ export class Init1777600056833 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "inscripciones" DROP CONSTRAINT "FK_7c5910a932d331413f8bd96871d"`);
         await queryRunner.query(`ALTER TABLE "inscripciones" DROP CONSTRAINT "FK_e68059dd1e1ddf336ff6e9b1281"`);
         await queryRunner.query(`ALTER TABLE "inscripciones" DROP CONSTRAINT "FK_fd351e2c00391ca09f6a39044eb"`);
+        await queryRunner.query(`ALTER TABLE "grupos" DROP CONSTRAINT "FK_dd49250e2e3ce093887c2850d52"`);
         await queryRunner.query(`ALTER TABLE "rankings" DROP CONSTRAINT "FK_73d39512a12359c3144d117b02a"`);
         await queryRunner.query(`ALTER TABLE "rankings" DROP CONSTRAINT "FK_94873b84e9132a029f305bf9857"`);
         await queryRunner.query(`ALTER TABLE "problemas" DROP CONSTRAINT "FK_0dd21502398bb8e62724fe5389c"`);
@@ -54,6 +56,7 @@ export class Init1777600056833 implements MigrationInterface {
         await queryRunner.query(`DROP TYPE "public"."usuarios_rol_enum"`);
         await queryRunner.query(`DROP TABLE "retroalimentacion_problemas"`);
         await queryRunner.query(`DROP TABLE "inscripciones"`);
+        await queryRunner.query(`DROP TABLE "grupos"`);
         await queryRunner.query(`DROP TABLE "competencias"`);
         await queryRunner.query(`DROP TYPE "public"."competencias_tipo_enum"`);
         await queryRunner.query(`DROP TYPE "public"."competencias_estado_enum"`);
@@ -64,7 +67,6 @@ export class Init1777600056833 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "soluciones"`);
         await queryRunner.query(`DROP TYPE "public"."soluciones_lenguaje_programacion_enum"`);
         await queryRunner.query(`DROP TYPE "public"."soluciones_estado_enum"`);
-        await queryRunner.query(`DROP TABLE "grupos"`);
     }
 
 }

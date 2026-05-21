@@ -1,8 +1,12 @@
 import { DataSource } from 'typeorm';
 import { adminUserSeed } from './admin-user.seed';
+import { userSeed } from './user.seed';
+import { personasSeed } from './personas.seed';
+import { competenciasSeed } from './competencias.seed';
+import { problemasSeed } from './problemas.seed';
 import { Seed } from './base.seed';
 
-const seeds: Seed[] = [adminUserSeed];
+const seeds: Seed[] = [adminUserSeed, userSeed, personasSeed, competenciasSeed, problemasSeed];
 
 async function runSeeds() {
     const dataSource = new DataSource({
