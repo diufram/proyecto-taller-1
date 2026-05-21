@@ -37,11 +37,29 @@ export const appRoutes: Routes = [
             },
 
             {
-                path: 'competencias',
+                path: 'admin/competencias',
+                canActivate: [authGuard, roleGuard(['admin'])],
+                loadChildren: () =>
+                    import('./app/features/competencias/admin-competencias.routes').then(
+                        (m) => m.ADMIN_COMPETENCIAS_ROUTES,
+                    ),
+            },
+
+            {
+                path: 'user/competencias',
                 canActivate: [authGuard],
                 loadChildren: () =>
-                    import('./app/features/competencias/competencias.routes').then(
-                        (m) => m.COMPETENCIAS_ROUTES,
+                    import('./app/features/competencias/user-competencias.routes').then(
+                        (m) => m.USER_COMPETENCIAS_ROUTES,
+                    ),
+            },
+
+            {
+                path: 'user/ranking',
+                canActivate: [authGuard],
+                loadChildren: () =>
+                    import('./app/features/ranking/ranking.routes').then(
+                        (m) => m.RANKING_ROUTES,
                     ),
             },
 

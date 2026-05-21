@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards, ParseIntPipe } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -33,7 +33,7 @@ export class GruposController {
   @ApiOperation({ summary: 'Listar grupos disponibles en una competencia' })
   @ApiResponse({ status: 200, description: 'Lista de grupos' })
   @ApiResponse({ status: 404, description: 'Competencia no encontrada' })
-  findByCompetencia(@Body('competencia_id', ParseIntPipe) competenciaId: number) {
+  findByCompetencia(@Query('competencia_id', ParseIntPipe) competenciaId: number) {
     return this.gruposService.findByCompetencia(competenciaId);
   }
 

@@ -1,0 +1,126 @@
+:host {
+    display: block;
+}
+
+:host ::ng-deep {
+    .competencia-problemas-page {
+        width: 100%;
+    }
+
+    .competencia-header {
+        h2 {
+            color: var(--text-color);
+        }
+    }
+
+    .problemas-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+    }
+
+    .problema-card {
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: 18px;
+        padding: 1rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        &.is-skeleton {
+            gap: 0.6rem;
+        }
+    }
+
+    .problema-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.7rem;
+
+        h4 {
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.3;
+            color: var(--text-color);
+        }
+    }
+
+    .problema-descripcion {
+        margin: 0;
+        color: var(--text-color-secondary);
+        font-size: 0.92rem;
+        line-height: 1.45;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .problema-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.7rem;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+    }
+
+    .problema-actions {
+        margin-top: 0.2rem;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .problema-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .label {
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-color-secondary);
+        font-weight: 600;
+    }
+
+    .meta-value {
+        color: var(--text-color);
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-color-secondary);
+        border: 1px dashed var(--surface-border);
+        border-radius: 12px;
+
+        i {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    @media (min-width: 960px) {
+        .problemas-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (min-width: 1300px) {
+        .problemas-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+}

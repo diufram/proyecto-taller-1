@@ -15,13 +15,12 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 
 import { ToastService } from '@/core/services/toast.service';
-import { AuthService } from '@/features/auth/services/auth.service';
-import { CompetenciasService, InscripcionInfo } from '../../services/competencias.service';
-import { Competencia } from '../../models/competencia.model';
-import { GruposService, Grupo } from '../../../grupos/services/grupos.service';
+import { CompetenciasService, InscripcionInfo } from '@/features/competencias/services/competencias.service';
+import { Competencia } from '@/features/competencias/models/competencia.model';
+import { GruposService, Grupo } from '@/features/grupos/services/grupos.service';
 
 @Component({
-    selector: 'app-competencia-detalle',
+    selector: 'app-user-competencia-detalle',
     standalone: true,
     imports: [
         CommonModule,
@@ -41,68 +40,6 @@ import { GruposService, Grupo } from '../../../grupos/services/grupos.service';
         <p-toast></p-toast>
 
         <div class="competencia-detalle">
-            <p-toolbar styleClass="mb-3 w-full border-none p-0 bg-transparent">
-                <ng-template pTemplate="left">
-                    <div class="flex gap-2 align-items-center">
-                        <p-button
-                            icon="pi pi-arrow-left"
-                            label="Volver"
-                            severity="secondary"
-                            [outlined]="true"
-                            (onClick)="volver()"
-                        ></p-button>
-
-                        @if (miInscripcion) {
-                            @if (miInscripcion.grupo) {
-                                <p-button
-                                    label="Salir del Grupo"
-                                    icon="pi pi-sign-out"
-                                    severity="danger"
-                                    [outlined]="true"
-                                    [loading]="saliendo"
-                                    (onClick)="salirDelGrupo()"
-                                ></p-button>
-                            }
-                        } @else if (competencia) {
-                            @if (competencia.tipo === 'Grupal') {
-                                <p-button
-                                    label="Crear Grupo"
-                                    icon="pi pi-plus"
-                                    severity="primary"
-                                    (onClick)="openCreateDialog()"
-                                ></p-button>
-                                <p-button
-                                    label="Unirse a Grupo"
-                                    icon="pi pi-users"
-                                    severity="secondary"
-                                    [outlined]="true"
-                                    [disabled]="grupos.length === 0"
-                                    (onClick)="loadGrupos(); joinDialogVisible = true"
-                                ></p-button>
-                            } @else {
-                                <p-button
-                                    label="Inscribirse"
-                                    icon="pi pi-check"
-                                    severity="success"
-                                    (onClick)="inscribirseIndividual()"
-                                    [loading]="inscribiendose"
-                                ></p-button>
-                            }
-                        }
-
-                        @if (isAdmin) {
-                            <p-button
-                                label="Gestionar Problemas"
-                                icon="pi pi-list"
-                                severity="warn"
-                                [outlined]="true"
-                                (onClick)="irAGestionarProblemas()"
-                            ></p-button>
-                        }
-                    </div>
-                </ng-template>
-            </p-toolbar>
-
             @if (loading) {
                 <div class="flex flex-col gap-3">
                     <p-skeleton height="2rem" width="40%"></p-skeleton>
@@ -111,33 +48,141 @@ import { GruposService, Grupo } from '../../../grupos/services/grupos.service';
                     <p-skeleton height="200px" width="100%"></p-skeleton>
                 </div>
             } @else if (competencia) {
-                <div class="flex flex-column gap-4">
-                    <div class="competencia-header">
-                        <h1 class="text-2xl font-bold m-0">{{ competencia.nombre }}</h1>
-                        <div class="flex gap-2 mt-2">
-                            <p-tag [value]="competencia.estado" [severity]="getEstadoSeverity(competencia.estado)"></p-tag>
-                            <p-tag [value]="competencia.tipo" [severity]="competencia.tipo === 'Grupal' ? 'info' : 'secondary'"></p-tag>
-                            <p-tag [value]="competencia.nivel_dificultad" severity="warn"></p-tag>
-                        </div>
-                    </div>
+                <div class="competencia-header pl-1 mb-3">
+                    <h3 class="text-2xl font-bold text-color m-0">{{ competencia.nombre }}</h3>
+                </div>
+
+                <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
+                        <ng-template pTemplate="left">
+                            <div class="flex gap-2 align-items-center">
+                                <p-button
+                                    icon="pi pi-arrow-left"
+                                    label="Volver"
+                                    severity="secondary"
+                                    [outlined]="true"
+                                    (onClick)="volver()"
+                                ></p-button>
+
+                                @if (miInscripcion) {
+                                    <p-button
+                                        label="Ver Problemas"
+                                        icon="pi pi-list"
+                                        severity="primary"
+                                        (onClick)="verProblemas()"
+                                    ></p-button>
+                                    @if (miInscripcion.grupo) {
+                                        <p-button
+                                            label="Salir del Grupo"
+                                            icon="pi pi-sign-out"
+                                            severity="danger"
+                                            [outlined]="true"
+                                            [loading]="saliendo"
+                                            (onClick)="salirDelGrupo()"
+                                        ></p-button>
+                                    }
+                                } @else {
+                                    @if (competencia.tipo === 'Grupal') {
+                                        <p-button
+                                            label="Crear Grupo"
+                                            icon="pi pi-plus"
+                                            severity="primary"
+                                            (onClick)="openCreateDialog()"
+                                        ></p-button>
+                                        <p-button
+                                            label="Unirse a Grupo"
+                                            icon="pi pi-users"
+                                            severity="secondary"
+                                            [outlined]="true"
+                                            [disabled]="grupos.length === 0"
+                                            (onClick)="loadGrupos(); joinDialogVisible = true"
+                                        ></p-button>
+                                    } @else {
+                                        <p-button
+                                            label="Inscribirse"
+                                            icon="pi pi-check"
+                                            severity="success"
+                                            (onClick)="inscribirseIndividual()"
+                                            [loading]="inscribiendose"
+                                        ></p-button>
+                                    }
+                                }
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="right">
+                            <div class="flex gap-2 align-items-center">
+                                <p-tag [value]="competencia.estado" [severity]="getEstadoSeverity(competencia.estado)"></p-tag>
+                                <p-tag [value]="competencia.tipo" [severity]="competencia.tipo === 'Grupal' ? 'info' : 'secondary'"></p-tag>
+                                <p-tag [value]="competencia.nivel_dificultad" severity="warn"></p-tag>
+                            </div>
+                        </ng-template>
+                    </p-toolbar>
 
                     @if (miInscripcion) {
-                        <p-card styleClass="shadow-2 border-round-2xl">
-                            <ng-template pTemplate="content">
-                                <div class="flex align-items-center gap-2">
-                                    <i class="pi pi-check-circle text-green-500 text-xl"></i>
-                                    <h3 class="text-lg font-semibold m-0">Ya estás inscrito</h3>
-                                </div>
-                                @if (miInscripcion.grupo) {
-                                    <div class="flex flex-col gap-1 pl-6 mt-2">
-                                        <span class="text-color-secondary text-sm">Tu grupo:</span>
-                                        <span class="font-bold text-lg">{{ miInscripcion.grupo.nombre }}</span>
+                        <div class="flex flex-col gap-4">
+                            <p-card styleClass="shadow-2 border-round-2xl">
+                                <ng-template pTemplate="content">
+                                    <div class="flex align-items-center gap-3">
+                                        <div class="flex align-items-center justify-content-center border-circle bg-blue-100" style="width: 3rem; height: 3rem;">
+                                            <i class="pi pi-info-circle text-blue-500 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-lg font-semibold m-0">Información</h3>
+                                            <p class="text-color-secondary m-0 text-sm">Detalles de la competencia</p>
+                                        </div>
                                     </div>
-                                } @else {
-                                    <span class="text-color-secondary mt-2 block">Competencia individual</span>
-                                }
-                            </ng-template>
-                        </p-card>
+                                    <div class="mt-3 pt-3 border-top-1 surface-border">
+                                        <div class="flex flex-col gap-3">
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-color-secondary text-sm">Fecha inicio</span>
+                                                <span class="font-medium">{{ competencia.fecha_inicio | date: 'shortDate' }}</span>
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-color-secondary text-sm">Fecha fin</span>
+                                                <span class="font-medium">{{ competencia.fecha_fin | date: 'shortDate' }}</span>
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-color-secondary text-sm">Participantes máx.</span>
+                                                <span class="font-medium">{{ competencia.max_participantes }}</span>
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <span class="text-color-secondary text-sm">Nivel</span>
+                                                <span class="font-medium">{{ competencia.nivel_dificultad }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </p-card>
+
+                            <p-card styleClass="shadow-2 border-round-2xl">
+                                <ng-template pTemplate="content">
+                                    <div class="flex align-items-center gap-3">
+                                        <div class="flex align-items-center justify-content-center border-circle bg-green-100" style="width: 3rem; height: 3rem;">
+                                            <i class="pi pi-check-circle text-green-500 text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-lg font-semibold m-0">Ya estás inscrito</h3>
+                                            <p class="text-color-secondary m-0 text-sm">Participación confirmada</p>
+                                        </div>
+                                    </div>
+                                    @if (miInscripcion.grupo) {
+                                        <div class="mt-3 pt-3 border-top-1 surface-border">
+                                            <div class="flex align-items-center gap-2">
+                                                <i class="pi pi-users text-primary"></i>
+                                                <span class="text-color-secondary text-sm">Tu grupo:</span>
+                                                <span class="font-bold">{{ miInscripcion.grupo.nombre }}</span>
+                                            </div>
+                                        </div>
+                                    } @else {
+                                        <div class="mt-3 pt-3 border-top-1 surface-border">
+                                            <div class="flex align-items-center gap-2">
+                                                <i class="pi pi-user text-primary"></i>
+                                                <span class="text-color-secondary">Competencia individual</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </ng-template>
+                            </p-card>
+                        </div>
                     } @else {
                         @if (competencia.tipo === 'Grupal') {
                             <p-card styleClass="shadow-2 border-round-2xl">
@@ -150,10 +195,10 @@ import { GruposService, Grupo } from '../../../grupos/services/grupos.service';
                                                 <i class="pi pi-spin pi-spinner text-2xl"></i>
                                             </div>
                                         } @else if (grupos.length > 0) {
-                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div class="flex flex-col gap-3">
                                                 @for (grupo of grupos; track grupo.id) {
                                                     <div class="grupo-item surface-card border-round p-3 flex justify-content-between align-items-center">
-                                                        <div class="flex flex-column gap-1">
+                                                        <div class="flex flex-col gap-1">
                                                             <span class="font-bold">{{ grupo.nombre }}</span>
                                                             <span class="text-sm text-color-secondary">
                                                                 {{ grupo.competidores_actuales }}/{{ grupo.max_participantes }} miembros
@@ -186,7 +231,6 @@ import { GruposService, Grupo } from '../../../grupos/services/grupos.service';
                             </p-card>
                         }
                     }
-                </div>
             } @else {
                 <div class="text-center p-4">
                     <p class="text-color-secondary">Competencia no encontrada</p>
@@ -251,7 +295,7 @@ import { GruposService, Grupo } from '../../../grupos/services/grupos.service';
                     @for (grupo of grupos; track grupo.id) {
                         @if (grupo.slots_disponibles > 0) {
                             <div class="grupo-item surface-card border-round p-3 flex justify-content-between align-items-center">
-                                <div class="flex flex-column gap-1">
+                                <div class="flex flex-col gap-1">
                                     <span class="font-bold">{{ grupo.nombre }}</span>
                                     <span class="text-sm text-color-secondary">
                                         {{ grupo.competidores_actuales }}/{{ grupo.max_participantes }} miembros
@@ -279,13 +323,12 @@ import { GruposService, Grupo } from '../../../grupos/services/grupos.service';
         </p-dialog>
     `,
 })
-export class CompetenciaDetalleComponent implements OnInit {
+export class UserCompetenciaDetalleComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private competenciasService = inject(CompetenciasService);
     private gruposService = inject(GruposService);
     private toast = inject(ToastService);
-    private authService = inject(AuthService);
 
     competencia: Competencia | null = null;
     miInscripcion: InscripcionInfo | null = null;
@@ -301,10 +344,6 @@ export class CompetenciaDetalleComponent implements OnInit {
     joinDialogVisible = false;
     newGrupoNombre = '';
 
-    get isAdmin(): boolean {
-        return this.authService.isAdmin();
-    }
-
     ngOnInit(): void {
         const id = Number(this.route.snapshot.paramMap.get('id'));
         if (id) {
@@ -315,7 +354,7 @@ export class CompetenciaDetalleComponent implements OnInit {
     loadData(id: number): void {
         this.loading = true;
         this.competenciasService.getById(id).subscribe({
-            next: (res) => {
+            next: (res: { competencia: Competencia }) => {
                 this.competencia = res.competencia;
                 this.loading = false;
                 if (this.competencia?.tipo === 'Grupal') {
@@ -329,8 +368,8 @@ export class CompetenciaDetalleComponent implements OnInit {
         });
 
         this.competenciasService.misInscripciones().subscribe({
-            next: (res) => {
-                this.miInscripcion = res.inscripciones.find(i => i.competencia_id === id) ?? null;
+            next: (res: { inscripciones: InscripcionInfo[] }) => {
+                this.miInscripcion = res.inscripciones.find((i: InscripcionInfo) => i.competencia_id === id) ?? null;
             },
             error: () => {},
         });
@@ -340,7 +379,7 @@ export class CompetenciaDetalleComponent implements OnInit {
         if (!this.competencia) return;
         this.loadingGrupos = true;
         this.gruposService.listarGrupos(this.competencia.id).subscribe({
-            next: (res) => {
+            next: (res: { grupos: Grupo[] }) => {
                 this.grupos = res.grupos;
                 this.loadingGrupos = false;
             },
@@ -361,7 +400,12 @@ export class CompetenciaDetalleComponent implements OnInit {
     }
 
     volver(): void {
-        this.router.navigate(['/competencias']);
+        this.router.navigate(['/user/competencias']);
+    }
+
+    verProblemas(): void {
+        if (!this.competencia) return;
+        this.router.navigate(['/user/competencias', this.competencia.id, 'problemas']);
     }
 
     openCreateDialog(): void {
@@ -374,13 +418,13 @@ export class CompetenciaDetalleComponent implements OnInit {
 
         this.creandoGrupo = true;
         this.gruposService.crearGrupo(this.competencia.id, this.newGrupoNombre.trim()).subscribe({
-            next: (res) => {
+            next: (res: { message: string }) => {
                 this.toast.success(res.message);
                 this.creandoGrupo = false;
                 this.createDialogVisible = false;
                 this.reloadAfterAction();
             },
-            error: (err) => {
+            error: (err: any) => {
                 this.toast.error(err);
                 this.creandoGrupo = false;
             },
@@ -389,12 +433,12 @@ export class CompetenciaDetalleComponent implements OnInit {
 
     unirseGrupo(grupoId: number): void {
         this.gruposService.unirseGrupo(grupoId).subscribe({
-            next: (res) => {
+            next: (res: { message: string }) => {
                 this.toast.success(res.message);
                 this.joinDialogVisible = false;
                 this.reloadAfterAction();
             },
-            error: (err) => {
+            error: (err: any) => {
                 this.toast.error(err);
             },
         });
@@ -405,12 +449,12 @@ export class CompetenciaDetalleComponent implements OnInit {
 
         this.saliendo = true;
         this.gruposService.salirGrupo(this.miInscripcion.grupo.id).subscribe({
-            next: (res) => {
+            next: (res: { message: string }) => {
                 this.toast.success(res.message);
                 this.saliendo = false;
                 this.reloadAfterAction();
             },
-            error: (err) => {
+            error: (err: any) => {
                 this.toast.error(err);
                 this.saliendo = false;
             },
@@ -422,22 +466,15 @@ export class CompetenciaDetalleComponent implements OnInit {
 
         this.inscribiendose = true;
         this.competenciasService.inscribirse(this.competencia.id).subscribe({
-            next: (res) => {
+            next: (res: { message: string }) => {
                 this.toast.success(res.message);
                 this.inscribiendose = false;
                 this.reloadAfterAction();
             },
-            error: (err) => {
+            error: (err: any) => {
                 this.toast.error(err);
                 this.inscribiendose = false;
             },
-        });
-    }
-
-    irAGestionarProblemas(): void {
-        if (!this.competencia) return;
-        this.router.navigate(['/competencias/problemas', this.competencia.id], {
-            state: { competenciaNombre: this.competencia.nombre },
         });
     }
 

@@ -1,5 +1,5 @@
 export interface Profile {
-    person_id: number;
+    person_id: number | null;
     first_name: string;
     last_name: string;
     photo?: string;

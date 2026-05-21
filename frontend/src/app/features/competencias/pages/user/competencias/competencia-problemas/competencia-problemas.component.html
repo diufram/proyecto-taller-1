@@ -1,0 +1,93 @@
+<div class="competencia-problemas-page">
+    <p-toolbar styleClass="mb-3 w-full border-none p-0 bg-transparent">
+        <ng-template pTemplate="left">
+            <div class="flex gap-2 align-items-center">
+                <p-button
+                    icon="pi pi-arrow-left"
+                    label="Volver"
+                    severity="secondary"
+                    [outlined]="true"
+                    (onClick)="volver()"
+                ></p-button>
+            </div>
+        </ng-template>
+    </p-toolbar>
+
+    @if (loadingCompetencia) {
+        <div class="flex flex-col gap-3 mb-4">
+            <p-skeleton height="2rem" width="40%"></p-skeleton>
+            <p-skeleton height="1rem" width="60%"></p-skeleton>
+        </div>
+    } @else if (competencia) {
+        <div class="competencia-header mb-4">
+            <h2 class="text-2xl font-bold m-0">{{ competencia.nombre }}</h2>
+            <p class="text-color-secondary m-0 mt-1">Problemas disponibles</p>
+        </div>
+    }
+
+    @if (loading) {
+        <div class="problemas-grid">
+            @for (i of [].constructor(6); track $index) {
+                <div class="problema-card is-skeleton">
+                    <div class="problema-field">
+                        <span class="label">Título</span>
+                        <p-skeleton width="70%" height="1.2rem"></p-skeleton>
+                    </div>
+                    <div class="problema-field">
+                        <span class="label">Dificultad</span>
+                        <p-skeleton width="40%" height="2rem"></p-skeleton>
+                    </div>
+                    <div class="problema-field">
+                        <span class="label">Descripción</span>
+                        <p-skeleton width="100%" height="3rem"></p-skeleton>
+                    </div>
+                </div>
+            }
+        </div>
+    } @else {
+        <div class="problemas-grid">
+            @if (problemas.length === 0) {
+                <div class="empty-state">
+                    <i class="pi pi-inbox text-4xl mb-3"></i>
+                    <p>No hay problemas disponibles para esta competencia</p>
+                </div>
+            } @else {
+                @for (problema of problemas; track problema.id) {
+                    <article class="problema-card">
+                        <div class="problema-header">
+                            <h4>{{ problema.titulo }}</h4>
+                            <p-tag
+                                [value]="getDificultadLabel(problema.dificultad)"
+                                [severity]="getDificultadSeverity(problema.dificultad)"
+                            ></p-tag>
+                        </div>
+
+                        <p class="problema-descripcion">{{ problema.descripcion }}</p>
+
+                        <div class="problema-meta">
+                            <div>
+                                <span class="label">Entrada</span>
+                                <span class="meta-value">{{ problema.formato_entrada }}</span>
+                            </div>
+                            <div>
+                                <span class="label">Salida</span>
+                                <span class="meta-value">{{ problema.formato_salida }}</span>
+                            </div>
+                        </div>
+
+                        <div class="problema-actions">
+                            <p-button
+                                label="Resolver"
+                                icon="pi pi-play"
+                                severity="primary"
+                                (onClick)="verProblema(problema)"
+                            ></p-button>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+    }
+</div>
+
+<p-toast></p-toast>

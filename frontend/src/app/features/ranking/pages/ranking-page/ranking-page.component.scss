@@ -1,0 +1,62 @@
+:host {
+    display: block;
+}
+
+:host ::ng-deep {
+    .ranking-page {
+        width: 100%;
+    }
+
+    .position-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.875rem;
+
+        &.gold {
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            color: #8b6914;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+        }
+
+        &.silver {
+            background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+            color: #666;
+            box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
+        }
+
+        &.bronze {
+            background: linear-gradient(135deg, #cd7f32, #daa520);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(205, 127, 50, 0.4);
+        }
+
+        &.normal {
+            background: var(--surface-hover);
+            color: var(--text-color-secondary);
+        }
+    }
+
+    tr.top-three {
+        background: var(--surface-card) !important;
+        
+        td {
+            font-weight: 600;
+        }
+    }
+
+    .p-datatable .p-datatable-tbody > tr > td {
+        padding: 1rem 1rem;
+        vertical-align: middle;
+    }
+
+    .p-card {
+        .p-card-content {
+            padding: 0;
+        }
+    }
+}

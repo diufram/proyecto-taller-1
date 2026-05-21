@@ -177,15 +177,26 @@ export class AppBreadcrumbComponent implements OnInit, AfterViewChecked {
             const routeURL: string = child.snapshot.url
                 .map((segment) => segment.path)
                 .join('/');
-            if (routeURL !== '') url += `/${routeURL}`;
 
             const label = child.snapshot.data['breadcrumb'];
+
+            if (routeURL !== '') {
+                url += `/${routeURL}`;
+            }
+
             const lastBreadcrumb = breadcrumbs[breadcrumbs.length - 1];
 
             if (label && (!lastBreadcrumb || lastBreadcrumb.label !== label)) {
-                breadcrumbs.push({ label, routerLink: url });
+                breadcrumbs.push({ label, routerLink: url || '/' });
             }
-            return this.createBreadcrumbs(child, url, breadcrumbs);
+
+            const result = this.createBreadcrumbs(child, url, breadcrumbs);
+
+            for (const cb of result) {
+                if (!breadcrumbs.some(b => b.label === cb.label)) {
+                    breadcrumbs.push(cb);
+                }
+            }
         }
         return breadcrumbs;
     }

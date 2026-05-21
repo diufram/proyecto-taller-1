@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
             this.router.navigate([
-                this.authService.isAdmin() ? '/dashboard' : '/competencias',
+                this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
             ]);
         }
     }
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
                 );
                 this.loading = false;
                 this.router.navigate([
-                    this.authService.isAdmin() ? '/dashboard' : '/competencias',
+                    this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
                 ]);
             },
             error: (err) => {

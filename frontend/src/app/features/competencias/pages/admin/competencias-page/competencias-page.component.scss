@@ -68,77 +68,6 @@
         color: var(--text-color-secondary);
     }
 
-    .competencias-user-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.9rem;
-    }
-
-    .competencia-user-card {
-        background: var(--surface-card);
-        border: 1px solid var(--surface-border);
-        border-radius: 18px;
-        padding: 1rem;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-    }
-
-    .competencia-user-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 0.7rem;
-    }
-
-    .competencia-user-header h4 {
-        margin: 0;
-        font-size: 1.05rem;
-        line-height: 1.3;
-        color: var(--text-color);
-    }
-
-    .competencia-user-description {
-        margin: 0;
-        color: var(--text-color-secondary);
-        font-size: 0.92rem;
-        line-height: 1.45;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .competencia-user-meta {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.7rem;
-    }
-
-    .competencia-user-meta > div {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .competencia-user-actions {
-        margin-top: 0.2rem;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
-
-    .meta-value {
-        color: var(--text-color);
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-
-    .user-empty {
-        grid-column: 1 / -1;
-    }
-
     .competencias-skeleton-desktop {
         display: none;
     }
@@ -188,10 +117,6 @@
     @media (min-width: 960px) {
         .competencias-table-wrap {
             display: block;
-        }
-
-        .competencias-user-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .competencias-mobile-list,
@@ -250,16 +175,6 @@
             .p-datatable-tbody > tr > td {
                 vertical-align: middle;
             }
-        }
-
-        .competencia-user-card {
-            min-height: 250px;
-        }
-    }
-
-    @media (min-width: 1300px) {
-        .competencias-user-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
     }
 }

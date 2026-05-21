@@ -1,0 +1,78 @@
+<div class="competencias-page">
+    <div class="mb-3 pl-1">
+        <h3 class="text-2xl font-bold text-color m-0">Competencias</h3>
+    </div>
+
+    @if (loading) {
+        <div class="competencias-skeleton-mobile">
+            @for (i of [].constructor(6); track $index) {
+                <div class="competencia-mobile-card is-skeleton">
+                    <div class="competencia-mobile-field">
+                        <span class="label">Nombre</span>
+                        <p-skeleton width="70%" height="1.1rem"></p-skeleton>
+                    </div>
+                    <div class="competencia-mobile-field">
+                        <span class="label">Estado</span>
+                        <p-skeleton width="40%" height="2rem"></p-skeleton>
+                    </div>
+                </div>
+            }
+        </div>
+    } @else {
+        <div class="competencias-user-grid">
+            @if (competencias.length === 0) {
+                <div class="mobile-empty user-empty">No se encontraron competencias disponibles</div>
+            } @else {
+                @for (comp of competencias; track comp.id) {
+                    <article class="competencia-user-card">
+                        <div class="competencia-user-header">
+                            <h4>{{ comp.nombre }}</h4>
+                            <p-tag
+                                [value]="comp.estado"
+                                [severity]="getEstadoSeverity(comp.estado)"
+                            ></p-tag>
+                        </div>
+
+                        <p class="competencia-user-description">{{ comp.descripcion }}</p>
+
+                        <div class="competencia-user-meta">
+                            <div>
+                                <span class="label">Nivel</span>
+                                <span class="meta-value">{{ comp.nivel_dificultad }}</span>
+                            </div>
+                            <div>
+                                <span class="label">Tipo</span>
+                                <span class="meta-value">{{ comp.tipo }}</span>
+                            </div>
+                            <div>
+                                <span class="label">Inicio</span>
+                                <span class="meta-value">{{ comp.fecha_inicio | date: 'shortDate' }}</span>
+                            </div>
+                            <div>
+                                <span class="label">Fin</span>
+                                <span class="meta-value">{{ comp.fecha_fin | date: 'shortDate' }}</span>
+                            </div>
+                            <div>
+                                <span class="label">Participantes máx.</span>
+                                <span class="meta-value">{{ comp.max_participantes }}</span>
+                            </div>
+                        </div>
+
+                        <div class="competencia-user-actions">
+                            <p-button
+                                label="Ver Detalle"
+                                icon="pi pi-arrow-right"
+                                iconPos="right"
+                                severity="secondary"
+                                [outlined]="true"
+                                (onClick)="verDetalle(comp)"
+                            ></p-button>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+    }
+</div>
+
+<p-toast></p-toast>

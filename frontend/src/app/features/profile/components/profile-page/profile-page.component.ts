@@ -213,7 +213,10 @@ export class ProfilePageComponent implements OnInit {
 
     getInitials(): string {
         if (!this.profile) return '?';
-        return `${this.profile.first_name[0]}${this.profile.last_name[0]}`.toUpperCase();
+        const first = this.profile.first_name?.[0] ?? '';
+        const last = this.profile.last_name?.[0] ?? '';
+        if (!first && !last) return '?';
+        return `${first}${last}`.toUpperCase();
     }
 
     logout(): void {

@@ -16,16 +16,16 @@ export class ProfileService {
 
   async getProfile(usuarioId: number) {
     const persona = await this.profileRepository.findPersonaByUsuarioId(usuarioId);
-    if (!persona) {
-      throw new NotFoundException('Perfil no encontrado');
+    const usuario = await this.profileRepository.findUsuarioById(usuarioId);
+    
+    if (!usuario) {
+      throw new NotFoundException('Usuario no encontrado');
     }
 
-    const usuario = persona.usuario;
-
     return {
-      person_id: persona.id,
-      first_name: persona.nombre,
-      last_name: persona.apellido,
+      person_id: persona?.id ?? null,
+      first_name: persona?.nombre ?? usuario.nombre_usuario,
+      last_name: persona?.apellido ?? '',
       photo: usuario.foto,
       user_id: usuario.id,
       email: usuario.correo_electronico,

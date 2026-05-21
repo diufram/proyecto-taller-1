@@ -66,7 +66,9 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate([
+                this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
+            ]);
         }
     }
 
@@ -123,7 +125,9 @@ export class RegisterComponent implements OnInit {
                 next: () => {
                     this.toast.success('Exito', 'Cuenta creada correctamente.');
                     this.loading = false;
-                    this.router.navigate(['/dashboard']);
+                    this.router.navigate([
+                        this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
+                    ]);
                 },
                 error: (err) => {
                     console.error('Error en registro:', err);

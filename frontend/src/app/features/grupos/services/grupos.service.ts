@@ -28,15 +28,18 @@ export class GruposService {
     private endpoint = 'grupos';
 
     crearGrupo(competenciaId: number, nombre: string): Observable<GrupoResponse> {
-        return this.api.post(this.endpoint, { competencia_id: competenciaId, nombre });
+        return this.api.post(this.endpoint, { 
+            competencia_id: parseInt(competenciaId as any), 
+            nombre 
+        });
     }
 
     listarGrupos(competenciaId: number): Observable<GruposListResponse> {
-        return this.api.get(`${this.endpoint}`, { params: { competencia_id: competenciaId } });
+        return this.api.get(`${this.endpoint}?competencia_id=${competenciaId}`);
     }
 
     unirseGrupo(grupoId: number): Observable<GrupoResponse> {
-        return this.api.post(`${this.endpoint}/unirse`, { grupo_id: grupoId });
+        return this.api.post(`${this.endpoint}/unirse`, { grupo_id: parseInt(grupoId as any) });
     }
 
     salirGrupo(grupoId: number): Observable<{ message: string }> {

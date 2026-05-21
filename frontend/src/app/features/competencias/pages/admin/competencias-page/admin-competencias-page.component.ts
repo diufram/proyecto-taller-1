@@ -16,20 +16,15 @@ import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
-import { AuthService } from '@/features/auth/services/auth.service';
 import { ToastService } from '@/core/services/toast.service';
-import { CompetenciasService } from '../../services/competencias.service';
-import {
-    Competencia,
-    CreateCompetenciaDto,
-    UpdateCompetenciaDto,
-} from '../../models/competencia.model';
-import { CompetenciaCreateEditModalComponent, ModalMode } from '../../components/competencia-create-edit-modal/competencia-create-edit-modal.component';
-import { CompetenciaDeleteModalComponent } from '../../components/competencia-delete-modal/competencia-delete-modal.component';
+import { CompetenciasService } from '@/features/competencias/services/competencias.service';
+import { Competencia } from '@/features/competencias/models/competencia.model';
+import { CompetenciaCreateEditModalComponent, ModalMode } from '@/features/competencias/components/competencia-create-edit-modal/competencia-create-edit-modal.component';
+import { CompetenciaDeleteModalComponent } from '@/features/competencias/components/competencia-delete-modal/competencia-delete-modal.component';
 import { RowAction } from '@/shared/components/shared-table/interfaces/table-config.interface';
 
 @Component({
-    selector: 'app-competencias-page',
+    selector: 'app-admin-competencias-page',
     standalone: true,
     imports: [
         CommonModule,
@@ -52,9 +47,8 @@ import { RowAction } from '@/shared/components/shared-table/interfaces/table-con
     templateUrl: './competencias-page.component.html',
     styleUrl: './competencias-page.component.scss',
 })
-export class CompetenciasPageComponent implements OnInit, OnDestroy {
+export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
     private competenciasService = inject(CompetenciasService);
-    private authService = inject(AuthService);
     private toast = inject(ToastService);
     private router = inject(Router);
 
@@ -70,8 +64,6 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
     rowsPerPageOptions: number[] = [8];
 
     rowActions: RowAction[] = [];
-    inscritas = new Set<number>();
-    inscribiendoCompetenciaId: number | null = null;
 
     createEditVisible = false;
     createEditMode: ModalMode = 'create';
@@ -81,10 +73,6 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
     deleteTarget?: Competencia;
 
     private searchTimeout?: ReturnType<typeof setTimeout>;
-
-    get isAdmin(): boolean {
-        return this.authService.isAdmin();
-    }
 
     ngOnInit(): void {
         this.setupActions();
@@ -107,12 +95,9 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
                     this.competencias = response.items;
                     this.totalRecords = response.meta.total;
                     this.currentPage = page;
-                    if (!this.isAdmin) {
-                        this.loadMisInscripciones();
-                    }
                     this.loading = false;
                 },
-                error: (err) => {
+                error: (err: any) => {
                     this.toast.error('Error', 'No se pudo cargar la lista de competencias');
                     this.loading = false;
                 },
@@ -162,7 +147,7 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
                 this.deleteVisible = true;
                 break;
             case 'problemas':
-                this.router.navigate(['/competencias/problemas', comp.id], {
+                this.router.navigate(['/admin/competencias/problemas', comp.id], {
                     state: { competenciaNombre: comp.nombre },
                 });
                 break;
@@ -186,11 +171,6 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
     }
 
     private setupActions(): void {
-        if (!this.isAdmin) {
-            this.rowActions = [];
-            return;
-        }
-
         const allActions: RowAction[] = [
             {
                 key: 'problemas',
@@ -215,44 +195,6 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
         this.rowActions = allActions;
     }
 
-    isInscrito(competenciaId: number): boolean {
-        return this.inscritas.has(competenciaId);
-    }
-
-    inscribirse(competencia: Competencia): void {
-        if (this.inscribiendoCompetenciaId || this.isInscrito(competencia.id)) {
-            return;
-        }
-
-        this.inscribiendoCompetenciaId = competencia.id;
-
-        this.competenciasService.inscribirse(competencia.id).subscribe({
-            next: () => {
-                this.inscritas.add(competencia.id);
-                this.toast.success('Éxito', 'Te inscribiste correctamente a la competencia');
-                this.inscribiendoCompetenciaId = null;
-            },
-            error: (err) => {
-                const msg = err?.message || 'No se pudo completar la inscripción';
-                this.toast.error('Error', msg);
-                this.inscribiendoCompetenciaId = null;
-            },
-        });
-    }
-
-    private loadMisInscripciones(): void {
-        this.competenciasService.misInscripciones().subscribe({
-            next: (response) => {
-                this.inscritas = new Set(
-                    (response.inscripciones || []).map((item) => item.competencia_id),
-                );
-            },
-            error: () => {
-                this.inscritas = new Set<number>();
-            },
-        });
-    }
-
     getEstadoSeverity(
         estado: string,
     ): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined {
@@ -268,9 +210,5 @@ export class CompetenciasPageComponent implements OnInit, OnDestroy {
             default:
                 return 'secondary';
         }
-    }
-
-    verDetalle(competencia: Competencia): void {
-        this.router.navigate(['/competencias', competencia.id]);
     }
 }

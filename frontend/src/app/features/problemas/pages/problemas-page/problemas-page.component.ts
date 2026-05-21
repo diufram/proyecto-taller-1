@@ -131,6 +131,6 @@ export class ProblemasPageComponent implements OnInit {
     }
 
     volver(): void {
-        this.router.navigate(['/competencias']);
+        this.router.navigate(['/admin/competencias']);
     }
 }

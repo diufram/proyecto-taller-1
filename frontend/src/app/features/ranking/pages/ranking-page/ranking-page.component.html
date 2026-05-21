@@ -1,0 +1,91 @@
+<div class="ranking-page">
+    <div class="mb-4">
+        <h2 class="text-2xl font-bold text-color m-0">Ranking de Competidores</h2>
+        <p class="text-color-secondary mt-2">
+            Top participantes con mejor desempeño en las competencias
+        </p>
+    </div>
+
+    <!-- Current User Stats -->
+    <p-card styleClass="mb-4 shadow-2 border-round-2xl">
+        <ng-template pTemplate="content">
+            <div class="flex align-items-center justify-content-between">
+                <div class="flex align-items-center gap-3">
+                    <p-avatar 
+                        icon="pi pi-user" 
+                        styleClass="mr-2" 
+                        size="large"
+                        shape="circle"
+                    ></p-avatar>
+                    <div>
+                        <p class="text-color-secondary text-sm m-0">Tu posición</p>
+                        <h3 class="text-2xl font-bold m-0">#{{ currentUserPosition }}</h3>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-color-secondary text-sm m-0">Puntos totales</p>
+                    <h3 class="text-2xl font-bold m-0 text-primary">{{ currentUserPoints }}</h3>
+                </div>
+            </div>
+        </ng-template>
+    </p-card>
+
+    <!-- Ranking Table -->
+    <p-card styleClass="shadow-2 border-round-2xl">
+        <ng-template pTemplate="content">
+            <p-table 
+                [value]="rankingData" 
+                styleClass="p-datatable-sm"
+                [tableStyle]="{ 'min-width': '50rem' }"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 80px">Posición</th>
+                        <th>Competidor</th>
+                        <th style="width: 120px" class="text-center">Puntos</th>
+                        <th style="width: 120px" class="text-center">Problemas</th>
+                        <th style="width: 120px" class="text-center">Competencias</th>
+                        <th style="width: 100px" class="text-center">Tendencia</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-user>
+                    <tr [class.top-three]="user.position <= 3">
+                        <td>
+                            <div class="position-badge" [class]="getPositionClass(user.position)">
+                                <span>{{ user.position }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex align-items-center gap-2">
+                                <p-avatar 
+                                    [label]="user.name.charAt(0)" 
+                                    shape="circle"
+                                    [style]="{ 'background': 'var(--primary-color)', 'color': 'white' }"
+                                ></p-avatar>
+                                <div>
+                                    <span class="font-bold">{{ user.name }}</span>
+                                    <span class="text-color-secondary text-sm block">@{{ user.username }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <span class="font-bold text-lg">{{ user.points }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span>{{ user.solvedProblems }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span>{{ user.competitions }}</span>
+                        </td>
+                        <td class="text-center">
+                            <i 
+                                [class]="getTrendIcon(user.trend)" 
+                                [style.color]="user.trend === 'up' ? 'var(--green-500)' : user.trend === 'down' ? 'var(--red-500)' : 'var(--text-color-secondary)'"
+                            ></i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </ng-template>
+    </p-card>
+</div>
