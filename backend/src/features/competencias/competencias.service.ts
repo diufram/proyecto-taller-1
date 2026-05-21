@@ -33,10 +33,6 @@ export class CompetenciasService {
     const [competencias, total] = await this.competenciasRepository.listar({
       page,
       limit,
-      busqueda: query.busqueda,
-      estado: query.estado,
-      nivel_dificultad: query.nivel_dificultad,
-      tipo: query.tipo,
     });
 
     return {

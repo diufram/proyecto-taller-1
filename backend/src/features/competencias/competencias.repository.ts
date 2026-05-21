@@ -1,20 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  Competencia,
-  Estado,
-  Nivel,
-  Tipo,
-} from '../../database/entities/competencia.entity';
+import { Competencia } from '../../database/entities/competencia.entity';
 
 type FindCompetenciasParams = {
   page: number;
   limit: number;
-  busqueda?: string;
-  estado?: Estado;
-  nivel_dificultad?: Nivel;
-  tipo?: Tipo;
 };
 
 @Injectable()
@@ -32,40 +23,11 @@ export class CompetenciasRepository {
   async listar(
     params: FindCompetenciasParams,
   ): Promise<[Competencia[], number]> {
-    const query = this.competenciaRepository
-      .createQueryBuilder('competencia')
-      .orderBy('competencia.createdAt', 'DESC')
-      .skip((params.page - 1) * params.limit)
-      .take(params.limit);
-
-    if (params.busqueda) {
-      query.andWhere(
-        '(competencia.nombre ILIKE :busqueda OR competencia.descripcion ILIKE :busqueda)',
-        {
-          busqueda: `%${params.busqueda}%`,
-        },
-      );
-    }
-
-    if (params.estado) {
-      query.andWhere('competencia.estado = :estado', {
-        estado: params.estado,
-      });
-    }
-
-    if (params.nivel_dificultad) {
-      query.andWhere('competencia.nivel_dificultad = :nivel_dificultad', {
-        nivel_dificultad: params.nivel_dificultad,
-      });
-    }
-
-    if (params.tipo) {
-      query.andWhere('competencia.tipo = :tipo', {
-        tipo: params.tipo,
-      });
-    }
-
-    return query.getManyAndCount();
+    return this.competenciaRepository.findAndCount({
+      order: { createdAt: 'DESC' },
+      skip: (params.page - 1) * params.limit,
+      take: params.limit,
+    });
   }
 
   async buscarPorId(id: number): Promise<Competencia | null> {

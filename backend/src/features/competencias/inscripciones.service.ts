@@ -103,4 +103,21 @@ export class InscripcionesService {
       })),
     };
   }
+
+  async remove(user: JwtPayload, inscripcionId: number) {
+    const inscripcion = await this.inscripcionRepository.findOne({
+      where: { id: inscripcionId, usuario: { id: user.sub } },
+      relations: { competencia: true },
+    });
+
+    if (!inscripcion) {
+      throw new NotFoundException('Inscripción no encontrada.');
+    }
+
+    await this.inscripcionRepository.remove(inscripcion);
+
+    return {
+      message: 'Desinscripción realizada correctamente.',
+    };
+  }
 }

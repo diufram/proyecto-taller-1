@@ -38,10 +38,6 @@ export class CompetenciasService {
     getAll(params?: {
         page?: number;
         limit?: number;
-        busqueda?: string;
-        estado?: string;
-        nivel_dificultad?: string;
-        tipo?: string;
     }): Observable<CompetenciasResponse> {
         return this.api.get<CompetenciasResponse>(this.endpoint, { params });
     }
@@ -84,5 +80,9 @@ export class CompetenciasService {
 
     misInscripciones(): Observable<MisInscripcionesResponse> {
         return this.api.get(`${this.inscripcionesEndpoint}/me`);
+    }
+
+    desinscribirse(inscripcionId: number): Observable<{ message: string }> {
+        return this.api.delete(`${this.inscripcionesEndpoint}/${inscripcionId}`);
     }
 }

@@ -89,7 +89,7 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
         this.loading = true;
 
         this.competenciasService
-            .getAll({ page, limit: this.rows, busqueda: search })
+            .getAll({ page, limit: this.rows })
             .subscribe({
                 next: (response) => {
                     this.competencias = response.items;
@@ -165,9 +165,18 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
     }
 
     onDeleted(): void {
-        this.toast.success('Éxito', 'Competencia eliminada correctamente');
-        this.deleteVisible = false;
-        this.loadFirstPage();
+        if (!this.deleteTarget) return;
+
+        this.competenciasService.delete(this.deleteTarget.id).subscribe({
+            next: () => {
+                this.toast.success('Éxito', 'Competencia eliminada correctamente');
+                this.deleteVisible = false;
+                this.loadFirstPage();
+            },
+            error: () => {
+                this.toast.error('Error', 'No se pudo eliminar la competencia');
+            },
+        });
     }
 
     private setupActions(): void {
