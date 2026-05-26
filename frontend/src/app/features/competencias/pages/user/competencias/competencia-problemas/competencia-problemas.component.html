@@ -1,4 +1,16 @@
 <div class="competencia-problemas-page">
+    @if (loadingCompetencia) {
+        <div class="flex flex-col gap-3 mb-4">
+            <p-skeleton height="2rem" width="40%"></p-skeleton>
+            <p-skeleton height="1rem" width="60%"></p-skeleton>
+        </div>
+    } @else if (competencia) {
+        <div class="competencia-header mb-4">
+            <h2 class="text-2xl font-bold m-0">{{ competencia.nombre }}</h2>
+            <p class="text-color-secondary m-0 mt-1">Problemas disponibles</p>
+        </div>
+    }
+
     <p-toolbar styleClass="mb-3 w-full border-none p-0 bg-transparent">
         <ng-template pTemplate="left">
             <div class="flex gap-2 align-items-center">
@@ -12,18 +24,6 @@
             </div>
         </ng-template>
     </p-toolbar>
-
-    @if (loadingCompetencia) {
-        <div class="flex flex-col gap-3 mb-4">
-            <p-skeleton height="2rem" width="40%"></p-skeleton>
-            <p-skeleton height="1rem" width="60%"></p-skeleton>
-        </div>
-    } @else if (competencia) {
-        <div class="competencia-header mb-4">
-            <h2 class="text-2xl font-bold m-0">{{ competencia.nombre }}</h2>
-            <p class="text-color-secondary m-0 mt-1">Problemas disponibles</p>
-        </div>
-    }
 
     @if (loading) {
         <div class="problemas-grid">
@@ -57,21 +57,31 @@
                         <div class="problema-header">
                             <h4>{{ problema.titulo }}</h4>
                             <p-tag
-                                [value]="getDificultadLabel(problema.dificultad)"
-                                [severity]="getDificultadSeverity(problema.dificultad)"
+                                [value]="
+                                    getDificultadLabel(problema.dificultad)
+                                "
+                                [severity]="
+                                    getDificultadSeverity(problema.dificultad)
+                                "
                             ></p-tag>
                         </div>
 
-                        <p class="problema-descripcion">{{ problema.descripcion }}</p>
+                        <p class="problema-descripcion">
+                            {{ problema.descripcion }}
+                        </p>
 
                         <div class="problema-meta">
                             <div>
                                 <span class="label">Entrada</span>
-                                <span class="meta-value">{{ problema.formato_entrada }}</span>
+                                <span class="meta-value">{{
+                                    problema.formato_entrada
+                                }}</span>
                             </div>
                             <div>
                                 <span class="label">Salida</span>
-                                <span class="meta-value">{{ problema.formato_salida }}</span>
+                                <span class="meta-value">{{
+                                    problema.formato_salida
+                                }}</span>
                             </div>
                         </div>
 

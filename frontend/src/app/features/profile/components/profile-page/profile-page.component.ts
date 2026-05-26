@@ -15,12 +15,13 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { CardModule } from 'primeng/card';
 
 import { ToastService } from '@/core/services/toast.service';
 import { ProfileService } from '../../services/profile.service';
 import { Profile } from '../../models/profile.model';
 import { environment } from '../../../../../environments/environment';
-import { AuthService } from '@/features/auth/services/auth.service';
+
 
 @Component({
     selector: 'app-profile-page',
@@ -35,14 +36,15 @@ import { AuthService } from '@/features/auth/services/auth.service';
         AvatarModule,
         TagModule,
         ToastModule,
+        CardModule,
     ],
     templateUrl: './profile-page.component.html',
+    styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
     private profileService = inject(ProfileService);
     private fb = inject(FormBuilder);
     private toast = inject(ToastService);
-    private authService = inject(AuthService);
 
     profile?: Profile;
     loading = false;
@@ -217,9 +219,5 @@ export class ProfilePageComponent implements OnInit {
         const last = this.profile.last_name?.[0] ?? '';
         if (!first && !last) return '?';
         return `${first}${last}`.toUpperCase();
-    }
-
-    logout(): void {
-        this.authService.logout();
     }
 }

@@ -36,6 +36,7 @@ import { GruposService, Grupo } from '@/features/grupos/services/grupos.service'
         IconFieldModule,
         InputIconModule,
     ],
+    styleUrl: './user-competencia-detalle.component.scss',
     template: `
         <p-toast></p-toast>
 
@@ -140,40 +141,53 @@ import { GruposService, Grupo } from '@/features/grupos/services/grupos.service'
                     <div class="flex flex-col gap-4">
                         <p-card styleClass="shadow-2 border-round-2xl">
                             <ng-template pTemplate="header">
-                                <div class="px-4 pt-4">
-                                    <div>
-                                        <h3 class="text-base font-semibold m-0">Información de la Competencia</h3>
-                                        <p class="text-color-secondary m-0 text-sm">{{ competencia.nombre }}</p>
-                                    </div>
+                                <div class="info-card-header">
+                                    <span class="header-label">Información</span>
+                                    <h2 class="header-title">{{ competencia.nombre }}</h2>
+                                    @if (competencia.descripcion) {
+                                        <p class="header-description">{{ competencia.descripcion }}</p>
+                                    }
                                 </div>
                             </ng-template>
                             <ng-template pTemplate="content">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="flex flex-col gap-1">
-                                        <span class="text-color-secondary text-xs uppercase tracking-wide">Fecha inicio</span>
-                                        <div class="flex align-items-center gap-2">
-                                            <i class="pi pi-calendar text-color-secondary text-sm"></i>
-                                            <span class="font-medium">{{ competencia.fecha_inicio | date: 'dd/MM/yyyy HH:mm' }}</span>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="info-item-icon">
+                                            <i class="pi pi-calendar"></i>
+                                        </div>
+                                        <div class="info-item-content">
+                                            <span class="info-label">Fecha de inicio</span>
+                                            <span class="info-value">{{ competencia.fecha_inicio | date: 'dd/MM/yyyy' }}</span>
+                                            <span class="info-time">{{ competencia.fecha_inicio | date: 'HH:mm' }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col gap-1">
-                                        <span class="text-color-secondary text-xs uppercase tracking-wide">Fecha fin</span>
-                                        <div class="flex align-items-center gap-2">
-                                            <i class="pi pi-calendar text-color-secondary text-sm"></i>
-                                            <span class="font-medium">{{ competencia.fecha_fin | date: 'dd/MM/yyyy HH:mm' }}</span>
+                                    <div class="info-item">
+                                        <div class="info-item-icon">
+                                            <i class="pi pi-calendar-times"></i>
+                                        </div>
+                                        <div class="info-item-content">
+                                            <span class="info-label">Fecha de fin</span>
+                                            <span class="info-value">{{ competencia.fecha_fin | date: 'dd/MM/yyyy' }}</span>
+                                            <span class="info-time">{{ competencia.fecha_fin | date: 'HH:mm' }}</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col gap-1">
-                                        <span class="text-color-secondary text-xs uppercase tracking-wide">Participantes máx.</span>
-                                        <div class="flex align-items-center gap-2">
-                                            <i class="pi pi-users text-color-secondary text-sm"></i>
-                                            <span class="font-medium">{{ competencia.max_participantes }}</span>
+                                    <div class="info-item">
+                                        <div class="info-item-icon">
+                                            <i class="pi pi-users"></i>
+                                        </div>
+                                        <div class="info-item-content">
+                                            <span class="info-label">Cupo máximo</span>
+                                            <span class="info-value">{{ competencia.max_participantes }}</span>
+                                            <span class="info-subtext">participantes</span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col gap-1">
-                                        <span class="text-color-secondary text-xs uppercase tracking-wide">Nivel</span>
-                                        <div class="flex align-items-center gap-2">
-                                            <p-tag [value]="competencia.nivel_dificultad" severity="warn" styleClass="text-xs"></p-tag>
+                                    <div class="info-item">
+                                        <div class="info-item-icon">
+                                            <i class="pi pi-signal-diagram"></i>
+                                        </div>
+                                        <div class="info-item-content">
+                                            <span class="info-label">Nivel</span>
+                                            <span class="info-value">{{ competencia.nivel_dificultad }}</span>
                                         </div>
                                     </div>
                                 </div>

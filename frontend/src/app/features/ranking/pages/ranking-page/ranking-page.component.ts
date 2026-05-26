@@ -1,18 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
-import { BadgeModule } from 'primeng/badge';
-import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 
 interface RankingUser {
     position: number;
     name: string;
     username: string;
-    avatar?: string;
     points: number;
     solvedProblems: number;
     competitions: number;
@@ -25,11 +21,8 @@ interface RankingUser {
     imports: [
         CommonModule,
         CardModule,
-        TableModule,
         TagModule,
         AvatarModule,
-        BadgeModule,
-        ToolbarModule,
         ButtonModule,
     ],
     templateUrl: './ranking-page.component.html',
@@ -113,41 +106,34 @@ export class RankingPageComponent implements OnInit {
 
     currentUserPosition = 12;
     currentUserPoints = 650;
+    currentUserSolved = 23;
+    currentUserCompetitions = 4;
 
     ngOnInit(): void {}
 
     getPositionClass(position: number): string {
         switch (position) {
-            case 1:
-                return 'gold';
-            case 2:
-                return 'silver';
-            case 3:
-                return 'bronze';
-            default:
-                return 'normal';
+            case 1: return 'gold';
+            case 2: return 'silver';
+            case 3: return 'bronze';
+            default: return 'normal';
+        }
+    }
+
+    getMedalIcon(position: number): string {
+        switch (position) {
+            case 1: return 'pi pi-trophy';
+            case 2: return 'pi pi-star';
+            case 3: return 'pi pi-star-fill';
+            default: return '';
         }
     }
 
     getTrendIcon(trend: string): string {
         switch (trend) {
-            case 'up':
-                return 'pi pi-arrow-up';
-            case 'down':
-                return 'pi pi-arrow-down';
-            default:
-                return 'pi pi-minus';
-        }
-    }
-
-    getTrendSeverity(trend: string): 'success' | 'danger' | 'secondary' {
-        switch (trend) {
-            case 'up':
-                return 'success';
-            case 'down':
-                return 'danger';
-            default:
-                return 'secondary';
+            case 'up': return 'pi pi-arrow-up';
+            case 'down': return 'pi pi-arrow-down';
+            default: return 'pi pi-minus';
         }
     }
 }

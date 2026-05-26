@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaginatorModule } from 'primeng/paginator';
+import { CardModule } from 'primeng/card';
 import { MessageService } from 'primeng/api';
 
 import { ToastService } from '@/core/services/toast.service';
@@ -24,7 +24,7 @@ import { ProblemaDeleteModalComponent } from '../../components/problema-delete-m
     imports: [
         CommonModule,
         ButtonModule,
-        TableModule,
+        CardModule,
         ToolbarModule,
         TagModule,
         ToastModule,
