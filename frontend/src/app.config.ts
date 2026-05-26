@@ -35,8 +35,7 @@ export const appConfig: ApplicationConfig = {
             }),
             withEnabledBlockingInitialNavigation(),
         ),
-        provideHttpClient(withInterceptors([authInterceptor])),
-        provideHttpClient(withFetch()),
+        provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
         provideAnimationsAsync(),
 
         {

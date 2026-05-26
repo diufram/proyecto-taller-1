@@ -114,19 +114,20 @@ export class ApiService {
 
         const body = error.error; // <- aquí viene el JSON del backend
 
-        // fail (validación)
-        if (isFailResponse(body)) {
+        // fail (validación o error de negocio)
+        if (body?.status === 'fail') {
+            const detalle = body.data?.detalle || body.message || 'Fallo en la petición.';
             const e: ApiClientError = {
                 kind: 'validation',
                 statusCode: error.status,
-                message: body.message || 'Fallo en la validación.',
-                errors: body.data.errores_validacion || [],
+                message: detalle,
+                errors: body.data?.errores_validacion || [],
             };
             return throwError(() => e);
         }
 
         // error (servidor)
-        if (isErrorResponse(body)) {
+        if (body?.status === 'error') {
             const e: ApiClientError = {
                 kind: 'server',
                 statusCode: error.status,
@@ -141,7 +142,7 @@ export class ApiService {
         const e: ApiClientError = {
             kind: 'http',
             statusCode: error.status,
-            message: 'Ocurrió un error en la petición.',
+            message: body?.message || 'Ocurrió un error en la petición.',
         };
         return throwError(() => e);
     }

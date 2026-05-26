@@ -400,7 +400,8 @@ export class UserCompetenciaDetalleComponent implements OnInit {
                 this.reloadAfterAction();
             },
             error: (err: any) => {
-                this.toast.error(err);
+                const message = err?.message || 'Error al crear el grupo';
+                this.toast.error(message);
                 this.creandoGrupo = false;
             },
         });
