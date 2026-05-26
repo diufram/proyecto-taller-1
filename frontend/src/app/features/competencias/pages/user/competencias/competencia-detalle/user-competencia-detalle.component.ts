@@ -30,7 +30,6 @@ import { GruposService, Grupo } from '@/features/grupos/services/grupos.service'
         TagModule,
         DialogModule,
         InputTextModule,
-        ToastModule,
         SkeletonModule,
         ToolbarModule,
         IconFieldModule,
@@ -38,8 +37,6 @@ import { GruposService, Grupo } from '@/features/grupos/services/grupos.service'
     ],
     styleUrl: './user-competencia-detalle.component.scss',
     template: `
-        <p-toast></p-toast>
-
         <div class="competencia-detalle">
             @if (loading) {
                 <div class="flex flex-col gap-3">
@@ -290,7 +287,7 @@ import { GruposService, Grupo } from '@/features/grupos/services/grupos.service'
                     label="Crear Grupo"
                     icon="pi pi-check"
                     [loading]="creandoGrupo"
-                    [disabled]="!newGrupoNombre.trim()"
+                    [disabled]="!newGrupoNombre.trim() || creandoGrupo"
                     (onClick)="crearGrupo()"
                 ></p-button>
             </ng-template>
