@@ -1,19 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
-
-interface RankingUser {
-    position: number;
-    name: string;
-    username: string;
-    points: number;
-    solvedProblems: number;
-    competitions: number;
-    trend: 'up' | 'down' | 'stable';
-}
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { forkJoin } from 'rxjs';
+import { RankingService } from '../../services/ranking.service';
+import { RankingUser, MyRankingStats } from '../../models/ranking.model';
 
 @Component({
     selector: 'app-ranking-page',
@@ -24,92 +18,60 @@ interface RankingUser {
         TagModule,
         AvatarModule,
         ButtonModule,
+        ProgressSpinnerModule,
     ],
     templateUrl: './ranking-page.component.html',
     styleUrl: './ranking-page.component.scss',
 })
 export class RankingPageComponent implements OnInit {
-    rankingData: RankingUser[] = [
-        {
-            position: 1,
-            name: 'Carlos Mendez',
-            username: 'cmendez',
-            points: 1250,
-            solvedProblems: 45,
-            competitions: 8,
-            trend: 'up',
-        },
-        {
-            position: 2,
-            name: 'Ana Rodriguez',
-            username: 'arodriguez',
-            points: 1180,
-            solvedProblems: 42,
-            competitions: 7,
-            trend: 'stable',
-        },
-        {
-            position: 3,
-            name: 'Luis Garcia',
-            username: 'lgarcia',
-            points: 1050,
-            solvedProblems: 38,
-            competitions: 6,
-            trend: 'up',
-        },
-        {
-            position: 4,
-            name: 'Maria Lopez',
-            username: 'mlopez',
-            points: 980,
-            solvedProblems: 35,
-            competitions: 6,
-            trend: 'down',
-        },
-        {
-            position: 5,
-            name: 'Pedro Sanchez',
-            username: 'psanchez',
-            points: 920,
-            solvedProblems: 33,
-            competitions: 5,
-            trend: 'stable',
-        },
-        {
-            position: 6,
-            name: 'Laura Torres',
-            username: 'ltorres',
-            points: 890,
-            solvedProblems: 31,
-            competitions: 5,
-            trend: 'up',
-        },
-        {
-            position: 7,
-            name: 'Diego Ramirez',
-            username: 'dramirez',
-            points: 850,
-            solvedProblems: 30,
-            competitions: 5,
-            trend: 'down',
-        },
-        {
-            position: 8,
-            name: 'Sofia Castro',
-            username: 'scastro',
-            points: 820,
-            solvedProblems: 29,
-            competitions: 4,
-            trend: 'stable',
-        },
-    ];
+    private rankingService = inject(RankingService);
 
-    currentUserPosition = 12;
-    currentUserPoints = 650;
-    currentUserSolved = 23;
-    currentUserCompetitions = 4;
+    rankingData: RankingUser[] = [];
+    currentUser: MyRankingStats | null = null;
+    loading = true;
+    error: string | null = null;
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.loadRanking();
+    }
+
+    loadRanking(): void {
+        this.loading = true;
+        this.error = null;
+
+        forkJoin({
+            ranking: this.rankingService.getGlobalRanking(20),
+            mine: this.rankingService.getMyStats(),
+        }).subscribe({
+            next: ({ ranking, mine }) => {
+                this.rankingData = ranking.ranking;
+                this.currentUser = mine;
+                this.loading = false;
+            },
+            error: (err) => {
+                console.error('Error al cargar el ranking:', err);
+                this.error =
+                    err?.message || 'No se pudo cargar el ranking.';
+                this.loading = false;
+            },
+        });
+    }
+
+    get currentUserPosition(): number {
+        return this.currentUser?.position ?? 0;
+    }
+
+    get currentUserPoints(): number {
+        return this.currentUser?.points ?? 0;
+    }
+
+    get currentUserSolved(): number {
+        return this.currentUser?.solvedProblems ?? 0;
+    }
+
+    get currentUserCompetitions(): number {
+        return this.currentUser?.competitions ?? 0;
+    }
 
     getPositionClass(position: number): string {
         switch (position) {

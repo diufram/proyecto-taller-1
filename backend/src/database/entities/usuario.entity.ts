@@ -28,6 +28,12 @@ export class Usuario extends BaseEntity {
   @Column({ nullable: true })
   foto?: string;
 
+  @Column({ name: 'puntos_totales', type: 'integer', default: 0 })
+  puntos_totales!: number;
+
+  @Column({ name: 'posicion_global', type: 'integer', nullable: true })
+  posicion_global?: number;
+
   @OneToMany(() => Inscripcion, (i) => i.usuario)
   inscripciones!: Inscripcion[];
 
