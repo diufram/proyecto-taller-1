@@ -1,4 +1,6 @@
 import {
+  BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
   UnprocessableEntityException,
@@ -7,7 +9,10 @@ import { ProblemasRepository } from '../repositories/problemas.repository';
 import { CreateProblemaDto } from '../dto/create-problema.dto';
 import { QueryProblemasDto } from '../dto/query-problemas.dto';
 import { UpdateProblemaDto } from '../dto/update-problema.dto';
-import { Competencia, Estado } from '../../../database/entities/competencia.entity';
+import {
+  Competencia,
+  Estado,
+} from '../../../database/entities/competencia.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -30,34 +35,69 @@ export class ProblemasService {
 
     this.validarEstadoCompetencia(competencia, 'crear');
 
+    const tituloTrim = dto.titulo.trim();
+    const existente =
+      await this.problemasRepository.buscarPorTituloEnCompetencia(
+        tituloTrim,
+        competenciaId,
+      );
+    if (existente) {
+      throw new ConflictException(
+        `Ya existe un problema con el titulo "${tituloTrim}" en esta competencia.`,
+      );
+    }
+
     const problema = await this.problemasRepository.crear({
-      ...dto,
+      titulo: tituloTrim,
+      descripcion: dto.descripcion.trim(),
+      dificultad: dto.dificultad,
+      formato_entrada: dto.formato_entrada.trim(),
+      formato_salida: dto.formato_salida.trim(),
+      ejemplo_entrada: dto.ejemplo_entrada,
+      ejemplo_salida: dto.ejemplo_salida,
       competencia,
     });
 
     return {
-      problema: this.serializarProblema(problema),
+      problema: this.serializarProblema(problema, {
+        total: 0,
+        correctas: 0,
+      }),
       message: 'Problema creado exitosamente.',
     };
   }
 
   async findAllPorCompetencia(competenciaId: number, query: QueryProblemasDto) {
     const page = query.page ?? 1;
-    const limit = Math.min(query.limit ?? 10, 100);
+    const limit = Math.min(query.limit ?? 100, 100);
 
-    const [problemas, total] = await this.problemasRepository.listarPorCompetencia(
-      competenciaId,
-      page,
-      limit,
-    );
+    const [problemas, total] =
+      await this.problemasRepository.listarPorCompetencia(competenciaId, query);
+
+    const statsPorProblema =
+      await this.problemasRepository.contarSolucionesPorProblema(
+        problemas.map((p) => p.id),
+      );
+
+    const statsPorDificultad =
+      await this.problemasRepository.contarPorDificultad(competenciaId);
+
+    const items = problemas.map((p) => {
+      const stats = statsPorProblema.get(p.id) ?? { total: 0, correctas: 0 };
+      return this.serializarProblema(p, stats);
+    });
 
     return {
-      items: problemas.map((p) => this.serializarProblema(p)),
+      items,
       meta: {
         total,
         page,
         limit,
         total_pages: Math.ceil(total / limit),
+      },
+      stats: {
+        total,
+        por_dificultad: statsPorDificultad,
       },
     };
   }
@@ -68,8 +108,15 @@ export class ProblemasService {
       throw new NotFoundException('Problema no encontrado.');
     }
 
+    const statsPorProblema =
+      await this.problemasRepository.contarSolucionesPorProblema([problema.id]);
+    const stats = statsPorProblema.get(problema.id) ?? {
+      total: 0,
+      correctas: 0,
+    };
+
     return {
-      problema: this.serializarProblema(problema),
+      problema: this.serializarProblema(problema, stats),
     };
   }
 
@@ -81,10 +128,38 @@ export class ProblemasService {
 
     this.validarEstadoCompetencia(problema.competencia, 'actualizar');
 
-    const actualizada = await this.problemasRepository.actualizar(problema, dto);
+    if (dto.titulo) {
+      const tituloTrim = dto.titulo.trim();
+      const existente =
+        await this.problemasRepository.buscarPorTituloEnCompetencia(
+          tituloTrim,
+          problema.competencia.id,
+          id,
+        );
+      if (existente) {
+        throw new ConflictException(
+          `Ya existe otro problema con el titulo "${tituloTrim}" en esta competencia.`,
+        );
+      }
+      dto.titulo = tituloTrim;
+    }
+
+    const actualizada = await this.problemasRepository.actualizar(
+      problema,
+      dto,
+    );
+
+    const statsPorProblema =
+      await this.problemasRepository.contarSolucionesPorProblema([
+        actualizada.id,
+      ]);
+    const stats = statsPorProblema.get(actualizada.id) ?? {
+      total: 0,
+      correctas: 0,
+    };
 
     return {
-      problema: this.serializarProblema(actualizada),
+      problema: this.serializarProblema(actualizada, stats),
       message: 'Problema actualizado exitosamente.',
     };
   }
@@ -96,6 +171,19 @@ export class ProblemasService {
     }
 
     this.validarEstadoCompetencia(problema.competencia, 'eliminar');
+
+    const statsPorProblema =
+      await this.problemasRepository.contarSolucionesPorProblema([problema.id]);
+    const stats = statsPorProblema.get(problema.id) ?? {
+      total: 0,
+      correctas: 0,
+    };
+
+    if (stats.total > 0) {
+      throw new BadRequestException(
+        `No se puede eliminar el problema porque tiene ${stats.total} solucion(es) asociada(s). Resuelvalas o reasignelas primero.`,
+      );
+    }
 
     await this.problemasRepository.eliminar(id);
 
@@ -118,7 +206,10 @@ export class ProblemasService {
     }
   }
 
-  private serializarProblema(problema: any) {
+  private serializarProblema(
+    problema: any,
+    stats: { total: number; correctas: number },
+  ) {
     return {
       id: problema.id,
       titulo: problema.titulo,
@@ -129,6 +220,8 @@ export class ProblemasService {
       ejemplo_entrada: problema.ejemplo_entrada,
       ejemplo_salida: problema.ejemplo_salida,
       competencia_id: problema.competencia?.id,
+      total_soluciones: stats.total,
+      soluciones_correctas: stats.correctas,
       created_at: problema.createdAt,
       updated_at: problema.updatedAt,
     };

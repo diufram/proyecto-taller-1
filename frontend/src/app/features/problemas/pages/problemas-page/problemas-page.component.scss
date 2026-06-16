@@ -7,220 +7,140 @@
         width: 100%;
     }
 
-    .problemas-grid {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 1.25rem;
+    .problemas-table-wrap {
+        display: none;
     }
 
-    .problema-card {
-        border-radius: 1.5rem;
-        overflow: hidden;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-        &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12) !important;
-        }
-
-        .p-card-header {
-            padding: 0;
-        }
-
-        .p-card-body {
-            padding: 0;
-        }
-
-        .p-card-content {
-            padding: 0;
-        }
-
-        .p-card-footer {
-            padding: 0.75rem 1.25rem;
-        }
-    }
-
-    .problema-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1rem;
-        padding: 1.25rem 1.25rem 0;
-    }
-
-    .problema-title-area {
+    .problemas-mobile-list {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
-        min-width: 0;
+        gap: 0.85rem;
     }
 
-    .problema-id {
-        font-size: 0.7rem;
-        text-transform: uppercase;
+    .problema-mobile-card {
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        padding: 0.95rem;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .problema-mobile-card.is-skeleton {
+        gap: 0.6rem;
+    }
+
+    .problema-mobile-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .label {
+        font-size: 0.72rem;
         letter-spacing: 0.08em;
+        text-transform: uppercase;
         color: var(--text-color-secondary);
         font-weight: 600;
     }
 
-    .problema-titulo {
-        font-size: 1.1rem;
-        font-weight: 700;
+    .value {
+        font-size: 1.28rem;
+        font-weight: 500;
         color: var(--text-color);
-        margin: 0;
-        line-height: 1.3;
+        line-height: 1.2;
     }
 
-    .problema-dificultad-tag {
-        flex-shrink: 0;
+    .problema-mobile-actions,
+    .problema-mobile-actions-skeleton {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
     }
 
-    .problema-descripcion {
-        font-size: 0.875rem;
+    .mobile-empty {
+        border: 1px dashed var(--surface-border);
+        border-radius: 12px;
+        padding: 1.1rem;
+        text-align: center;
         color: var(--text-color-secondary);
-        line-height: 1.5;
-        margin: 0 0 1rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
     }
 
-    .problema-meta-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        margin-bottom: 1rem;
+    .problemas-skeleton-desktop {
+        display: none;
     }
 
-    .meta-item {
-        background: var(--surface-ground);
-        border-radius: 8px;
-        padding: 0.6rem 0.75rem;
+    .problemas-skeleton-mobile {
         display: flex;
         flex-direction: column;
-        gap: 0.15rem;
+        gap: 0.85rem;
     }
 
-    .meta-label {
-        font-size: 0.6rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--text-color-secondary);
-        font-weight: 600;
-    }
-
-    .meta-value {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--text-color);
-        font-family: monospace;
-    }
-
-    .problema-ejemplo {
+    .skeleton-row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        margin-bottom: 0.5rem;
+        grid-template-columns: 50px 1.5fr 100px 80px 80px 90px 120px;
+        align-items: center;
+        gap: 0.85rem;
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: 12px;
+        padding: 0.75rem 0.9rem;
     }
 
-    .ejemplo-block {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .ejemplo-label {
-        font-size: 0.6rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--text-color-secondary);
-        font-weight: 600;
-    }
-
-    .ejemplo-code {
-        background: var(--surface-ground);
-        border-radius: 6px;
-        padding: 0.5rem 0.6rem;
-        font-size: 0.75rem;
-        font-family: monospace;
-        color: var(--text-color);
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .problema-actions {
+    .desktop-actions {
         display: flex;
         justify-content: flex-end;
-        gap: 0.5rem;
+        gap: 0.35rem;
     }
 
-    .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .tasa-bar {
+        position: relative;
+        width: 100%;
+        height: 1.4rem;
+        background: var(--surface-ground);
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .tasa-fill {
+        position: absolute;
+        inset: 0 auto 0 0;
+        background: var(--primary-color);
+        border-radius: 999px;
+        transition: width 0.4s ease;
+
+        &[data-severity='success'] {
+            background: rgb(34, 197, 94);
+        }
+        &[data-severity='warn'] {
+            background: rgb(234, 179, 8);
+        }
+        &[data-severity='danger'] {
+            background: rgb(239, 68, 68);
+        }
+    }
+
+    .tasa-label {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--text-color);
+        mix-blend-mode: difference;
+        color: white;
+    }
+
+    .actions-container > * {
+        width: 100%;
+    }
+
+    .actions-container p-button .p-button {
+        width: 100%;
         justify-content: center;
-        padding: 4rem 2rem;
-        text-align: center;
-        background: var(--surface-card);
-        border: 2px dashed var(--surface-border);
-        border-radius: 1.5rem;
-
-        .empty-icon {
-            width: 5rem;
-            height: 5rem;
-            border-radius: 50%;
-            background: var(--surface-ground);
-            display: grid;
-            place-items: center;
-            margin-bottom: 1.5rem;
-            color: var(--text-color-secondary);
-        }
-
-        h4 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin: 0 0 0.5rem;
-        }
-
-        p {
-            margin: 0 0 1.5rem;
-        }
-    }
-
-    .is-skeleton {
-        .problema-header {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .skeleton-header {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .skeleton-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-    }
-
-    @media (min-width: 640px) {
-        .problemas-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .problemas-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
     }
 
     .p-toolbar {
@@ -233,16 +153,33 @@
         width: 100%;
     }
 
-    .actions-container > * {
-        width: 100%;
-    }
-
-    .actions-container p-button .p-button {
-        width: 100%;
-        justify-content: center;
-    }
-
     @media (min-width: 960px) {
+        .problemas-table-wrap {
+            display: block;
+        }
+
+        .problemas-mobile-list,
+        .problemas-skeleton-mobile {
+            display: none;
+        }
+
+        .problemas-skeleton-desktop {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .skeleton-row {
+            display: grid;
+            grid-template-columns: 50px 1.5fr 100px 80px 80px 90px 120px;
+            align-items: center;
+            gap: 0.85rem;
+            background: var(--surface-card);
+            border: 1px solid var(--surface-border);
+            border-radius: 12px;
+            padding: 0.75rem 0.9rem;
+        }
+
         .actions-container {
             flex-direction: row;
             align-items: center;
@@ -264,6 +201,19 @@
         .p-toolbar-group-left,
         .p-toolbar-group-right {
             width: auto;
+        }
+
+        .problemas-table {
+            .p-datatable-thead > tr > th {
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--text-color-secondary);
+            }
+
+            .p-datatable-tbody > tr > td {
+                vertical-align: middle;
+            }
         }
     }
 }

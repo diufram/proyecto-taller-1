@@ -2,74 +2,93 @@
     [(visible)]="visible"
     [header]="modalTitle"
     [modal]="true"
-    [style]="{ width: '35rem' }"
-    [breakpoints]="{ '960px': '75vw', '640px': '95vw' }"
+    [style]="{ width: '52rem' }"
+    [breakpoints]="{ '960px': '90vw' }"
     [closable]="true"
     [closeOnEscape]="true"
+    [maximizable]="true"
     (onHide)="close()"
-    class="custom-modal p-fluid"
+    class="problema-modal p-fluid"
     [contentStyle]="{ overflow: 'visible' }"
 >
     <ng-container>
-        <form [formGroup]="form" class="flex flex-col gap-6 pt-5">
-            <div class="flex flex-col">
-                <p-floatLabel variant="on">
+        <form [formGroup]="form" class="problema-form pt-3">
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="pi pi-info-circle"></i>
+                    <h4>Información general</h4>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <label for="titulo_input" class="field-label">
+                            Título <span class="required">*</span>
+                        </label>
+                        <span
+                            class="char-counter"
+                            [class.is-near-limit]="charCount('titulo') > MAX_TITULO * 0.85"
+                        >
+                            {{ charCount('titulo') }}/{{ MAX_TITULO }}
+                        </span>
+                    </div>
                     <input
                         pInputText
                         id="titulo_input"
                         formControlName="titulo"
                         class="w-full"
                         [invalid]="isInvalid('titulo')"
-                        variant="filled"
-                        pSize="small"
+                        [maxlength]="MAX_TITULO"
+                        placeholder="Ej: Suma de dos números"
                     />
-                    <label for="titulo_input"
-                        >Titulo <span class="text-red-500">*</span></label
-                    >
-                </p-floatLabel>
-                @if (isInvalid("titulo")) {
-                    <p-message
-                        severity="error"
-                        size="small"
-                        variant="simple"
-                        class="mt-1"
-                    >
-                        El titulo es requerido.
-                    </p-message>
-                }
-            </div>
+                    @if (isInvalid("titulo")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                        >
+                            El título es requerido (máx. {{ MAX_TITULO }} caracteres).
+                        </p-message>
+                    }
+                </div>
 
-            <div class="flex flex-col">
-                <p-floatLabel variant="on">
+                <div class="flex flex-col gap-2 mt-3">
+                    <div class="flex items-center justify-between">
+                        <label for="descripcion_input" class="field-label">
+                            Descripción <span class="required">*</span>
+                        </label>
+                        <span
+                            class="char-counter"
+                            [class.is-near-limit]="charCount('descripcion') > MAX_DESCRIPCION * 0.85"
+                        >
+                            {{ charCount('descripcion') }}/{{ MAX_DESCRIPCION }}
+                        </span>
+                    </div>
                     <textarea
                         pTextarea
                         id="descripcion_input"
                         formControlName="descripcion"
-                        rows="3"
+                        rows="4"
                         autoResize="true"
                         class="w-full"
                         [invalid]="isInvalid('descripcion')"
-                        variant="filled"
-                        pSize="small"
+                        [maxlength]="MAX_DESCRIPCION"
+                        placeholder="Describe el problema: qué debe hacer el programa, contexto, etc."
                     ></textarea>
-                    <label for="descripcion_input"
-                        >Descripción <span class="text-red-500">*</span></label
-                    >
-                </p-floatLabel>
-                @if (isInvalid("descripcion")) {
-                    <p-message
-                        severity="error"
-                        size="small"
-                        variant="simple"
-                        class="mt-1"
-                    >
-                        La descripción es requerida.
-                    </p-message>
-                }
-            </div>
+                    @if (isInvalid("descripcion")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                        >
+                            La descripción es requerida.
+                        </p-message>
+                    }
+                </div>
 
-            <div class="flex flex-col">
-                <p-floatLabel variant="on">
+                <div class="flex flex-col gap-2 mt-3">
+                    <label for="dificultad_input" class="field-label">
+                        Dificultad <span class="required">*</span>
+                    </label>
                     <p-select
                         inputId="dificultad_input"
                         [options]="dificultades"
@@ -77,158 +96,291 @@
                         [invalid]="isInvalid('dificultad')"
                         class="w-full"
                         [appendTo]="'body'"
-                        variant="filled"
-                        size="small"
-                    ></p-select>
-                    <label for="dificultad_input"
-                        >Dificultad <span class="text-red-500">*</span></label
+                        placeholder="Selecciona una dificultad"
                     >
-                </p-floatLabel>
-                @if (isInvalid("dificultad")) {
-                    <p-message
-                        severity="error"
-                        size="small"
-                        variant="simple"
-                        class="mt-1"
-                    >
-                        La dificultad es requerida.
-                    </p-message>
-                }
+                        <ng-template let-opt pTemplate="item">
+                            <div class="dificultad-option">
+                                <span
+                                    class="dificultad-dot"
+                                    [attr.data-dificultad]="opt"
+                                ></span>
+                                <span>{{ getDificultadLabel(opt) }}</span>
+                            </div>
+                        </ng-template>
+                    </p-select>
+                    @if (isInvalid("dificultad")) {
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                        >
+                            La dificultad es requerida.
+                        </p-message>
+                    }
+                </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div class="flex flex-col">
-                    <p-floatLabel variant="on">
-                        <input
-                            pInputText
+            <p-divider></p-divider>
+
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="pi pi-code"></i>
+                    <h4>Formato de entrada y salida</h4>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <label
+                                for="formato_entrada_input"
+                                class="field-label"
+                            >
+                                Formato de entrada
+                                <span class="required">*</span>
+                            </label>
+                            <span
+                                class="char-counter"
+                                [class.is-near-limit]="charCount('formato_entrada') > MAX_FORMATO * 0.85"
+                            >
+                                {{ charCount('formato_entrada') }}/{{ MAX_FORMATO }}
+                            </span>
+                        </div>
+                        <textarea
+                            pTextarea
                             id="formato_entrada_input"
                             formControlName="formato_entrada"
+                            rows="3"
+                            autoResize="true"
                             class="w-full"
                             [invalid]="isInvalid('formato_entrada')"
-                            variant="filled"
-                            pSize="small"
-                        />
-                        <label for="formato_entrada_input"
-                            >Formato Entrada <span class="text-red-500">*</span></label
-                        >
-                    </p-floatLabel>
-                    @if (isInvalid("formato_entrada")) {
-                        <p-message
-                            severity="error"
-                            size="small"
-                            variant="simple"
-                            class="mt-1"
-                        >
-                            El formato de entrada es requerido.
-                        </p-message>
-                    }
-                </div>
+                            [maxlength]="MAX_FORMATO"
+                            placeholder="Describe cómo será la entrada..."
+                        ></textarea>
+                        @if (isInvalid("formato_entrada")) {
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                            >
+                                El formato de entrada es requerido.
+                            </p-message>
+                        }
+                    </div>
 
-                <div class="flex flex-col">
-                    <p-floatLabel variant="on">
-                        <input
-                            pInputText
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <label
+                                for="formato_salida_input"
+                                class="field-label"
+                            >
+                                Formato de salida
+                                <span class="required">*</span>
+                            </label>
+                            <span
+                                class="char-counter"
+                                [class.is-near-limit]="charCount('formato_salida') > MAX_FORMATO * 0.85"
+                            >
+                                {{ charCount('formato_salida') }}/{{ MAX_FORMATO }}
+                            </span>
+                        </div>
+                        <textarea
+                            pTextarea
                             id="formato_salida_input"
                             formControlName="formato_salida"
+                            rows="3"
+                            autoResize="true"
                             class="w-full"
                             [invalid]="isInvalid('formato_salida')"
-                            variant="filled"
-                            pSize="small"
-                        />
-                        <label for="formato_salida_input"
-                            >Formato Salida <span class="text-red-500">*</span></label
-                        >
-                    </p-floatLabel>
-                    @if (isInvalid("formato_salida")) {
-                        <p-message
-                            severity="error"
-                            size="small"
-                            variant="simple"
-                            class="mt-1"
-                        >
-                            El formato de salida es requerido.
-                        </p-message>
-                    }
+                            [maxlength]="MAX_FORMATO"
+                            placeholder="Describe qué debe imprimir el programa..."
+                        ></textarea>
+                        @if (isInvalid("formato_salida")) {
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                            >
+                                El formato de salida es requerido.
+                            </p-message>
+                        }
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div class="flex flex-col">
-                    <p-floatLabel variant="on">
+            <p-divider></p-divider>
+
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="pi pi-pencil"></i>
+                    <h4>Ejemplo</h4>
+                    <div class="flex gap-2 ml-auto">
+                        <p-button
+                            icon="pi pi-bolt"
+                            label="Auto-rellenar"
+                            severity="secondary"
+                            [text]="true"
+                            size="small"
+                            pTooltip="Genera un ejemplo de suma a partir de la entrada"
+                            (onClick)="fillExampleEntrada()"
+                        ></p-button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <label
+                                for="ejemplo_entrada_input"
+                                class="field-label"
+                            >
+                                Ejemplo de entrada
+                                <span class="required">*</span>
+                            </label>
+                            <span
+                                class="char-counter"
+                                [class.is-near-limit]="charCount('ejemplo_entrada') > MAX_EJEMPLO * 0.85"
+                            >
+                                {{ charCount('ejemplo_entrada') }}/{{ MAX_EJEMPLO }}
+                            </span>
+                        </div>
                         <textarea
                             pTextarea
                             id="ejemplo_entrada_input"
                             formControlName="ejemplo_entrada"
-                            rows="2"
+                            rows="4"
                             autoResize="true"
-                            class="w-full"
+                            class="w-full mono"
                             [invalid]="isInvalid('ejemplo_entrada')"
-                            variant="filled"
-                            pSize="small"
+                            [maxlength]="MAX_EJEMPLO"
+                            placeholder="3 5"
                         ></textarea>
-                        <label for="ejemplo_entrada_input"
-                            >Ejemplo Entrada <span class="text-red-500">*</span></label
-                        >
-                    </p-floatLabel>
-                    @if (isInvalid("ejemplo_entrada")) {
-                        <p-message
-                            severity="error"
-                            size="small"
-                            variant="simple"
-                            class="mt-1"
-                        >
-                            El ejemplo de entrada es requerido.
-                        </p-message>
-                    }
-                </div>
+                        @if (isInvalid("ejemplo_entrada")) {
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                            >
+                                El ejemplo de entrada es requerido.
+                            </p-message>
+                        }
+                    </div>
 
-                <div class="flex flex-col">
-                    <p-floatLabel variant="on">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <label
+                                for="ejemplo_salida_input"
+                                class="field-label"
+                            >
+                                Ejemplo de salida
+                                <span class="required">*</span>
+                            </label>
+                            <span
+                                class="char-counter"
+                                [class.is-near-limit]="charCount('ejemplo_salida') > MAX_EJEMPLO * 0.85"
+                            >
+                                {{ charCount('ejemplo_salida') }}/{{ MAX_EJEMPLO }}
+                            </span>
+                            <p-button
+                                icon="pi pi-sparkles"
+                                severity="secondary"
+                                [text]="true"
+                                size="small"
+                                pTooltip="Derivar salida de la entrada (sumas)"
+                                (onClick)="fillExampleSalida()"
+                            ></p-button>
+                        </div>
                         <textarea
                             pTextarea
                             id="ejemplo_salida_input"
                             formControlName="ejemplo_salida"
-                            rows="2"
+                            rows="4"
                             autoResize="true"
-                            class="w-full"
+                            class="w-full mono"
                             [invalid]="isInvalid('ejemplo_salida')"
-                            variant="filled"
-                            pSize="small"
+                            [maxlength]="MAX_EJEMPLO"
+                            placeholder="8"
                         ></textarea>
-                        <label for="ejemplo_salida_input"
-                            >Ejemplo Salida <span class="text-red-500">*</span></label
-                        >
-                    </p-floatLabel>
-                    @if (isInvalid("ejemplo_salida")) {
-                        <p-message
-                            severity="error"
-                            size="small"
-                            variant="simple"
-                            class="mt-1"
-                        >
-                            El ejemplo de salida es requerido.
-                        </p-message>
-                    }
+                        @if (isInvalid("ejemplo_salida")) {
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                            >
+                                El ejemplo de salida es requerido.
+                            </p-message>
+                        }
+                    </div>
                 </div>
+
+                @if (form.value.ejemplo_entrada || form.value.ejemplo_salida) {
+                    <div class="example-preview mt-3">
+                        <div class="preview-label">
+                            <i class="pi pi-eye"></i>
+                            <span>Vista previa del ejemplo</span>
+                            <p-button
+                                icon="pi pi-copy"
+                                severity="secondary"
+                                [text]="true"
+                                [rounded]="true"
+                                size="small"
+                                pTooltip="Copiar entrada"
+                                (onClick)="copyToClipboard(form.value.ejemplo_entrada)"
+                            ></p-button>
+                            <p-button
+                                icon="pi pi-copy"
+                                severity="secondary"
+                                [text]="true"
+                                [rounded]="true"
+                                size="small"
+                                pTooltip="Copiar salida"
+                                (onClick)="copyToClipboard(form.value.ejemplo_salida)"
+                            ></p-button>
+                        </div>
+                        <div class="preview-grid">
+                            <div class="preview-block">
+                                <span class="preview-tag">Entrada</span>
+                                <pre class="preview-code">{{ form.value.ejemplo_entrada || '—' }}</pre>
+                            </div>
+                            <div class="preview-block">
+                                <span class="preview-tag">Salida</span>
+                                <pre class="preview-code">{{ form.value.ejemplo_salida || '—' }}</pre>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </form>
     </ng-container>
 
     <ng-template pTemplate="footer">
-        <div class="flex w-full justify-end gap-2">
-            <p-button
-                label="Cancelar"
-                [text]="true"
-                severity="secondary"
-                (onClick)="close()"
-            ></p-button>
-            <p-button
-                [label]="mode === 'create' ? 'Crear' : 'Guardar'"
-                icon="pi pi-save"
-                [loading]="saving"
-                (onClick)="save()"
-                class="w-full md:w-auto flex justify-center bg-gray-900 border-gray-900 text-white hover:bg-gray-800 hover:border-gray-800"
-            ></p-button>
+        <div class="flex w-full justify-between items-center gap-2">
+            <span class="form-status">
+                <i
+                    class="pi"
+                    [class.pi-check-circle]="isValid"
+                    [class.pi-exclamation-circle]="!isValid"
+                    [class.text-green-500]="isValid"
+                    [class.text-orange-500]="!isValid"
+                ></i>
+                <span class="text-sm text-color-secondary">
+                    {{ isValid ? 'Formulario completo' : 'Faltan campos requeridos' }}
+                </span>
+            </span>
+            <div class="flex gap-2">
+                <p-button
+                    label="Cancelar"
+                    [text]="true"
+                    severity="secondary"
+                    (onClick)="close()"
+                ></p-button>
+                <p-button
+                    [label]="mode === 'create' ? 'Crear problema' : 'Guardar cambios'"
+                    [icon]="mode === 'create' ? 'pi pi-plus' : 'pi pi-save'"
+                    [loading]="saving"
+                    [disabled]="!isValid"
+                    (onClick)="save()"
+                ></p-button>
+            </div>
         </div>
     </ng-template>
 </p-dialog>

@@ -6,7 +6,15 @@ import {
     ProblemasResponse,
     CreateProblemaDto,
     UpdateProblemaDto,
+    Dificultad,
 } from '../models/problema.model';
+
+export interface GetProblemasParams {
+    page?: number;
+    limit?: number;
+    search?: string;
+    dificultad?: Dificultad;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -18,7 +26,7 @@ export class ProblemasService {
 
     getByCompetencia(
         competenciaId: number,
-        params?: { page?: number; limit?: number },
+        params?: GetProblemasParams,
     ): Observable<ProblemasResponse> {
         return this.api.get<ProblemasResponse>(
             `competencias/${competenciaId}/problemas`,
