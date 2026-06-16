@@ -1,0 +1,238 @@
+<p-toast></p-toast>
+
+<div class="problema-generate-page">
+    <div class="mb-3 pl-1">
+        <h3 class="text-2xl font-bold text-color m-0">
+            Generar con IA - {{ competenciaNombre }}
+        </h3>
+    </div>
+
+    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
+        <ng-template pTemplate="left">
+            <div class="actions-container">
+                <p-button
+                    icon="pi pi-arrow-left"
+                    label="Volver"
+                    severity="secondary"
+                    [outlined]="true"
+                    (onClick)="cancel()"
+                    [disabled]="saving"
+                ></p-button>
+                <p-button
+                    label="Generar"
+                    icon="pi pi-sparkles"
+                    [loading]="generating"
+                    [disabled]="!canGenerate"
+                    (onClick)="onGenerate()"
+                ></p-button>
+            </div>
+        </ng-template>
+    </p-toolbar>
+
+    <form [formGroup]="form" class="generate-form">
+        <div class="form-card">
+            <div class="flex flex-col gap-2">
+                <label for="prompt_input" class="field-label">
+                    Descripción <span class="required">*</span>
+                </label>
+                <textarea
+                    pTextarea
+                    id="prompt_input"
+                    formControlName="prompt"
+                    rows="4"
+                    autoResize="true"
+                    class="w-full"
+                    [invalid]="promptInvalid"
+                    placeholder="Ej: 3 problemas de sumas para principiantes"
+                ></textarea>
+                @if (promptInvalid) {
+                    <p-message severity="error" size="small" variant="simple">
+                        Describí al menos 5 caracteres lo que querés generar.
+                    </p-message>
+                }
+                <span class="hint-text">{{ promptHint }}</span>
+            </div>
+
+            <div class="examples-row mt-3">
+                <span class="examples-label">Ejemplos:</span>
+                @for (example of placeholderExamples; track example) {
+                    <button
+                        type="button"
+                        class="example-chip"
+                        (click)="useExample(example)"
+                    >
+                        {{ example }}
+                    </button>
+                }
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div class="flex flex-col gap-2">
+                    <label for="cantidad_input" class="field-label">
+                        Cantidad
+                    </label>
+                    <p-inputnumber
+                        inputId="cantidad_input"
+                        formControlName="cantidad"
+                        [min]="MIN_COUNT"
+                        [max]="MAX_COUNT"
+                        [showButtons]="true"
+                        buttonLayout="horizontal"
+                        decrementButtonClass="p-button-secondary"
+                        incrementButtonClass="p-button-secondary"
+                        incrementButtonIcon="pi pi-plus"
+                        decrementButtonIcon="pi pi-minus"
+                        styleClass="w-full"
+                    ></p-inputnumber>
+                    <span class="hint-text">
+                        Entre {{ MIN_COUNT }} y {{ MAX_COUNT }} problemas.
+                    </span>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="dificultad_input" class="field-label">
+                        Dificultad
+                    </label>
+                    <p-select
+                        inputId="dificultad_input"
+                        [options]="dificultadOptions"
+                        formControlName="dificultad"
+                        optionLabel="label"
+                        optionValue="value"
+                        styleClass="w-full"
+                        appendTo="body"
+                        placeholder="Según competencia"
+                    ></p-select>
+                    <span class="hint-text">
+                        Dificultad fija para los problemas generados.
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        @if (generating) {
+            <div class="generating-overlay">
+                <div class="generating-content">
+                    <i class="generating-icon pi pi-sparkles"></i>
+                    <p class="m-0 mt-3 font-semibold">
+                        Generando problemas con IA...
+                    </p>
+                    <p class="m-0 text-sm text-color-secondary">
+                        Esto puede tardar unos segundos.
+                    </p>
+                </div>
+            </div>
+        }
+
+        @if (generated.length > 0) {
+            <div class="form-card generated-section">
+                <div class="preview-header">
+                    <div class="preview-summary">
+                        <i class="pi pi-sparkles text-primary text-xl"></i>
+                        <div>
+                            <span class="preview-title">
+                                {{ generated.length }} problemas generados
+                            </span>
+                            <span class="preview-subtitle">
+                                Seleccioná los que querés guardar.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="preview-actions">
+                        <p-button
+                            label="Todos"
+                            icon="pi pi-check-square"
+                            severity="secondary"
+                            [text]="true"
+                            size="small"
+                            (onClick)="selectAll()"
+                        ></p-button>
+                        <p-button
+                            label="Ninguno"
+                            icon="pi pi-times-circle"
+                            severity="secondary"
+                            [text]="true"
+                            size="small"
+                            (onClick)="deselectAll()"
+                        ></p-button>
+                    </div>
+                </div>
+
+                <div class="preview-list">
+                    @for (p of generated; track $index; let i = $index) {
+                        <article
+                            class="preview-item"
+                            [class.is-selected]="isSelected(i)"
+                        >
+                            <div class="preview-item-header">
+                                <p-checkbox
+                                    [binary]="true"
+                                    [ngModel]="isSelected(i)"
+                                    (onChange)="toggleSelection(i)"
+                                    [inputId]="'select-' + i"
+                                ></p-checkbox>
+                                <div class="preview-item-title-area">
+                                    <span class="preview-item-title">
+                                        {{ p.titulo }}
+                                    </span>
+                                    <span class="preview-item-desc">
+                                        {{ p.descripcion }}
+                                    </span>
+                                </div>
+                                <p-tag
+                                    [value]="getDificultadLabel(p.dificultad)"
+                                    [severity]="getDificultadSeverity(p.dificultad)"
+                                ></p-tag>
+                            </div>
+
+                            <div class="preview-item-body">
+                                <div class="preview-meta">
+                                    <div class="meta-block">
+                                        <span class="meta-label">Entrada</span>
+                                        <pre class="meta-code">{{
+                                            p.ejemplo_entrada || '—'
+                                        }}</pre>
+                                    </div>
+                                    <div class="meta-block">
+                                        <span class="meta-label">Salida</span>
+                                        <pre class="meta-code">{{
+                                            p.ejemplo_salida || '—'
+                                        }}</pre>
+                                    </div>
+                                </div>
+                                <div class="preview-footer">
+                                    <span class="keyword-tag">
+                                        <i class="pi pi-tag"></i>
+                                        {{ p.sourceKeyword }}
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                </div>
+
+                <div class="form-card-actions mt-4">
+                    <span class="selection-status">
+                        <i class="pi pi-check-square text-primary"></i>
+                        <span class="text-sm text-color-secondary">
+                            {{ selectedCount }} de
+                            {{ generated.length }} seleccionados
+                        </span>
+                    </span>
+                    <p-button
+                        [label]="
+                            'Guardar ' +
+                            (selectedCount > 0 ? selectedCount + ' ' : '') +
+                            'problema' +
+                            (selectedCount === 1 ? '' : 's')
+                        "
+                        icon="pi pi-save"
+                        [loading]="saving"
+                        [disabled]="!canSave"
+                        (onClick)="saveSelected()"
+                    ></p-button>
+                </div>
+            </div>
+        }
+    </form>
+</div>

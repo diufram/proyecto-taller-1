@@ -148,7 +148,12 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
                 break;
             case 'problemas':
                 this.router.navigate(['/admin/competencias/problemas', comp.id], {
-                    state: { competenciaNombre: comp.nombre },
+                    state: {
+                        competenciaNombre: comp.nombre,
+                        competenciaDescripcion: comp.descripcion,
+                        nivelDificultad: comp.nivel_dificultad,
+                        tipo: comp.tipo,
+                    },
                 });
                 break;
         }

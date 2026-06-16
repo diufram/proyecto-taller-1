@@ -21,7 +21,15 @@
                     icon="pi pi-plus"
                     severity="primary"
                     class="w-full md:w-auto"
-                    (onClick)="openCreateModal()"
+                    (onClick)="goToCreate()"
+                ></p-button>
+                <p-button
+                    label="Generar con IA"
+                    icon="pi pi-sparkles"
+                    severity="info"
+                    [outlined]="true"
+                    class="w-full md:w-auto"
+                    (onClick)="goToGenerate()"
                 ></p-button>
                 <p-select
                     [options]="dificultadFiltroOptions"
@@ -153,7 +161,7 @@
                                     [rounded]="true"
                                     pTooltip="Editar"
                                     tooltipPosition="top"
-                                    (onClick)="openEditModal(p)"
+                                    (onClick)="goToEdit(p)"
                                 ></p-button>
                                 <p-button
                                     icon="pi pi-trash"
@@ -223,7 +231,7 @@
                                     [rounded]="true"
                                     pTooltip="Editar"
                                     tooltipPosition="top"
-                                    (onClick)="openEditModal(problema)"
+                                    (onClick)="goToEdit(problema)"
                                 ></p-button>
                                 <p-button
                                     icon="pi pi-trash"
@@ -256,14 +264,6 @@
 </div>
 
 <p-toast></p-toast>
-
-<app-problema-create-edit-modal
-    [(visible)]="createEditVisible"
-    [mode]="createEditMode"
-    [competenciaId]="competenciaId"
-    [data]="selectedProblema"
-    (onSaved)="onSaved()"
-></app-problema-create-edit-modal>
 
 <app-problema-delete-modal
     [(visible)]="deleteVisible"

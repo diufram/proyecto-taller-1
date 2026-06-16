@@ -12,11 +12,10 @@ export const ADMIN_COMPETENCIAS_ROUTES: Routes = [
     },
     {
         path: 'problemas/:competenciaId',
-        loadComponent: () =>
-            import('@/features/problemas/pages/problemas-page/problemas-page.component').then(
-                (m) => m.ProblemasPageComponent,
+        loadChildren: () =>
+            import('@/features/problemas/problemas.routes').then(
+                (m) => m.PROBLEMAS_ROUTES,
             ),
-        title: 'Problemas',
         data: { breadcrumb: 'Problemas' },
     },
 ];

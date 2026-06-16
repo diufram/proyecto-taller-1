@@ -1,10 +1,6 @@
 import {
     Component,
-    EventEmitter,
-    Input,
-    Output,
-    OnChanges,
-    SimpleChanges,
+    OnInit,
     inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,16 +11,19 @@ import {
     FormGroup,
     Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
-import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
+import { SkeletonModule } from 'primeng/skeleton';
+import { ToolbarModule } from 'primeng/toolbar';
 
 import { ToastService } from '@/core/services/toast.service';
 import { ProblemasService } from '../../services/problemas.service';
@@ -37,10 +36,10 @@ import {
     Dificultad,
 } from '../../models/problema.model';
 
-export type ProblemaModalMode = 'create' | 'edit';
+export type ProblemaFormMode = 'create' | 'edit';
 
 @Component({
-    selector: 'app-problema-create-edit-modal',
+    selector: 'app-problema-form-page',
     standalone: true,
     imports: [
         CommonModule,
@@ -50,29 +49,32 @@ export type ProblemaModalMode = 'create' | 'edit';
         InputTextModule,
         TextareaModule,
         SelectModule,
-        DialogModule,
+        ToastModule,
         MessageModule,
         FloatLabelModule,
         DividerModule,
         TooltipModule,
+        SkeletonModule,
+        ToolbarModule,
     ],
-    templateUrl: './problema-create-edit-modal.component.html',
-    styleUrl: './problema-create-edit-modal.component.scss',
+    templateUrl: './problema-form-page.component.html',
+    styleUrl: './problema-form-page.component.scss',
 })
-export class ProblemaCreateEditModalComponent implements OnChanges {
+export class ProblemaFormPageComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
     private problemasService = inject(ProblemasService);
-    private fb = inject(FormBuilder);
     private toast = inject(ToastService);
+    private fb = inject(FormBuilder);
 
-    @Input() visible = false;
-    @Input() mode: ProblemaModalMode = 'create';
-    @Input() competenciaId?: number;
-    @Input() data?: Problema;
-    @Output() visibleChange = new EventEmitter<boolean>();
-    @Output() onSaved = new EventEmitter<void>();
+    mode: ProblemaFormMode = 'create';
+    competenciaId!: number;
+    competenciaNombre: string = '';
+    problemaId?: number;
+    existingProblema?: Problema;
+    loadingData = false;
 
     form: FormGroup;
-
     saving = false;
     dificultades = DIFICULTADES;
     dificultadLabels = DIFICULTAD_LABELS;
@@ -115,16 +117,30 @@ export class ProblemaCreateEditModalComponent implements OnChanges {
         });
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['visible'] && this.visible) {
-            this.resetState();
+    ngOnInit(): void {
+        this.competenciaId = Number(
+            this.route.snapshot.paramMap.get('competenciaId'),
+        );
+        this.problemaId = this.route.snapshot.paramMap.get('problemaId')
+            ? Number(this.route.snapshot.paramMap.get('problemaId'))
+            : undefined;
+        this.mode = this.problemaId ? 'edit' : 'create';
+
+        this.competenciaNombre =
+            history.state?.competenciaNombre ??
+            `Competencia #${this.competenciaId}`;
+
+        if (this.mode === 'edit' && this.problemaId) {
+            this.loadProblema();
+        } else {
+            this.resetFormForCreate();
         }
     }
 
-    get modalTitle(): string {
+    get pageTitle(): string {
         return this.mode === 'create'
             ? 'Nuevo Problema'
-            : `Editar: ${this.data?.titulo ?? ''}`;
+            : `Editar Problema`;
     }
 
     get isValid(): boolean {
@@ -136,35 +152,6 @@ export class ProblemaCreateEditModalComponent implements OnChanges {
         return typeof value === 'string' ? value.length : 0;
     }
 
-    getDificultadLabel(dificultad: Dificultad): string {
-        return DIFICULTAD_LABELS[dificultad];
-    }
-
-    resetState(): void {
-        this.saving = false;
-        if (this.mode === 'create') {
-            this.form.reset({
-                titulo: '',
-                descripcion: '',
-                dificultad: null,
-                formato_entrada: '',
-                formato_salida: '',
-                ejemplo_entrada: '',
-                ejemplo_salida: '',
-            });
-        } else if (this.data) {
-            this.form.patchValue({
-                titulo: this.data.titulo,
-                descripcion: this.data.descripcion,
-                dificultad: this.data.dificultad,
-                formato_entrada: this.data.formato_entrada,
-                formato_salida: this.data.formato_salida,
-                ejemplo_entrada: this.data.ejemplo_entrada,
-                ejemplo_salida: this.data.ejemplo_salida,
-            });
-        }
-    }
-
     isInvalid(fieldName: string): boolean {
         const control = this.form.get(fieldName);
         return !!(
@@ -172,6 +159,10 @@ export class ProblemaCreateEditModalComponent implements OnChanges {
             control.invalid &&
             (control.dirty || control.touched)
         );
+    }
+
+    getDificultadLabel(dificultad: Dificultad): string {
+        return DIFICULTAD_LABELS[dificultad];
     }
 
     copyToClipboard(text: string | null | undefined): void {
@@ -224,19 +215,24 @@ export class ProblemaCreateEditModalComponent implements OnChanges {
         const obs =
             this.mode === 'create'
                 ? this.problemasService.create(
-                      this.competenciaId!,
+                      this.competenciaId,
                       payload as CreateProblemaDto,
                   )
                 : this.problemasService.update(
-                      this.data!.id,
+                      this.problemaId!,
                       payload as UpdateProblemaDto,
                   );
 
         obs.subscribe({
             next: () => {
                 this.saving = false;
-                this.onSaved.emit();
-                this.close();
+                this.toast.success(
+                    'Éxito',
+                    this.mode === 'create'
+                        ? 'Problema creado correctamente'
+                        : 'Problema actualizado correctamente',
+                );
+                this.goBack();
             },
             error: () => {
                 this.saving = false;
@@ -244,8 +240,54 @@ export class ProblemaCreateEditModalComponent implements OnChanges {
         });
     }
 
-    close(): void {
-        this.visible = false;
-        this.visibleChange.emit(false);
+    cancel(): void {
+        this.goBack();
+    }
+
+    goBack(): void {
+        this.router.navigate(
+            ['/admin/competencias/problemas', this.competenciaId],
+            {
+                state: {
+                    competenciaNombre: this.competenciaNombre,
+                },
+            },
+        );
+    }
+
+    private loadProblema(): void {
+        this.loadingData = true;
+        this.problemasService.getById(this.problemaId!).subscribe({
+            next: (res) => {
+                this.existingProblema = res.problema;
+                this.form.patchValue({
+                    titulo: res.problema.titulo,
+                    descripcion: res.problema.descripcion,
+                    dificultad: res.problema.dificultad,
+                    formato_entrada: res.problema.formato_entrada,
+                    formato_salida: res.problema.formato_salida,
+                    ejemplo_entrada: res.problema.ejemplo_entrada,
+                    ejemplo_salida: res.problema.ejemplo_salida,
+                });
+                this.loadingData = false;
+            },
+            error: () => {
+                this.toast.error('No se pudo cargar el problema');
+                this.loadingData = false;
+                this.goBack();
+            },
+        });
+    }
+
+    private resetFormForCreate(): void {
+        this.form.reset({
+            titulo: '',
+            descripcion: '',
+            dificultad: null,
+            formato_entrada: '',
+            formato_salida: '',
+            ejemplo_entrada: '',
+            ejemplo_salida: '',
+        });
     }
 }

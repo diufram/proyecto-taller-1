@@ -26,8 +26,11 @@ import {
     DIFICULTAD_LABELS,
     ProblemasStats,
 } from '../../models/problema.model';
-import { ProblemaCreateEditModalComponent } from '../../components/problema-create-edit-modal/problema-create-edit-modal.component';
 import { ProblemaDeleteModalComponent } from '../../components/problema-delete-modal/problema-delete-modal.component';
+import {
+    NivelCompetencia,
+    TipoCompetencia,
+} from '../../services/problem-generator.service';
 
 @Component({
     selector: 'app-problemas-page',
@@ -47,7 +50,6 @@ import { ProblemaDeleteModalComponent } from '../../components/problema-delete-m
         InputIconModule,
         SelectModule,
         ToolbarModule,
-        ProblemaCreateEditModalComponent,
         ProblemaDeleteModalComponent,
     ],
     providers: [MessageService],
@@ -64,6 +66,9 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
 
     competenciaId!: number;
     competenciaNombre: string = '';
+    competenciaDescripcion: string = '';
+    nivelDificultad: NivelCompetencia = 'Intermedio';
+    tipo: TipoCompetencia = 'Individual';
 
     loading = false;
     problemas: Problema[] = [];
@@ -78,10 +83,6 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
     rowsPerPageOptions = [8, 16, 24];
     currentSearch = '';
     currentDificultad: Dificultad | null = null;
-
-    createEditVisible = false;
-    createEditMode: 'create' | 'edit' = 'create';
-    selectedProblema?: Problema;
 
     deleteVisible = false;
     deleteTarget?: Problema;
@@ -100,6 +101,12 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
         this.competenciaNombre =
             history.state?.competenciaNombre ??
             `Competencia #${this.competenciaId}`;
+        this.competenciaDescripcion =
+            history.state?.competenciaDescripcion ?? '';
+        this.nivelDificultad =
+            (history.state?.nivelDificultad as NivelCompetencia) ??
+            'Intermedio';
+        this.tipo = (history.state?.tipo as TipoCompetencia) ?? 'Individual';
         this.load(1, '');
     }
 
@@ -205,31 +212,41 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
         );
     }
 
-    openCreateModal(): void {
-        this.createEditMode = 'create';
-        this.selectedProblema = undefined;
-        this.createEditVisible = true;
+    goToCreate(): void {
+        this.router.navigate(
+            ['/admin/competencias/problemas', this.competenciaId, 'nuevo'],
+            {
+                state: this.getNavState(),
+            },
+        );
     }
 
-    openEditModal(problema: Problema): void {
-        this.createEditMode = 'edit';
-        this.selectedProblema = problema;
-        this.createEditVisible = true;
+    goToEdit(problema: Problema): void {
+        this.router.navigate(
+            [
+                '/admin/competencias/problemas',
+                this.competenciaId,
+                'editar',
+                problema.id,
+            ],
+            {
+                state: this.getNavState(),
+            },
+        );
+    }
+
+    goToGenerate(): void {
+        this.router.navigate(
+            ['/admin/competencias/problemas', this.competenciaId, 'generar-ia'],
+            {
+                state: this.getNavState(),
+            },
+        );
     }
 
     openDeleteModal(problema: Problema): void {
         this.deleteTarget = problema;
         this.deleteVisible = true;
-    }
-
-    onSaved(): void {
-        const msg =
-            this.createEditMode === 'create'
-                ? 'Problema creado correctamente'
-                : 'Problema actualizado correctamente';
-        this.toast.success('Éxito', msg);
-        this.createEditVisible = false;
-        this.load(this.currentPage, this.currentSearch);
     }
 
     onDeleted(): void {
@@ -250,5 +267,19 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
 
     volver(): void {
         this.router.navigate(['/admin/competencias']);
+    }
+
+    private getNavState(): {
+        competenciaNombre: string;
+        competenciaDescripcion: string;
+        nivelDificultad: NivelCompetencia;
+        tipo: TipoCompetencia;
+    } {
+        return {
+            competenciaNombre: this.competenciaNombre,
+            competenciaDescripcion: this.competenciaDescripcion,
+            nivelDificultad: this.nivelDificultad,
+            tipo: this.tipo,
+        };
     }
 }

@@ -1,34 +1,57 @@
+:host {
+    display: block;
+}
+
 :host ::ng-deep {
-    .problema-modal {
-        .p-dialog-content {
-            padding: 0 1.5rem 1rem;
+    .problema-form-page {
+        width: 100%;
+    }
+
+    .page-header {
+        .p-button.p-button-text {
+            padding: 0.4rem 0.6rem;
         }
+    }
+
+    .actions-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .loading-skeleton {
+        background: var(--surface-card);
+        border-radius: 16px;
+        padding: 1.5rem;
     }
 
     .problema-form {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1.25rem;
     }
 
-    .form-section {
-        display: flex;
-        flex-direction: column;
+    .form-card {
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
     }
 
     .section-header {
         display: flex;
         align-items: center;
         gap: 0.6rem;
-        margin-bottom: 0.85rem;
+        margin-bottom: 1.25rem;
 
         i {
             color: var(--primary-color);
-            font-size: 1.05rem;
+            font-size: 1.1rem;
         }
 
         h4 {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--text-color);
             margin: 0;
@@ -93,7 +116,7 @@
         background: var(--surface-ground);
         border: 1px solid var(--surface-border);
         border-radius: 10px;
-        padding: 0.85rem;
+        padding: 1rem;
     }
 
     .preview-label {
@@ -105,7 +128,7 @@
         letter-spacing: 0.06em;
         color: var(--text-color-secondary);
         font-weight: 600;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.6rem;
 
         i {
             color: var(--primary-color);
@@ -136,18 +159,34 @@
         background: var(--surface-card);
         border: 1px solid var(--surface-border);
         border-radius: 6px;
-        padding: 0.55rem 0.65rem;
+        padding: 0.65rem 0.75rem;
         font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         color: var(--text-color);
         margin: 0;
-        max-height: 6rem;
+        max-height: 8rem;
         overflow: auto;
         white-space: pre-wrap;
         word-break: break-word;
     }
 
-    .form-status {
+    .form-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        background: var(--surface-card);
+        border: 1px solid var(--surface-border);
+        border-radius: 16px;
+        padding: 1rem 1.5rem;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        bottom: 1rem;
+        z-index: 5;
+        flex-wrap: wrap;
+    }
+
+    .footer-status {
         display: flex;
         align-items: center;
         gap: 0.4rem;

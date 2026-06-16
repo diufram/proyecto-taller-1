@@ -1,19 +1,36 @@
-<p-dialog
-    [(visible)]="visible"
-    [header]="modalTitle"
-    [modal]="true"
-    [style]="{ width: '52rem' }"
-    [breakpoints]="{ '960px': '90vw' }"
-    [closable]="true"
-    [closeOnEscape]="true"
-    [maximizable]="true"
-    (onHide)="close()"
-    class="problema-modal p-fluid"
-    [contentStyle]="{ overflow: 'visible' }"
->
-    <ng-container>
-        <form [formGroup]="form" class="problema-form pt-3">
-            <div class="form-section">
+<p-toast></p-toast>
+
+<div class="problema-form-page">
+    <div class="mb-3 pl-1">
+        <h3 class="text-2xl font-bold text-color m-0">
+            {{ pageTitle }} - {{ competenciaNombre }}
+        </h3>
+    </div>
+
+    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
+        <ng-template pTemplate="left">
+            <div class="actions-container">
+                <p-button
+                    icon="pi pi-arrow-left"
+                    label="Volver"
+                    severity="secondary"
+                    [outlined]="true"
+                    (onClick)="cancel()"
+                ></p-button>
+            </div>
+        </ng-template>
+    </p-toolbar>
+
+    @if (loadingData) {
+        <div class="loading-skeleton">
+            <p-skeleton width="100%" height="3.5rem" styleClass="mb-3"></p-skeleton>
+            <p-skeleton width="100%" height="8rem" styleClass="mb-3"></p-skeleton>
+            <p-skeleton width="40%" height="2.5rem" styleClass="mb-3"></p-skeleton>
+            <p-skeleton width="100%" height="6rem" styleClass="mb-3"></p-skeleton>
+        </div>
+    } @else {
+        <form [formGroup]="form" class="problema-form">
+            <div class="form-card">
                 <div class="section-header">
                     <i class="pi pi-info-circle"></i>
                     <h4>Información general</h4>
@@ -41,17 +58,13 @@
                         placeholder="Ej: Suma de dos números"
                     />
                     @if (isInvalid("titulo")) {
-                        <p-message
-                            severity="error"
-                            size="small"
-                            variant="simple"
-                        >
+                        <p-message severity="error" size="small" variant="simple">
                             El título es requerido (máx. {{ MAX_TITULO }} caracteres).
                         </p-message>
                     }
                 </div>
 
-                <div class="flex flex-col gap-2 mt-3">
+                <div class="flex flex-col gap-2 mt-4">
                     <div class="flex items-center justify-between">
                         <label for="descripcion_input" class="field-label">
                             Descripción <span class="required">*</span>
@@ -67,7 +80,7 @@
                         pTextarea
                         id="descripcion_input"
                         formControlName="descripcion"
-                        rows="4"
+                        rows="5"
                         autoResize="true"
                         class="w-full"
                         [invalid]="isInvalid('descripcion')"
@@ -75,17 +88,13 @@
                         placeholder="Describe el problema: qué debe hacer el programa, contexto, etc."
                     ></textarea>
                     @if (isInvalid("descripcion")) {
-                        <p-message
-                            severity="error"
-                            size="small"
-                            variant="simple"
-                        >
+                        <p-message severity="error" size="small" variant="simple">
                             La descripción es requerida.
                         </p-message>
                     }
                 </div>
 
-                <div class="flex flex-col gap-2 mt-3">
+                <div class="flex flex-col gap-2 mt-4">
                     <label for="dificultad_input" class="field-label">
                         Dificultad <span class="required">*</span>
                     </label>
@@ -109,20 +118,14 @@
                         </ng-template>
                     </p-select>
                     @if (isInvalid("dificultad")) {
-                        <p-message
-                            severity="error"
-                            size="small"
-                            variant="simple"
-                        >
+                        <p-message severity="error" size="small" variant="simple">
                             La dificultad es requerida.
                         </p-message>
                     }
                 </div>
             </div>
 
-            <p-divider></p-divider>
-
-            <div class="form-section">
+            <div class="form-card">
                 <div class="section-header">
                     <i class="pi pi-code"></i>
                     <h4>Formato de entrada y salida</h4>
@@ -131,10 +134,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">
-                            <label
-                                for="formato_entrada_input"
-                                class="field-label"
-                            >
+                            <label for="formato_entrada_input" class="field-label">
                                 Formato de entrada
                                 <span class="required">*</span>
                             </label>
@@ -149,7 +149,7 @@
                             pTextarea
                             id="formato_entrada_input"
                             formControlName="formato_entrada"
-                            rows="3"
+                            rows="4"
                             autoResize="true"
                             class="w-full"
                             [invalid]="isInvalid('formato_entrada')"
@@ -157,11 +157,7 @@
                             placeholder="Describe cómo será la entrada..."
                         ></textarea>
                         @if (isInvalid("formato_entrada")) {
-                            <p-message
-                                severity="error"
-                                size="small"
-                                variant="simple"
-                            >
+                            <p-message severity="error" size="small" variant="simple">
                                 El formato de entrada es requerido.
                             </p-message>
                         }
@@ -169,10 +165,7 @@
 
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">
-                            <label
-                                for="formato_salida_input"
-                                class="field-label"
-                            >
+                            <label for="formato_salida_input" class="field-label">
                                 Formato de salida
                                 <span class="required">*</span>
                             </label>
@@ -187,7 +180,7 @@
                             pTextarea
                             id="formato_salida_input"
                             formControlName="formato_salida"
-                            rows="3"
+                            rows="4"
                             autoResize="true"
                             class="w-full"
                             [invalid]="isInvalid('formato_salida')"
@@ -195,11 +188,7 @@
                             placeholder="Describe qué debe imprimir el programa..."
                         ></textarea>
                         @if (isInvalid("formato_salida")) {
-                            <p-message
-                                severity="error"
-                                size="small"
-                                variant="simple"
-                            >
+                            <p-message severity="error" size="small" variant="simple">
                                 El formato de salida es requerido.
                             </p-message>
                         }
@@ -207,9 +196,7 @@
                 </div>
             </div>
 
-            <p-divider></p-divider>
-
-            <div class="form-section">
+            <div class="form-card">
                 <div class="section-header">
                     <i class="pi pi-pencil"></i>
                     <h4>Ejemplo</h4>
@@ -229,10 +216,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">
-                            <label
-                                for="ejemplo_entrada_input"
-                                class="field-label"
-                            >
+                            <label for="ejemplo_entrada_input" class="field-label">
                                 Ejemplo de entrada
                                 <span class="required">*</span>
                             </label>
@@ -247,7 +231,7 @@
                             pTextarea
                             id="ejemplo_entrada_input"
                             formControlName="ejemplo_entrada"
-                            rows="4"
+                            rows="5"
                             autoResize="true"
                             class="w-full mono"
                             [invalid]="isInvalid('ejemplo_entrada')"
@@ -255,11 +239,7 @@
                             placeholder="3 5"
                         ></textarea>
                         @if (isInvalid("ejemplo_entrada")) {
-                            <p-message
-                                severity="error"
-                                size="small"
-                                variant="simple"
-                            >
+                            <p-message severity="error" size="small" variant="simple">
                                 El ejemplo de entrada es requerido.
                             </p-message>
                         }
@@ -267,10 +247,7 @@
 
                     <div class="flex flex-col gap-2">
                         <div class="flex items-center justify-between">
-                            <label
-                                for="ejemplo_salida_input"
-                                class="field-label"
-                            >
+                            <label for="ejemplo_salida_input" class="field-label">
                                 Ejemplo de salida
                                 <span class="required">*</span>
                             </label>
@@ -293,7 +270,7 @@
                             pTextarea
                             id="ejemplo_salida_input"
                             formControlName="ejemplo_salida"
-                            rows="4"
+                            rows="5"
                             autoResize="true"
                             class="w-full mono"
                             [invalid]="isInvalid('ejemplo_salida')"
@@ -301,11 +278,7 @@
                             placeholder="8"
                         ></textarea>
                         @if (isInvalid("ejemplo_salida")) {
-                            <p-message
-                                severity="error"
-                                size="small"
-                                variant="simple"
-                            >
+                            <p-message severity="error" size="small" variant="simple">
                                 El ejemplo de salida es requerido.
                             </p-message>
                         }
@@ -313,7 +286,7 @@
                 </div>
 
                 @if (form.value.ejemplo_entrada || form.value.ejemplo_salida) {
-                    <div class="example-preview mt-3">
+                    <div class="example-preview mt-4">
                         <div class="preview-label">
                             <i class="pi pi-eye"></i>
                             <span>Vista previa del ejemplo</span>
@@ -349,38 +322,36 @@
                     </div>
                 }
             </div>
-        </form>
-    </ng-container>
 
-    <ng-template pTemplate="footer">
-        <div class="flex w-full justify-between items-center gap-2">
-            <span class="form-status">
-                <i
-                    class="pi"
-                    [class.pi-check-circle]="isValid"
-                    [class.pi-exclamation-circle]="!isValid"
-                    [class.text-green-500]="isValid"
-                    [class.text-orange-500]="!isValid"
-                ></i>
-                <span class="text-sm text-color-secondary">
-                    {{ isValid ? 'Formulario completo' : 'Faltan campos requeridos' }}
-                </span>
-            </span>
-            <div class="flex gap-2">
-                <p-button
-                    label="Cancelar"
-                    [text]="true"
-                    severity="secondary"
-                    (onClick)="close()"
-                ></p-button>
-                <p-button
-                    [label]="mode === 'create' ? 'Crear problema' : 'Guardar cambios'"
-                    [icon]="mode === 'create' ? 'pi pi-plus' : 'pi pi-save'"
-                    [loading]="saving"
-                    [disabled]="!isValid"
-                    (onClick)="save()"
-                ></p-button>
+            <div class="form-footer">
+                <div class="footer-status">
+                    <i
+                        class="pi"
+                        [class.pi-check-circle]="isValid"
+                        [class.pi-exclamation-circle]="!isValid"
+                        [class.text-green-500]="isValid"
+                        [class.text-orange-500]="!isValid"
+                    ></i>
+                    <span class="text-sm text-color-secondary">
+                        {{ isValid ? 'Formulario completo' : 'Faltan campos requeridos' }}
+                    </span>
+                </div>
+                <div class="flex gap-2">
+                    <p-button
+                        label="Cancelar"
+                        [text]="true"
+                        severity="secondary"
+                        (onClick)="cancel()"
+                    ></p-button>
+                    <p-button
+                        [label]="mode === 'create' ? 'Crear problema' : 'Guardar cambios'"
+                        [icon]="mode === 'create' ? 'pi pi-plus' : 'pi pi-save'"
+                        [loading]="saving"
+                        [disabled]="!isValid"
+                        (onClick)="save()"
+                    ></p-button>
+                </div>
             </div>
-        </div>
-    </ng-template>
-</p-dialog>
+        </form>
+    }
+</div>
