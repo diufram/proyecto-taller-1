@@ -6,7 +6,7 @@ import {
   EstadoSolucion,
   Lenguaje,
 } from '../entities/solucion.entity';
-import { Problema } from '../entities/problema.entity';
+import { Problema, Dificultad } from '../entities/problema.entity';
 import { Inscripcion } from '../entities/inscripcion.entity';
 import { Seed } from './base.seed';
 
@@ -23,37 +23,150 @@ const dataSource = new DataSource({
   synchronize: true,
 });
 
-const PUNTOS_POR_DIFICULTAD: Record<string, number> = {
-  Facil: 10,
-  Medio: 20,
-  Dificil: 30,
+const PUNTOS_POR_DIFICULTAD: Record<Dificultad, number> = {
+  [Dificultad.FACIL]: 10,
+  [Dificultad.MEDIO]: 20,
+  [Dificultad.DIFICIL]: 30,
 };
 
-const solucionesPorUsuario: Record<string, number> = {
-  matias_ramos: 12,
-  lucas_garcia: 10,
-  sofia_martinez: 9,
-  valentina_lopez: 8,
-  santiago_rodriguez: 6,
-  camila_fernandez: 5,
-  juan_pereyra: 4,
-  maria_torres: 3,
-};
+interface PerfilUsuario {
+  username: string;
+  correctas: number;
+  incorrectas: number;
+  pendientes: number;
+  inscripciones: number;
+}
 
-const inscripcionesPorUsuario: Record<string, number> = {
-  matias_ramos: 4,
-  lucas_garcia: 3,
-  sofia_martinez: 3,
-  valentina_lopez: 2,
-  santiago_rodriguez: 2,
-  camila_fernandez: 2,
-  juan_pereyra: 1,
-  maria_torres: 1,
+const perfilesUsuarios: PerfilUsuario[] = [
+  {
+    username: 'matias_ramos',
+    correctas: 14,
+    incorrectas: 2,
+    pendientes: 1,
+    inscripciones: 6,
+  },
+  {
+    username: 'lucas_garcia',
+    correctas: 12,
+    incorrectas: 1,
+    pendientes: 0,
+    inscripciones: 5,
+  },
+  {
+    username: 'sofia_martinez',
+    correctas: 11,
+    incorrectas: 1,
+    pendientes: 0,
+    inscripciones: 5,
+  },
+  {
+    username: 'valentina_lopez',
+    correctas: 9,
+    incorrectas: 2,
+    pendientes: 0,
+    inscripciones: 4,
+  },
+  {
+    username: 'santiago_rodriguez',
+    correctas: 8,
+    incorrectas: 1,
+    pendientes: 1,
+    inscripciones: 4,
+  },
+  {
+    username: 'camila_fernandez',
+    correctas: 7,
+    incorrectas: 2,
+    pendientes: 0,
+    inscripciones: 3,
+  },
+  {
+    username: 'juan_pereyra',
+    correctas: 6,
+    incorrectas: 1,
+    pendientes: 0,
+    inscripciones: 3,
+  },
+  {
+    username: 'maria_torres',
+    correctas: 5,
+    incorrectas: 0,
+    pendientes: 0,
+    inscripciones: 2,
+  },
+  {
+    username: 'martin_acosta',
+    correctas: 5,
+    incorrectas: 1,
+    pendientes: 0,
+    inscripciones: 3,
+  },
+  {
+    username: 'florencia_vega',
+    correctas: 4,
+    incorrectas: 1,
+    pendientes: 0,
+    inscripciones: 2,
+  },
+  {
+    username: 'diego_suarez',
+    correctas: 3,
+    incorrectas: 0,
+    pendientes: 1,
+    inscripciones: 2,
+  },
+  {
+    username: 'paula_romero',
+    correctas: 3,
+    incorrectas: 1,
+    pendientes: 0,
+    inscripciones: 1,
+  },
+  {
+    username: 'bruno_aguilar',
+    correctas: 2,
+    incorrectas: 0,
+    pendientes: 0,
+    inscripciones: 1,
+  },
+  {
+    username: 'renata_castro',
+    correctas: 1,
+    incorrectas: 1,
+    pendientes: 0,
+    inscripciones: 1,
+  },
+  {
+    username: 'facundo_mendez',
+    correctas: 1,
+    incorrectas: 0,
+    pendientes: 0,
+    inscripciones: 1,
+  },
+];
+
+const LENGUAJES: Lenguaje[] = [
+  Lenguaje.PYTHON,
+  Lenguaje.JAVA,
+  Lenguaje.C,
+  Lenguaje.JAVASCRIPT,
+];
+
+const RESPUESTAS_POR_LENGUAJE: Record<Lenguaje, string> = {
+  [Lenguaje.PYTHON]: 'def solve():\n    return 42\n\nprint(solve())',
+  [Lenguaje.JAVA]:
+    'public class Main {\n    public static void main(String[] args) {\n        System.out.println(42);\n    }\n}',
+  [Lenguaje.C]:
+    '#include <stdio.h>\nint main() { printf("%d", 42); return 0; }',
+  [Lenguaje.JAVASCRIPT]:
+    'function solve() { return 42; }\nconsole.log(solve());',
+  [Lenguaje.PSEUDOCODIGO]: 'INICIO\n  ESCRIBIR 42\nFIN',
+  [Lenguaje.OTRO]: '// Solución alternativa',
 };
 
 export const rankingSeed: Seed = {
   order: 5,
-  name: 'Ranking Inicial (Soluciones + Puntos)',
+  name: 'Ranking Inicial (Soluciones + Puntos + Inscripciones)',
   run: async () => {
     await dataSource.initialize();
     console.log('🔌 Conectado a la base de datos para seed');
@@ -65,7 +178,26 @@ export const rankingSeed: Seed = {
 
     const problemas = await problemaRepository.find({
       relations: ['competencia'],
+      order: { id: 'ASC' },
     });
+
+    if (problemas.length === 0) {
+      console.log('⚠️  No hay problemas cargados, abortando seed de ranking.');
+      await dataSource.destroy();
+      return;
+    }
+
+    const problemasPorDificultad: Record<Dificultad, Problema[]> = {
+      [Dificultad.FACIL]: problemas.filter(
+        (p) => p.dificultad === Dificultad.FACIL,
+      ),
+      [Dificultad.MEDIO]: problemas.filter(
+        (p) => p.dificultad === Dificultad.MEDIO,
+      ),
+      [Dificultad.DIFICIL]: problemas.filter(
+        (p) => p.dificultad === Dificultad.DIFICIL,
+      ),
+    };
 
     const competenciasUnicas = Array.from(
       new Map(
@@ -76,74 +208,126 @@ export const rankingSeed: Seed = {
       ).values(),
     );
 
-    for (const [username, totalSoluciones] of Object.entries(
-      solucionesPorUsuario,
-    )) {
+    for (let i = 0; i < perfilesUsuarios.length; i++) {
+      const perfil = perfilesUsuarios[i];
       const usuario = await usuarioRepository.findOne({
-        where: { nombre_usuario: username, rol: Rol.USER },
+        where: { nombre_usuario: perfil.username, rol: Rol.USER },
       });
 
       if (!usuario) {
-        console.log(`⚠️  Usuario "${username}" no encontrado, omitiendo.`);
+        console.log(
+          `⚠️  Usuario "${perfil.username}" no encontrado, omitiendo.`,
+        );
         continue;
       }
 
-      const totalInscripciones = inscripcionesPorUsuario[username] ?? 0;
+      const problemasAsignables = problemasPorDificultad[Dificultad.FACIL]
+        .concat(problemasPorDificultad[Dificultad.MEDIO])
+        .concat(problemasPorDificultad[Dificultad.DIFICIL]);
+
+      const problemasCorrectos = pickDistributed(
+        problemasAsignables,
+        perfil.correctas,
+        i,
+      );
+      const problemasIncorrectos = pickDistributed(
+        problemasAsignables.filter(
+          (p) => !problemasCorrectos.some((pc) => pc.id === p.id),
+        ),
+        perfil.incorrectas,
+        i,
+      );
+      const problemasPendientes = pickDistributed(
+        problemasAsignables.filter(
+          (p) =>
+            !problemasCorrectos.some((pc) => pc.id === p.id) &&
+            !problemasIncorrectos.some((pi) => pi.id === p.id),
+        ),
+        perfil.pendientes,
+        i,
+      );
 
       const yaTieneSoluciones = await solucionRepository.count({
         where: { usuario: { id: usuario.id } },
       });
+
       if (yaTieneSoluciones > 0) {
         console.log(
-          `ℹ️  "${username}" ya tiene soluciones, omitiendo creación.`,
+          `ℹ️  "${perfil.username}" ya tiene soluciones, omitiendo creación.`,
         );
       } else {
-        const problemasAsignados = problemas
-          .sort(() => Math.random() - 0.5)
-          .slice(0, Math.min(totalSoluciones, problemas.length));
-
         let puntosAcumulados = 0;
-        for (const problema of problemasAsignados) {
-          const puntos = PUNTOS_POR_DIFICULTAD[problema.dificultad] ?? 0;
-          puntosAcumulados += puntos;
+        const lenguaje = LENGUAJES[i % LENGUAJES.length] || Lenguaje.PYTHON;
 
-          const solucion = solucionRepository.create({
-            respuesta: `// Solución seed para "${problema.titulo}"`,
-            estado: EstadoSolucion.CORRECTO,
-            lenguaje_programacion: 'Python' as Lenguaje,
-            resultado_validacion: true,
-            problema: { id: problema.id } as Problema,
-            usuario: { id: usuario.id } as Usuario,
-          });
-          await solucionRepository.save(solucion);
+        for (const problema of problemasCorrectos) {
+          const puntos = PUNTOS_POR_DIFICULTAD[problema.dificultad];
+          puntosAcumulados += puntos;
+          await solucionRepository.save(
+            solucionRepository.create({
+              respuesta: RESPUESTAS_POR_LENGUAJE[lenguaje],
+              estado: EstadoSolucion.CORRECTO,
+              lenguaje_programacion: lenguaje,
+              resultado_validacion: true,
+              problema: { id: problema.id } as Problema,
+              usuario: { id: usuario.id } as Usuario,
+            }),
+          );
+        }
+
+        for (const problema of problemasIncorrectos) {
+          await solucionRepository.save(
+            solucionRepository.create({
+              respuesta: `// Intento fallido para "${problema.titulo}"`,
+              estado: EstadoSolucion.INCORRECTO,
+              lenguaje_programacion: lenguaje,
+              resultado_validacion: false,
+              problema: { id: problema.id } as Problema,
+              usuario: { id: usuario.id } as Usuario,
+            }),
+          );
+        }
+
+        for (const problema of problemasPendientes) {
+          await solucionRepository.save(
+            solucionRepository.create({
+              respuesta: `// Pendiente de revisión para "${problema.titulo}"`,
+              estado: EstadoSolucion.PENDIENTE,
+              lenguaje_programacion: lenguaje,
+              resultado_validacion: false,
+              problema: { id: problema.id } as Problema,
+              usuario: { id: usuario.id } as Usuario,
+            }),
+          );
         }
 
         usuario.puntos_totales = puntosAcumulados;
         await usuarioRepository.save(usuario);
         console.log(
-          `✅ ${username}: ${problemasAsignados.length} soluciones (${puntosAcumulados} pts)`,
+          `✅ ${perfil.username}: ${problemasCorrectos.length}C/${problemasIncorrectos.length}I/${problemasPendientes.length}P → ${puntosAcumulados} pts`,
         );
       }
 
       const yaTieneInscripciones = await inscripcionRepository.count({
         where: { usuario: { id: usuario.id } },
       });
-      if (yaTieneInscripciones === 0 && totalInscripciones > 0) {
-        const competenciasAsignadas = competenciasUnicas
-          .sort(() => Math.random() - 0.5)
-          .slice(0, Math.min(totalInscripciones, competenciasUnicas.length));
+      if (yaTieneInscripciones === 0 && perfil.inscripciones > 0) {
+        const competenciasAsignadas = pickDistributed(
+          competenciasUnicas,
+          perfil.inscripciones,
+          i,
+        );
 
         for (const comp of competenciasAsignadas) {
-          const inscripcion = inscripcionRepository.create({
-            fecha_inscripcion: new Date(),
-            usuario: { id: usuario.id } as Usuario,
-            competencia: { id: comp.id },
-          });
-          await inscripcionRepository.save(inscripcion);
+          const fecha = new Date();
+          fecha.setDate(fecha.getDate() - (perfil.inscripciones * 2 + i));
+          await inscripcionRepository.save(
+            inscripcionRepository.create({
+              fecha_inscripcion: fecha,
+              usuario: { id: usuario.id } as Usuario,
+              competencia: { id: comp.id },
+            }),
+          );
         }
-        console.log(
-          `✅ ${username}: ${competenciasAsignadas.length} inscripciones`,
-        );
       }
     }
 
@@ -154,6 +338,27 @@ export const rankingSeed: Seed = {
     await dataSource.destroy();
   },
 };
+
+function pickDistributed<T>(source: T[], count: number, seed: number): T[] {
+  if (count <= 0 || source.length === 0) return [];
+  const stride = Math.max(1, Math.floor(source.length / count));
+  const result: T[] = [];
+  const offset = seed % source.length;
+  for (let i = 0; i < count; i++) {
+    const idx = (offset + i * stride) % source.length;
+    const item = source[idx];
+    if (item && !result.includes(item)) {
+      result.push(item);
+    }
+  }
+  if (result.length < count) {
+    for (const item of source) {
+      if (result.length >= count) break;
+      if (!result.includes(item)) result.push(item);
+    }
+  }
+  return result.slice(0, count);
+}
 
 async function recomputarPosiciones(repo: Repository<Usuario>) {
   await repo
