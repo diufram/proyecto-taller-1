@@ -216,13 +216,6 @@
 
 <p-toast></p-toast>
 
-<app-competencia-create-edit-modal
-    [(visible)]="createEditVisible"
-    [mode]="createEditMode"
-    [data]="selectedCompetencia"
-    (onSaved)="onSaved()"
-></app-competencia-create-edit-modal>
-
 <app-competencia-delete-modal
     [(visible)]="deleteVisible"
     [target]="deleteTarget"

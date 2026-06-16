@@ -170,25 +170,4 @@
         word-break: break-word;
     }
 
-    .form-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        background: var(--surface-card);
-        border: 1px solid var(--surface-border);
-        border-radius: 16px;
-        padding: 1rem 1.5rem;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-        position: sticky;
-        bottom: 1rem;
-        z-index: 5;
-        flex-wrap: wrap;
-    }
-
-    .footer-status {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-    }
 }

@@ -53,6 +53,11 @@
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
     }
 
+    .generation-card {
+        position: relative;
+        overflow: hidden;
+    }
+
     .field-label {
         font-size: 0.78rem;
         font-weight: 600;
@@ -187,7 +192,7 @@
     }
 
     .preview-item {
-        background: var(--surface-ground);
+        background: var(--surface-card);
         border: 1.5px solid var(--surface-border);
         border-radius: 12px;
         padding: 1rem 1.1rem;
@@ -216,13 +221,13 @@
     .preview-item-title {
         font-size: 0.95rem;
         font-weight: 700;
-        color: var(--text-color);
+        color: var(--text-color, #ffffff);
         line-height: 1.3;
     }
 
     .preview-item-desc {
         font-size: 0.78rem;
-        color: var(--text-color-secondary);
+        color: var(--text-color-secondary, rgba(255, 255, 255, 0.7));
         line-height: 1.4;
     }
 
@@ -255,13 +260,13 @@
     }
 
     .meta-code {
-        background: var(--surface-card);
+        background: var(--surface-ground, #1a1a1a);
         border: 1px solid var(--surface-border);
         border-radius: 6px;
         padding: 0.5rem 0.6rem;
         font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
         font-size: 0.75rem;
-        color: var(--text-color);
+        color: var(--text-color, #ffffff);
         margin: 0;
         max-height: 5rem;
         overflow: auto;

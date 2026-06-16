@@ -12,7 +12,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -221,21 +221,20 @@ export class ProblemaGeneratePageComponent implements OnInit {
             .generate({
                 prompt,
                 cantidad,
-                dificultad: null,
+                dificultad,
                 competenciaNombre: this.competenciaNombre,
                 competenciaDescripcion: this.competenciaDescripcion,
                 nivelDificultad: this.nivelDificultad,
                 tipo: this.tipo,
             })
+            .pipe(finalize(() => (this.generating = false)))
             .subscribe({
                 next: (problems) => {
                     this.generated = problems;
                     this.selectedIndexes = new Set(problems.map((_, i) => i));
-                    this.generating = false;
                 },
                 error: () => {
                     this.toast.error('No se pudieron generar los problemas');
-                    this.generating = false;
                 },
             });
     }

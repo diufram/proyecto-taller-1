@@ -1,0 +1,230 @@
+<p-toast></p-toast>
+
+<div class="competencia-form-page">
+    <div class="mb-3 pl-1">
+        <h3 class="text-2xl font-bold text-color m-0">{{ pageTitle }}</h3>
+    </div>
+
+    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
+        <ng-template pTemplate="left">
+            <div class="actions-container">
+                <p-button
+                    icon="pi pi-arrow-left"
+                    label="Volver"
+                    severity="secondary"
+                    [outlined]="true"
+                    [disabled]="saving"
+                    (onClick)="cancel()"
+                ></p-button>
+                <p-button
+                    [label]="saveLabel"
+                    [icon]="saveIcon"
+                    [disabled]="!isValid || saving"
+                    (onClick)="save()"
+                ></p-button>
+            </div>
+        </ng-template>
+    </p-toolbar>
+
+    @if (loadingData) {
+        <div class="loading-skeleton">
+            <p-skeleton width="100%" height="3.5rem" styleClass="mb-3"></p-skeleton>
+            <p-skeleton width="100%" height="8rem" styleClass="mb-3"></p-skeleton>
+            <p-skeleton width="100%" height="3.5rem" styleClass="mb-3"></p-skeleton>
+        </div>
+    } @else {
+        <form [formGroup]="form" class="competencia-form">
+            <div class="form-card">
+                <div class="section-header">
+                    <i class="pi pi-trophy"></i>
+                    <h4>Información general</h4>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="nombre_input" class="field-label">
+                        Nombre <span class="required">*</span>
+                    </label>
+                    <input
+                        pInputText
+                        id="nombre_input"
+                        formControlName="nombre"
+                        class="w-full"
+                        [invalid]="isInvalid('nombre')"
+                        placeholder="Ej: Torneo de programación básica"
+                    />
+                    @if (isInvalid('nombre')) {
+                        <p-message severity="error" size="small" variant="simple">
+                            El nombre es requerido.
+                        </p-message>
+                    }
+                </div>
+
+                <div class="flex flex-col gap-2 mt-4">
+                    <label for="descripcion_input" class="field-label">
+                        Descripción <span class="required">*</span>
+                    </label>
+                    <textarea
+                        pTextarea
+                        id="descripcion_input"
+                        formControlName="descripcion"
+                        rows="5"
+                        autoResize="true"
+                        class="w-full"
+                        [invalid]="isInvalid('descripcion')"
+                        placeholder="Describe el objetivo, reglas y contexto de la competencia."
+                    ></textarea>
+                    @if (isInvalid('descripcion')) {
+                        <p-message severity="error" size="small" variant="simple">
+                            La descripción es requerida.
+                        </p-message>
+                    }
+                </div>
+            </div>
+
+            <div class="form-card">
+                <div class="section-header">
+                    <i class="pi pi-calendar"></i>
+                    <h4>Programación</h4>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label for="fecha_inicio_input" class="field-label">
+                            Fecha inicio <span class="required">*</span>
+                        </label>
+                        <p-datepicker
+                            inputId="fecha_inicio_input"
+                            formControlName="fecha_inicio"
+                            dateFormat="yy-mm-dd"
+                            showIcon
+                            iconDisplay="input"
+                            styleClass="w-full"
+                            [inputStyle]="{ width: '100%' }"
+                            [invalid]="isInvalid('fecha_inicio')"
+                        ></p-datepicker>
+                        @if (isInvalid('fecha_inicio')) {
+                            <p-message severity="error" size="small" variant="simple">
+                                La fecha de inicio es requerida.
+                            </p-message>
+                        }
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="fecha_fin_input" class="field-label">
+                            Fecha fin <span class="required">*</span>
+                        </label>
+                        <p-datepicker
+                            inputId="fecha_fin_input"
+                            formControlName="fecha_fin"
+                            dateFormat="yy-mm-dd"
+                            showIcon
+                            iconDisplay="input"
+                            styleClass="w-full"
+                            [inputStyle]="{ width: '100%' }"
+                            [invalid]="isInvalid('fecha_fin') || hasDateValidationError()"
+                        ></p-datepicker>
+                        @if (isInvalid('fecha_fin')) {
+                            <p-message severity="error" size="small" variant="simple">
+                                La fecha de fin es requerida.
+                            </p-message>
+                        }
+                        @if (hasDateValidationError()) {
+                            <p-message severity="error" size="small" variant="simple">
+                                La fecha de fin debe ser posterior a la fecha de inicio.
+                            </p-message>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <div class="section-header">
+                    <i class="pi pi-sliders-h"></i>
+                    <h4>Configuración</h4>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label for="nivel_input" class="field-label">
+                            Nivel <span class="required">*</span>
+                        </label>
+                        <p-select
+                            inputId="nivel_input"
+                            [options]="niveles"
+                            formControlName="nivel_dificultad"
+                            styleClass="w-full"
+                            [appendTo]="'body'"
+                            [invalid]="isInvalid('nivel_dificultad')"
+                            placeholder="Selecciona nivel"
+                        ></p-select>
+                        @if (isInvalid('nivel_dificultad')) {
+                            <p-message severity="error" size="small" variant="simple">
+                                El nivel es requerido.
+                            </p-message>
+                        }
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="estado_input" class="field-label">
+                            Estado <span class="required">*</span>
+                        </label>
+                        <p-select
+                            inputId="estado_input"
+                            [options]="estados"
+                            formControlName="estado"
+                            styleClass="w-full"
+                            [appendTo]="'body'"
+                            [invalid]="isInvalid('estado')"
+                            placeholder="Selecciona estado"
+                        ></p-select>
+                        @if (isInvalid('estado')) {
+                            <p-message severity="error" size="small" variant="simple">
+                                El estado es requerido.
+                            </p-message>
+                        }
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="tipo_input" class="field-label">
+                            Tipo <span class="required">*</span>
+                        </label>
+                        <p-select
+                            inputId="tipo_input"
+                            [options]="tipos"
+                            formControlName="tipo"
+                            styleClass="w-full"
+                            [appendTo]="'body'"
+                            [invalid]="isInvalid('tipo')"
+                            placeholder="Selecciona tipo"
+                        ></p-select>
+                        @if (isInvalid('tipo')) {
+                            <p-message severity="error" size="small" variant="simple">
+                                El tipo es requerido.
+                            </p-message>
+                        }
+                    </div>
+                </div>
+
+                @if (isGrupal) {
+                    <div class="flex flex-col gap-2 mt-4">
+                        <label for="max_input" class="field-label">
+                            Máx. participantes <span class="required">*</span>
+                        </label>
+                        <p-inputNumber
+                            inputId="max_input"
+                            formControlName="max_participantes"
+                            [min]="1"
+                            styleClass="w-full"
+                            [inputStyle]="{ width: '100%' }"
+                        ></p-inputNumber>
+                        @if (isInvalid('max_participantes')) {
+                            <p-message severity="error" size="small" variant="simple">
+                                Debe ser un número válido.
+                            </p-message>
+                        }
+                    </div>
+                }
+            </div>
+        </form>
+    }
+</div>

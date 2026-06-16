@@ -19,7 +19,6 @@ import { MessageService } from 'primeng/api';
 import { ToastService } from '@/core/services/toast.service';
 import { CompetenciasService } from '@/features/competencias/services/competencias.service';
 import { Competencia } from '@/features/competencias/models/competencia.model';
-import { CompetenciaCreateEditModalComponent, ModalMode } from '@/features/competencias/components/competencia-create-edit-modal/competencia-create-edit-modal.component';
 import { CompetenciaDeleteModalComponent } from '@/features/competencias/components/competencia-delete-modal/competencia-delete-modal.component';
 import { RowAction } from '@/shared/components/shared-table/interfaces/table-config.interface';
 
@@ -40,7 +39,6 @@ import { RowAction } from '@/shared/components/shared-table/interfaces/table-con
         TooltipModule,
         TagModule,
         ToastModule,
-        CompetenciaCreateEditModalComponent,
         CompetenciaDeleteModalComponent,
     ],
     providers: [MessageService],
@@ -64,10 +62,6 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
     rowsPerPageOptions: number[] = [8];
 
     rowActions: RowAction[] = [];
-
-    createEditVisible = false;
-    createEditMode: ModalMode = 'create';
-    selectedCompetencia?: Competencia;
 
     deleteVisible = false;
     deleteTarget?: Competencia;
@@ -129,18 +123,14 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
     }
 
     onCreate(): void {
-        this.createEditMode = 'create';
-        this.selectedCompetencia = undefined;
-        this.createEditVisible = true;
+        this.router.navigate(['/admin/competencias/nuevo']);
     }
 
     onAction(e: { action: string; data: Competencia }): void {
         const comp = e.data;
         switch (e.action) {
             case 'edit':
-                this.createEditMode = 'edit';
-                this.selectedCompetencia = comp;
-                this.createEditVisible = true;
+                this.router.navigate(['/admin/competencias/editar', comp.id]);
                 break;
             case 'delete':
                 this.deleteTarget = comp;
@@ -157,16 +147,6 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
                 });
                 break;
         }
-    }
-
-    onSaved(): void {
-        const msg =
-            this.createEditMode === 'create'
-                ? 'Competencia creada correctamente'
-                : 'Competencia actualizada correctamente';
-        this.toast.success('Éxito', msg);
-        this.createEditVisible = false;
-        this.loadFirstPage();
     }
 
     onDeleted(): void {

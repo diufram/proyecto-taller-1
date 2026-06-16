@@ -19,9 +19,8 @@
                     [disabled]="saving"
                 ></p-button>
                 <p-button
-                    label="Generar"
+                    [label]="generating ? 'Generando...' : 'Generar'"
                     icon="pi pi-sparkles"
-                    [loading]="generating"
                     [disabled]="!canGenerate"
                     (onClick)="onGenerate()"
                 ></p-button>
@@ -30,7 +29,7 @@
     </p-toolbar>
 
     <form [formGroup]="form" class="generate-form">
-        <div class="form-card">
+        <div class="form-card generation-card">
             <div class="flex flex-col gap-2">
                 <label for="prompt_input" class="field-label">
                     Descripción <span class="required">*</span>
@@ -108,21 +107,21 @@
                     </span>
                 </div>
             </div>
-        </div>
 
-        @if (generating) {
-            <div class="generating-overlay">
-                <div class="generating-content">
-                    <i class="generating-icon pi pi-sparkles"></i>
-                    <p class="m-0 mt-3 font-semibold">
-                        Generando problemas con IA...
-                    </p>
-                    <p class="m-0 text-sm text-color-secondary">
-                        Esto puede tardar unos segundos.
-                    </p>
+            @if (generating) {
+                <div class="generating-overlay">
+                    <div class="generating-content">
+                        <i class="generating-icon pi pi-sparkles"></i>
+                        <p class="m-0 mt-3 font-semibold">
+                            Generando problemas con IA...
+                        </p>
+                        <p class="m-0 text-sm text-color-secondary">
+                            Esto puede tardar unos segundos.
+                        </p>
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
 
         @if (generated.length > 0) {
             <div class="form-card generated-section">
@@ -168,6 +167,7 @@
                                 <p-checkbox
                                     [binary]="true"
                                     [ngModel]="isSelected(i)"
+                                    [ngModelOptions]="{ standalone: true }"
                                     (onChange)="toggleSelection(i)"
                                     [inputId]="'select-' + i"
                                 ></p-checkbox>

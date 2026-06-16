@@ -12,6 +12,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -147,6 +148,17 @@ export class ProblemaFormPageComponent implements OnInit {
         return this.form.valid;
     }
 
+    get saveLabel(): string {
+        if (this.saving) {
+            return this.mode === 'create' ? 'Creando...' : 'Guardando...';
+        }
+        return this.mode === 'create' ? 'Crear problema' : 'Guardar cambios';
+    }
+
+    get saveIcon(): string {
+        return this.mode === 'create' ? 'pi pi-plus' : 'pi pi-save';
+    }
+
     charCount(field: string): number {
         const value = this.form.get(field)?.value;
         return typeof value === 'string' ? value.length : 0;
@@ -223,9 +235,8 @@ export class ProblemaFormPageComponent implements OnInit {
                       payload as UpdateProblemaDto,
                   );
 
-        obs.subscribe({
+        obs.pipe(finalize(() => (this.saving = false))).subscribe({
             next: () => {
-                this.saving = false;
                 this.toast.success(
                     'Éxito',
                     this.mode === 'create'
@@ -234,9 +245,7 @@ export class ProblemaFormPageComponent implements OnInit {
                 );
                 this.goBack();
             },
-            error: () => {
-                this.saving = false;
-            },
+            error: () => {},
         });
     }
 
