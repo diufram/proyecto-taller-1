@@ -22,7 +22,7 @@ import { AuthService } from '@/features/auth/services/auth.service';
 import { authInterceptor } from '@/core/interceptors/auth.interceptor';
 
 export function initializeAppFactory(authService: AuthService) {
-    return () => authService.loadSession();
+    return () => authService.bootstrapSession();
 }
 
 export const appConfig: ApplicationConfig = {

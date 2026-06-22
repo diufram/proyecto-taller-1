@@ -17,6 +17,7 @@ import {
     take,
 } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '@/features/auth/services/auth.service';
 
 let isRefreshing = false;
 let refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<
@@ -37,9 +38,12 @@ export const authInterceptor: HttpInterceptorFn = (
 ) => {
     const router = inject(Router);
     const httpBackend = inject(HttpBackend);
+    const authService = inject(AuthService);
     const httpClient = new HttpClient(httpBackend);
 
-    const token = localStorage.getItem('token');
+    const token = authService.hasValidAccessToken()
+        ? localStorage.getItem('token')
+        : null;
 
     let authReq = req;
 
@@ -56,7 +60,7 @@ export const authInterceptor: HttpInterceptorFn = (
                 error.status === 401 &&
                 !isPublicAuthUrl(req.url)
             ) {
-                return handle401Error(authReq, next, httpClient, router);
+                return handle401Error(authReq, next, httpClient, router, authService);
             }
             return throwError(() => error);
         }),
@@ -68,6 +72,7 @@ const handle401Error = (
     next: HttpHandlerFn,
     http: HttpClient,
     router: Router,
+    authService: AuthService,
 ) => {
     if (!isRefreshing) {
         isRefreshing = true;
@@ -76,7 +81,7 @@ const handle401Error = (
         const refreshToken = localStorage.getItem('refresh_token');
         if (!refreshToken) {
             isRefreshing = false;
-            router.navigate(['/auth/login']);
+            authService.forceLogout();
             return throwError(() => new Error('No refresh token'));
         }
 
@@ -105,15 +110,12 @@ const handle401Error = (
                     );
                 }
 
-                router.navigate(['/auth/login']);
+                authService.forceLogout();
                 return throwError(() => new Error('Token refresh failed'));
             }),
             catchError((err) => {
                 isRefreshing = false;
-                localStorage.removeItem('token');
-                localStorage.removeItem('refresh_token');
-                localStorage.removeItem('usuario');
-                router.navigate(['/auth/login']);
+                authService.forceLogout();
                 return throwError(() => err);
             }),
         );
