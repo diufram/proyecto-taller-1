@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t } from '../../i18n/utils';
+
+const locale = 'es' as const;
+const sections = [1, 2, 3, 4, 5, 6, 7, 8];
+---
+
+<BaseLayout>
+    <section class="container legal-page">
+        <span class="eyebrow">{t(locale, 'footer.legal')}</span>
+        <h1>{t(locale, 'privacy.title')}</h1>
+        <p class="intro">{t(locale, 'privacy.intro')}</p>
+        <div class="legal-meta">
+            <span>{t(locale, 'legal.lastUpdated')}: 2026-06-22</span>
+        </div>
+
+        {
+            sections.map((n) => (
+                <div class="legal-section">
+                    <h2>{t(locale, `privacy.s${n}.title` as any)}</h2>
+                    <p>{t(locale, `privacy.s${n}.body` as any)}</p>
+                </div>
+            ))
+        }
+
+        <div class="legal-contact">
+            <h2>{t(locale, 'legal.contact')}</h2>
+            <p>
+                {t(locale, 'legal.contactBody')}{' '}
+                <a href="mailto:privacy@compex.example.com">privacy@compex.example.com</a>
+            </p>
+        </div>
+    </section>
+</BaseLayout>

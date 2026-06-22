@@ -1,0 +1,155 @@
+---
+import { buildLocalizedPath, t, type Locale } from '../i18n/utils';
+
+interface Props {
+    locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <picture class="brand-mark">
+                <source srcset="/logo-512.png 512w, /logo-256.png 256w, /logo-128.png 128w, /logo-64.png 64w" sizes="48px" />
+                <img
+                    src="/logo-256.png"
+                    alt=""
+                    width="48"
+                    height="48"
+                    decoding="async"
+                />
+            </picture>
+            <div>
+                <strong>{t(locale, 'brand.name')}</strong>
+                <span class="brand-tagline">{t(locale, 'brand.tagline')}</span>
+            </div>
+        </div>
+
+        <div class="footer-columns">
+            <div>
+                <h4>{t(locale, 'footer.product')}</h4>
+                <ul>
+                    <li><a href={buildLocalizedPath(locale, '/')}>{t(locale, 'nav.home')}</a></li>
+                    <li><a href={buildLocalizedPath(locale, locale === 'es' ? '/precios' : '/pricing')}>{t(locale, 'nav.pricing')}</a></li>
+                    <li><a href="https://app.compex.example.com" rel="noopener">{t(locale, 'footer.app')}</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>{t(locale, 'footer.legal')}</h4>
+                <ul>
+                    <li><a href={buildLocalizedPath(locale, '/nosotros')}>{t(locale, 'nav.about')}</a></li>
+                    <li><a href={buildLocalizedPath(locale, '/terminos')}>{t(locale, 'nav.terms')}</a></li>
+                    <li><a href={buildLocalizedPath(locale, '/privacidad')}>{t(locale, 'nav.privacy')}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>© {year} {t(locale, 'brand.name')}. {t(locale, 'footer.copyright')}</span>
+    </div>
+</footer>
+
+<style>
+    .site-footer {
+        margin-top: 5rem;
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+    }
+
+    .footer-inner {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2.25rem) 1.5rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    @media (min-width: 768px) {
+        .footer-inner {
+            grid-template-columns: 1.2fr 2fr;
+        }
+    }
+
+    .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .footer-brand strong {
+        display: block;
+        color: var(--text);
+        font-size: 1.05rem;
+    }
+
+    .brand-tagline {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--text-muted);
+    }
+
+    .brand-mark {
+        display: inline-block;
+        width: clamp(40px, 5vw, 48px);
+        height: clamp(40px, 5vw, 48px);
+        flex: 0 0 auto;
+        line-height: 0;
+    }
+
+    .brand-mark img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(16, 185, 129, 0.28));
+    }
+
+    .footer-columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.5rem;
+    }
+
+    h4 {
+        margin: 0 0 0.7rem;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text);
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.92rem;
+    }
+
+    a:hover {
+        color: var(--text);
+    }
+
+    .footer-bottom {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 1.25rem clamp(1.25rem, 4vw, 2.25rem);
+        border-top: 1px solid var(--border);
+        font-size: 0.82rem;
+        color: var(--text-muted);
+    }
+</style>

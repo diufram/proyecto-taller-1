@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PricingTiers from '../../components/PricingTiers.astro';
+import { t } from '../../i18n/utils';
+
+const locale = 'es' as const;
+
+const faq = [
+    { q: t(locale, 'pricing.faq.q1'), a: t(locale, 'pricing.faq.a1') },
+    { q: t(locale, 'pricing.faq.q2'), a: t(locale, 'pricing.faq.a2') },
+    { q: t(locale, 'pricing.faq.q3'), a: t(locale, 'pricing.faq.a3') },
+];
+---
+
+<BaseLayout>
+    <section class="container pricing-page">
+        <span class="eyebrow">{t(locale, 'brand.name')}</span>
+        <h1>{t(locale, 'pricing.title')}</h1>
+        <p class="pricing-subtitle">{t(locale, 'pricing.subtitle')}</p>
+        <p class="pricing-billing">{t(locale, 'pricing.billing')}</p>
+
+        <PricingTiers locale={locale} />
+
+        <p class="pricing-disclaimer">{t(locale, 'pricing.disclaimer')}</p>
+
+        <section class="faq">
+            <h2>{t(locale, 'pricing.faq.title')}</h2>
+            <div class="faq-list">
+                {
+                    faq.map((item) => (
+                        <article class="faq-item">
+                            <h3>{item.q}</h3>
+                            <p>{item.a}</p>
+                        </article>
+                    ))
+                }
+            </div>
+        </section>
+    </section>
+</BaseLayout>
+
+<style>
+    .pricing-page {
+        padding: clamp(3rem, 6vw, 5rem) 0 clamp(2rem, 4vw, 3rem);
+    }
+
+    .pricing-page h1 {
+        font-size: clamp(2.2rem, 4vw, 3rem);
+        margin: 0 0 0.75rem;
+        letter-spacing: -0.02em;
+    }
+
+    .pricing-subtitle {
+        margin: 0 0 0.5rem;
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        max-width: 44rem;
+    }
+
+    .pricing-billing {
+        margin: 0 0 clamp(1.75rem, 3.5vw, 2.5rem);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .pricing-disclaimer {
+        margin: clamp(1.5rem, 3vw, 2rem) auto 0;
+        max-width: 42rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        font-style: italic;
+    }
+
+    .faq {
+        margin-top: clamp(2.5rem, 5vw, 4rem);
+    }
+
+    .faq h2 {
+        font-size: 1.4rem;
+        margin: 0 0 1.25rem;
+    }
+
+    .faq-list {
+        display: grid;
+        gap: 0.85rem;
+        max-width: 50rem;
+    }
+
+    .faq-item {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+    }
+
+    .faq-item h3 {
+        margin: 0 0 0.35rem;
+        font-size: 0.98rem;
+        color: var(--text);
+    }
+
+    .faq-item p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.92rem;
+    }
+</style>

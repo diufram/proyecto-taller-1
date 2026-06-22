@@ -1,6 +1,12 @@
 # Proyecto Taller
 
-Stack: NestJS (backend) + Angular 20 (frontend) + PostgreSQL
+Monorepo con tres proyectos independientes:
+
+- **`backend/`** — NestJS 11 + PostgreSQL: API REST de Compex.
+- **`frontend/`** — Angular 20: SPA de la plataforma Compex.
+- **`marketing/`** — Astro 4: sitio institucional (Nosotros, Términos, Privacidad) bilingüe ES/EN.
+
+Stack: NestJS (backend) + Angular 20 (frontend) + Astro 4 (marketing) + PostgreSQL.
 
 ## Requisitos
 
@@ -17,6 +23,10 @@ pnpm install
 
 # Frontend
 cd frontend
+pnpm install
+
+# Marketing
+cd marketing
 pnpm install
 ```
 
@@ -68,6 +78,22 @@ pnpm run test           # Jest (unit + integration)
 pnpm run test:watch     # Jest en modo watch
 ```
 
+### Marketing (Astro)
+
+```bash
+cd marketing
+pnpm run dev            # astro dev — http://localhost:4321
+pnpm run build          # genera dist/ (sitio estático)
+pnpm run preview        # sirve el build localmente
+```
+
+Sitio institucional bilingüe (ES/EN) con i18n nativo de Astro. Rutas generadas:
+
+- `/es/` (Inicio), `/es/nosotros`, `/es/terminos`, `/es/privacidad`
+- `/en/` (Home), `/en/about`, `/en/terms`, `/en/privacy`
+
+`/` redirige al español por defecto. El `LangSwitcher` en el navbar navega al equivalente en el otro idioma.
+
 ## Comandos Backend
 
 ```bash
@@ -95,7 +121,8 @@ pnpm run db:seed                # sembrar datos iniciales
 
 - Backend: http://localhost:3000
 - Swagger docs: http://localhost:3000/docs (solo en desarrollo)
-- Frontend: http://localhost:4200
+- Frontend (Compex): http://localhost:4200
+- Marketing (sitio público): http://localhost:4321
 
 ## Docker
 

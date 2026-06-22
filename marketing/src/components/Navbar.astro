@@ -1,0 +1,154 @@
+---
+import LangSwitcher from './LangSwitcher.astro';
+import { buildLocalizedPath, t, type Locale } from '../i18n/utils';
+
+interface Props {
+    locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const links = locale === 'es'
+    ? [
+          { href: buildLocalizedPath(locale, '/'), key: 'nav.home' as const },
+          { href: buildLocalizedPath(locale, '/nosotros'), key: 'nav.about' as const },
+          { href: buildLocalizedPath(locale, '/precios'), key: 'nav.pricing' as const },
+          { href: buildLocalizedPath(locale, '/terminos'), key: 'nav.terms' as const },
+          { href: buildLocalizedPath(locale, '/privacidad'), key: 'nav.privacy' as const },
+      ]
+    : [
+          { href: buildLocalizedPath(locale, '/'), key: 'nav.home' as const },
+          { href: buildLocalizedPath(locale, '/about'), key: 'nav.about' as const },
+          { href: buildLocalizedPath(locale, '/pricing'), key: 'nav.pricing' as const },
+          { href: buildLocalizedPath(locale, '/terms'), key: 'nav.terms' as const },
+          { href: buildLocalizedPath(locale, '/privacy'), key: 'nav.privacy' as const },
+      ];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="navbar">
+    <div class="navbar-inner">
+        <a class="brand" href={buildLocalizedPath(locale, '/')} aria-label={t(locale, 'brand.name')}>
+            <picture class="brand-mark">
+                <source srcset="/logo-512.png 512w, /logo-256.png 256w, /logo-128.png 128w, /logo-64.png 64w" sizes="(max-width: 768px) 32px, 40px" />
+                <img
+                    src="/logo-256.png"
+                    alt=""
+                    width="40"
+                    height="40"
+                    decoding="async"
+                />
+            </picture>
+            <span class="brand-text">{t(locale, 'brand.name')}</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary">
+            {
+                links.map((link) => {
+                    const isActive =
+                        currentPath === link.href ||
+                        (link.href !== buildLocalizedPath(locale, '/') &&
+                            currentPath.startsWith(link.href));
+                    return (
+                        <a
+                            href={link.href}
+                            class:list={['nav-link', isActive && 'is-active']}
+                            aria-current={isActive ? 'page' : undefined}
+                        >
+                            {t(locale, link.key)}
+                        </a>
+                    );
+                })
+            }
+        </nav>
+
+        <div class="navbar-actions">
+            <LangSwitcher locale={locale} currentPath={currentPath} />
+        </div>
+    </div>
+</header>
+
+<style>
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(10, 10, 15, 0.78);
+        backdrop-filter: saturate(180%) blur(14px);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .navbar-inner {
+        max-width: 72rem;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: clamp(0.75rem, 2.5vw, 1.5rem);
+        padding: 0.9rem clamp(1rem, 3vw, 1.75rem);
+    }
+
+    .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        color: var(--text);
+        font-weight: 800;
+        font-size: 1.05rem;
+        text-decoration: none;
+        letter-spacing: -0.01em;
+    }
+
+    .brand-mark {
+        display: inline-block;
+        width: clamp(32px, 4vw, 40px);
+        height: clamp(32px, 4vw, 40px);
+        flex: 0 0 auto;
+        line-height: 0;
+    }
+
+    .brand-mark img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 18px rgba(16, 185, 129, 0.28));
+    }
+
+    .nav-links {
+        display: none;
+        gap: 1.4rem;
+    }
+
+    @media (min-width: 768px) {
+        .nav-links {
+            display: flex;
+        }
+    }
+
+    .nav-link {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 0.4rem 0;
+        border-bottom: 2px solid transparent;
+        transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-link:hover {
+        color: var(--text);
+    }
+
+    .nav-link.is-active {
+        color: var(--text);
+        border-bottom-color: var(--accent);
+    }
+
+    .navbar-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+</style>

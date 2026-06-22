@@ -1,0 +1,93 @@
+---
+import { languages, t, type Locale } from '../i18n/utils';
+
+interface Props {
+    locale: Locale;
+    currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+
+const slugMapEsToEn: Record<string, string> = {
+    nosotros: 'about',
+    precios: 'pricing',
+    terminos: 'terms',
+    privacidad: 'privacy',
+};
+
+const slugMapEnToEs: Record<string, string> = {
+    about: 'nosotros',
+    pricing: 'precios',
+    terms: 'terminos',
+    privacy: 'privacidad',
+};
+
+const localeToPath = (target: Locale): string => {
+    const cleaned = currentPath.replace(/^\/(es|en)/, '') || '/';
+    const segments = cleaned.split('/').filter(Boolean);
+
+    if (segments.length === 0) {
+        return `/${target}`;
+    }
+
+    const first = segments[0];
+    const map = target === 'en' ? slugMapEsToEn : slugMapEnToEs;
+    const translated = map[first] ?? first;
+    const rest = segments.slice(1).join('/');
+
+    return `/${target}/${translated}${rest ? `/${rest}` : ''}`;
+};
+---
+
+<div class="lang-switcher" role="group" aria-label="Language switcher">
+    {
+        (Object.keys(languages) as Locale[]).map((code) => {
+            const isActive = code === locale;
+            return (
+                <a
+                    href={localeToPath(code)}
+                    class:list={['lang-link', isActive && 'is-active']}
+                    aria-current={isActive ? 'true' : undefined}
+                    lang={code}
+                >
+                    {t(code, 'brand.name') === 'Compex'
+                        ? code === 'es'
+                            ? 'ES'
+                            : 'EN'
+                        : code.toUpperCase()}
+                </a>
+            );
+        })
+    }
+</div>
+
+<style>
+    .lang-switcher {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.25rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--surface-soft);
+    }
+
+    .lang-link {
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.3rem 0.7rem;
+        border-radius: 999px;
+        text-decoration: none;
+        color: var(--text-muted);
+        transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .lang-link:hover {
+        color: var(--text);
+    }
+
+    .lang-link.is-active {
+        background: var(--accent);
+        color: #0a0a0f;
+    }
+</style>

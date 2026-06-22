@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t } from '../../i18n/utils';
+
+const locale = 'en' as const;
+---
+
+<BaseLayout>
+    <section class="container legal-page">
+        <span class="eyebrow">{t(locale, 'brand.name')}</span>
+        <h1>{t(locale, 'about.title')}</h1>
+        <p class="intro">{t(locale, 'about.intro')}</p>
+
+        <div class="legal-section">
+            <h2>{t(locale, 'about.mission.title')}</h2>
+            <p>{t(locale, 'about.mission.body')}</p>
+        </div>
+
+        <div class="legal-section">
+            <h2>{t(locale, 'about.values.title')}</h2>
+            <div class="grid grid-3" style="margin-top: 1rem;">
+                <article class="card">
+                    <h3>{t(locale, 'about.values.fair.title')}</h3>
+                    <p>{t(locale, 'about.values.fair.body')}</p>
+                </article>
+                <article class="card">
+                    <h3>{t(locale, 'about.values.simplicity.title')}</h3>
+                    <p>{t(locale, 'about.values.simplicity.body')}</p>
+                </article>
+                <article class="card">
+                    <h3>{t(locale, 'about.values.community.title')}</h3>
+                    <p>{t(locale, 'about.values.community.body')}</p>
+                </article>
+            </div>
+        </div>
+    </section>
+</BaseLayout>

@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildLocalizedPath, t } from '../../i18n/utils';
+
+const locale = 'es' as const;
+---
+
+<BaseLayout>
+    <section class="section">
+        <div class="container hero">
+            <span class="eyebrow">{t(locale, 'home.hero.eyebrow')}</span>
+            <h1>{t(locale, 'home.hero.title')}</h1>
+            <p class="hero-subtitle">{t(locale, 'home.hero.subtitle')}</p>
+            <div class="hero-actions">
+                <a class="btn btn-primary" href={buildLocalizedPath(locale, '/nosotros')}>
+                    {t(locale, 'home.hero.cta.primary')}
+                </a>
+                <a
+                    class="btn btn-ghost"
+                    href="https://app.compex.example.com"
+                    rel="noopener"
+                >
+                    {t(locale, 'home.hero.cta.secondary')}
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-tight pricing-cta">
+        <div class="container pricing-cta-inner">
+            <div>
+                <h2 class="section-title">{t(locale, 'pricing.title')}</h2>
+                <p class="section-subtitle">{t(locale, 'pricing.subtitle')}</p>
+            </div>
+            <a class="btn btn-primary" href={buildLocalizedPath(locale, '/precios')}>
+                {t(locale, 'nav.pricing')}
+            </a>
+        </div>
+    </section>
+
+    <section class="section section-tight">
+        <div class="container">
+            <h2 class="section-title">{t(locale, 'home.features.title')}</h2>
+            <div class="grid grid-3">
+                <article class="card">
+                    <h3>{t(locale, 'home.features.item1.title')}</h3>
+                    <p>{t(locale, 'home.features.item1.body')}</p>
+                </article>
+                <article class="card">
+                    <h3>{t(locale, 'home.features.item2.title')}</h3>
+                    <p>{t(locale, 'home.features.item2.body')}</p>
+                </article>
+                <article class="card">
+                    <h3>{t(locale, 'home.features.item3.title')}</h3>
+                    <p>{t(locale, 'home.features.item3.body')}</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container cta">
+            <h2 class="section-title">{t(locale, 'home.cta.title')}</h2>
+            <p class="section-subtitle">{t(locale, 'home.cta.body')}</p>
+            <a class="btn btn-primary" href="https://app.compex.example.com" rel="noopener">
+                {t(locale, 'home.cta.button')}
+            </a>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    .hero {
+        padding: clamp(4rem, 8vw, 7rem) 0 clamp(2.5rem, 5vw, 4rem);
+        text-align: left;
+        max-width: 52rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        margin: 0 0 1rem;
+        background: linear-gradient(135deg, #ffffff, #b3f5d4 80%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        color: var(--text-muted);
+        font-size: clamp(1.05rem, 2vw, 1.2rem);
+        margin: 0 0 2rem;
+        max-width: 42rem;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .cta {
+        text-align: center;
+        max-width: 44rem;
+        margin: 0 auto;
+    }
+
+    .cta .section-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .pricing-cta-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: clamp(1rem, 3vw, 2rem);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: clamp(1.25rem, 3vw, 2rem);
+        flex-wrap: wrap;
+    }
+
+    .pricing-cta-inner .section-title {
+        margin: 0 0 0.35rem;
+        font-size: clamp(1.4rem, 3vw, 1.9rem);
+    }
+
+    .pricing-cta-inner .section-subtitle {
+        margin: 0;
+        max-width: 36rem;
+    }
+</style>
