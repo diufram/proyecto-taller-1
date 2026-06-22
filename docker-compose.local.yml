@@ -1,7 +1,7 @@
 services:
   db:
     ports:
-      - "5433:5432"
+      - "5432:5432"
 
   seed:
     build:
@@ -18,16 +18,23 @@ services:
       db:
         condition: service_healthy
     command: sh -c "pnpm run db:seed"
+    networks:
+      - app
 
   backend:
-    ports:
-      - "3001:3000"
-    depends_on:
-      db:
-        condition: service_healthy
-      seed:
-        condition: service_completed_successfully
+    environment:
+      NODE_ENV: development
+      SWAGGER_ENABLED: "true"
+      ALLOWED_ORIGIN: "http://localhost:4200,http://localhost:8081,http://localhost"
 
   frontend:
     ports:
-      - "4200:4200"
+      - "4200:80"
+
+  marketing:
+    ports:
+      - "8081:80"
+
+  nginx:
+    ports:
+      - "80:80"

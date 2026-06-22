@@ -1,0 +1,14 @@
+node_modules
+dist
+.astro
+.git
+.env*
+README.md
+.dockerignore
+Dockerfile
+docker
+node_modules.Dockerfile
+*.log
+coverage
+.vscode
+.idea

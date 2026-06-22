@@ -49,9 +49,22 @@ async function bootstrap() {
     SwaggerModule.setup('docs', app, document);
   }
 
+  const allowedOrigins = (
+    configService.get<string>('ALLOWED_ORIGIN') ||
+    'http://localhost:4200'
+  )
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+
   app.enableCors({
-    origin:
-      configService.get<string>('ALLOWED_ORIGIN') || 'http://localhost:4200',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });

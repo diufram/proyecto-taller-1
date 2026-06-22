@@ -65,7 +65,7 @@ export const ui = {
         'legal.toc': 'Contenido',
         'legal.contact': 'Contacto',
         'legal.contactBody':
-            'Si tenés dudas sobre este documento, escribinos a legal@compex.example.com.',
+            'Si tenés dudas sobre este documento, escribinos a legal@bitwaise.com.',
 
         'terms.title': 'Términos y Condiciones',
         'terms.intro':
@@ -121,7 +121,7 @@ export const ui = {
             'Aplicamos medidas razonables para proteger los datos, incluyendo contraseñas hasheadas, control de acceso por rol y buenas prácticas de desarrollo seguro.',
         'privacy.s6.title': '6. Derechos del usuario',
         'privacy.s6.body':
-            'Podés solicitar el acceso, rectificación o eliminación de tus datos personales escribiéndonos a privacy@compex.example.com.',
+            'Podés solicitar el acceso, rectificación o eliminación de tus datos personales escribiéndonos a privacy@bitwaise.com.',
         'privacy.s7.title': '7. Retención',
         'privacy.s7.body':
             'Conservamos los datos mientras la cuenta esté activa. Al eliminar la cuenta, los datos personales se eliminan en un plazo razonable, salvo obligación legal de conservarlos.',
@@ -231,7 +231,7 @@ export const ui = {
         'legal.toc': 'Contents',
         'legal.contact': 'Contact',
         'legal.contactBody':
-            'If you have questions about this document, contact us at legal@compex.example.com.',
+            'If you have questions about this document, contact us at legal@bitwaise.com.',
 
         'terms.title': 'Terms and Conditions',
         'terms.intro':
@@ -287,7 +287,7 @@ export const ui = {
             'We apply reasonable measures to protect data, including hashed passwords, role-based access control and secure development best practices.',
         'privacy.s6.title': '6. User rights',
         'privacy.s6.body':
-            'You can request access, correction or deletion of your personal data by emailing privacy@compex.example.com.',
+            'You can request access, correction or deletion of your personal data by emailing privacy@bitwaise.com.',
         'privacy.s7.title': '7. Retention',
         'privacy.s7.body':
             'We keep data while the account is active. When you delete your account, personal data is removed within a reasonable timeframe, unless we are legally required to retain it.',

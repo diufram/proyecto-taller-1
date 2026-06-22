@@ -1,3 +1,6 @@
+networks:
+  app:
+
 services:
   db:
     image: postgres:15
@@ -14,6 +17,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - app
 
   backend:
     build:
@@ -38,6 +43,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - app
 
   frontend:
     build:
@@ -47,6 +54,34 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
+    networks:
+      - app
+
+  marketing:
+    build:
+      context: ./marketing
+      dockerfile: Dockerfile
+    container_name: proyecto_taller_marketing
+    restart: unless-stopped
+    networks:
+      - app
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: proyecto_taller_nginx
+    restart: unless-stopped
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - frontend
+      - backend
+      - marketing
+    networks:
+      - app
 
 volumes:
   postgres_data:
