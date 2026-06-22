@@ -188,8 +188,8 @@ El deploy se hace desde GitHub Actions contra un VPS único con Nginx como rever
 ### Dominios
 
 - `compex.bitwaise.com` → frontend (Angular)
-- `api.compex.bitwaise.com` → backend (Nest)
-- `me.compex.bitwaise.com` → marketing (Astro)
+- `api-compex.bitwaise.com` → backend (Nest)
+- `me-compex.bitwaise.com` → marketing (Astro)
 
 ### Secrets necesarios en GitHub
 
@@ -211,14 +211,14 @@ Los workflows individuales son más rápidos cuando solo cambia una pieza.
 
 ### Primer deploy en el VPS
 
-1. Apuntar DNS al VPS: `compex.bitwaise.com`, `api.compex.bitwaise.com`, `me.compex.bitwaise.com`.
+1. Apuntar DNS al VPS: `compex.bitwaise.com`, `api-compex.bitwaise.com`, `me-compex.bitwaise.com`.
 2. Clonar el repo en el VPS en la ruta de `PROJECT_PATH`.
 3. Crear `.env` a partir de `.env.example` con valores reales.
 4. Generar certificados SSL con Let's Encrypt y dejarlos en `./nginx/certs/`.
 5. `docker compose up -d --build`.
 6. Correr migraciones una vez: `docker compose run --rm backend pnpm run db:migrate`.
 7. Correr seed inicial: `docker compose run --rm backend pnpm run db:seed`.
-8. Verificar que `https://compex.bitwaise.com`, `https://api.compex.bitwaise.com` y `https://me.compex.bitwaise.com` respondan.
+8. Verificar que `https://compex.bitwaise.com`, `https://api-compex.bitwaise.com` y `https://me-compex.bitwaise.com` respondan.
 
 ## Testing
 
