@@ -150,7 +150,7 @@ export const ui = {
     "pricing.tiers.pro.priceYear": "$290",
     "pricing.tiers.pro.periodYear": "por año (16% off)",
     "pricing.tiers.pro.features":
-      "Competencias ilimit|Hasta 500 participantes|Generación de problemas con IA (50/mes)|Ranking con métricas avanzadas|Reportes exportables|Soporte por email",
+      "Competencias ilimitadas|Hasta 500 participantes|Generación de problemas con IA (50/mes)|Ranking con métricas avanzadas|Reportes exportables|Soporte por email",
     "pricing.tiers.pro.cta": "Probar Pro",
     "pricing.tiers.pro.popular": "Recomendado",
 
