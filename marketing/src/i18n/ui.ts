@@ -8,9 +8,9 @@ export const defaultLocale = "es";
 export const ui = {
   es: {
     "brand.name": "Compex",
-    "brand.tagline": "Plataforma de competencias de programaci",
+    "brand.tagline": "Plataforma de competencias de programación",
 
-    "nav.home": "Inicio",
+    "nav.home": "Inici",
     "nav.about": "Nosotros",
     "nav.pricing": "Precios",
     "nav.terms": "Términos",
