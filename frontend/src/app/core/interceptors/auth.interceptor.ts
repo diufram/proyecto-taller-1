@@ -4,7 +4,6 @@ import {
     HttpHandlerFn,
     HttpErrorResponse,
     HttpClient,
-    HttpBackend,
 } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { inject } from '@angular/core';
@@ -37,9 +36,8 @@ export const authInterceptor: HttpInterceptorFn = (
     next: HttpHandlerFn,
 ) => {
     const router = inject(Router);
-    const httpBackend = inject(HttpBackend);
     const authService = inject(AuthService);
-    const httpClient = new HttpClient(httpBackend);
+    const http = inject(HttpClient);
 
     const token = authService.hasValidAccessToken()
         ? localStorage.getItem('token')
@@ -60,7 +58,7 @@ export const authInterceptor: HttpInterceptorFn = (
                 error.status === 401 &&
                 !isPublicAuthUrl(req.url)
             ) {
-                return handle401Error(authReq, next, httpClient, router, authService);
+                return handle401Error(authReq, next, http, router, authService);
             }
             return throwError(() => error);
         }),
