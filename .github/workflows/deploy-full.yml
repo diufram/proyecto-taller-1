@@ -1,22 +1,10 @@
 name: Deploy Full Stack
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - 'marketing/**'
-      - 'nginx/**'
-      - 'backend/Dockerfile'
-      - 'frontend/Dockerfile'
-      - 'marketing/Dockerfile'
-      - 'docker-compose.yml'
-      - '.github/workflows/deploy-full.yml'
+  workflow_dispatch:
 
 concurrency:
-  group: deploy-full
+  group: deploy-production
   cancel-in-progress: false
 
 jobs:
@@ -43,6 +31,6 @@ jobs:
 
             docker compose build
 
-            docker compose up -d
+            docker compose up -d --force-recreate backend frontend marketing nginx
 
             docker image prune -f

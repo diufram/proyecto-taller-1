@@ -7,8 +7,11 @@ on:
     paths:
       - 'frontend/**'
       - 'frontend/Dockerfile'
-      - 'docker-compose.yml'
       - '.github/workflows/deploy-frontend.yml'
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -32,8 +35,8 @@ jobs:
 
             docker compose pull nginx frontend || true
 
-            docker compose build frontend nginx
+            docker compose build frontend
 
-            docker compose up -d frontend nginx
+            docker compose up -d --force-recreate frontend nginx
 
             docker image prune -f

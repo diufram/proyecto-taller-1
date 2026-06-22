@@ -7,8 +7,11 @@ on:
     paths:
       - 'marketing/**'
       - 'marketing/Dockerfile'
-      - 'docker-compose.yml'
       - '.github/workflows/deploy-marketing.yml'
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -32,8 +35,8 @@ jobs:
 
             docker compose pull nginx marketing || true
 
-            docker compose build marketing nginx
+            docker compose build marketing
 
-            docker compose up -d marketing nginx
+            docker compose up -d --force-recreate marketing nginx
 
             docker image prune -f
