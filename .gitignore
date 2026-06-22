@@ -30,6 +30,10 @@ coverage/
 # Docker
 postgres_data/
 
+# Nginx SSL certs
+nginx/certs/
+*.pem
+
 # Misc
 *.bak
 *.tmp
