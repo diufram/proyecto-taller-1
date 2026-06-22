@@ -96,7 +96,7 @@ import { CommonModule } from '@angular/common';
                     <h1
                         class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 tracking-tight leading-[1.1]"
                     >
-                        Domina el arte de
+                        Dominaa el arte de
                         <br />
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400"
