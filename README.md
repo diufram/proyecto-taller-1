@@ -181,6 +181,45 @@ Notas producción:
 
 Para desarrollo local, usar los comandos de arriba de backend/frontend por separado.
 
+## Deploy
+
+El deploy se hace desde GitHub Actions contra un VPS único con Nginx como reverse proxy.
+
+### Dominios
+
+- `compex.bitwaise.com` → frontend (Angular)
+- `api.compex.bitwaise.com` → backend (Nest)
+- `me.compex.bitwaise.com` → marketing (Astro)
+
+### Secrets necesarios en GitHub
+
+Configurar en `Settings → Secrets and variables → Actions`:
+
+- `SERVER_HOST` — IP o dominio del VPS.
+- `SERVER_USER` — usuario SSH (ej. `deploy`).
+- `SSH_PRIVATE_KEY` — clave privada SSH del usuario.
+- `PROJECT_PATH` — ruta del repo en el VPS (ej. `/home/deploy/proyecto`).
+
+### Workflows disponibles
+
+- `.github/workflows/deploy-full.yml` — redespliega todo el stack cuando cambia `backend/`, `frontend/`, `marketing/`, `nginx/` o `docker-compose.yml`.
+- `.github/workflows/deploy-frontend.yml` — redespliega solo frontend cuando cambia `frontend/`.
+- `.github/workflows/deploy-backend.yml` — redespliega solo backend cuando cambia `backend/`.
+- `.github/workflows/deploy-marketing.yml` — redespliega solo marketing cuando cambia `marketing/`.
+
+Los workflows individuales son más rápidos cuando solo cambia una pieza.
+
+### Primer deploy en el VPS
+
+1. Apuntar DNS al VPS: `compex.bitwaise.com`, `api.compex.bitwaise.com`, `me.compex.bitwaise.com`.
+2. Clonar el repo en el VPS en la ruta de `PROJECT_PATH`.
+3. Crear `.env` a partir de `.env.example` con valores reales.
+4. Generar certificados SSL con Let's Encrypt y dejarlos en `./nginx/certs/`.
+5. `docker compose up -d --build`.
+6. Correr migraciones una vez: `docker compose run --rm backend pnpm run db:migrate`.
+7. Correr seed inicial: `docker compose run --rm backend pnpm run db:seed`.
+8. Verificar que `https://compex.bitwaise.com`, `https://api.compex.bitwaise.com` y `https://me.compex.bitwaise.com` respondan.
+
 ## Testing
 
 El proyecto usa **Jest** en backend y frontend (mismo runner).
