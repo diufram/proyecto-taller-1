@@ -10,7 +10,7 @@ export const ui = {
     "brand.name": "Compex",
     "brand.tagline": "Plataforma de competencias de programación",
 
-    "nav.home": "Inici",
+    "nav.home": "Inicio",
     "nav.about": "Nosotros",
     "nav.pricing": "Precios",
     "nav.terms": "Términos",
