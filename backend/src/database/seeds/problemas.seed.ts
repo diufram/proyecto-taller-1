@@ -29,113 +29,7 @@ interface ProblemaData {
 }
 
 const problemasData: ProblemaData[] = [
-    // ---------- Concurso de Algoritmos (Intermedio) ----------
-    {
-        titulo: 'Suma de Dos Números',
-        descripcion:
-            'Dados dos números enteros A y B, imprimir la suma de ambos.',
-        dificultad: Dificultad.FACIL,
-        formato_entrada: 'Una línea con dos enteros A y B separados por espacio.',
-        formato_salida: 'Un entero que representa la suma de A + B.',
-        ejemplo_entrada: '3 5',
-        ejemplo_salida: '8',
-        competencia_nombre: 'Concurso de Algoritmos',
-    },
-    {
-        titulo: 'Par o Impar',
-        descripcion:
-            'Dado un número entero N, determinar si es par o impar. Imprimir "PAR" si es par, "IMPAR" en caso contrario.',
-        dificultad: Dificultad.FACIL,
-        formato_entrada: 'Un entero N en una sola línea.',
-        formato_salida: 'La palabra "PAR" o "IMPAR".',
-        ejemplo_entrada: '7',
-        ejemplo_salida: 'IMPAR',
-        competencia_nombre: 'Concurso de Algoritmos',
-    },
-    {
-        titulo: 'Factorial',
-        descripcion:
-            'Calcular el factorial de un número entero N. N! = 1 × 2 × ... × N. Por definición 0! = 1.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada: 'Un entero N donde 0 <= N <= 12.',
-        formato_salida: 'El factorial de N.',
-        ejemplo_entrada: '5',
-        ejemplo_salida: '120',
-        competencia_nombre: 'Concurso de Algoritmos',
-    },
-    {
-        titulo: 'Encontrar el Máximo',
-        descripcion:
-            'Dado un arreglo de N números enteros, encontrar el valor máximo.',
-        dificultad: Dificultad.FACIL,
-        formato_entrada:
-            'Primera línea: N (1 <= N <= 100). Segunda línea: N enteros separados por espacio.',
-        formato_salida: 'El valor máximo del arreglo.',
-        ejemplo_entrada: '5\n3 9 1 7 5',
-        ejemplo_salida: '9',
-        competencia_nombre: 'Concurso de Algoritmos',
-    },
-    {
-        titulo: 'Palíndromo',
-        descripcion:
-            'Determinar si una palabra es un palíndromo (se lee igual de izquierda a derecha que de derecha a izquierda).',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada:
-            'Una palabra en una sola línea (solo letras minúsculas, máximo 100 caracteres).',
-        formato_salida: 'Imprimir "SI" si es palíndromo, "NO" en caso contrario.',
-        ejemplo_entrada: 'reconocer',
-        ejemplo_salida: 'SI',
-        competencia_nombre: 'Concurso de Algoritmos',
-    },
-    {
-        titulo: 'Suma de Dígitos',
-        descripcion:
-            'Dado un número entero N, calcular la suma de todos sus dígitos.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada: 'Un entero N (0 <= N <= 10^9).',
-        formato_salida: 'La suma de los dígitos de N.',
-        ejemplo_entrada: '12345',
-        ejemplo_salida: '15',
-        competencia_nombre: 'Concurso de Algoritmos',
-    },
-
-    // ---------- Sprint de Código (Principiante) ----------
-    {
-        titulo: 'Tabla de Multiplicar',
-        descripcion:
-            'Dado un entero N, imprimir la tabla de multiplicar del 1 al 10 con el formato "N x i = resultado".',
-        dificultad: Dificultad.FACIL,
-        formato_entrada: 'Un entero N (1 <= N <= 20).',
-        formato_salida:
-            '10 líneas con el formato "N x i = resultado" para i desde 1 hasta 10.',
-        ejemplo_entrada: '3',
-        ejemplo_salida:
-            '3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15\n3 x 6 = 18\n3 x 7 = 21\n3 x 8 = 24\n3 x 9 = 27\n3 x 10 = 30',
-        competencia_nombre: 'Sprint de Código',
-    },
-    {
-        titulo: 'Contar Vocales',
-        descripcion:
-            'Dado un string, contar cuántas vocales (a, e, i, o, u) contiene. Considerar solo minúsculas.',
-        dificultad: Dificultad.FACIL,
-        formato_entrada: 'Una línea con texto (sin espacios, máximo 200 caracteres).',
-        formato_salida: 'La cantidad de vocales.',
-        ejemplo_entrada: 'programacion',
-        ejemplo_salida: '4',
-        competencia_nombre: 'Sprint de Código',
-    },
-    {
-        titulo: 'Invertir Cadena',
-        descripcion: 'Dado un string, imprimirlo invertido.',
-        dificultad: Dificultad.FACIL,
-        formato_entrada: 'Una línea con texto (sin espacios, máximo 200 caracteres).',
-        formato_salida: 'El texto invertido.',
-        ejemplo_entrada: 'hola',
-        ejemplo_salida: 'aloh',
-        competencia_nombre: 'Sprint de Código',
-    },
-
-    // ---------- Duelo de Algoritmos (Intermedio) ----------
+    // ---------- Duelo de Algoritmos (Intermedio - Finalizada) ----------
     {
         titulo: 'Fibonacci',
         descripcion:
@@ -171,7 +65,7 @@ const problemasData: ProblemaData[] = [
         competencia_nombre: 'Duelo de Algoritmos',
     },
 
-    // ---------- Maratón de Programación (Intermedio) ----------
+    // ---------- Maratón de Programación (Intermedio - Finalizada) ----------
     {
         titulo: 'Ordenamiento Burbuja',
         descripcion:
@@ -182,7 +76,7 @@ const problemasData: ProblemaData[] = [
         formato_salida: 'Los N enteros ordenados ascendentemente, separados por espacio.',
         ejemplo_entrada: '5\n5 3 1 4 2',
         ejemplo_salida: '1 2 3 4 5',
-        competencia_nombre: 'Maratón de Programación',
+        competencia_nombre: 'Maratón de Programación 2026',
     },
     {
         titulo: 'Contar Pares que Suman K',
@@ -194,7 +88,7 @@ const problemasData: ProblemaData[] = [
         formato_salida: 'La cantidad de pares que suman K.',
         ejemplo_entrada: '5 7\n1 5 3 6 2',
         ejemplo_salida: '2',
-        competencia_nombre: 'Maratón de Programación',
+        competencia_nombre: 'Maratón de Programación 2026',
     },
     {
         titulo: 'Rotar Arreglo',
@@ -207,10 +101,10 @@ const problemasData: ProblemaData[] = [
             'El arreglo rotado, con los elementos separados por espacio.',
         ejemplo_entrada: '5 2\n1 2 3 4 5',
         ejemplo_salida: '4 5 1 2 3',
-        competencia_nombre: 'Maratón de Programación',
+        competencia_nombre: 'Maratón de Programación 2026',
     },
 
-    // ---------- Olimpíadas de Código (Avanzado) ----------
+    // ---------- Olimpíadas de Código (Avanzado - Finalizada) ----------
     {
         titulo: 'Subconjunto que Suma X',
         descripcion:
@@ -245,80 +139,6 @@ const problemasData: ProblemaData[] = [
         ejemplo_entrada: '4 5\n0 1 0 0 1\n1 0 0 1 1\n0 0 0 0 0\n0 0 1 1 0',
         ejemplo_salida: '3',
         competencia_nombre: 'Olimpíadas de Código',
-    },
-
-    // ---------- Reto Backend 2026 (Avanzado) ----------
-    {
-        titulo: 'Validar Paréntesis',
-        descripcion:
-            'Dado un string con paréntesis (), corchetes [] y llaves {}, determinar si están balanceados y correctamente anidados.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada: 'Una línea con el string a evaluar (máx 200 caracteres).',
-        formato_salida: 'Imprimir "BALANCEADO" o "DESBALANCEADO".',
-        ejemplo_entrada: '({[]})',
-        ejemplo_salida: 'BALANCEADO',
-        competencia_nombre: 'Reto Backend 2026',
-    },
-    {
-        titulo: 'Cifrado César',
-        descripcion:
-            'Aplicar el cifrado César con desplazamiento K a un string de letras mayúsculas.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada:
-            'Primera línea: K (0 <= K < 26). Segunda línea: el texto a cifrar (solo mayúsculas, sin espacios).',
-        formato_salida: 'El texto cifrado.',
-        ejemplo_entrada: '3\nHOLA',
-        ejemplo_salida: 'KROD',
-        competencia_nombre: 'Reto Backend 2026',
-    },
-    {
-        titulo: 'Simular Cola de Impresión',
-        descripcion:
-            'Procesar N trabajos de impresión. Cada trabajo tiene un nombre y una cantidad de páginas. La impresora imprime hasta M páginas por turno. En cada turno se procesan los trabajos en orden, avanzando en el que se quedó. Imprimir el orden en que los trabajos terminan.',
-        dificultad: Dificultad.DIFICIL,
-        formato_entrada:
-            'Primera línea: N y M. Siguientes N líneas: nombre del trabajo y páginas.',
-        formato_salida:
-            'Los nombres de los trabajos en el orden en que terminaron, uno por línea.',
-        ejemplo_entrada: '3 5\nA 8\nB 4\nC 2',
-        ejemplo_salida: 'B\nC\nA',
-        competencia_nombre: 'Reto Backend 2026',
-    },
-
-    // ---------- Reto Legacy (Principiante) ----------
-    {
-        titulo: 'Área de un Rectángulo',
-        descripcion:
-            'Dados el ancho y el alto de un rectángulo, calcular su área.',
-        dificultad: Dificultad.FACIL,
-        formato_entrada: 'Dos números reales separados por espacio.',
-        formato_salida: 'El área con dos decimales.',
-        ejemplo_entrada: '3 4',
-        ejemplo_salida: '12.00',
-        competencia_nombre: 'Reto Legacy',
-    },
-    {
-        titulo: 'Convertir Celsius a Fahrenheit',
-        descripcion:
-            'Dada una temperatura en grados Celsius, convertirla a Fahrenheit usando F = C × 9/5 + 32.',
-        dificultad: Dificultad.FACIL,
-        formato_entrada: 'Un número real (la temperatura en Celsius).',
-        formato_salida: 'La temperatura en Fahrenheit con dos decimales.',
-        ejemplo_entrada: '100',
-        ejemplo_salida: '212.00',
-        competencia_nombre: 'Reto Legacy',
-    },
-    {
-        titulo: 'Promedio de N Números',
-        descripcion:
-            'Dados N números reales, calcular su promedio.',
-        dificultad: Dificultad.FACIL,
-        formato_entrada:
-            'Primera línea: N (1 <= N <= 100). Segunda línea: N números reales separados por espacio.',
-        formato_salida: 'El promedio con dos decimales.',
-        ejemplo_entrada: '4\n1 2 3 4',
-        ejemplo_salida: '2.50',
-        competencia_nombre: 'Reto Legacy',
     },
 
     // ---------- Copa Junior 2026 (Principiante - En curso) ----------
@@ -371,128 +191,6 @@ const problemasData: ProblemaData[] = [
         competencia_nombre: 'Proyecto Colaborativo 2026',
     },
 
-    // ---------- Hackathon Grupal 2026 (Avanzado - Finalizada) ----------
-    {
-        titulo: 'Ordenar por Frecuencia',
-        descripcion:
-            'Dado un string, ordenar sus caracteres por frecuencia descendente. En caso de empate, mantener el orden de aparición original.',
-        dificultad: Dificultad.DIFICIL,
-        formato_entrada: 'Una línea con texto en minúsculas (sin espacios).',
-        formato_salida: 'El string ordenado por frecuencia.',
-        ejemplo_entrada: 'aabbbcccc',
-        ejemplo_salida: 'ccccbbbaa',
-        competencia_nombre: 'Hackathon Grupal 2026',
-    },
-    {
-        titulo: 'Suma de Subarreglo Máximo',
-        descripcion:
-            'Dado un arreglo de N enteros (positivos y negativos), encontrar la suma máxima de un subarreglo contiguo (algoritmo de Kadane).',
-        dificultad: Dificultad.DIFICIL,
-        formato_entrada:
-            'Primera línea: N (1 <= N <= 100). Segunda línea: N enteros.',
-        formato_salida: 'La suma máxima de un subarreglo contiguo.',
-        ejemplo_entrada: '9\n-2 1 -3 4 -1 2 1 -5 4',
-        ejemplo_salida: '6',
-        competencia_nombre: 'Hackathon Grupal 2026',
-    },
-    {
-        titulo: 'Anagramas Válidos',
-        descripcion:
-            'Dados dos strings, determinar si son anagramas (contienen exactamente los mismos caracteres con la misma frecuencia).',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada: 'Dos líneas, una por string (solo minúsculas, sin espacios).',
-        formato_salida: 'Imprimir "ANAGRAMA" o "NO ANAGRAMA".',
-        ejemplo_entrada: 'roma\namor',
-        ejemplo_salida: 'ANAGRAMA',
-        competencia_nombre: 'Hackathon Grupal 2026',
-    },
-
-    // ---------- Batalla de Equipos (Avanzado) ----------
-    {
-        titulo: 'Longest Common Subsequence',
-        descripcion:
-            'Dadas dos cadenas, encontrar la longitud de la subsecuencia común más larga (LCS).',
-        dificultad: Dificultad.DIFICIL,
-        formato_entrada: 'Dos líneas con strings (sin espacios, máximo 100 caracteres).',
-        formato_salida: 'La longitud de la LCS.',
-        ejemplo_entrada: 'ABCBDAB\nBDCAB',
-        ejemplo_salida: '4',
-        competencia_nombre: 'Batalla de Equipos',
-    },
-    {
-        titulo: 'Merge de Arreglos Ordenados',
-        descripcion:
-            'Dados dos arreglos ordenados de N y M enteros, generar un único arreglo ordenado combinándolos.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada:
-            'Primera línea: N y M. Segunda línea: N enteros ordenados. Tercera línea: M enteros ordenados.',
-        formato_salida:
-            'Los N + M enteros ordenados, separados por espacio.',
-        ejemplo_entrada: '3 4\n1 4 7\n2 3 5 8',
-        ejemplo_salida: '1 2 3 4 5 7 8',
-        competencia_nombre: 'Batalla de Equipos',
-    },
-    {
-        titulo: 'Permutaciones de un String',
-        descripcion:
-            'Dado un string, generar todas sus permutaciones únicas en orden lexicográfico, una por línea.',
-        dificultad: Dificultad.DIFICIL,
-        formato_entrada: 'Una línea con texto en minúsculas (sin espacios, máximo 8 caracteres).',
-        formato_salida: 'Todas las permutaciones únicas, una por línea, ordenadas.',
-        ejemplo_entrada: 'ab',
-        ejemplo_salida: 'ab\nba',
-        competencia_nombre: 'Batalla de Equipos',
-    },
-
-    // ---------- Reto Fullstack 2026 (Intermedio) ----------
-    {
-        titulo: 'Validar Email',
-        descripcion:
-            'Dado un string, determinar si tiene formato de email válido (formato: local@dominio.extension). Solo letras, dígitos, guion bajo, punto y guion en local y dominio.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada: 'Una línea con el email a validar.',
-        formato_salida: 'Imprimir "VALIDO" o "INVALIDO".',
-        ejemplo_entrada: 'usuario@example.com',
-        ejemplo_salida: 'VALIDO',
-        competencia_nombre: 'Reto Fullstack 2026',
-    },
-    {
-        titulo: 'Comprimir String',
-        descripcion:
-            'Dado un string, comprimirlo usando la regla "carácter seguido de la cantidad de repeticiones consecutivas". Si la compresión no reduce el tamaño, devolver el string original.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada: 'Una línea con texto (sin espacios).',
-        formato_salida: 'El string comprimido o el original.',
-        ejemplo_entrada: 'aabbbcccc',
-        ejemplo_salida: 'a2b3c4',
-        competencia_nombre: 'Reto Fullstack 2026',
-    },
-
-    // ---------- Hackathon Express 2026 (Intermedio) ----------
-    {
-        titulo: 'Sumar Dígitos hasta Uno',
-        descripcion:
-            'Dado un entero N, sumar sus dígitos repetidamente hasta obtener un solo dígito.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada: 'Un entero N (0 <= N <= 10^9).',
-        formato_salida: 'El dígito final.',
-        ejemplo_entrada: '9875',
-        ejemplo_salida: '2',
-        competencia_nombre: 'Hackathon Express 2026',
-    },
-    {
-        titulo: 'Elemento Único',
-        descripcion:
-            'Dado un arreglo donde todos los elementos aparecen dos veces, excepto uno que aparece una sola vez, encontrar ese elemento.',
-        dificultad: Dificultad.MEDIO,
-        formato_entrada:
-            'Primera línea: N (impar). Segunda línea: N enteros.',
-        formato_salida: 'El elemento único.',
-        ejemplo_entrada: '5\n2 3 2 4 3',
-        ejemplo_salida: '4',
-        competencia_nombre: 'Hackathon Express 2026',
-    },
-
     // ---------- Reto Inteligencia Artificial (Avanzado - Cancelada) ----------
     {
         titulo: 'Conteo de Palabras',
@@ -504,6 +202,42 @@ const problemasData: ProblemaData[] = [
         ejemplo_entrada: 'Hola hola mundo',
         ejemplo_salida: 'hola:2\nmundo:1',
         competencia_nombre: 'Reto Inteligencia Artificial',
+    },
+
+    // ---------- Reto Legacy (Principiante - Cancelada) ----------
+    {
+        titulo: 'Área de un Rectángulo',
+        descripcion:
+            'Dados el ancho y el alto de un rectángulo, calcular su área.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Dos números reales separados por espacio.',
+        formato_salida: 'El área con dos decimales.',
+        ejemplo_entrada: '3 4',
+        ejemplo_salida: '12.00',
+        competencia_nombre: 'Reto Legacy',
+    },
+    {
+        titulo: 'Convertir Celsius a Fahrenheit',
+        descripcion:
+            'Dada una temperatura en grados Celsius, convertirla a Fahrenheit usando F = C × 9/5 + 32.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Un número real (la temperatura en Celsius).',
+        formato_salida: 'La temperatura en Fahrenheit con dos decimales.',
+        ejemplo_entrada: '100',
+        ejemplo_salida: '212.00',
+        competencia_nombre: 'Reto Legacy',
+    },
+    {
+        titulo: 'Promedio de N Números',
+        descripcion:
+            'Dados N números reales, calcular su promedio.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada:
+            'Primera línea: N (1 <= N <= 100). Segunda línea: N números reales separados por espacio.',
+        formato_salida: 'El promedio con dos decimales.',
+        ejemplo_entrada: '4\n1 2 3 4',
+        ejemplo_salida: '2.50',
+        competencia_nombre: 'Reto Legacy',
     },
 
     // ---------- Clasificatorio Regional 2026 (Avanzado - Abierta) ----------
@@ -531,6 +265,378 @@ const problemasData: ProblemaData[] = [
         ejemplo_entrada: '4 4\n0 1 1\n0 2 4\n1 2 2\n2 3 3',
         ejemplo_salida: '6',
         competencia_nombre: 'Clasificatorio Regional 2026',
+    },
+
+    // ---------- Olimpíada Matemática 2026 (Avanzado - Abierta) ----------
+    {
+        titulo: 'Número Primo',
+        descripcion:
+            'Dado un entero N, determinar si es primo. Un número primo es mayor que 1 y solo divisible por 1 y por sí mismo.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada: 'Un entero N (0 <= N <= 10^6).',
+        formato_salida: 'Imprimir "SI" si es primo, "NO" en caso contrario.',
+        ejemplo_entrada: '17',
+        ejemplo_salida: 'SI',
+        competencia_nombre: 'Olimpíada Matemática 2026',
+    },
+    {
+        titulo: 'Máximo Común Divisor',
+        descripcion:
+            'Dados dos enteros A y B, calcular su máximo común divisor usando el algoritmo de Euclides.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Dos enteros A y B (1 <= A, B <= 10^9).',
+        formato_salida: 'El MCD de A y B.',
+        ejemplo_entrada: '12 18',
+        ejemplo_salida: '6',
+        competencia_nombre: 'Olimpíada Matemática 2026',
+    },
+    {
+        titulo: 'Descomposición en Primos',
+        descripcion:
+            'Dado un entero N, imprimir su descomposición en factores primos en orden ascendente. Si un primo se repite, imprimirlo esa cantidad de veces.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada: 'Un entero N (2 <= N <= 10^6).',
+        formato_salida: 'Los factores primos separados por espacio.',
+        ejemplo_entrada: '12',
+        ejemplo_salida: '2 2 3',
+        competencia_nombre: 'Olimpíada Matemática 2026',
+    },
+
+    // ---------- Desafío de Estructuras de Datos (Intermedio - Abierta) ----------
+    {
+        titulo: 'Invertir Lista Enlazada',
+        descripcion:
+            'Dado un arreglo de N enteros que representa los valores de una lista enlazada en orden, imprimir el arreglo invertido (que representa la lista en orden inverso).',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: N (1 <= N <= 1000). Segunda línea: N enteros.',
+        formato_salida: 'Los N enteros en orden inverso, separados por espacio.',
+        ejemplo_entrada: '5\n1 2 3 4 5',
+        ejemplo_salida: '5 4 3 2 1',
+        competencia_nombre: 'Desafío de Estructuras de Datos',
+    },
+    {
+        titulo: 'Stack con Mínimo',
+        descripcion:
+            'Implementar las operaciones de un stack que además del push y pop, pueda devolver el mínimo actual en O(1). Se procesan M operaciones sobre un stack inicialmente vacío. Imprimir el resultado de cada operación pop o min.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: M. Siguientes M líneas: operación y valor (si aplica). Operaciones: "push X", "pop", "min".',
+        formato_salida:
+            'Para cada pop y min, imprimir el valor resultante, uno por línea.',
+        ejemplo_entrada:
+            '6\npush 3\npush 1\nmin\npop\nmin\npop',
+        ejemplo_salida: '1\n1\n3',
+        competencia_nombre: 'Desafío de Estructuras de Datos',
+    },
+    {
+        titulo: 'Recorrido BFS en Grafo',
+        descripcion:
+            'Dado un grafo no dirigido con V vértices y E aristas, imprimir el recorrido BFS partiendo del vértice 0.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: V y E. Siguientes E líneas: u, v (arista).',
+        formato_salida: 'Los vértices en orden BFS, separados por espacio.',
+        ejemplo_entrada: '4 3\n0 1\n1 2\n2 3',
+        ejemplo_salida: '0 1 2 3',
+        competencia_nombre: 'Desafío de Estructuras de Datos',
+    },
+
+    // ---------- Concurso de Programación Funcional (Avanzado - Abierta) ----------
+    {
+        titulo: 'Map y Filter',
+        descripcion:
+            'Dado un arreglo de N enteros, primero filtrar los pares y luego multiplicar cada uno por 2. Imprimir el resultado en el mismo orden.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: N. Segunda línea: N enteros.',
+        formato_salida: 'Los valores filtrados y duplicados, separados por espacio.',
+        ejemplo_entrada: '5\n1 2 3 4 5',
+        ejemplo_salida: '4 8',
+        competencia_nombre: 'Concurso de Programación Funcional',
+    },
+    {
+        titulo: 'Reduce - Sumar Arreglo',
+        descripcion:
+            'Dado un arreglo de N enteros, calcular su suma usando solo reduce o fold (sin ciclos imperativos).',
+        dificultad: Dificultad.FACIL,
+        formato_entrada:
+            'Primera línea: N. Segunda línea: N enteros.',
+        formato_salida: 'La suma de los N enteros.',
+        ejemplo_entrada: '4\n1 2 3 4',
+        ejemplo_salida: '10',
+        competencia_nombre: 'Concurso de Programación Funcional',
+    },
+    {
+        titulo: 'Recursión - Potencia',
+        descripcion:
+            'Dados dos enteros A y B, calcular A^B usando solo recursión (sin bucles ni pow).',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada: 'Dos enteros A y B (0 <= A <= 20, 0 <= B <= 30).',
+        formato_salida: 'A elevado a la B.',
+        ejemplo_entrada: '2 10',
+        ejemplo_salida: '1024',
+        competencia_nombre: 'Concurso de Programación Funcional',
+    },
+
+    // ---------- Torneo Universitario de Algoritmos (Intermedio - Abierta, Grupal) ----------
+    {
+        titulo: 'Cumpleaños en Común',
+        descripcion:
+            'Dadas las fechas de cumpleaños de N personas, encontrar la fecha (día y mes) que más se repite. Si hay empate, devolver la menor.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: N. Siguientes N líneas: día y mes separados por espacio.',
+        formato_salida: 'Día y mes de la fecha más repetida.',
+        ejemplo_entrada: '5\n15 3\n20 5\n15 3\n01 1\n15 3',
+        ejemplo_salida: '15 3',
+        competencia_nombre: 'Torneo Universitario de Algoritmos',
+    },
+    {
+        titulo: 'Matriz Simétrica',
+        descripcion:
+            'Dada una matriz N x N, determinar si es simétrica (A[i][j] == A[j][i] para todo i, j).',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: N. Siguientes N líneas: N enteros separados por espacio.',
+        formato_salida: 'Imprimir "SI" si es simétrica, "NO" en caso contrario.',
+        ejemplo_entrada: '3\n1 2 3\n2 5 6\n3 6 9',
+        ejemplo_salida: 'SI',
+        competencia_nombre: 'Torneo Universitario de Algoritmos',
+    },
+    {
+        titulo: 'Punto más Cercano',
+        descripcion:
+            'Dados N puntos en el plano (x, y), encontrar el par de puntos con menor distancia euclidiana. Imprimir la distancia con 4 decimales.',
+        dificultad: Dificultad.DIFICIL,
+        formato_entrada:
+            'Primera línea: N. Siguientes N líneas: x e y (números reales).',
+        formato_salida: 'La menor distancia con 4 decimales.',
+        ejemplo_entrada: '3\n0 0\n3 0\n0 4',
+        ejemplo_salida: '3.0000',
+        competencia_nombre: 'Torneo Universitario de Algoritmos',
+    },
+
+    // ---------- Copa Femenina de Programación (Principiante - Abierta) ----------
+    {
+        titulo: 'Saludo Personalizado',
+        descripcion:
+            'Dado un nombre, imprimir "Hola, " seguido del nombre y un signo de exclamación.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Una línea con un nombre (sin espacios, máximo 50 caracteres).',
+        formato_salida: 'El saludo personalizado.',
+        ejemplo_entrada: 'Sofia',
+        ejemplo_salida: 'Hola, Sofia!',
+        competencia_nombre: 'Copa Femenina de Programación',
+    },
+    {
+        titulo: 'Sumar Tres Números',
+        descripcion: 'Dados tres enteros, imprimir su suma.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Tres enteros A, B y C separados por espacio.',
+        formato_salida: 'La suma de los tres.',
+        ejemplo_entrada: '5 7 3',
+        ejemplo_salida: '15',
+        competencia_nombre: 'Copa Femenina de Programación',
+    },
+    {
+        titulo: 'Año Bisiesto',
+        descripcion:
+            'Dado un año, determinar si es bisiesto. Un año es bisiesto si es divisible por 4 y no por 100, o si es divisible por 400.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Un entero A (1 <= A <= 9999).',
+        formato_salida: 'Imprimir "SI" si es bisiesto, "NO" en caso contrario.',
+        ejemplo_entrada: '2024',
+        ejemplo_salida: 'SI',
+        competencia_nombre: 'Copa Femenina de Programación',
+    },
+
+    // ---------- Code Sprint Universitario (Intermedio - Abierta) ----------
+    {
+        titulo: 'Detección de Duplicados',
+        descripcion:
+            'Dado un arreglo de N enteros, determinar si tiene algún elemento duplicado.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada:
+            'Primera línea: N. Segunda línea: N enteros.',
+        formato_salida: 'Imprimir "SI" si hay duplicados, "NO" en caso contrario.',
+        ejemplo_entrada: '5\n1 2 3 4 1',
+        ejemplo_salida: 'SI',
+        competencia_nombre: 'Code Sprint Universitario',
+    },
+    {
+        titulo: 'Producto de Elementos Excepto Self',
+        descripcion:
+            'Dado un arreglo de N enteros, generar un nuevo arreglo donde cada posición i es el producto de todos los elementos excepto el de la posición i.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: N. Segunda línea: N enteros (pueden ser 0).',
+        formato_salida: 'El arreglo resultante, separado por espacio.',
+        ejemplo_entrada: '4\n1 2 3 4',
+        ejemplo_salida: '24 12 8 6',
+        competencia_nombre: 'Code Sprint Universitario',
+    },
+    {
+        titulo: 'Longest Increasing Subsequence',
+        descripcion:
+            'Dado un arreglo de N enteros, encontrar la longitud de la subsecuencia creciente más larga.',
+        dificultad: Dificultad.DIFICIL,
+        formato_entrada:
+            'Primera línea: N. Segunda línea: N enteros.',
+        formato_salida: 'La longitud de la LIS.',
+        ejemplo_entrada: '6\n10 9 2 5 3 7',
+        ejemplo_salida: '3',
+        competencia_nombre: 'Code Sprint Universitario',
+    },
+
+    // ---------- Maratón de Verano 2026 (Intermedio - En curso) ----------
+    {
+        titulo: 'Temperaturas Extremas',
+        descripcion:
+            'Dada una lista de N temperaturas, encontrar la temperatura máxima y mínima, e imprimir su diferencia.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada:
+            'Primera línea: N. Segunda línea: N enteros.',
+        formato_salida: 'La diferencia entre la máxima y la mínima.',
+        ejemplo_entrada: '5\n15 22 8 30 18',
+        ejemplo_salida: '22',
+        competencia_nombre: 'Maratón de Verano 2026',
+    },
+    {
+        titulo: 'Lista de Compras',
+        descripcion:
+            'Dada una lista de productos y sus precios, calcular el total. Cada producto tiene un nombre (sin espacios) y un precio entero.',
+        dificultad: Dificultad.FACIL,
+        formato_entrada:
+            'Primera línea: N. Siguientes N líneas: nombre y precio.',
+        formato_salida: 'El total de la compra.',
+        ejemplo_entrada: '3\npan 1000\nleche 2500\nhuevos 3500',
+        ejemplo_salida: '7000',
+        competencia_nombre: 'Maratón de Verano 2026',
+    },
+    {
+        titulo: 'Palabras más Largas',
+        descripcion:
+            'Dada una línea de texto, encontrar las palabras con la mayor longitud. Imprimirlas en el orden en que aparecen, separadas por espacio.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada: 'Una línea de texto con varias palabras separadas por espacio.',
+        formato_salida: 'Las palabras más largas separadas por espacio.',
+        ejemplo_entrada: 'el gato negro saltó la cerca alta',
+        ejemplo_salida: 'saltó cerca',
+        competencia_nombre: 'Maratón de Verano 2026',
+    },
+
+    // ---------- Hackathon Universitario (Avanzado - En curso, Grupal) ----------
+    {
+        titulo: 'Trie - Búsqueda de Prefijo',
+        descripcion:
+            'Dada una lista de N palabras y M consultas (cada una con un prefijo), contar cuántas palabras de la lista empiezan con ese prefijo.',
+        dificultad: Dificultad.DIFICIL,
+        formato_entrada:
+            'Primera línea: N. Siguientes N líneas: palabras. Luego una línea con M. Siguientes M líneas: prefijos.',
+        formato_salida: 'Para cada consulta, la cantidad (uno por línea).',
+        ejemplo_entrada:
+            '4\napple\napp\napricot\nbanana\n2\nap\nb',
+        ejemplo_salida: '3\n1',
+        competencia_nombre: 'Hackathon Universitario',
+    },
+    {
+        titulo: 'Union-Find (DSU)',
+        descripcion:
+            'Procesar N operaciones de union-find: "union X Y" une los conjuntos que contienen a X e Y; "find X" imprime el representante del conjunto de X.',
+        dificultad: Dificultad.DIFICIL,
+        formato_entrada:
+            'Primera línea: N. Siguientes N líneas: operación y dos enteros si aplica.',
+        formato_salida: 'Para cada find, imprimir el representante.',
+        ejemplo_entrada:
+            '5\nunion 1 2\nunion 2 3\nfind 1\nfind 3\nfind 4',
+        ejemplo_salida: '1\n1\n4',
+        competencia_nombre: 'Hackathon Universitario',
+    },
+    {
+        titulo: 'Top K Frecuentes',
+        descripcion:
+            'Dado un arreglo de N enteros y un K, imprimir los K elementos más frecuentes en orden descendente de frecuencia. En empate, menor valor primero.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: N y K. Segunda línea: N enteros.',
+        formato_salida: 'Los K elementos más frecuentes, separados por espacio.',
+        ejemplo_entrada: '8\n1 1 2 2 3 3 3 4\n2',
+        ejemplo_salida: '3 1',
+        competencia_nombre: 'Hackathon Universitario',
+    },
+
+    // ---------- Concurso de Verano Principiante (Principiante - En curso) ----------
+    {
+        titulo: 'Edad en Días',
+        descripcion:
+            'Dada una edad en años, calcular aproximadamente cuántos días ha vivido la persona (asumir 365 días por año).',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Un entero N (0 <= N <= 150).',
+        formato_salida: 'La cantidad de días.',
+        ejemplo_entrada: '20',
+        ejemplo_salida: '7300',
+        competencia_nombre: 'Concurso de Verano Principiante',
+    },
+    {
+        titulo: 'Promedio Simple',
+        descripcion:
+            'Dadas 3 notas enteras, calcular el promedio entero (división entera).',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Tres enteros A, B y C separados por espacio.',
+        formato_salida: 'El promedio entero de los tres.',
+        ejemplo_entrada: '8 9 10',
+        ejemplo_salida: '9',
+        competencia_nombre: 'Concurso de Verano Principiante',
+    },
+    {
+        titulo: 'Tabla del 2 al 5',
+        descripcion:
+            'Imprimir las tablas de multiplicar del 2 al 5, cada tabla del 1 al 10, con el formato "N x i = resultado".',
+        dificultad: Dificultad.FACIL,
+        formato_entrada: 'Sin entrada.',
+        formato_salida: 'Las tablas con una línea vacía entre ellas.',
+        ejemplo_entrada: '',
+        ejemplo_salida:
+            '2 x 1 = 2\n... (continúa hasta 2 x 10 = 20)\n\n3 x 1 = 3\n...',
+        competencia_nombre: 'Concurso de Verano Principiante',
+    },
+
+    // ---------- Liga de Programación Junior (Intermedio - En curso, Grupal) ----------
+    {
+        titulo: 'Validar RUT',
+        descripcion:
+            'Dado un número de RUT (sin puntos, con guión), validar que el dígito verificador sea correcto usando el algoritmo módulo 11.',
+        dificultad: Dificultad.DIFICIL,
+        formato_entrada: 'Una línea con el RUT en formato "12345678-9".',
+        formato_salida: 'Imprimir "VALIDO" o "INVALIDO".',
+        ejemplo_entrada: '12345678-9',
+        ejemplo_salida: 'VALIDO',
+        competencia_nombre: 'Liga de Programación Junior',
+    },
+    {
+        titulo: 'Puntaje de Tenis',
+        descripcion:
+            'Dado el puntaje de dos jugadores de tenis en un game (15, 30, 40, "ventaja", "gana"), determinar quién gana o si el game está empatado.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada: 'Dos strings separados por espacio con los puntajes.',
+        formato_salida:
+            'El ganador del game o "EMPATE" si están iguales.',
+        ejemplo_entrada: '40 ventaja',
+        ejemplo_salida: 'Jugador 2',
+        competencia_nombre: 'Liga de Programación Junior',
+    },
+    {
+        titulo: 'Reconstruir Frase',
+        descripcion:
+            'Dada una lista de N palabras mezcladas y su orden original por número, reconstruir la frase en el orden correcto.',
+        dificultad: Dificultad.MEDIO,
+        formato_entrada:
+            'Primera línea: N. Siguientes N líneas: "orden palabra" (orden de 1 a N).',
+        formato_salida: 'La frase reconstruida.',
+        ejemplo_entrada: '4\n3 el\n1 Hola\n4 mundo\n2 gran',
+        ejemplo_salida: 'Hola gran el mundo',
+        competencia_nombre: 'Liga de Programación Junior',
     },
 ];
 

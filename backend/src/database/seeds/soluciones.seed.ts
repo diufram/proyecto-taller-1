@@ -34,120 +34,12 @@ interface SolucionData {
 }
 
 /**
- * ~30 soluciones distribuidas en competencias activas/finalizadas, con
- * 60% en `Pendiente` (para que el admin pruebe la sugerencia IA) y el
+ * 26 soluciones distribuidas en las 18 competencias del seed, con
+ * ~65% en `Pendiente` (para que el admin pruebe la sugerencia IA) y el
  * resto distribuido en Correcto/Incorrecto/En revisión para variedad.
  */
 const solucionesData: SolucionData[] = [
-    // ===== Concurso de Algoritmos =====
-    {
-        usuario_correo: 'matias@gmail.com',
-        problema_titulo: 'Suma de Dos Números',
-        competencia_nombre: 'Concurso de Algoritmos',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.PENDIENTE,
-        resultado_validacion: false,
-        respuesta: 'a, b = map(int, input().split())\nprint(a + b)',
-    },
-    {
-        usuario_correo: 'lucas@gmail.com',
-        problema_titulo: 'Suma de Dos Números',
-        competencia_nombre: 'Concurso de Algoritmos',
-        lenguaje: Lenguaje.JAVASCRIPT,
-        estado: EstadoSolucion.CORRECTO,
-        resultado_validacion: true,
-        respuesta:
-            'const [a, b] = require("fs").readFileSync(0, "utf8").split(" ").map(Number);\nconsole.log(a + b);',
-    },
-    {
-        usuario_correo: 'sofia@gmail.com',
-        problema_titulo: 'Par o Impar',
-        competencia_nombre: 'Concurso de Algoritmos',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.PENDIENTE,
-        resultado_validacion: false,
-        respuesta: 'n = int(input())\nprint("PAR" if n % 2 == 0 else "IMPAR")',
-    },
-    {
-        usuario_correo: 'juan@gmail.com',
-        problema_titulo: 'Par o Impar',
-        competencia_nombre: 'Concurso de Algoritmos',
-        lenguaje: Lenguaje.C,
-        estado: EstadoSolucion.CORRECTO,
-        resultado_validacion: true,
-        respuesta:
-            '#include <stdio.h>\nint main() { int n; scanf("%d", &n); printf("%s\\n", n % 2 == 0 ? "PAR" : "IMPAR"); return 0; }',
-    },
-    {
-        usuario_correo: 'matias@gmail.com',
-        problema_titulo: 'Factorial',
-        competencia_nombre: 'Concurso de Algoritmos',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.PENDIENTE,
-        resultado_validacion: false,
-        respuesta:
-            'n = int(input())\nf = 1\nfor i in range(2, n + 1):\n    f *= i\nprint(f)',
-    },
-    {
-        usuario_correo: 'lucas@gmail.com',
-        problema_titulo: 'Factorial',
-        competencia_nombre: 'Concurso de Algoritmos',
-        lenguaje: Lenguaje.JAVASCRIPT,
-        estado: EstadoSolucion.INCORRECTO,
-        resultado_validacion: false,
-        respuesta:
-            'const n = Number(require("fs").readFileSync(0, "utf8"));\nlet f = 1;\nfor (let i = 2; i < n; i++) f *= i;\nconsole.log(f);',
-    },
-    {
-        usuario_correo: 'sofia@gmail.com',
-        problema_titulo: 'Encontrar el Máximo',
-        competencia_nombre: 'Concurso de Algoritmos',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.PENDIENTE,
-        resultado_validacion: false,
-        respuesta: 'print(max(map(int, input().split()[1:])))',
-    },
-    {
-        usuario_correo: 'juan@gmail.com',
-        problema_titulo: 'Palíndromo',
-        competencia_nombre: 'Concurso de Algoritmos',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.PENDIENTE,
-        resultado_validacion: false,
-        respuesta: 's = input()\nprint("SI" if s == s[::-1] else "NO")',
-    },
-
-    // ===== Sprint de Código =====
-    {
-        usuario_correo: 'matias@gmail.com',
-        problema_titulo: 'Tabla de Multiplicar',
-        competencia_nombre: 'Sprint de Código',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.CORRECTO,
-        resultado_validacion: true,
-        respuesta:
-            'n = int(input())\nfor i in range(1, 11):\n    print(f"{n} x {i} = {n*i}")',
-    },
-    {
-        usuario_correo: 'valentina@gmail.com',
-        problema_titulo: 'Contar Vocales',
-        competencia_nombre: 'Sprint de Código',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.PENDIENTE,
-        resultado_validacion: false,
-        respuesta: 's = input()\nprint(sum(1 for c in s if c in "aeiou"))',
-    },
-    {
-        usuario_correo: 'santiago@gmail.com',
-        problema_titulo: 'Invertir Cadena',
-        competencia_nombre: 'Sprint de Código',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.CORRECTO,
-        resultado_validacion: true,
-        respuesta: 'print(input()[::-1])',
-    },
-
-    // ===== Duelo de Algoritmos =====
+    // ===== Duelo de Algoritmos (Finalizada - Intermedio) =====
     {
         usuario_correo: 'lucas@gmail.com',
         problema_titulo: 'Fibonacci',
@@ -179,7 +71,7 @@ const solucionesData: SolucionData[] = [
             'a, b = map(int, input().split())\nr = 1\nwhile b:\n    if b & 1: r *= a\n    a *= a\n    b >>= 1\nprint(r)',
     },
 
-    // ===== Maratón de Programación =====
+    // ===== Maratón de Programación 2026 (Finalizada - Intermedio) =====
     {
         usuario_correo: 'juan@gmail.com',
         problema_titulo: 'Ordenamiento Burbuja',
@@ -201,7 +93,7 @@ const solucionesData: SolucionData[] = [
             'n, k = map(int, input().split())\narr = list(map(int, input().split()))\nseen = {}\ncnt = 0\nfor x in arr:\n    cnt += seen.get(k - x, 0)\n    seen[x] = seen.get(x, 0) + 1\nprint(cnt)',
     },
 
-    // ===== Olimpíadas de Código =====
+    // ===== Olimpíadas de Código (Finalizada - Avanzado) =====
     {
         usuario_correo: 'camila@gmail.com',
         problema_titulo: 'Subconjunto que Suma X',
@@ -233,49 +125,7 @@ const solucionesData: SolucionData[] = [
             '#include <stdio.h>\nint grid[100][100], n, m;\nint main() { scanf("%d %d", &n, &m); for (int i=0;i<n;i++) for (int j=0;j<m;j++) scanf("%d", &grid[i][j]); printf("0\\n"); return 0; }',
     },
 
-    // ===== Reto Backend 2026 =====
-    {
-        usuario_correo: 'diego@gmail.com',
-        problema_titulo: 'Validar Paréntesis',
-        competencia_nombre: 'Reto Backend 2026',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.CORRECTO,
-        resultado_validacion: true,
-        respuesta:
-            's = input()\npairs = {")":"(","]":"[","}":"{"}\nstack = []\nok = True\nfor c in s:\n    if c in "([{": stack.append(c)\n    elif c in ")]}":\n        if not stack or stack[-1] != pairs[c]: ok = False; break\n        stack.pop()\nif stack: ok = False\nprint("BALANCEADO" if ok else "DESBALANCEADO")',
-    },
-    {
-        usuario_correo: 'paula@gmail.com',
-        problema_titulo: 'Cifrado César',
-        competencia_nombre: 'Reto Backend 2026',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.PENDIENTE,
-        resultado_validacion: false,
-        respuesta:
-            'k = int(input())\ns = input()\nprint("".join(chr((ord(c)-65+k)%26 + 65) for c in s))',
-    },
-
-    // ===== Reto Legacy =====
-    {
-        usuario_correo: 'bruno@gmail.com',
-        problema_titulo: 'Área de un Rectángulo',
-        competencia_nombre: 'Reto Legacy',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.PENDIENTE,
-        resultado_validacion: false,
-        respuesta: 'a, b = map(float, input().split())\nprint(f"{a*b:.2f}")',
-    },
-    {
-        usuario_correo: 'renata@gmail.com',
-        problema_titulo: 'Convertir Celsius a Fahrenheit',
-        competencia_nombre: 'Reto Legacy',
-        lenguaje: Lenguaje.PYTHON,
-        estado: EstadoSolucion.CORRECTO,
-        resultado_validacion: true,
-        respuesta: 'c = float(input())\nprint(f"{c * 9/5 + 32:.2f}")',
-    },
-
-    // ===== Copa Junior (En curso) =====
+    // ===== Copa Junior 2026 (En curso - Principiante) =====
     {
         usuario_correo: 'valentina@gmail.com',
         problema_titulo: 'Número Mayor entre Tres',
@@ -306,7 +156,7 @@ const solucionesData: SolucionData[] = [
             'BEGIN\nREAD a, b, c\nIF a > b AND a > c THEN PRINT a\nELSE IF b > c THEN PRINT b\nELSE PRINT c\nEND',
     },
 
-    // ===== Proyecto Colaborativo (En curso) =====
+    // ===== Proyecto Colaborativo 2026 (En curso - Intermedio) =====
     {
         usuario_correo: 'juan@gmail.com',
         problema_titulo: 'Frecuencia de Caracteres',
@@ -318,38 +168,150 @@ const solucionesData: SolucionData[] = [
             'from collections import Counter\ns = input()\nfor c, n in sorted(Counter(s).items()):\n    print(f"{c}:{n}")',
     },
 
-    // ===== Hackathon Grupal 2026 =====
+    // ===== Maratón de Verano 2026 (En curso - Intermedio) =====
     {
-        usuario_correo: 'lucas@gmail.com',
-        problema_titulo: 'Suma de Subarreglo Máximo',
-        competencia_nombre: 'Hackathon Grupal 2026',
+        usuario_correo: 'santiago@gmail.com',
+        problema_titulo: 'Temperaturas Extremas',
+        competencia_nombre: 'Maratón de Verano 2026',
         lenguaje: Lenguaje.PYTHON,
+        estado: EstadoSolucion.PENDIENTE,
+        resultado_validacion: false,
+        respuesta:
+            'n = int(input())\nt = list(map(int, input().split()))\nprint(max(t) - min(t))',
+    },
+    {
+        usuario_correo: 'bruno@gmail.com',
+        problema_titulo: 'Lista de Compras',
+        competencia_nombre: 'Maratón de Verano 2026',
+        lenguaje: Lenguaje.JAVASCRIPT,
         estado: EstadoSolucion.CORRECTO,
         resultado_validacion: true,
         respuesta:
-            'n = int(input())\narr = list(map(int, input().split()))\nbest = cur = arr[0]\nfor x in arr[1:]:\n    cur = max(x, cur + x)\n    best = max(best, cur)\nprint(best)',
+            'const lines = require("fs").readFileSync(0, "utf8").trim().split("\\n");\nconst n = Number(lines[0]);\nlet total = 0;\nfor (let i = 1; i <= n; i++) { const parts = lines[i].split(" "); total += Number(parts[1]); }\nconsole.log(total);',
     },
     {
-        usuario_correo: 'sofia@gmail.com',
-        problema_titulo: 'Ordenar por Frecuencia',
-        competencia_nombre: 'Hackathon Grupal 2026',
+        usuario_correo: 'renata@gmail.com',
+        problema_titulo: 'Palabras más Largas',
+        competencia_nombre: 'Maratón de Verano 2026',
+        lenguaje: Lenguaje.PYTHON,
+        estado: EstadoSolucion.PENDIENTE,
+        resultado_validacion: false,
+        respuesta:
+            'palabras = input().split()\nmax_len = max(len(p) for p in palabras)\nprint(" ".join(p for p in palabras if len(p) == max_len))',
+    },
+
+    // ===== Hackathon Universitario (En curso - Avanzado, Grupal) =====
+    {
+        usuario_correo: 'diego@gmail.com',
+        problema_titulo: 'Trie - Búsqueda de Prefijo',
+        competencia_nombre: 'Hackathon Universitario',
+        lenguaje: Lenguaje.PYTHON,
+        estado: EstadoSolucion.PENDIENTE,
+        resultado_validacion: false,
+        respuesta:
+            'class TrieNode:\n    def __init__(self):\n        self.children = {}\n        self.is_end = False\n\nclass Trie:\n    def __init__(self):\n        self.root = TrieNode()\n    def insert(self, w):\n        node = self.root\n        for c in w:\n            if c not in node.children: node.children[c] = TrieNode()\n            node = node.children[c]\n        node.is_end = True\n    def count_prefix(self, p):\n        node = self.root\n        for c in p:\n            if c not in node.children: return 0\n            node = node.children[c]\n        return self._count(node)\n    def _count(self, node):\n        n = 1 if node.is_end else 0\n        for c in node.children.values(): n += self._count(c)\n        return n\n\nlines = []\nwhile True:\n    try: lines.append(input())\n    except EOFError: break\nidx = 0\nn = int(lines[idx]); idx += 1\ntrie = Trie()\nfor _ in range(n): trie.insert(lines[idx]); idx += 1\nm = int(lines[idx]); idx += 1\nfor _ in range(m): print(trie.count_prefix(lines[idx])); idx += 1',
+    },
+    {
+        usuario_correo: 'martin@gmail.com',
+        problema_titulo: 'Union-Find (DSU)',
+        competencia_nombre: 'Hackathon Universitario',
+        lenguaje: Lenguaje.C,
+        estado: EstadoSolucion.CORRECTO,
+        resultado_validacion: true,
+        respuesta:
+            '#include <stdio.h>\nint parent[100001], rank_[100001];\nint find(int x) { return parent[x] == x ? x : (parent[x] = find(parent[x])); }\nvoid unite(int a, int b) { a = find(a); b = find(b); if (a == b) return; if (rank_[a] < rank_[b]) { int t = a; a = b; b = t; } parent[b] = a; if (rank_[a] == rank_[b]) rank_[a]++; }\nint main() { int n; scanf("%d", &n); for (int i = 0; i <= 100000; i++) { parent[i] = i; rank_[i] = 0; } char op[8]; int x, y; for (int i = 0; i < n; i++) { scanf("%s", op); if (op[0] == \'u\') { scanf("%d %d", &x, &y); unite(x, y); } else { scanf("%d", &x); printf("%d\\n", find(x)); } } return 0; }',
+    },
+    {
+        usuario_correo: 'paula@gmail.com',
+        problema_titulo: 'Top K Frecuentes',
+        competencia_nombre: 'Hackathon Universitario',
         lenguaje: Lenguaje.JAVASCRIPT,
         estado: EstadoSolucion.PENDIENTE,
         resultado_validacion: false,
         respuesta:
-            'const s = require("fs").readFileSync(0, "utf8").trim();\nconst counts = {};\nconst order = [];\nfor (const c of s) { if (!(c in counts)) { counts[c] = 0; order.push(c); } counts[c]++; }\nconst sorted = order.sort((a,b) => counts[b] - counts[a]);\nconsole.log(sorted.map(c => c.repeat(counts[c])).join(""));',
+            'const [nk, ...rest] = require("fs").readFileSync(0, "utf8").trim().split("\\n");\nconst [n, k] = nk.split(" ").map(Number);\nconst arr = rest.join(" ").split(" ").map(Number);\nconst counts = new Map();\nfor (const x of arr) counts.set(x, (counts.get(x) || 0) + 1);\nconst sorted = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0]);\nconsole.log(sorted.slice(0, k).map(e => e[0]).join(" "));',
+    },
+    {
+        usuario_correo: 'bruno@gmail.com',
+        problema_titulo: 'Recorrido BFS en Grafo',
+        competencia_nombre: 'Hackathon Universitario',
+        lenguaje: Lenguaje.PYTHON,
+        estado: EstadoSolucion.INCORRECTO,
+        resultado_validacion: false,
+        respuesta:
+            'v, e = map(int, input().split())\nadj = [[] for _ in range(v)]\nfor _ in range(e):\n    a, b = map(int, input().split())\n    adj[a].append(b)\nprint(" ".join(str(x) for x in range(v)))',
     },
 
-    // ===== Batalla de Equipos =====
+    // ===== Concurso de Verano Principiante (En curso - Principiante) =====
     {
-        usuario_correo: 'diego@gmail.com',
-        problema_titulo: 'Longest Common Subsequence',
-        competencia_nombre: 'Batalla de Equipos',
+        usuario_correo: 'valentina@gmail.com',
+        problema_titulo: 'Edad en Días',
+        competencia_nombre: 'Concurso de Verano Principiante',
+        lenguaje: Lenguaje.PYTHON,
+        estado: EstadoSolucion.PENDIENTE,
+        resultado_validacion: false,
+        respuesta: 'n = int(input())\nprint(n * 365)',
+    },
+    {
+        usuario_correo: 'santiago@gmail.com',
+        problema_titulo: 'Promedio Simple',
+        competencia_nombre: 'Concurso de Verano Principiante',
+        lenguaje: Lenguaje.PYTHON,
+        estado: EstadoSolucion.CORRECTO,
+        resultado_validacion: true,
+        respuesta: 'a, b, c = map(int, input().split())\nprint((a + b + c) // 3)',
+    },
+    {
+        usuario_correo: 'renata@gmail.com',
+        problema_titulo: 'Tabla del 2 al 5',
+        competencia_nombre: 'Concurso de Verano Principiante',
+        lenguaje: Lenguaje.PSEUDOCODIGO,
+        estado: EstadoSolucion.REVISION,
+        resultado_validacion: false,
+        respuesta:
+            'para n desde 2 hasta 5:\n    para i desde 1 hasta 10:\n        escribir n + " x " + i + " = " + (n*i)\n    escribir ""',
+    },
+
+    // ===== Liga de Programación Junior (En curso - Intermedio, Grupal) =====
+    {
+        usuario_correo: 'juan@gmail.com',
+        problema_titulo: 'Validar RUT',
+        competencia_nombre: 'Liga de Programación Junior',
         lenguaje: Lenguaje.PYTHON,
         estado: EstadoSolucion.PENDIENTE,
         resultado_validacion: false,
         respuesta:
-            'a = input()\nb = input()\nn, m = len(a), len(b)\ndp = [[0]*(m+1) for _ in range(n+1)]\nfor i in range(1, n+1):\n    for j in range(1, m+1):\n        if a[i-1] == b[j-1]: dp[i][j] = dp[i-1][j-1] + 1\n        else: dp[i][j] = max(dp[i-1][j], dp[i][j-1])\nprint(dp[n][m])',
+            'rut, dv = input().split("-")\nrut = int(rut)\ns = 0\nm = 2\nfor d in reversed(str(rut)):\n    s += int(d) * m\n    m = m + 1 if m < 7 else 2\ncalc = 11 - (s % 11)\nif calc == 11: calc_dv = "0"\nelif calc == 10: calc_dv = "K"\nelse: calc_dv = str(calc)\nprint("VALIDO" if calc_dv == dv else "INVALIDO")',
+    },
+    {
+        usuario_correo: 'lucas@gmail.com',
+        problema_titulo: 'Puntaje de Tenis',
+        competencia_nombre: 'Liga de Programación Junior',
+        lenguaje: Lenguaje.PYTHON,
+        estado: EstadoSolucion.CORRECTO,
+        resultado_validacion: true,
+        respuesta:
+            'a, b = input().split()\nif a == b: print("EMPATE")\nelif (a, b) in [("40", "ventaja"), ("30", "40")]: print("Jugador 1")\nelif (a, b) in [("ventaja", "40"), ("40", "30")]: print("Jugador 2")\nelif a == "gana": print("Jugador 1")\nelif b == "gana": print("Jugador 2")\nelif a == "ventaja": print("Jugador 1")\nelif b == "ventaja": print("Jugador 2")\nelse: print("Jugador 1" if a > b else "Jugador 2")',
+    },
+    {
+        usuario_correo: 'sofia@gmail.com',
+        problema_titulo: 'Reconstruir Frase',
+        competencia_nombre: 'Liga de Programación Junior',
+        lenguaje: Lenguaje.PYTHON,
+        estado: EstadoSolucion.PENDIENTE,
+        resultado_validacion: false,
+        respuesta:
+            'n = int(input())\norden = {}\nfor _ in range(n):\n    o, w = input().split(maxsplit=1)\n    orden[int(o)] = w\nprint(" ".join(orden[i] for i in range(1, n+1)))',
+    },
+    {
+        usuario_correo: 'valentina@gmail.com',
+        problema_titulo: 'Validar RUT',
+        competencia_nombre: 'Liga de Programación Junior',
+        lenguaje: Lenguaje.JAVASCRIPT,
+        estado: EstadoSolucion.INCORRECTO,
+        resultado_validacion: false,
+        respuesta:
+            'const [rut, dv] = require("fs").readFileSync(0, "utf8").trim().split("-");\nlet s = 0, m = 2;\nfor (let i = rut.length - 1; i >= 0; i--) { s += Number(rut[i]) * m; m = m < 7 ? m + 1 : 2; }\nlet calc = 11 - (s % 11);\nlet calcDv = calc === 11 ? "0" : calc === 10 ? "K" : String(calc);\nconsole.log(calcDv === dv ? "VALIDO" : "INVALIDO");',
     },
 ];
 

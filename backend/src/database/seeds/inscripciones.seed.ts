@@ -28,15 +28,6 @@ interface InscripcionData {
 
 const inscripcionesData: InscripcionData[] = [
     // ===== Finalizadas - Individuales (cada usuario resuelve por su cuenta) =====
-    { usuario_correo: 'matias@gmail.com', competencia_nombre: 'Concurso de Algoritmos' },
-    { usuario_correo: 'lucas@gmail.com', competencia_nombre: 'Concurso de Algoritmos' },
-    { usuario_correo: 'sofia@gmail.com', competencia_nombre: 'Concurso de Algoritmos' },
-    { usuario_correo: 'juan@gmail.com', competencia_nombre: 'Concurso de Algoritmos' },
-
-    { usuario_correo: 'matias@gmail.com', competencia_nombre: 'Sprint de Código' },
-    { usuario_correo: 'valentina@gmail.com', competencia_nombre: 'Sprint de Código' },
-    { usuario_correo: 'santiago@gmail.com', competencia_nombre: 'Sprint de Código' },
-
     { usuario_correo: 'lucas@gmail.com', competencia_nombre: 'Duelo de Algoritmos' },
     { usuario_correo: 'sofia@gmail.com', competencia_nombre: 'Duelo de Algoritmos' },
 
@@ -45,47 +36,6 @@ const inscripcionesData: InscripcionData[] = [
 
     { usuario_correo: 'camila@gmail.com', competencia_nombre: 'Olimpíadas de Código' },
     { usuario_correo: 'florencia@gmail.com', competencia_nombre: 'Olimpíadas de Código' },
-
-    { usuario_correo: 'diego@gmail.com', competencia_nombre: 'Reto Backend 2026' },
-    { usuario_correo: 'paula@gmail.com', competencia_nombre: 'Reto Backend 2026' },
-
-    { usuario_correo: 'bruno@gmail.com', competencia_nombre: 'Reto Legacy' },
-    { usuario_correo: 'renata@gmail.com', competencia_nombre: 'Reto Legacy' },
-
-    // ===== Finalizadas - Grupales (con grupo) =====
-    {
-        usuario_correo: 'matias@gmail.com',
-        competencia_nombre: 'Hackathon Grupal 2026',
-        grupo_nombre: 'Los Algoritmos',
-        integrantes: ['matias@gmail.com', 'lucas@gmail.com', 'sofia@gmail.com', 'juan@gmail.com'],
-    },
-    {
-        usuario_correo: 'camila@gmail.com',
-        competencia_nombre: 'Hackathon Grupal 2026',
-        grupo_nombre: 'Code Ninjas',
-        integrantes: ['camila@gmail.com', 'valentina@gmail.com', 'santiago@gmail.com'],
-    },
-
-    {
-        usuario_correo: 'diego@gmail.com',
-        competencia_nombre: 'Batalla de Equipos',
-        grupo_nombre: 'Los Titans',
-        integrantes: ['diego@gmail.com', 'paula@gmail.com', 'bruno@gmail.com', 'renata@gmail.com', 'facundo@gmail.com'],
-    },
-
-    {
-        usuario_correo: 'martin@gmail.com',
-        competencia_nombre: 'Reto Fullstack 2026',
-        grupo_nombre: 'Fullstack Warriors',
-        integrantes: ['martin@gmail.com', 'florencia@gmail.com', 'diego@gmail.com', 'paula@gmail.com'],
-    },
-
-    {
-        usuario_correo: 'bruno@gmail.com',
-        competencia_nombre: 'Hackathon Express 2026',
-        grupo_nombre: 'Express Squad',
-        integrantes: ['bruno@gmail.com', 'renata@gmail.com', 'facundo@gmail.com'],
-    },
 
     // ===== En curso (se pueden seguir inscribiendo) =====
     { usuario_correo: 'valentina@gmail.com', competencia_nombre: 'Copa Junior 2026' },
@@ -107,6 +57,71 @@ const inscripcionesData: InscripcionData[] = [
     // ===== Abierta (algunos usuarios ya inscritos para probar) =====
     { usuario_correo: 'matias@gmail.com', competencia_nombre: 'Clasificatorio Regional 2026' },
     { usuario_correo: 'lucas@gmail.com', competencia_nombre: 'Clasificatorio Regional 2026' },
+
+    // ===== Abiertas nuevas (futuras) =====
+    { usuario_correo: 'sofia@gmail.com', competencia_nombre: 'Olimpíada Matemática 2026' },
+    { usuario_correo: 'camila@gmail.com', competencia_nombre: 'Olimpíada Matemática 2026' },
+    { usuario_correo: 'florencia@gmail.com', competencia_nombre: 'Olimpíada Matemática 2026' },
+
+    { usuario_correo: 'martin@gmail.com', competencia_nombre: 'Desafío de Estructuras de Datos' },
+    { usuario_correo: 'diego@gmail.com', competencia_nombre: 'Desafío de Estructuras de Datos' },
+
+    { usuario_correo: 'paula@gmail.com', competencia_nombre: 'Concurso de Programación Funcional' },
+    { usuario_correo: 'bruno@gmail.com', competencia_nombre: 'Concurso de Programación Funcional' },
+
+    {
+        usuario_correo: 'juan@gmail.com',
+        competencia_nombre: 'Torneo Universitario de Algoritmos',
+        grupo_nombre: 'Los Compiladores',
+        integrantes: ['juan@gmail.com', 'maria@gmail.com', 'martin@gmail.com', 'florencia@gmail.com'],
+    },
+    {
+        usuario_correo: 'sofia@gmail.com',
+        competencia_nombre: 'Torneo Universitario de Algoritmos',
+        grupo_nombre: 'Code Warriors',
+        integrantes: ['sofia@gmail.com', 'valentina@gmail.com', 'santiago@gmail.com'],
+    },
+
+    { usuario_correo: 'valentina@gmail.com', competencia_nombre: 'Copa Femenina de Programación' },
+    { usuario_correo: 'maria@gmail.com', competencia_nombre: 'Copa Femenina de Programación' },
+
+    { usuario_correo: 'renata@gmail.com', competencia_nombre: 'Code Sprint Universitario' },
+    { usuario_correo: 'facundo@gmail.com', competencia_nombre: 'Code Sprint Universitario' },
+
+    // ===== En curso nuevas =====
+    { usuario_correo: 'santiago@gmail.com', competencia_nombre: 'Maratón de Verano 2026' },
+    { usuario_correo: 'bruno@gmail.com', competencia_nombre: 'Maratón de Verano 2026' },
+    { usuario_correo: 'renata@gmail.com', competencia_nombre: 'Maratón de Verano 2026' },
+
+    {
+        usuario_correo: 'diego@gmail.com',
+        competencia_nombre: 'Hackathon Universitario',
+        grupo_nombre: 'Los Hackers',
+        integrantes: ['diego@gmail.com', 'paula@gmail.com', 'bruno@gmail.com'],
+    },
+    {
+        usuario_correo: 'martin@gmail.com',
+        competencia_nombre: 'Hackathon Universitario',
+        grupo_nombre: 'Dev Squad',
+        integrantes: ['martin@gmail.com', 'camila@gmail.com'],
+    },
+
+    { usuario_correo: 'valentina@gmail.com', competencia_nombre: 'Concurso de Verano Principiante' },
+    { usuario_correo: 'santiago@gmail.com', competencia_nombre: 'Concurso de Verano Principiante' },
+    { usuario_correo: 'renata@gmail.com', competencia_nombre: 'Concurso de Verano Principiante' },
+
+    {
+        usuario_correo: 'juan@gmail.com',
+        competencia_nombre: 'Liga de Programación Junior',
+        grupo_nombre: 'Los Juniors 2',
+        integrantes: ['juan@gmail.com', 'maria@gmail.com', 'martin@gmail.com', 'florencia@gmail.com'],
+    },
+    {
+        usuario_correo: 'lucas@gmail.com',
+        competencia_nombre: 'Liga de Programación Junior',
+        grupo_nombre: 'Los Pibes',
+        integrantes: ['lucas@gmail.com', 'sofia@gmail.com', 'valentina@gmail.com', 'santiago@gmail.com'],
+    },
 ];
 
 export const inscripcionesSeed: Seed = {
@@ -121,7 +136,6 @@ export const inscripcionesSeed: Seed = {
         const competenciaRepository = dataSource.getRepository(Competencia);
         const grupoRepository = dataSource.getRepository(Grupo);
 
-        // Cache de grupos creados por competencia para reusarlos
         const gruposCache = new Map<string, Grupo>();
 
         for (const data of inscripcionesData) {
@@ -135,7 +149,6 @@ export const inscripcionesSeed: Seed = {
                 continue;
             }
 
-            // ---- Inscripción individual ----
             if (!data.grupo_nombre) {
                 const usuario = await usuarioRepository.findOne({
                     where: { correo_electronico: data.usuario_correo },
@@ -172,7 +185,6 @@ export const inscripcionesSeed: Seed = {
                 continue;
             }
 
-            // ---- Inscripción grupal (varios usuarios al mismo grupo) ----
             if (!data.integrantes || data.integrantes.length === 0) {
                 console.log(
                     `⚠️  Inscripción grupal sin integrantes para "${data.competencia_nombre}".`,
@@ -198,7 +210,6 @@ export const inscripcionesSeed: Seed = {
                 if (integrantes.length === 0) continue;
             }
 
-            // Crear o recuperar el grupo
             const cacheKey = `${competencia.id}::${data.grupo_nombre}`;
             let grupo = gruposCache.get(cacheKey);
             if (!grupo) {
