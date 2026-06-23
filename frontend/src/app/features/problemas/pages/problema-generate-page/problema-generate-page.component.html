@@ -30,6 +30,22 @@
 
     <form [formGroup]="form" class="generate-form">
         <div class="form-card generation-card">
+            <div class="prompt-switch-row">
+                <div>
+                    <span class="field-label">Prompt personalizado</span>
+                    <p class="m-0 mt-1 text-sm text-color-secondary">
+                        Activá esta opción solo si querés guiar la generación con
+                        una descripción propia.
+                    </p>
+                </div>
+                <p-toggleswitch
+                    formControlName="usarPrompt"
+                    (onChange)="syncPromptValidators($event.checked)"
+                    inputId="usar_prompt_input"
+                ></p-toggleswitch>
+            </div>
+
+            @if (promptEnabled) {
             <div class="flex flex-col gap-2">
                 <label for="prompt_input" class="field-label">
                     Descripción <span class="required">*</span>
@@ -64,6 +80,13 @@
                     </button>
                 }
             </div>
+            } @else {
+                <p-message severity="info" size="small" variant="simple">
+                    Podés generar problemas sin escribir un prompt. Se usarán los
+                    datos de la competencia y las opciones seleccionadas.
+                </p-message>
+                <span class="hint-text">{{ promptHint }}</span>
+            }
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div class="flex flex-col gap-2">

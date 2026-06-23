@@ -58,6 +58,18 @@
         overflow: hidden;
     }
 
+    .prompt-switch-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding: 0.85rem 1rem;
+        background: var(--surface-ground);
+        border: 1px solid var(--surface-border);
+        border-radius: 12px;
+    }
+
     .field-label {
         font-size: 0.78rem;
         font-weight: 600;

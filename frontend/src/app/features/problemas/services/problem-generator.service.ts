@@ -36,12 +36,14 @@ export class ProblemGeneratorService {
     private api = inject(ApiService);
 
     generate(opts: GenerateOptions): Observable<GeneratedProblem[]> {
+        const prompt = opts.prompt.trim();
+
         return this.api
             .post<GenerateProblemasResponse>('problemas/generar-ia', {
-                prompt: this.buildPrompt(opts),
+                prompt: this.buildPrompt({ ...opts, prompt }),
                 cantidad: opts.cantidad,
                 dificultad: opts.dificultad ?? undefined,
-                tema: opts.prompt,
+                ...(prompt ? { tema: prompt } : {}),
                 nivel: opts.nivelDificultad,
             })
             .pipe(

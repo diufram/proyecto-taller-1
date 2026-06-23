@@ -22,6 +22,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
 import { ToolbarModule } from 'primeng/toolbar';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 import { ToastService } from '@/core/services/toast.service';
 import { ProblemasService } from '../../services/problemas.service';
@@ -52,6 +53,7 @@ import {
         ToastModule,
         MessageModule,
         ToolbarModule,
+        ToggleSwitchModule,
     ],
     templateUrl: './problema-generate-page.component.html',
     styleUrl: './problema-generate-page.component.scss',
@@ -99,7 +101,8 @@ export class ProblemaGeneratePageComponent implements OnInit {
 
     constructor() {
         this.form = this.fb.group({
-            prompt: ['', [Validators.required, Validators.minLength(5)]],
+            usarPrompt: [false],
+            prompt: [''],
             cantidad: [
                 2,
                 [
@@ -129,7 +132,16 @@ export class ProblemaGeneratePageComponent implements OnInit {
 
     get promptInvalid(): boolean {
         const c = this.form.get('prompt');
-        return !!(c && c.invalid && (c.dirty || c.touched));
+        return !!(
+            this.promptEnabled &&
+            c &&
+            c.invalid &&
+            (c.dirty || c.touched)
+        );
+    }
+
+    get promptEnabled(): boolean {
+        return this.form.get('usarPrompt')?.value ?? true;
     }
 
     get canGenerate(): boolean {
@@ -145,7 +157,26 @@ export class ProblemaGeneratePageComponent implements OnInit {
     }
 
     get promptHint(): string {
+        if (!this.promptEnabled) {
+            return 'La IA usará solo los datos de la competencia, cantidad, nivel, tipo y dificultad seleccionada.';
+        }
+
         return 'Describe tema, nivel, restricciones o tipo de ejercicios. La IA generará problemas con el formato requerido.';
+    }
+
+    syncPromptValidators(enabled = this.promptEnabled): void {
+        const control = this.form.get('prompt');
+        if (!control) return;
+
+        if (enabled) {
+            control.setValidators([Validators.required, Validators.minLength(5)]);
+        } else {
+            control.clearValidators();
+            control.markAsPristine();
+            control.markAsUntouched();
+        }
+
+        control.updateValueAndValidity();
     }
 
     getDificultadLabel(dificultad: Dificultad): string {
@@ -186,6 +217,11 @@ export class ProblemaGeneratePageComponent implements OnInit {
     }
 
     useExample(example: string): void {
+        if (!this.promptEnabled) {
+            this.form.get('usarPrompt')?.setValue(true);
+            this.syncPromptValidators();
+        }
+
         this.form.get('prompt')?.setValue(example);
     }
 
@@ -200,10 +236,11 @@ export class ProblemaGeneratePageComponent implements OnInit {
         this.selectedIndexes.clear();
 
         const { prompt, cantidad, dificultad } = this.form.value;
+        const promptValue = this.promptEnabled ? (prompt ?? '').trim() : '';
 
         this.generator
             .generate({
-                prompt,
+                prompt: promptValue,
                 cantidad,
                 dificultad,
                 competenciaNombre: this.competenciaNombre,

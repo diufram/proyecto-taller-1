@@ -109,4 +109,35 @@ describe('ProblemGeneratorService', () => {
             data: { problemas: [] },
         });
     });
+
+    it('permite generar problemas sin prompt personalizado', () => {
+        service
+            .generate({
+                ...baseOpts,
+                prompt: '',
+                cantidad: 2,
+                dificultad: 'Medio',
+            })
+            .subscribe();
+
+        const req = httpMock.expectOne((r) =>
+            r.url.endsWith('/problemas/generar-ia'),
+        );
+        expect(req.request.body).toEqual({
+            prompt: [
+                'Competencia: Compex Test',
+                'Descripción de competencia: Competencia de prueba',
+                'Nivel: Intermedio',
+                'Tipo: Individual',
+            ].join('\n'),
+            cantidad: 2,
+            dificultad: 'Medio',
+            nivel: 'Intermedio',
+        });
+
+        req.flush({
+            status: 'success',
+            data: { problemas: [] },
+        });
+    });
 });
