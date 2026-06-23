@@ -31,6 +31,14 @@
                     class="w-full md:w-auto"
                     (onClick)="goToGenerate()"
                 ></p-button>
+                <p-button
+                    label="Ver soluciones"
+                    icon="pi pi-check-square"
+                    severity="success"
+                    [outlined]="true"
+                    class="w-full md:w-auto"
+                    (onClick)="goToSoluciones()"
+                ></p-button>
                 <p-select
                     [options]="dificultadFiltroOptions"
                     [ngModel]="currentDificultad"
@@ -155,6 +163,15 @@
                         <td>
                             <div class="desktop-actions">
                                 <p-button
+                                    icon="pi pi-check-square"
+                                    severity="primary"
+                                    [text]="true"
+                                    [rounded]="true"
+                                    pTooltip="Ver soluciones"
+                                    tooltipPosition="top"
+                                    (onClick)="goToSolucionesDeProblema(p)"
+                                ></p-button>
+                                <p-button
                                     icon="pi pi-pencil"
                                     severity="warn"
                                     [text]="true"
@@ -224,6 +241,15 @@
                         <div class="problema-mobile-field">
                             <span class="label">Acciones</span>
                             <div class="problema-mobile-actions">
+                                <p-button
+                                    icon="pi pi-check-square"
+                                    severity="primary"
+                                    [text]="true"
+                                    [rounded]="true"
+                                    pTooltip="Ver soluciones"
+                                    tooltipPosition="top"
+                                    (onClick)="goToSolucionesDeProblema(problema)"
+                                ></p-button>
                                 <p-button
                                     icon="pi pi-pencil"
                                     severity="warn"

@@ -26,10 +26,43 @@ export interface Solucion {
     updated_at: string;
 }
 
+export interface AdminSolucion extends Solucion {
+    problema_descripcion?: string;
+    problema_formato_entrada?: string;
+    problema_formato_salida?: string;
+    problema_ejemplo_entrada?: string;
+    problema_ejemplo_salida?: string;
+    competencia_nombre?: string;
+    usuario_id: number;
+    usuario_nombre_usuario: string;
+    usuario_nombre?: string | null;
+    usuario_apellido?: string | null;
+}
+
 export interface CreateSolucionDto {
     problema_id: number;
     respuesta: string;
     lenguaje_programacion: Lenguaje;
+}
+
+export interface CalificarSolucionDto {
+    estado: EstadoSolucion;
+    resultado_validacion?: boolean;
+}
+
+export interface GetMisSolucionesParams {
+    page?: number;
+    limit?: number;
+}
+
+export interface GetAdminSolucionesParams {
+    page?: number;
+    limit?: number;
+    estado?: EstadoSolucion;
+    problema_id?: number;
+    competencia_id?: number;
+    lenguaje_programacion?: Lenguaje;
+    search?: string;
 }
 
 export interface SolucionesMeta {
@@ -39,8 +72,8 @@ export interface SolucionesMeta {
     total_pages: number;
 }
 
-export interface SolucionesResponse {
-    items: Solucion[];
+export interface SolucionesResponse<T = Solucion> {
+    items: T[];
     meta: SolucionesMeta;
 }
 
@@ -69,3 +102,10 @@ export const ESTADO_SOLUCION_SEVERITY: Record<
     Correcto: 'success',
     Incorrecto: 'danger',
 };
+
+export const ESTADOS_SOLUCION: EstadoSolucion[] = [
+    'Pendiente',
+    'En revisión',
+    'Correcto',
+    'Incorrecto',
+];

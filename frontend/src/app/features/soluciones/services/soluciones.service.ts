@@ -2,14 +2,19 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '@/core/services/http/api.service';
 import {
+    AdminSolucion,
+    CalificarSolucionDto,
+    CreateSolucionDto,
+    GetAdminSolucionesParams,
+    GetMisSolucionesParams,
     Solucion,
     SolucionesResponse,
-    CreateSolucionDto,
 } from '../models/solucion.model';
 
-export interface GetMisSolucionesParams {
-    page?: number;
-    limit?: number;
+export interface CalificarResponse {
+    solucion: AdminSolucion;
+    delta_puntos: number;
+    message: string;
 }
 
 @Injectable({
@@ -20,7 +25,9 @@ export class SolucionesService {
 
     private endpoint = 'soluciones';
 
-    create(dto: CreateSolucionDto): Observable<{ solucion: Solucion; message: string }> {
+    create(
+        dto: CreateSolucionDto,
+    ): Observable<{ solucion: Solucion; message: string }> {
         return this.api.post<{ solucion: Solucion; message: string }>(
             this.endpoint,
             dto,
@@ -37,5 +44,20 @@ export class SolucionesService {
 
     getById(id: number): Observable<{ solucion: Solucion }> {
         return this.api.get<{ solucion: Solucion }>(`${this.endpoint}/${id}`);
+    }
+
+    getAllAdmin(
+        params?: GetAdminSolucionesParams,
+    ): Observable<SolucionesResponse<AdminSolucion>> {
+        return this.api.get<SolucionesResponse<AdminSolucion>>(this.endpoint, {
+            params,
+        });
+    }
+
+    calificar(id: number, dto: CalificarSolucionDto): Observable<CalificarResponse> {
+        return this.api.patch<CalificarResponse>(
+            `${this.endpoint}/${id}/estado`,
+            dto,
+        );
     }
 }

@@ -37,4 +37,22 @@ export const PROBLEMAS_ROUTES: Routes = [
         title: 'Generar con IA',
         data: { breadcrumb: 'Generar con IA' },
     },
+    {
+        path: 'soluciones',
+        loadComponent: () =>
+            import(
+                '@/features/soluciones/pages/admin/admin-soluciones-page/admin-soluciones-page.component'
+            ).then((m) => m.AdminSolucionesPageComponent),
+        title: 'Soluciones de la competencia',
+        data: { breadcrumb: 'Soluciones' },
+    },
+    {
+        path: 'problema/:problemaId/soluciones',
+        loadComponent: () =>
+            import(
+                '@/features/soluciones/pages/admin/admin-soluciones-page/admin-soluciones-page.component'
+            ).then((m) => m.AdminSolucionesPageComponent),
+        title: 'Soluciones del problema',
+        data: { breadcrumb: 'Soluciones' },
+    },
 ];

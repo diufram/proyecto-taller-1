@@ -100,4 +100,97 @@ describe('SolucionesService', () => {
             });
         });
     });
+
+    describe('getAllAdmin', () => {
+        it('should GET /soluciones with filters', (done) => {
+            const mockResponse = {
+                items: [
+                    {
+                        id: 1,
+                        respuesta: 'print(1)',
+                        lenguaje_programacion: 'Python' as const,
+                        estado: 'Pendiente' as const,
+                        resultado_validacion: false,
+                        problema_id: 1,
+                        problema_titulo: 'Suma',
+                        problema_dificultad: 'Facil',
+                        competencia_id: 1,
+                        usuario_id: 10,
+                        usuario_nombre_usuario: 'juanp',
+                        usuario_nombre: 'Juan',
+                        usuario_apellido: 'Perez',
+                        created_at: '2026-01-01T00:00:00Z',
+                        updated_at: '2026-01-01T00:00:00Z',
+                    },
+                ],
+                meta: { total: 1, page: 1, limit: 10, total_pages: 1 },
+            };
+            api.when('GET', 'soluciones', mockResponse);
+
+            service
+                .getAllAdmin({
+                    page: 1,
+                    limit: 10,
+                    estado: 'Pendiente',
+                    search: 'juan',
+                })
+                .subscribe((res) => {
+                    expect(res).toEqual(mockResponse);
+                    expect(api.requests[0].url).toBe('GET soluciones');
+                    expect(api.requests[0].params).toEqual({
+                        page: 1,
+                        limit: 10,
+                        estado: 'Pendiente',
+                        search: 'juan',
+                    });
+                    done();
+                });
+        });
+
+        it('should GET /soluciones without params', (done) => {
+            api.when('GET', 'soluciones', {
+                items: [],
+                meta: { total: 0, page: 1, limit: 10, total_pages: 0 },
+            });
+
+            service.getAllAdmin().subscribe(() => {
+                expect(api.requests[0].url).toBe('GET soluciones');
+                expect(api.requests[0].params).toBeUndefined();
+                done();
+            });
+        });
+    });
+
+    describe('calificar', () => {
+        it('should PATCH /soluciones/:id/estado', (done) => {
+            const dto = { estado: 'Correcto' as const };
+            const mockResponse = {
+                solucion: {
+                    id: 1,
+                    respuesta: 'print(1)',
+                    lenguaje_programacion: 'Python' as const,
+                    estado: 'Correcto' as const,
+                    resultado_validacion: true,
+                    problema_id: 1,
+                    problema_titulo: 'Suma',
+                    problema_dificultad: 'Facil',
+                    competencia_id: 1,
+                    usuario_id: 10,
+                    usuario_nombre_usuario: 'juanp',
+                    created_at: '2026-01-01T00:00:00Z',
+                    updated_at: '2026-01-01T00:00:00Z',
+                },
+                delta_puntos: 10,
+                message: 'ok',
+            };
+            api.when('PATCH', 'soluciones/1/estado', mockResponse);
+
+            service.calificar(1, dto).subscribe((res) => {
+                expect(res).toEqual(mockResponse);
+                expect(api.requests[0].url).toBe('PATCH soluciones/1/estado');
+                expect(api.requests[0].body).toEqual(dto);
+                done();
+            });
+        });
+    });
 });

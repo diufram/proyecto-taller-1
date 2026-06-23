@@ -8,6 +8,10 @@ export const PERMISSIONS = {
         UPDATE: 'competencias.update',
         DELETE: 'competencias.delete',
     },
+    SOLUCIONES: {
+        VIEW_GRADING_QUEUE: 'soluciones.view.grading',
+        GRADE: 'soluciones.grade',
+    },
 } as const;
 
 export const SYSTEM_ROLES = {

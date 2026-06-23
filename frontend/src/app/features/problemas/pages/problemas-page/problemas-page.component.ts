@@ -244,6 +244,30 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
         );
     }
 
+    goToSoluciones(): void {
+        this.router.navigate(
+            ['/admin/competencias/problemas', this.competenciaId, 'soluciones'],
+            {
+                state: this.getNavState(),
+            },
+        );
+    }
+
+    goToSolucionesDeProblema(problema: Problema): void {
+        this.router.navigate(
+            [
+                '/admin/competencias/problemas',
+                this.competenciaId,
+                'problema',
+                problema.id,
+                'soluciones',
+            ],
+            {
+                state: this.getNavState(),
+            },
+        );
+    }
+
     openDeleteModal(problema: Problema): void {
         this.deleteTarget = problema;
         this.deleteVisible = true;

@@ -80,11 +80,39 @@ export class SolucionesService {
       usuario: { id: user.sub } as any,
     });
 
+    const result = await this.solucionesRepository.buscarPorId(solucion.id);
+
     return {
-      solucion: this.serializarSolucion(solucion),
+      solucion: this.serializarSolucion(result),
       message: 'Solucion enviada correctamente.',
     };
   }
+
+  async findAll(query: QuerySolucionesDto) {
+    const page = query.page ?? 1;
+    const limit = Math.min(query.limit ?? 10, 100);
+
+    const { items, total } = await this.solucionesRepository.listarTodas({
+      page,
+      limit,
+      estado: query.estado,
+      problema_id: query.problema_id,
+      competencia_id: query.competencia_id,
+      lenguaje_programacion: query.lenguaje_programacion,
+      search: query.search,
+    });
+
+    return {
+      items: items.map((s) => this.serializarSolucion(s)),
+      meta: {
+        total,
+        page,
+        limit,
+        total_pages: Math.ceil(total / limit),
+      },
+    };
+  }
+
 
   async findAllByUser(user: JwtPayload, query: QuerySolucionesDto) {
     const page = query.page ?? 1;
@@ -105,18 +133,19 @@ export class SolucionesService {
   }
 
   async findOne(id: number, user: JwtPayload) {
-    const solucion = await this.solucionesRepository.buscarPorId(id);
+    const result = await this.solucionesRepository.buscarPorId(id);
 
-    if (!solucion) {
+    if (!result) {
       throw new NotFoundException('Solucion no encontrada.');
     }
 
+    const { solucion } = result;
     if (solucion.usuario.id !== user.sub && user.rol !== 'admin') {
       throw new NotFoundException('Solucion no encontrada.');
     }
 
     return {
-      solucion: this.serializarSolucion(solucion),
+      solucion: this.serializarSolucion(result),
     };
   }
 
@@ -131,12 +160,13 @@ export class SolucionesService {
       );
     }
 
-    const solucion = await this.solucionesRepository.buscarPorId(id);
+    const result = await this.solucionesRepository.buscarPorId(id);
 
-    if (!solucion) {
+    if (!result) {
       throw new NotFoundException('Solucion no encontrada.');
     }
 
+    const { solucion } = result;
     const estadoAnterior = solucion.estado;
     const estadoNuevo = dto.estado;
 
@@ -169,7 +199,11 @@ export class SolucionesService {
     });
 
     return {
-      solucion: this.serializarSolucion(actualizada),
+      solucion: this.serializarSolucion({
+        solucion: actualizada,
+        persona_nombre: result.persona_nombre,
+        persona_apellido: result.persona_apellido,
+      }),
       delta_puntos: delta,
       message: 'Estado de la solucion actualizado correctamente.',
     };
@@ -220,7 +254,12 @@ export class SolucionesService {
     }
   }
 
-  private serializarSolucion(solucion: any) {
+  private serializarSolucion(input: any) {
+    const wrapper = input?.solucion ? input : null;
+    const solucion = wrapper ? input.solucion : input;
+    const personaNombre = wrapper ? input.persona_nombre : null;
+    const personaApellido = wrapper ? input.persona_apellido : null;
+
     return {
       id: solucion.id,
       respuesta: solucion.respuesta,
@@ -230,7 +269,17 @@ export class SolucionesService {
       problema_id: solucion.problema?.id,
       problema_titulo: solucion.problema?.titulo,
       problema_dificultad: solucion.problema?.dificultad,
+      problema_descripcion: solucion.problema?.descripcion,
+      problema_formato_entrada: solucion.problema?.formato_entrada,
+      problema_formato_salida: solucion.problema?.formato_salida,
+      problema_ejemplo_entrada: solucion.problema?.ejemplo_entrada,
+      problema_ejemplo_salida: solucion.problema?.ejemplo_salida,
       competencia_id: solucion.problema?.competencia?.id,
+      competencia_nombre: solucion.problema?.competencia?.nombre,
+      usuario_id: solucion.usuario?.id,
+      usuario_nombre_usuario: solucion.usuario?.nombre_usuario,
+      usuario_nombre: personaNombre ?? null,
+      usuario_apellido: personaApellido ?? null,
       created_at: solucion.createdAt,
       updated_at: solucion.updatedAt,
     };

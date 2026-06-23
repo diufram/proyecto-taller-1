@@ -46,6 +46,17 @@ export class SolucionesController {
     return this.solucionesService.create(user, dto);
   }
 
+  @Get()
+  @UseGuards(RolesGuard)
+  @Roles(Rol.ADMIN)
+  @ApiOperation({ summary: 'Listar todas las soluciones (admin)' })
+  @ApiResponse({ status: 200, description: 'Listado paginado de soluciones' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'No es administrador' })
+  findAll(@Query() query: QuerySolucionesDto) {
+    return this.solucionesService.findAll(query);
+  }
+
   @Get('me')
   @ApiOperation({ summary: 'Listar mis soluciones' })
   @ApiResponse({
