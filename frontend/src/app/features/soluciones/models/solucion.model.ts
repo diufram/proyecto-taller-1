@@ -50,6 +50,16 @@ export interface CalificarSolucionDto {
     resultado_validacion?: boolean;
 }
 
+export interface SugerenciaIA {
+    estado: EstadoSolucion;
+    confianza: number;
+    justificacion: string;
+}
+
+export interface SugerirCalificacionRequest {
+    instrucciones_extra?: string;
+}
+
 export interface GetMisSolucionesParams {
     page?: number;
     limit?: number;

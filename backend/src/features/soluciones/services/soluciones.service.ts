@@ -17,7 +17,9 @@ import { JwtPayload } from '../../auth/interfaces/jwt-payload.interface';
 import { CreateSolucionDto } from '../dto/create-solucion.dto';
 import { QuerySolucionesDto } from '../dto/query-soluciones.dto';
 import { UpdateSolucionEstadoDto } from '../dto/update-solucion-estado.dto';
+import { SugerirCalificacionDto } from '../dto/sugerir-calificacion.dto';
 import { SolucionesRepository } from '../repositories/soluciones.repository';
+import { SolucionesAiService } from './soluciones-ai.service';
 
 const PUNTOS_POR_DIFICULTAD: Record<Dificultad, number> = {
   [Dificultad.FACIL]: 10,
@@ -29,6 +31,7 @@ const PUNTOS_POR_DIFICULTAD: Record<Dificultad, number> = {
 export class SolucionesService {
   constructor(
     private readonly solucionesRepository: SolucionesRepository,
+    private readonly solucionesAiService: SolucionesAiService,
     @InjectRepository(Problema)
     private readonly problemaRepository: Repository<Problema>,
     @InjectRepository(Inscripcion)
@@ -206,6 +209,46 @@ export class SolucionesService {
       }),
       delta_puntos: delta,
       message: 'Estado de la solucion actualizado correctamente.',
+    };
+  }
+
+  async sugerirCalificacion(
+    id: number,
+    user: JwtPayload,
+    dto: SugerirCalificacionDto,
+  ) {
+    if (user.rol !== Rol.ADMIN) {
+      throw new ForbiddenException(
+        'Solo un administrador puede pedir sugerencias de la IA.',
+      );
+    }
+
+    const result = await this.solucionesRepository.buscarPorId(id);
+
+    if (!result) {
+      throw new NotFoundException('Solucion no encontrada.');
+    }
+
+    const { solucion } = result;
+    const problema = solucion.problema;
+
+    const sugerencia = await this.solucionesAiService.sugerir({
+      problemaTitulo: problema.titulo,
+      problemaDescripcion: problema.descripcion,
+      problemaFormatoEntrada: problema.formato_entrada,
+      problemaFormatoSalida: problema.formato_salida,
+      problemaEjemploEntrada: problema.ejemplo_entrada,
+      problemaEjemploSalida: problema.ejemplo_salida,
+      problemaDificultad: problema.dificultad,
+      lenguaje: solucion.lenguaje_programacion,
+      respuesta: solucion.respuesta,
+      instruccionesExtra: dto.instrucciones_extra,
+    });
+
+    return {
+      sugerencia,
+      message:
+        'Sugerencia generada. Revisá y aplicá manualmente si estás de acuerdo.',
     };
   }
 

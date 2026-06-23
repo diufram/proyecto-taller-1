@@ -307,6 +307,10 @@ export class AdminSolucionesPageComponent implements OnInit, OnDestroy {
         });
     }
 
+    onSugerirError(err: unknown): void {
+        this.toast.error(err ?? 'No se pudo generar la sugerencia');
+    }
+
     displayName(s: AdminSolucion): string {
         const nombre = s.usuario_nombre?.trim();
         const apellido = s.usuario_apellido?.trim();
