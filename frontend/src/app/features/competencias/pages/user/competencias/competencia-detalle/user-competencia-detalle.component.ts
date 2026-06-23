@@ -61,7 +61,7 @@ import { GruposService, Grupo } from '@/features/grupos/services/grupos.service'
                                     (onClick)="volver()"
                                 ></p-button>
 
-                                @if (miInscripcion) {
+                                @if (miInscripcion && puedeVerProblemas()) {
                                     <p-button
                                         label="Ver Problemas"
                                         icon="pi pi-list"
@@ -363,6 +363,13 @@ export class UserCompetenciaDetalleComponent implements OnInit {
             case 'Cancelada': return 'danger';
             default: return 'secondary';
         }
+    }
+
+    puedeVerProblemas(): boolean {
+        return (
+            this.competencia?.estado === 'Abierta' ||
+            this.competencia?.estado === 'En curso'
+        );
     }
 
     volver(): void {
