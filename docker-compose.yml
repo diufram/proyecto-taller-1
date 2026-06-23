@@ -43,6 +43,12 @@ services:
       SWAGGER_ENABLED: ${SWAGGER_ENABLED:-true}
       NODE_ENV: ${NODE_ENV:-production}
       ALLOWED_ORIGIN: ${ALLOWED_ORIGIN}
+      AI_PROVIDER: ${AI_PROVIDER:-gemini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.1-flash-lite}
+      OPENAI_COMPATIBLE_BASE_URL: ${OPENAI_COMPATIBLE_BASE_URL:-}
+      OPENAI_COMPATIBLE_API_KEY: ${OPENAI_COMPATIBLE_API_KEY:-}
+      OPENAI_COMPATIBLE_MODEL: ${OPENAI_COMPATIBLE_MODEL:-}
     depends_on:
       db:
         condition: service_healthy
