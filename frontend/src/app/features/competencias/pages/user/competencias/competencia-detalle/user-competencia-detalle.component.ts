@@ -50,7 +50,7 @@ import { GruposService, Grupo } from '@/features/grupos/services/grupos.service'
                     <h3 class="text-2xl font-bold text-color m-0">{{ competencia.nombre }}</h3>
                 </div>
 
-                <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
+                    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
                         <ng-template pTemplate="left">
                             <div class="flex gap-2 align-items-center">
                                 <p-button
@@ -87,13 +87,7 @@ import { GruposService, Grupo } from '@/features/grupos/services/grupos.service'
                                             (onClick)="desinscribirse()"
                                         ></p-button>
                                     }
-                                } @else {
-                                    <p-button
-                                        label="Ver Problemas"
-                                        icon="pi pi-list"
-                                        severity="primary"
-                                        (onClick)="verProblemas()"
-                                    ></p-button>
+                                } @else if (competencia.estado === 'Abierta') {
                                     @if (competencia.tipo === 'Grupal') {
                                         <p-button
                                             label="Crear Grupo"
