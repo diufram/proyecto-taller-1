@@ -21,14 +21,36 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { ProblemasService } from '../services/problemas.service';
+import { ProblemasAiService } from '../services/problemas-ai.service';
 import { CreateProblemaDto } from '../dto/create-problema.dto';
+import { GenerateProblemasDto } from '../dto/generate-problemas.dto';
 import { QueryProblemasDto } from '../dto/query-problemas.dto';
 import { UpdateProblemaDto } from '../dto/update-problema.dto';
 
 @ApiTags('Problemas')
 @Controller()
 export class ProblemasController {
-  constructor(private readonly problemasService: ProblemasService) {}
+  constructor(
+    private readonly problemasService: ProblemasService,
+    private readonly problemasAiService: ProblemasAiService,
+  ) {}
+
+  @Post('problemas/generar-ia')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Rol.ADMIN)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Generar problemas con IA' })
+  @ApiResponse({
+    status: 201,
+    description: 'Problemas generados correctamente',
+  })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 403, description: 'Permisos insuficientes' })
+  @ApiResponse({ status: 502, description: 'Error al generar con IA' })
+  @ApiResponse({ status: 503, description: 'Proveedor IA no configurado' })
+  generateWithAi(@Body() dto: GenerateProblemasDto) {
+    return this.problemasAiService.generate(dto);
+  }
 
   @Post('competencias/:competenciaId/problemas')
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -39,7 +61,10 @@ export class ProblemasController {
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 403, description: 'Permisos insuficientes' })
   @ApiResponse({ status: 404, description: 'Competencia no encontrada' })
-  @ApiResponse({ status: 422, description: 'Error de validacion o competencia no editable' })
+  @ApiResponse({
+    status: 422,
+    description: 'Error de validacion o competencia no editable',
+  })
   create(
     @Param('competenciaId', ParseIntPipe) competenciaId: number,
     @Body() dto: CreateProblemaDto,
@@ -70,12 +95,21 @@ export class ProblemasController {
   @Roles(Rol.ADMIN)
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Actualizar problema' })
-  @ApiResponse({ status: 200, description: 'Problema actualizado correctamente' })
+  @ApiResponse({
+    status: 200,
+    description: 'Problema actualizado correctamente',
+  })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 403, description: 'Permisos insuficientes' })
   @ApiResponse({ status: 404, description: 'Problema no encontrado' })
-  @ApiResponse({ status: 422, description: 'Error de validacion o competencia no editable' })
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateProblemaDto) {
+  @ApiResponse({
+    status: 422,
+    description: 'Error de validacion o competencia no editable',
+  })
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateProblemaDto,
+  ) {
     return this.problemasService.update(id, dto);
   }
 

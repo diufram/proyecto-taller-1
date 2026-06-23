@@ -1,8 +1,4 @@
-import {
-    Component,
-    OnInit,
-    inject,
-} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormsModule,
@@ -149,26 +145,16 @@ export class ProblemaGeneratePageComponent implements OnInit {
     }
 
     get promptHint(): string {
-        const keywords = [
-            'suma',
-            'factorial',
-            'par',
-            'fibonacci',
-            'palindromo',
-            'primo',
-            'maximo',
-            'minimo',
-            'string',
-            'array',
-        ];
-        return `Keywords reconocidas: ${keywords.join(', ')}`;
+        return 'Describe tema, nivel, restricciones o tipo de ejercicios. La IA generará problemas con el formato requerido.';
     }
 
     getDificultadLabel(dificultad: Dificultad): string {
         return DIFICULTAD_LABELS[dificultad];
     }
 
-    getDificultadSeverity(dificultad: Dificultad): 'success' | 'warn' | 'danger' {
+    getDificultadSeverity(
+        dificultad: Dificultad,
+    ): 'success' | 'warn' | 'danger' {
         switch (dificultad) {
             case 'Facil':
                 return 'success';
@@ -192,9 +178,7 @@ export class ProblemaGeneratePageComponent implements OnInit {
     }
 
     selectAll(): void {
-        this.selectedIndexes = new Set(
-            this.generated.map((_, i) => i),
-        );
+        this.selectedIndexes = new Set(this.generated.map((_, i) => i));
     }
 
     deselectAll(): void {

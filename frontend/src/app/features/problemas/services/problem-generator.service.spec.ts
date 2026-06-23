@@ -1,76 +1,112 @@
-import { firstValueFrom } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import {
+    HttpTestingController,
+    provideHttpClientTesting,
+} from '@angular/common/http/testing';
 import { ProblemGeneratorService } from './problem-generator.service';
 
 describe('ProblemGeneratorService', () => {
     let service: ProblemGeneratorService;
+    let httpMock: HttpTestingController;
 
     const baseOpts = {
         competenciaNombre: 'Compex Test',
-        competenciaDescripcion: 'Test',
+        competenciaDescripcion: 'Competencia de prueba',
         nivelDificultad: 'Intermedio' as const,
         tipo: 'Individual' as const,
     };
 
     beforeEach(() => {
-        service = new ProblemGeneratorService();
+        TestBed.configureTestingModule({
+            providers: [provideHttpClient(), provideHttpClientTesting()],
+        });
+        service = TestBed.inject(ProblemGeneratorService);
+        httpMock = TestBed.inject(HttpTestingController);
     });
 
-    it('detecta la keyword "suma" y devuelve problemas con esa keyword', async () => {
-        const result = await firstValueFrom(
-            service.generate({
+    afterEach(() => {
+        httpMock.verify();
+    });
+
+    it('hace POST al backend para generar problemas con IA', () => {
+        service
+            .generate({
                 ...baseOpts,
                 prompt: 'Genera 2 problemas de suma',
                 cantidad: 2,
                 dificultad: 'Facil',
-            }),
-        );
+            })
+            .subscribe((result) => {
+                expect(result).toEqual([
+                    {
+                        titulo: 'Suma simple',
+                        descripcion: 'Sumar dos enteros.',
+                        dificultad: 'Facil',
+                        formato_entrada: 'Dos enteros separados por espacio.',
+                        formato_salida: 'La suma de ambos enteros.',
+                        ejemplo_entrada: '1 2',
+                        ejemplo_salida: '3',
+                        sourceKeyword: 'ia',
+                    },
+                ]);
+            });
 
-        expect(result.length).toBe(2);
-        for (const p of result) {
-            expect(p.sourceKeyword).toBe('suma');
-            expect(p.dificultad).toBe('Facil');
-        }
+        const req = httpMock.expectOne((r) =>
+            r.url.endsWith('/problemas/generar-ia'),
+        );
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual({
+            prompt: [
+                'Genera 2 problemas de suma',
+                'Competencia: Compex Test',
+                'Descripción de competencia: Competencia de prueba',
+                'Nivel: Intermedio',
+                'Tipo: Individual',
+            ].join('\n'),
+            cantidad: 2,
+            dificultad: 'Facil',
+            tema: 'Genera 2 problemas de suma',
+            nivel: 'Intermedio',
+        });
+
+        req.flush({
+            status: 'success',
+            data: {
+                problemas: [
+                    {
+                        titulo: 'Suma simple',
+                        descripcion: 'Sumar dos enteros.',
+                        dificultad: 'Facil',
+                        formato_entrada: 'Dos enteros separados por espacio.',
+                        formato_salida: 'La suma de ambos enteros.',
+                        ejemplo_entrada: '1 2',
+                        ejemplo_salida: '3',
+                    },
+                ],
+            },
+            message: 'Problemas generados correctamente.',
+        });
     });
 
-    it('usa templates por defecto cuando el prompt no contiene keywords', async () => {
-        const result = await firstValueFrom(
-            service.generate({
+    it('omite dificultad cuando no se selecciona una fija', () => {
+        service
+            .generate({
                 ...baseOpts,
-                prompt: 'lorem ipsum random text',
+                prompt: 'Problemas de arrays',
                 cantidad: 1,
-                dificultad: 'Facil',
-            }),
-        );
+                dificultad: null,
+            })
+            .subscribe();
 
-        expect(result.length).toBe(1);
-        expect(result[0].sourceKeyword).toBe('general');
-        expect(result[0].titulo).toBeTruthy();
-        expect(result[0].descripcion).toBeTruthy();
-        expect(result[0].formato_entrada).toBeTruthy();
-        expect(result[0].formato_salida).toBeTruthy();
-        expect(result[0].ejemplo_entrada).toBeTruthy();
-        expect(result[0].ejemplo_salida).toBeTruthy();
-    });
-
-    it('respeta la cantidad pedida, con clamp entre 1 y 5', async () => {
-        const lower = await firstValueFrom(
-            service.generate({
-                ...baseOpts,
-                prompt: 'sumas',
-                cantidad: 0,
-                dificultad: 'Facil',
-            }),
+        const req = httpMock.expectOne((r) =>
+            r.url.endsWith('/problemas/generar-ia'),
         );
-        expect(lower.length).toBe(1);
+        expect(req.request.body.dificultad).toBeUndefined();
 
-        const tooMany = await firstValueFrom(
-            service.generate({
-                ...baseOpts,
-                prompt: 'sumas',
-                cantidad: 99,
-                dificultad: 'Facil',
-            }),
-        );
-        expect(tooMany.length).toBe(5);
+        req.flush({
+            status: 'success',
+            data: { problemas: [] },
+        });
     });
 });

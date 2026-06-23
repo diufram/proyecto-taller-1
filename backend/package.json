@@ -27,6 +27,7 @@
     "db:seed": "ts-node src/database/seeds/run-seeds.ts"
   },
   "dependencies": {
+    "@google/genai": "^2.9.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.0.1",
