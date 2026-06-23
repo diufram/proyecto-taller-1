@@ -16,6 +16,192 @@ const dataSource = new DataSource({
     synchronize: true,
 });
 
+interface CompetenciaData {
+    nombre: string;
+    descripcion: string;
+    fecha_inicio: Date;
+    fecha_fin: Date;
+    nivel_dificultad: Nivel;
+    estado: Estado;
+    tipo: Tipo;
+    max_participantes: number;
+}
+
+const competenciasData: CompetenciaData[] = [
+    // ---------- Abiertas (futuras, se puede inscribir) ----------
+    {
+        nombre: 'Clasificatorio Regional 2026',
+        descripcion:
+            'Competencia individual que clasifica al evento nacional. Problemas de dificultad media-alta con foco en algoritmos clásicos.',
+        fecha_inicio: new Date('2026-07-01T09:00:00'),
+        fecha_fin: new Date('2026-07-05T20:00:00'),
+        nivel_dificultad: Nivel.AVANZADO,
+        estado: Estado.ABIERTA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 60,
+    },
+
+    // ---------- En curso ----------
+    {
+        nombre: 'Copa Junior 2026',
+        descripcion:
+            'Competencia grupal para principiantes. Equipos de hasta 3 integrantes resuelven problemas introductorios de programación.',
+        fecha_inicio: new Date('2026-06-15T10:00:00'),
+        fecha_fin: new Date('2026-06-25T17:00:00'),
+        nivel_dificultad: Nivel.PRINCIPIANTE,
+        estado: Estado.EN_CURSO,
+        tipo: Tipo.GRUPAL,
+        max_participantes: 3,
+    },
+    {
+        nombre: 'Proyecto Colaborativo 2026',
+        descripcion:
+            'Competencia grupal intermedia. Equipos de hasta 4 integrantes colaboran en problemas de dificultad media.',
+        fecha_inicio: new Date('2026-06-08T09:00:00'),
+        fecha_fin: new Date('2026-06-30T23:59:59'),
+        nivel_dificultad: Nivel.INTERMEDIO,
+        estado: Estado.EN_CURSO,
+        tipo: Tipo.GRUPAL,
+        max_participantes: 4,
+    },
+
+    // ---------- Finalizadas (con soluciones para que el admin califique con IA) ----------
+    {
+        nombre: 'Concurso de Algoritmos',
+        descripcion:
+            'Competencia individual intermedia de resolución de algoritmos. Abarca desde operaciones básicas hasta algoritmos de búsqueda y ordenamiento.',
+        fecha_inicio: new Date('2026-06-01T10:00:00'),
+        fecha_fin: new Date('2026-06-15T23:59:59'),
+        nivel_dificultad: Nivel.INTERMEDIO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 50,
+    },
+    {
+        nombre: 'Hackathon Grupal 2026',
+        descripcion:
+            'Hackathon grupal avanzado. Equipos de hasta 4 integrantes resuelven problemas algorítmicos y de optimización en un tiempo limitado.',
+        fecha_inicio: new Date('2026-06-10T09:00:00'),
+        fecha_fin: new Date('2026-06-20T18:00:00'),
+        nivel_dificultad: Nivel.AVANZADO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.GRUPAL,
+        max_participantes: 4,
+    },
+    {
+        nombre: 'Sprint de Código',
+        descripcion:
+            'Competencia individual de velocidad. Resolver la mayor cantidad de problemas introductorios en pocas horas.',
+        fecha_inicio: new Date('2026-06-05T14:00:00'),
+        fecha_fin: new Date('2026-06-05T18:00:00'),
+        nivel_dificultad: Nivel.PRINCIPIANTE,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 100,
+    },
+    {
+        nombre: 'Duelo de Algoritmos',
+        descripcion:
+            'Competencia individual intermedia. Cada participante resuelve problemas en formato uno a uno contra el reloj.',
+        fecha_inicio: new Date('2026-06-20T16:00:00'),
+        fecha_fin: new Date('2026-06-21T21:00:00'),
+        nivel_dificultad: Nivel.INTERMEDIO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 16,
+    },
+    {
+        nombre: 'Maratón de Programación 2026',
+        descripcion:
+            'Competencia individual intermedia de larga duración. Problemas de dificultad creciente durante 48 horas.',
+        fecha_inicio: new Date('2026-05-20T00:00:00'),
+        fecha_fin: new Date('2026-05-22T23:59:59'),
+        nivel_dificultad: Nivel.INTERMEDIO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 25,
+    },
+    {
+        nombre: 'Olimpíadas de Código',
+        descripcion:
+            'Competencia individual estilo olímpico. Problemas de alta complejidad, estructuras de datos y algoritmos avanzados.',
+        fecha_inicio: new Date('2026-03-01T08:00:00'),
+        fecha_fin: new Date('2026-03-15T20:00:00'),
+        nivel_dificultad: Nivel.AVANZADO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 15,
+    },
+    {
+        nombre: 'Reto Backend 2026',
+        descripcion:
+            'Competencia individual avanzada. Problemas de implementación de lógica de backend, estructuras y consultas.',
+        fecha_inicio: new Date('2026-04-15T10:00:00'),
+        fecha_fin: new Date('2026-04-30T18:00:00'),
+        nivel_dificultad: Nivel.AVANZADO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 20,
+    },
+    {
+        nombre: 'Reto Fullstack 2026',
+        descripcion:
+            'Competencia grupal intermedia. Equipos de hasta 4 integrantes resuelven problemas de lógica con foco fullstack.',
+        fecha_inicio: new Date('2026-06-01T10:00:00'),
+        fecha_fin: new Date('2026-06-10T18:00:00'),
+        nivel_dificultad: Nivel.INTERMEDIO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.GRUPAL,
+        max_participantes: 4,
+    },
+    {
+        nombre: 'Hackathon Express 2026',
+        descripcion:
+            'Hackathon grupal intermedia exprés. 24 horas para resolver problemas de dificultad media.',
+        fecha_inicio: new Date('2026-06-22T09:00:00'),
+        fecha_fin: new Date('2026-06-23T09:00:00'),
+        nivel_dificultad: Nivel.INTERMEDIO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.GRUPAL,
+        max_participantes: 3,
+    },
+    {
+        nombre: 'Reto Legacy',
+        descripcion:
+            'Competencia individual principiante. Problemas de algoritmos básicos y manejo de datos simples.',
+        fecha_inicio: new Date('2026-01-01T10:00:00'),
+        fecha_fin: new Date('2026-01-31T23:59:59'),
+        nivel_dificultad: Nivel.PRINCIPIANTE,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 30,
+    },
+    {
+        nombre: 'Batalla de Equipos',
+        descripcion:
+            'Competencia grupal avanzada. Equipos de hasta 5 integrantes compiten en problemas algorítmicos complejos.',
+        fecha_inicio: new Date('2026-06-12T08:00:00'),
+        fecha_fin: new Date('2026-06-18T20:00:00'),
+        nivel_dificultad: Nivel.AVANZADO,
+        estado: Estado.FINALIZADA,
+        tipo: Tipo.GRUPAL,
+        max_participantes: 5,
+    },
+
+    // ---------- Canceladas ----------
+    {
+        nombre: 'Reto Inteligencia Artificial',
+        descripcion:
+            'Competencia individual avanzada enfocada en problemas de IA. Cancelada por reorganización del calendario.',
+        fecha_inicio: new Date('2026-05-01T09:00:00'),
+        fecha_fin: new Date('2026-05-15T18:00:00'),
+        nivel_dificultad: Nivel.AVANZADO,
+        estado: Estado.CANCELADA,
+        tipo: Tipo.INDIVIDUAL,
+        max_participantes: 40,
+    },
+];
+
 export const competenciasSeed: Seed = {
     order: 3,
     name: 'Competencias',
@@ -24,159 +210,6 @@ export const competenciasSeed: Seed = {
         console.log('🔌 Conectado a la base de datos para seed');
 
         const repository = dataSource.getRepository(Competencia);
-
-        const competenciasData = [
-            {
-                nombre: 'Concurso de Algoritmos',
-                descripcion: 'Competencia individual de resolución de algoritmos. Demuestra tus habilidades de programación.',
-                fecha_inicio: new Date('2026-06-01T10:00:00'),
-                fecha_fin: new Date('2026-06-15T23:59:59'),
-                nivel_dificultad: Nivel.INTERMEDIO,
-                estado: Estado.ABIERTA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 50,
-            },
-            {
-                nombre: 'Hackathon Grupal 2026',
-                descripcion: 'Competencia grupal donde equipos de hasta 4 personas deben resolver problemas complejos.',
-                fecha_inicio: new Date('2026-06-10T09:00:00'),
-                fecha_fin: new Date('2026-06-20T18:00:00'),
-                nivel_dificultad: Nivel.AVANZADO,
-                estado: Estado.ABIERTA,
-                tipo: Tipo.GRUPAL,
-                max_participantes: 4,
-            },
-            {
-                nombre: 'Reto Legacy',
-                descripcion: 'Competencia individual finalizada. Solo para consulta de resultados.',
-                fecha_inicio: new Date('2026-01-01T10:00:00'),
-                fecha_fin: new Date('2026-01-31T23:59:59'),
-                nivel_dificultad: Nivel.PRINCIPIANTE,
-                estado: Estado.FINALIZADA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 30,
-            },
-            {
-                nombre: 'Sprint de Código',
-                descripcion: 'Competencia individual de velocidad. Resuelve el mayor número de problemas en 2 horas.',
-                fecha_inicio: new Date('2026-06-05T14:00:00'),
-                fecha_fin: new Date('2026-06-05T18:00:00'),
-                nivel_dificultad: Nivel.PRINCIPIANTE,
-                estado: Estado.ABIERTA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 100,
-            },
-            {
-                nombre: 'Batalla de Equipos',
-                descripcion: 'Competencia grupal de alto nivel. Equipos de hasta 5 integrantes.',
-                fecha_inicio: new Date('2026-06-12T08:00:00'),
-                fecha_fin: new Date('2026-06-18T20:00:00'),
-                nivel_dificultad: Nivel.AVANZADO,
-                estado: Estado.EN_CURSO,
-                tipo: Tipo.GRUPAL,
-                max_participantes: 5,
-            },
-            {
-                nombre: 'Maratón de Programación',
-                descripcion: 'Competencia individual de larga duración. 48 horas para resolver múltiples problemas.',
-                fecha_inicio: new Date('2026-05-20T00:00:00'),
-                fecha_fin: new Date('2026-05-22T23:59:59'),
-                nivel_dificultad: Nivel.INTERMEDIO,
-                estado: Estado.FINALIZADA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 25,
-            },
-            {
-                nombre: 'Copa Junior',
-                descripcion: 'Competencia grupal para principiantes. Ideal para empezar en competencias.',
-                fecha_inicio: new Date('2026-06-15T10:00:00'),
-                fecha_fin: new Date('2026-06-25T17:00:00'),
-                nivel_dificultad: Nivel.PRINCIPIANTE,
-                estado: Estado.ABIERTA,
-                tipo: Tipo.GRUPAL,
-                max_participantes: 3,
-            },
-            {
-                nombre: 'Reto Inteligencia Artificial',
-                descripcion: 'Competencia individual enfocada en problemas de IA y machine learning.',
-                fecha_inicio: new Date('2026-05-01T09:00:00'),
-                fecha_fin: new Date('2026-05-15T18:00:00'),
-                nivel_dificultad: Nivel.AVANZADO,
-                estado: Estado.CANCELADA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 40,
-            },
-            {
-                nombre: 'Duelo de Algoritmos',
-                descripcion: 'Competencia individual 1v1. Clasificatorios y eliminación directa.',
-                fecha_inicio: new Date('2026-06-20T16:00:00'),
-                fecha_fin: new Date('2026-06-21T21:00:00'),
-                nivel_dificultad: Nivel.INTERMEDIO,
-                estado: Estado.ABIERTA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 16,
-            },
-            {
-                nombre: 'Proyecto Colaborativo',
-                descripcion: 'Competencia grupal donde cada equipo debe entregar un proyecto completo.',
-                fecha_inicio: new Date('2026-06-08T09:00:00'),
-                fecha_fin: new Date('2026-06-30T23:59:59'),
-                nivel_dificultad: Nivel.INTERMEDIO,
-                estado: Estado.EN_CURSO,
-                tipo: Tipo.GRUPAL,
-                max_participantes: 4,
-            },
-            {
-                nombre: 'Desafío Backend',
-                descripcion: 'Competencia individual de desarrollo backend. API REST, bases de datos y más.',
-                fecha_inicio: new Date('2026-04-15T10:00:00'),
-                fecha_fin: new Date('2026-04-30T18:00:00'),
-                nivel_dificultad: Nivel.AVANZADO,
-                estado: Estado.FINALIZADA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 20,
-            },
-            {
-                nombre: 'Hackathon Express',
-                descripcion: 'Competencia grupal rápida. 24 horas para crear una solución funcional.',
-                fecha_inicio: new Date('2026-06-22T09:00:00'),
-                fecha_fin: new Date('2026-06-23T09:00:00'),
-                nivel_dificultad: Nivel.INTERMEDIO,
-                estado: Estado.ABIERTA,
-                tipo: Tipo.GRUPAL,
-                max_participantes: 3,
-            },
-            {
-                nombre: 'Olimpíadas de Código',
-                descripcion: 'Competencia individual estilo olímpico. Problemas de alta complejidad.',
-                fecha_inicio: new Date('2026-03-01T08:00:00'),
-                fecha_fin: new Date('2026-03-15T20:00:00'),
-                nivel_dificultad: Nivel.AVANZADO,
-                estado: Estado.FINALIZADA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 15,
-            },
-            {
-                nombre: 'Reto Fullstack',
-                descripcion: 'Competencia grupal para construir aplicaciones fullstack completas.',
-                fecha_inicio: new Date('2026-06-01T10:00:00'),
-                fecha_fin: new Date('2026-06-10T18:00:00'),
-                nivel_dificultad: Nivel.INTERMEDIO,
-                estado: Estado.EN_CURSO,
-                tipo: Tipo.GRUPAL,
-                max_participantes: 4,
-            },
-            {
-                nombre: 'Clasificatorio Regional',
-                descripcion: 'Competencia individual para clasificar al evento nacional.',
-                fecha_inicio: new Date('2026-07-01T09:00:00'),
-                fecha_fin: new Date('2026-07-05T18:00:00'),
-                nivel_dificultad: Nivel.AVANZADO,
-                estado: Estado.ABIERTA,
-                tipo: Tipo.INDIVIDUAL,
-                max_participantes: 60,
-            },
-        ];
 
         for (const data of competenciasData) {
             const existing = await repository.findOne({
