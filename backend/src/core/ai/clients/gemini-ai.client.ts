@@ -40,33 +40,8 @@ export class GeminiAiClient implements AiClient {
             temperature: options.temperature ?? 0.7,
             maxOutputTokens: options.maxTokens ?? 5000,
             responseMimeType: 'application/json',
-            responseSchema: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                required: [
-                  'titulo',
-                  'descripcion',
-                  'dificultad',
-                  'formato_entrada',
-                  'formato_salida',
-                  'ejemplo_entrada',
-                  'ejemplo_salida',
-                ],
-                properties: {
-                  titulo: { type: Type.STRING },
-                  descripcion: { type: Type.STRING },
-                  dificultad: {
-                    type: Type.STRING,
-                    enum: ['Facil', 'Medio', 'Dificil'],
-                  },
-                  formato_entrada: { type: Type.STRING },
-                  formato_salida: { type: Type.STRING },
-                  ejemplo_entrada: { type: Type.STRING },
-                  ejemplo_salida: { type: Type.STRING },
-                },
-              },
-            },
+            responseSchema:
+              options.responseSchema ?? this.defaultProblemasSchema(),
           },
         });
 
@@ -92,6 +67,36 @@ export class GeminiAiClient implements AiClient {
 
   private normalizeModel(model: string): string {
     return model.replace(/^models\//, '');
+  }
+
+  private defaultProblemasSchema() {
+    return {
+      type: Type.ARRAY,
+      items: {
+        type: Type.OBJECT,
+        required: [
+          'titulo',
+          'descripcion',
+          'dificultad',
+          'formato_entrada',
+          'formato_salida',
+          'ejemplo_entrada',
+          'ejemplo_salida',
+        ],
+        properties: {
+          titulo: { type: Type.STRING },
+          descripcion: { type: Type.STRING },
+          dificultad: {
+            type: Type.STRING,
+            enum: ['Facil', 'Medio', 'Dificil'],
+          },
+          formato_entrada: { type: Type.STRING },
+          formato_salida: { type: Type.STRING },
+          ejemplo_entrada: { type: Type.STRING },
+          ejemplo_salida: { type: Type.STRING },
+        },
+      },
+    };
   }
 
   private isRetryable(error: unknown): boolean {

@@ -5,6 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Type } from '@google/genai';
 import { AI_CLIENT } from '../../../core/ai/ai.constants';
 import { AiClient } from '../../../core/ai/ai-client.interface';
 import { EstadoSolucion, Lenguaje } from '../../../database/entities/solucion.entity';
@@ -45,6 +46,22 @@ export class SolucionesAiService {
     const text = await this.aiClient.generateJson(prompt, {
       temperature: 0.2,
       maxTokens: 800,
+      responseSchema: {
+        type: Type.OBJECT,
+        required: ['estado', 'confianza', 'justificacion'],
+        properties: {
+          estado: {
+            type: Type.STRING,
+            enum: [
+              EstadoSolucion.CORRECTO,
+              EstadoSolucion.INCORRECTO,
+              EstadoSolucion.REVISION,
+            ],
+          },
+          confianza: { type: Type.NUMBER },
+          justificacion: { type: Type.STRING },
+        },
+      },
     });
 
     return this.parseAndValidate(text);
