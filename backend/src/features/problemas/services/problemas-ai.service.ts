@@ -1,4 +1,5 @@
 import { BadGatewayException, Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AI_CLIENT } from '../../../core/ai/ai.constants';
 import { AiClient } from '../../../core/ai/ai-client.interface';
 import { Dificultad } from '../../../database/entities/problema.entity';
@@ -7,7 +8,10 @@ import { CreateProblemaDto } from '../dto/create-problema.dto';
 
 @Injectable()
 export class ProblemasAiService {
-  constructor(@Inject(AI_CLIENT) private readonly aiClient: AiClient) {}
+  constructor(
+    @Inject(AI_CLIENT) private readonly aiClient: AiClient,
+    private readonly configService: ConfigService,
+  ) {}
 
   async generate(dto: GenerateProblemasDto): Promise<{
     problemas: CreateProblemaDto[];
@@ -15,7 +19,7 @@ export class ProblemasAiService {
   }> {
     const text = await this.aiClient.generateJson(this.buildPrompt(dto), {
       temperature: 0.2,
-      maxTokens: 1800,
+      maxTokens: 5000,
     });
     const problemas = this.parseAndValidateProblems(text, dto.cantidad ?? 3);
 
@@ -99,7 +103,8 @@ Devuelve únicamente el array JSON final.`;
 
     try {
       parsed = JSON.parse(cleanText);
-    } catch {
+    } catch (error) {
+      this.logInvalidJson(rawText, cleanText, error);
       throw new BadGatewayException('La IA devolvió JSON inválido.');
     }
 
@@ -121,6 +126,7 @@ Devuelve únicamente el array JSON final.`;
   private stripCodeFence(value: string): string {
     const cleaned = value
       .trim()
+      .replace(/^\uFEFF/, '')
       .replace(/^```(?:json)?\s*/i, '')
       .replace(/\s*```$/i, '')
       .trim();
@@ -136,6 +142,22 @@ Devuelve únicamente el array JSON final.`;
     }
 
     return cleaned;
+  }
+
+  private logInvalidJson(rawText: string, cleanText: string, error: unknown) {
+    if (this.configService.get<string>('NODE_ENV') === 'production') {
+      return;
+    }
+
+    const parseMessage = error instanceof Error ? error.message : String(error);
+    console.warn('[ProblemasAiService] La IA devolvió JSON inválido.', {
+      parseMessage,
+      rawLength: rawText.length,
+      cleanLength: cleanText.length,
+      startsWithArray: cleanText.trim().startsWith('['),
+      endsWithArray: cleanText.trim().endsWith(']'),
+      preview: cleanText.slice(0, 1200),
+    });
   }
 
   private validateProblem(item: unknown, index: number): CreateProblemaDto {

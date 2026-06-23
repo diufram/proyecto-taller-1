@@ -10,7 +10,7 @@ import { AiGenerateOptions } from '../ai.types';
 
 @Injectable()
 export class GeminiAiClient implements AiClient {
-  private readonly defaultModel = 'gemini-2.0-flash';
+  private readonly defaultModel = 'gemini-3.1-flash-lite';
   private readonly maxAttempts = 3;
 
   constructor(private readonly configService: ConfigService) {}
@@ -38,7 +38,7 @@ export class GeminiAiClient implements AiClient {
           contents: prompt,
           config: {
             temperature: options.temperature ?? 0.7,
-            maxOutputTokens: options.maxTokens ?? 1800,
+            maxOutputTokens: options.maxTokens ?? 5000,
             responseMimeType: 'application/json',
             responseSchema: {
               type: Type.ARRAY,
