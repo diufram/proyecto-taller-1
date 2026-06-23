@@ -1,0 +1,161 @@
+<div class="resolver-problema-page">
+    <p-toolbar styleClass="mb-3 w-full border-none p-0 bg-transparent">
+        <ng-template pTemplate="left">
+            <div class="flex gap-2 align-items-center">
+                <p-button
+                    icon="pi pi-arrow-left"
+                    label="Volver"
+                    severity="secondary"
+                    [outlined]="true"
+                    (onClick)="volver()"
+                ></p-button>
+            </div>
+        </ng-template>
+    </p-toolbar>
+
+    @if (loadingProblema()) {
+        <div class="problema-skeleton">
+            <p-skeleton height="2rem" width="60%"></p-skeleton>
+            <p-skeleton height="1rem" width="40%"></p-skeleton>
+            <p-skeleton height="6rem" width="100%"></p-skeleton>
+        </div>
+    } @else if (problema(); as p) {
+        <article class="problema-card">
+            <header class="problema-header">
+                <div>
+                    <h2 class="problema-titulo">{{ p.titulo }}</h2>
+                    <p class="problema-descripcion">{{ p.descripcion }}</p>
+                </div>
+                <p-tag
+                    [value]="getDificultadLabel(p.dificultad)"
+                    [severity]="getDificultadSeverity(p.dificultad)"
+                ></p-tag>
+            </header>
+
+            <div class="problema-formato">
+                <div class="formato-block">
+                    <span class="label">Formato de entrada</span>
+                    <p class="meta-value">{{ p.formato_entrada }}</p>
+                </div>
+                <div class="formato-block">
+                    <span class="label">Formato de salida</span>
+                    <p class="meta-value">{{ p.formato_salida }}</p>
+                </div>
+            </div>
+
+            <div class="problema-ejemplos">
+                <div class="formato-block">
+                    <span class="label">Ejemplo de entrada</span>
+                    <pre class="code-block">{{ p.ejemplo_entrada }}</pre>
+                </div>
+                <div class="formato-block">
+                    <span class="label">Ejemplo de salida</span>
+                    <pre class="code-block">{{ p.ejemplo_salida }}</pre>
+                </div>
+            </div>
+        </article>
+
+        <p-divider></p-divider>
+
+        <section class="envio-section">
+            <h3 class="section-title">Tu solución</h3>
+
+            @if (loadingSolucion()) {
+                <p-skeleton height="3rem" width="100%"></p-skeleton>
+            } @else if (miSolucion(); as s) {
+                <div class="envio-existente">
+                    <div class="envio-status">
+                        <span class="label">Estado de tu envío</span>
+                        <p-tag
+                            [value]="estadoLabel(s.estado)"
+                            [severity]="estadoSeverity(s.estado)"
+                        ></p-tag>
+                    </div>
+
+                    <div class="envio-meta">
+                        <div>
+                            <span class="label">Lenguaje</span>
+                            <span class="meta-value">{{
+                                s.lenguaje_programacion
+                            }}</span>
+                        </div>
+                        <div>
+                            <span class="label">Enviado</span>
+                            <span class="meta-value">{{
+                                s.created_at | date: 'dd/MM/yyyy HH:mm'
+                            }}</span>
+                        </div>
+                    </div>
+
+                    <div class="formato-block mt-3">
+                        <span class="label">Tu respuesta</span>
+                        <pre class="code-block respuesta">{{ s.respuesta }}</pre>
+                    </div>
+
+                    <p class="envio-nota">
+                        Ya enviaste una solución para este problema. Solo se
+                        permite un envío por participante.
+                    </p>
+                </div>
+            } @else {
+                <form
+                    [formGroup]="form"
+                    (ngSubmit)="enviar()"
+                    class="envio-form"
+                >
+                    <div class="form-field">
+                        <label for="lenguaje" class="label">Lenguaje</label>
+                        <p-select
+                            inputId="lenguaje"
+                            formControlName="lenguaje_programacion"
+                            [options]="lenguajes"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Selecciona un lenguaje"
+                            [filter]="true"
+                            styleClass="w-full"
+                        ></p-select>
+                        @if (
+                            form.get('lenguaje_programacion')?.invalid &&
+                            form.get('lenguaje_programacion')?.touched
+                        ) {
+                            <small class="p-error">El lenguaje es obligatorio.</small>
+                        }
+                    </div>
+
+                    <div class="form-field">
+                        <label for="respuesta" class="label">Respuesta</label>
+                        <textarea
+                            pTextarea
+                            inputId="respuesta"
+                            formControlName="respuesta"
+                            rows="14"
+                            autoResize="false"
+                            class="w-full codigo-textarea"
+                            placeholder="Escribe aquí tu solución..."
+                        ></textarea>
+                        @if (
+                            form.get('respuesta')?.invalid &&
+                            form.get('respuesta')?.touched
+                        ) {
+                            <small class="p-error">La respuesta es obligatoria.</small>
+                        }
+                    </div>
+
+                    <div class="form-actions">
+                        <p-button
+                            type="submit"
+                            label="Enviar solución"
+                            icon="pi pi-send"
+                            severity="primary"
+                            [loading]="submitting()"
+                            [disabled]="form.invalid || submitting()"
+                        ></p-button>
+                    </div>
+                </form>
+            }
+        </section>
+    }
+</div>
+
+<p-toast></p-toast>

@@ -83,8 +83,13 @@ export class UserCompetenciaProblemasComponent implements OnInit {
     }
 
     verProblema(problema: Problema): void {
-        // TODO: Navigate to problem detail/solver page
-        this.toast.info('Info', 'Funcionalidad en desarrollo');
+        this.router.navigate([
+            '/user/competencias',
+            this.competenciaId,
+            'problemas',
+            problema.id,
+            'resolver',
+        ]);
     }
 
     getDificultadSeverity(dificultad: Dificultad): 'success' | 'warn' | 'danger' {

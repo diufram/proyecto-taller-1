@@ -28,4 +28,13 @@ export const USER_COMPETENCIAS_ROUTES: Routes = [
         title: 'Problemas de Competencia',
         data: { breadcrumb: 'Problemas' },
     },
+    {
+        path: ':id/problemas/:problemaId/resolver',
+        loadComponent: () =>
+            import('@/features/soluciones/pages/resolver-problema-page/resolver-problema-page.component').then(
+                (m) => m.ResolverProblemaPageComponent,
+            ),
+        title: 'Resolver problema',
+        data: { breadcrumb: 'Resolver' },
+    },
 ];
