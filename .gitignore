@@ -39,3 +39,6 @@ nginx/certs/
 *.tmp
 
 docs
+comands.txt
+
+ai-service
