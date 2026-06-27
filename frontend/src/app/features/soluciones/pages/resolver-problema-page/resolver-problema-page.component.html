@@ -1,35 +1,46 @@
 <div class="resolver-problema-page">
-    <p-toolbar styleClass="mb-3 w-full border-none p-0 bg-transparent">
-        <ng-template pTemplate="left">
-            <div class="flex gap-2 align-items-center">
-                <p-button
-                    icon="pi pi-arrow-left"
-                    label="Volver"
-                    severity="secondary"
-                    [outlined]="true"
-                    (onClick)="volver()"
-                ></p-button>
-            </div>
-        </ng-template>
-    </p-toolbar>
-
     @if (loadingProblema()) {
-        <div class="problema-skeleton">
-            <p-skeleton height="2rem" width="60%"></p-skeleton>
-            <p-skeleton height="1rem" width="40%"></p-skeleton>
+        <div class="resolver-hero is-loading">
+            <p-skeleton height="1rem" width="11rem"></p-skeleton>
+            <p-skeleton height="3rem" width="70%"></p-skeleton>
+            <p-skeleton height="1rem" width="55%"></p-skeleton>
             <p-skeleton height="6rem" width="100%"></p-skeleton>
         </div>
     } @else if (problema(); as p) {
-        <article class="problema-card">
-            <header class="problema-header">
-                <div>
-                    <h2 class="problema-titulo">{{ p.titulo }}</h2>
+        <header class="resolver-hero">
+            <div class="resolver-hero-copy">
+                <span class="eyebrow">Resolver problema</span>
+                <h1>{{ p.titulo }}</h1>
+                <p>
+                    Lee el formato de entrada/salida, revisa los ejemplos y
+                    envía una única solución para este desafío.
+                </p>
+                <div class="hero-actions">
+                    <p-button
+                        icon="pi pi-arrow-left"
+                        label="Volver a problemas"
+                        severity="secondary"
+                        [outlined]="true"
+                        (onClick)="volver()"
+                    ></p-button>
                 </div>
+            </div>
+
+            <div class="resolver-hero-panel">
+                <span class="panel-label">Dificultad</span>
+                <strong>{{ getDificultadLabel(p.dificultad) }}</strong>
                 <p-tag
                     [value]="getDificultadLabel(p.dificultad)"
                     [severity]="getDificultadSeverity(p.dificultad)"
                 ></p-tag>
-            </header>
+            </div>
+        </header>
+
+        <article class="problema-card">
+            <div class="section-heading">
+                <span>Enunciado</span>
+                <strong>Formato del problema</strong>
+            </div>
 
             <div class="problema-formato">
                 <div class="formato-block">
@@ -54,17 +65,21 @@
             </div>
         </article>
 
-        <p-divider></p-divider>
-
         <section class="envio-section">
-            <h3 class="section-title">Tu solución</h3>
+            <div class="section-heading">
+                <span>Envío</span>
+                <strong>Tu solución</strong>
+            </div>
 
             @if (loadingSolucion()) {
                 <p-skeleton height="3rem" width="100%"></p-skeleton>
             } @else if (miSolucion(); as s) {
                 <div class="envio-existente">
-                    <div class="envio-status">
-                        <span class="label">Estado de tu envío</span>
+                    <div class="envio-status-card">
+                        <div>
+                            <span class="label">Estado de tu envío</span>
+                            <h3>{{ estadoLabel(s.estado) }}</h3>
+                        </div>
                         <p-tag
                             [value]="estadoLabel(s.estado)"
                             [severity]="estadoSeverity(s.estado)"
@@ -124,6 +139,10 @@
 
                     <div class="form-field">
                         <label for="respuesta" class="label">Respuesta</label>
+                        <div class="editor-toolbar">
+                            <span>Editor de solución</span>
+                            <small>Un envío por participante</small>
+                        </div>
                         <textarea
                             pTextarea
                             inputId="respuesta"
@@ -142,11 +161,12 @@
                     </div>
 
                     <div class="form-actions">
+                        <span class="submit-hint">Revisa tu respuesta antes de enviar.</span>
                         <p-button
                             type="submit"
                             label="Enviar solución"
                             icon="pi pi-send"
-                            severity="primary"
+                            severity="success"
                             [loading]="submitting()"
                             [disabled]="form.invalid || submitting()"
                         ></p-button>

@@ -92,6 +92,14 @@ export class UserCompetenciaProblemasComponent implements OnInit {
         ]);
     }
 
+    get problemasFaciles(): number {
+        return this.problemas.filter((problema) => problema.dificultad === 'Facil').length;
+    }
+
+    get problemasMediosDificiles(): number {
+        return this.problemas.filter((problema) => problema.dificultad !== 'Facil').length;
+    }
+
     getDificultadSeverity(dificultad: Dificultad): 'success' | 'warn' | 'danger' {
         switch (dificultad) {
             case 'Facil': return 'success';
