@@ -21,11 +21,13 @@ import { AuthService } from '@/features/auth/services/auth.service';
                             routerLink="/landing"
                         >
                             <div
-                                class="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20"
+                                class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shadow-lg shadow-emerald-500/20 overflow-hidden"
                             >
-                                <i
-                                    class="pi pi-code text-[#0a0a0f] text-sm font-bold"
-                                ></i>
+                                <img
+                                    src="/icono_p.png"
+                                    alt="Compex"
+                                    class="w-full h-full object-cover"
+                                />
                             </div>
                             <span
                                 class="text-xl font-bold tracking-tight text-white"
@@ -102,13 +104,6 @@ import { AuthService } from '@/features/auth/services/auth.service';
                                     pTooltip="Cerrar sesión"
                                 ></p-button>
                             } @else {
-                                <a
-                                    routerLink="/competencias"
-                                    class="hidden md:inline-flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors"
-                                >
-                                    <i class="pi pi-trophy text-sm"></i>
-                                    <span>Mis competencias</span>
-                                </a>
                                 <a
                                     routerLink="/profile"
                                     class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm hover:bg-white/10 transition-colors"

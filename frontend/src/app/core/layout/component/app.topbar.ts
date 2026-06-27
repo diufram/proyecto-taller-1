@@ -1,11 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { MyConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
-import { AuthService } from '@/features/auth/services/auth.service';
 
 @Component({
     selector: 'my-topbar',
@@ -27,23 +26,13 @@ import { AuthService } from '@/features/auth/services/auth.service';
 
         <nav class="layout-topbar-nav hidden md:flex items-center gap-6 mr-3">
             <a
-                routerLink="/competencias"
+                routerLink="/admin/competencias"
                 routerLinkActive="layout-topbar-nav-active"
                 class="layout-topbar-nav-link"
             >
                 <i class="pi pi-trophy text-sm"></i>
                 <span>Competencias</span>
             </a>
-            @if (!isAdmin()) {
-                <a
-                    routerLink="/ranking"
-                    routerLinkActive="layout-topbar-nav-active"
-                    class="layout-topbar-nav-link"
-                >
-                    <i class="pi pi-chart-line text-sm"></i>
-                    <span>Ranking</span>
-                </a>
-            }
         </nav>
 
         <div class="layout-topbar-actions">
@@ -102,19 +91,9 @@ import { AuthService } from '@/features/auth/services/auth.service';
 export class AppTopbar {
     items!: MenuItem[];
 
-    private authService = inject(AuthService);
-
     constructor(public layoutService: LayoutService) {}
-
-    isAdmin(): boolean {
-        return this.authService.isAdmin();
-    }
 
     toggleDarkMode() {
         this.layoutService.toggleTheme();
-    }
-
-    logout() {
-        this.authService.logout();
     }
 }

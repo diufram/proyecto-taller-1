@@ -141,8 +141,6 @@ export class MyMenu implements OnInit {
     }
 
     private buildModel(): MenuItem[] {
-        const isAdmin = this.authService.isAdmin();
-
         const model: MenuItem[] = [
             {
                 label: 'Principal',
@@ -151,7 +149,6 @@ export class MyMenu implements OnInit {
                         label: 'Dashboard',
                         icon: 'pi pi-fw pi-chart-bar',
                         routerLink: ['/dashboard'],
-                        visible: isAdmin,
                     },
                 ],
             },
@@ -161,29 +158,13 @@ export class MyMenu implements OnInit {
                     {
                         label: 'Competencias',
                         icon: 'pi pi-fw pi-trophy',
-                        routerLink: isAdmin ? ['/admin/competencias'] : ['/competencias'],
-                    },
-                ],
-            },
-            {
-                label: 'Competencia',
-                items: [
-                    {
-                        label: 'Ranking',
-                        icon: 'pi pi-fw pi-chart-line',
-                        routerLink: ['/ranking'],
-                        visible: !isAdmin,
+                        routerLink: ['/admin/competencias'],
                     },
                 ],
             },
             {
                 label: 'Cuenta',
                 items: [
-                    {
-                        label: 'Mi Perfil',
-                        icon: 'pi pi-fw pi-user',
-                        routerLink: ['/profile'],
-                    },
                     {
                         label: 'Cerrar Sesion',
                         icon: 'pi pi-fw pi-sign-out',

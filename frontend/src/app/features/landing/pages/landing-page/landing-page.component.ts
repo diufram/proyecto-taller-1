@@ -273,8 +273,12 @@ import { AuthService } from '@/features/auth/services/auth.service';
             <footer class="border-t border-white/5 bg-[#0a0a0f] px-6 py-10 md:px-12">
                 <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 text-sm text-gray-500 md:flex-row">
                     <div class="flex items-center gap-3">
-                        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
-                            <i class="pi pi-code text-xs text-gray-400"></i>
+                        <div class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white/5">
+                            <img
+                                src="/icono_p.png"
+                                alt="Compex"
+                                class="h-full w-full object-cover"
+                            />
                         </div>
                         <span class="font-bold text-gray-300">Compex</span>
                     </div>

@@ -1,7 +1,7 @@
 import { Injectable, effect, signal, computed } from '@angular/core';
 import { Subject } from 'rxjs';
-import { $t, definePreset } from '@primeuix/themes';
-import Aura from '@primeuix/themes/aura';
+import { $t } from '@primeuix/themes';
+import { EmeraldPreset } from '@/core/theme/emerald.preset';
 
 export interface layoutConfig {
     preset?: string;
@@ -43,24 +43,6 @@ export class LayoutService {
 
     // breakpoint típico del template (ajústalo si quieres)
     private readonly DESKTOP_BREAKPOINT = 991;
-
-    private readonly EmeraldPreset = definePreset(Aura, {
-        semantic: {
-            primary: {
-                50: '#ecfdf5',
-                100: '#d1fae5',
-                200: '#a7f3d0',
-                300: '#6ee7b7',
-                400: '#34d399',
-                500: '#10b981',
-                600: '#059669',
-                700: '#047857',
-                800: '#065f46',
-                900: '#064e3b',
-                950: '#022c22',
-            },
-        },
-    });
 
     private mediaQuery: MediaQueryList | null =
         typeof window !== 'undefined' && window.matchMedia
@@ -255,7 +237,7 @@ export class LayoutService {
     }
 
     private applyEmeraldTheme(): void {
-        $t().preset(this.EmeraldPreset).use({ useDefaultOptions: true });
+        $t().preset(EmeraldPreset).use({ useDefaultOptions: true });
     }
 
     setThemePreference(pref: ThemePreference) {

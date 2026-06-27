@@ -213,11 +213,17 @@ export class ProfilePageComponent implements OnInit {
         return !!this.profile?.photo;
     }
 
+    get displayName(): string {
+        if (!this.profile) return 'Usuario';
+        const fullName = `${this.profile.first_name ?? ''} ${this.profile.last_name ?? ''}`.trim();
+        return fullName || this.profile.username;
+    }
+
     getInitials(): string {
         if (!this.profile) return '?';
         const first = this.profile.first_name?.[0] ?? '';
         const last = this.profile.last_name?.[0] ?? '';
-        if (!first && !last) return '?';
+        if (!first && !last) return this.profile.username?.[0]?.toUpperCase() ?? '?';
         return `${first}${last}`.toUpperCase();
     }
 }

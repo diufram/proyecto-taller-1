@@ -46,6 +46,14 @@ export const appRoutes: Routes = [
                         (m) => m.RANKING_ROUTES,
                     ),
             },
+            {
+                path: 'profile',
+                canActivate: [authGuard],
+                loadChildren: () =>
+                    import('./app/features/profile/profile.routes').then(
+                        (m) => m.PROFILE_ROUTES,
+                    ),
+            },
         ],
     },
 
@@ -71,14 +79,6 @@ export const appRoutes: Routes = [
                     ),
             },
 
-            {
-                path: 'profile',
-                canActivate: [authGuard],
-                loadChildren: () =>
-                    import('./app/features/profile/profile.routes').then(
-                        (m) => m.PROFILE_ROUTES,
-                    ),
-            },
         ],
     },
 
