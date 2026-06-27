@@ -4,11 +4,10 @@ import { ApiService } from '@/core/services/http/api.service';
 import { Dificultad } from '../models/problema.model';
 
 export type NivelCompetencia = 'Principiante' | 'Intermedio' | 'Avanzado';
-export type TipoCompetencia = 'Individual' | 'Grupal';
+export type TipoCompetencia = 'Individual';
 
 export interface GeneratedProblem {
     titulo: string;
-    descripcion: string;
     dificultad: Dificultad;
     formato_entrada: string;
     formato_salida: string;
@@ -22,7 +21,6 @@ export interface GenerateOptions {
     cantidad: number;
     dificultad?: Dificultad | null;
     competenciaNombre: string;
-    competenciaDescripcion: string;
     nivelDificultad: NivelCompetencia;
     tipo: TipoCompetencia;
 }
@@ -60,9 +58,6 @@ export class ProblemGeneratorService {
         return [
             opts.prompt,
             `Competencia: ${opts.competenciaNombre}`,
-            opts.competenciaDescripcion
-                ? `Descripción de competencia: ${opts.competenciaDescripcion}`
-                : null,
             `Nivel: ${opts.nivelDificultad}`,
             `Tipo: ${opts.tipo}`,
         ]

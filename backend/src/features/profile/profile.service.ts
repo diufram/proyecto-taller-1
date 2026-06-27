@@ -15,9 +15,10 @@ export class ProfileService {
   constructor(private readonly profileRepository: ProfileRepository) {}
 
   async getProfile(usuarioId: number) {
-    const persona = await this.profileRepository.findPersonaByUsuarioId(usuarioId);
+    const persona =
+      await this.profileRepository.findPersonaByUsuarioId(usuarioId);
     const usuario = await this.profileRepository.findUsuarioById(usuarioId);
-    
+
     if (!usuario) {
       throw new NotFoundException('Usuario no encontrado');
     }
@@ -35,7 +36,10 @@ export class ProfileService {
   }
 
   async updateUsername(usuarioId: number, dto: UpdateUsernameDto) {
-    const taken = await this.profileRepository.isUsernameTaken(dto.username, usuarioId);
+    const taken = await this.profileRepository.isUsernameTaken(
+      dto.username,
+      usuarioId,
+    );
     if (taken) {
       throw new ConflictException('El nombre de usuario ya esta en uso');
     }
@@ -45,14 +49,21 @@ export class ProfileService {
       throw new NotFoundException('Usuario no encontrado');
     }
 
-    const passwordValid = await compare(dto.current_password, usuario.contrasena);
+    const passwordValid = await compare(
+      dto.current_password,
+      usuario.contrasena,
+    );
     if (!passwordValid) {
       throw new UnauthorizedException('Contraseña incorrecta');
     }
 
-    const updated = await this.profileRepository.updateUsername(usuarioId, dto.username);
+    const updated = await this.profileRepository.updateUsername(
+      usuarioId,
+      dto.username,
+    );
 
-    const persona = await this.profileRepository.findPersonaByUsuarioId(usuarioId);
+    const persona =
+      await this.profileRepository.findPersonaByUsuarioId(usuarioId);
 
     return {
       person_id: persona!.id,
@@ -72,7 +83,10 @@ export class ProfileService {
       throw new NotFoundException('Usuario no encontrado');
     }
 
-    const passwordValid = await compare(dto.current_password, usuario.contrasena);
+    const passwordValid = await compare(
+      dto.current_password,
+      usuario.contrasena,
+    );
     if (!passwordValid) {
       throw new UnauthorizedException('Contraseña actual incorrecta');
     }

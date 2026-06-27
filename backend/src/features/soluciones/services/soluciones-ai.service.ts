@@ -8,7 +8,10 @@ import { ConfigService } from '@nestjs/config';
 import { Type } from '@google/genai';
 import { AI_CLIENT } from '../../../core/ai/ai.constants';
 import { AiClient } from '../../../core/ai/ai-client.interface';
-import { EstadoSolucion, Lenguaje } from '../../../database/entities/solucion.entity';
+import {
+  EstadoSolucion,
+  Lenguaje,
+} from '../../../database/entities/solucion.entity';
 
 export interface SugerenciaCalificacion {
   estado: EstadoSolucion;
@@ -18,7 +21,6 @@ export interface SugerenciaCalificacion {
 
 export interface DatosSolucionParaSugerir {
   problemaTitulo: string;
-  problemaDescripcion: string;
   problemaFormatoEntrada: string;
   problemaFormatoSalida: string;
   problemaEjemploEntrada: string;
@@ -103,7 +105,6 @@ Reglas obligatorias:
 Problema:
 - Título: ${datos.problemaTitulo}
 - Dificultad: ${datos.problemaDificultad}
-- Descripción: ${datos.problemaDescripcion}
 - Formato de entrada: ${datos.problemaFormatoEntrada}
 - Formato de salida: ${datos.problemaFormatoSalida}
 - Ejemplo de entrada: ${datos.problemaEjemploEntrada}
@@ -148,9 +149,7 @@ Devuelve únicamente el objeto JSON final.`;
     }
 
     if (
-      !Object.values(EstadoSolucion).includes(
-        obj.estado as EstadoSolucion,
-      ) ||
+      !Object.values(EstadoSolucion).includes(obj.estado as EstadoSolucion) ||
       obj.estado === EstadoSolucion.PENDIENTE
     ) {
       throw new BadGatewayException(
@@ -212,8 +211,7 @@ Devuelve únicamente el objeto JSON final.`;
       return;
     }
 
-    const parseMessage =
-      error instanceof Error ? error.message : String(error);
+    const parseMessage = error instanceof Error ? error.message : String(error);
     this.logger.warn(
       `La IA devolvió JSON inválido. ${parseMessage} (rawLength=${rawText.length}, cleanLength=${cleanText.length}, preview=${cleanText.slice(0, 400)})`,
     );

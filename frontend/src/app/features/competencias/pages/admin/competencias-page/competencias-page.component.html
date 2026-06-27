@@ -86,7 +86,6 @@
                         <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre" /></th>
                         <th>Estado</th>
                         <th pSortableColumn="nivel_dificultad">Nivel <p-sortIcon field="nivel_dificultad" /></th>
-                        <th>Tipo</th>
                         <th pSortableColumn="fecha_inicio">Fecha Inicio <p-sortIcon field="fecha_inicio" /></th>
                         <th>Fecha Fin</th>
                         <th>Max. Part.</th>
@@ -104,7 +103,6 @@
                             ></p-tag>
                         </td>
                         <td>{{ comp.nivel_dificultad }}</td>
-                        <td>{{ comp.tipo }}</td>
                         <td>{{ comp.fecha_inicio | date: 'short' }}</td>
                         <td>{{ comp.fecha_fin | date: 'short' }}</td>
                         <td>{{ comp.max_participantes }}</td>
@@ -128,7 +126,7 @@
 
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td colspan="8" class="text-center p-5">
+                        <td colspan="7" class="text-center p-5">
                             <span class="font-medium text-color-secondary">No se encontraron registros</span>
                         </td>
                     </tr>
@@ -158,11 +156,6 @@
                         <div class="competencia-mobile-field">
                             <span class="label">Nivel</span>
                             <span class="value">{{ comp.nivel_dificultad }}</span>
-                        </div>
-
-                        <div class="competencia-mobile-field">
-                            <span class="label">Tipo</span>
-                            <span class="value">{{ comp.tipo }}</span>
                         </div>
 
                         <div class="competencia-mobile-field">

@@ -81,7 +81,6 @@ export class ProblemaFormPageComponent implements OnInit {
     dificultadLabels = DIFICULTAD_LABELS;
 
     readonly MAX_TITULO = 120;
-    readonly MAX_DESCRIPCION = 2000;
     readonly MAX_FORMATO = 500;
     readonly MAX_EJEMPLO = 1000;
 
@@ -90,13 +89,6 @@ export class ProblemaFormPageComponent implements OnInit {
             titulo: [
                 '',
                 [Validators.required, Validators.maxLength(this.MAX_TITULO)],
-            ],
-            descripcion: [
-                '',
-                [
-                    Validators.required,
-                    Validators.maxLength(this.MAX_DESCRIPCION),
-                ],
             ],
             dificultad: [null, Validators.required],
             formato_entrada: [
@@ -271,7 +263,6 @@ export class ProblemaFormPageComponent implements OnInit {
                 this.existingProblema = res.problema;
                 this.form.patchValue({
                     titulo: res.problema.titulo,
-                    descripcion: res.problema.descripcion,
                     dificultad: res.problema.dificultad,
                     formato_entrada: res.problema.formato_entrada,
                     formato_salida: res.problema.formato_salida,
@@ -291,7 +282,6 @@ export class ProblemaFormPageComponent implements OnInit {
     private resetFormForCreate(): void {
         this.form.reset({
             titulo: '',
-            descripcion: '',
             dificultad: null,
             formato_entrada: '',
             formato_salida: '',

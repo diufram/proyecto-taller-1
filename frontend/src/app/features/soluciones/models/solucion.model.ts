@@ -27,7 +27,6 @@ export interface Solucion {
 }
 
 export interface AdminSolucion extends Solucion {
-    problema_descripcion?: string;
     problema_formato_entrada?: string;
     problema_formato_salida?: string;
     problema_ejemplo_entrada?: string;

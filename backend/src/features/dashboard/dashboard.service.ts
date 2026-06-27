@@ -5,10 +5,7 @@ import {
   Competencia,
   Estado,
 } from '../../database/entities/competencia.entity';
-import {
-  Dificultad,
-  Problema,
-} from '../../database/entities/problema.entity';
+import { Dificultad, Problema } from '../../database/entities/problema.entity';
 import {
   EstadoSolucion,
   Solucion,
@@ -104,7 +101,9 @@ export class DashboardService {
     return result;
   }
 
-  private async getProblemasPorDificultad(): Promise<Record<Dificultad, number>> {
+  private async getProblemasPorDificultad(): Promise<
+    Record<Dificultad, number>
+  > {
     const rows = await this.problemaRepository
       .createQueryBuilder('p')
       .select('p.dificultad', 'dificultad')
@@ -119,7 +118,9 @@ export class DashboardService {
     return result;
   }
 
-  private async getSolucionesPorEstado(): Promise<Record<EstadoSolucion, number>> {
+  private async getSolucionesPorEstado(): Promise<
+    Record<EstadoSolucion, number>
+  > {
     const rows = await this.solucionRepository
       .createQueryBuilder('s')
       .select('s.estado', 'estado')
@@ -279,7 +280,8 @@ export class DashboardService {
       nombre: row.nombre,
       estado: row.estado,
       nivel: row.nivel,
-      fechaInicio: row.fecha_inicio?.toISOString?.() ?? String(row.fecha_inicio),
+      fechaInicio:
+        row.fecha_inicio?.toISOString?.() ?? String(row.fecha_inicio),
       problemas: Number(row.problemas) || 0,
     }));
   }

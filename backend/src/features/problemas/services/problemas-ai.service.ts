@@ -57,7 +57,6 @@ Cada objeto debe cumplir exactamente esta estructura y no agregar campos extra:
 
 {
   "titulo": "Suma de dos números",
-  "descripcion": "Dados dos números enteros A y B, imprimir la suma de ambos.",
   "dificultad": "Facil",
   "formato_entrada": "Una línea con dos enteros A y B separados por espacio.",
   "formato_salida": "Un entero que representa la suma de A y B.",
@@ -71,7 +70,6 @@ Reglas obligatorias:
 - "dificultad" debe ser exactamente uno de estos valores: "Facil", "Medio" o "Dificil".
 - Todos los campos deben ser strings no vacíos.
 - "titulo" debe tener máximo 120 caracteres.
-- "descripcion" debe tener máximo 2000 caracteres.
 - "formato_entrada" debe tener máximo 500 caracteres.
 - "formato_salida" debe tener máximo 500 caracteres.
 - "ejemplo_entrada" debe tener máximo 1000 caracteres.
@@ -170,7 +168,6 @@ Devuelve únicamente el array JSON final.`;
     const problem = item as Record<string, unknown>;
     const requiredFields: Array<keyof CreateProblemaDto> = [
       'titulo',
-      'descripcion',
       'dificultad',
       'formato_entrada',
       'formato_salida',
@@ -204,12 +201,6 @@ Devuelve únicamente el array JSON final.`;
 
     this.assertMaxLength(problem.titulo as string, 'titulo', 120, index);
     this.assertMaxLength(
-      problem.descripcion as string,
-      'descripcion',
-      2000,
-      index,
-    );
-    this.assertMaxLength(
       problem.formato_entrada as string,
       'formato_entrada',
       500,
@@ -236,7 +227,6 @@ Devuelve únicamente el array JSON final.`;
 
     return {
       titulo: (problem.titulo as string).trim(),
-      descripcion: (problem.descripcion as string).trim(),
       dificultad: dificultad as Dificultad,
       formato_entrada: (problem.formato_entrada as string).trim(),
       formato_salida: (problem.formato_salida as string).trim(),

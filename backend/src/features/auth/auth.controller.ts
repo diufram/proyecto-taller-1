@@ -49,7 +49,10 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Renovar tokens con refresh token' })
   @ApiResponse({ status: 200, description: 'Tokens renovados exitosamente' })
-  @ApiResponse({ status: 401, description: 'Refresh token invalido o expirado' })
+  @ApiResponse({
+    status: 401,
+    description: 'Refresh token invalido o expirado',
+  })
   refresh(@Body() dto: RefreshTokenDto) {
     return this.authService.refresh(dto);
   }
@@ -58,7 +61,10 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Cerrar sesion y revocar refresh token' })
   @ApiResponse({ status: 200, description: 'Sesion cerrada exitosamente' })
-  @ApiResponse({ status: 401, description: 'Refresh token invalido o expirado' })
+  @ApiResponse({
+    status: 401,
+    description: 'Refresh token invalido o expirado',
+  })
   logout(@Body() dto: LogoutDto) {
     return this.authService.logout(dto);
   }

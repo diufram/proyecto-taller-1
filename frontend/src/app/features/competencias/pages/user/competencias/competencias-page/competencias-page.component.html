@@ -38,17 +38,13 @@
                                     [severity]="getEstadoSeverity(comp.estado)"
                                 ></p-tag>
                                 <p-tag
-                                    [value]="comp.tipo"
-                                    [severity]="comp.tipo === 'Grupal' ? 'info' : 'secondary'"
-                                ></p-tag>
-                                <p-tag
                                     [value]="comp.nivel_dificultad"
                                     severity="warn"
                                 ></p-tag>
                             </div>
                         </div>
 
-                        <p class="competencia-user-description">{{ comp.descripcion }}</p>
+                        <p class="competencia-user-description"></p>
 
                         <div class="competencia-card-meta">
                             <div class="meta-item">

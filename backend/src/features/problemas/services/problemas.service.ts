@@ -49,7 +49,6 @@ export class ProblemasService {
 
     const problema = await this.problemasRepository.crear({
       titulo: tituloTrim,
-      descripcion: dto.descripcion.trim(),
       dificultad: dto.dificultad,
       formato_entrada: dto.formato_entrada.trim(),
       formato_salida: dto.formato_salida.trim(),
@@ -213,7 +212,6 @@ export class ProblemasService {
     return {
       id: problema.id,
       titulo: problema.titulo,
-      descripcion: problema.descripcion,
       dificultad: problema.dificultad,
       formato_entrada: problema.formato_entrada,
       formato_salida: problema.formato_salida,

@@ -2,7 +2,6 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { Problema } from './problema.entity';
 import { Inscripcion } from './inscripcion.entity';
 import { Ranking } from './ranking.entity';
-import { Grupo } from './grupo.entity';
 import { BaseEntity } from '../../core/entities/base.entity';
 
 export enum Nivel {
@@ -20,16 +19,12 @@ export enum Estado {
 
 export enum Tipo {
   INDIVIDUAL = 'Individual',
-  GRUPAL = 'Grupal',
 }
 
 @Entity('competencias')
 export class Competencia extends BaseEntity {
   @Column()
   nombre!: string;
-
-  @Column('text')
-  descripcion!: string;
 
   @Column({ type: 'timestamp' })
   fecha_inicio!: Date;
@@ -43,7 +38,7 @@ export class Competencia extends BaseEntity {
   @Column({ type: 'enum', enum: Estado })
   estado!: Estado;
 
-  @Column({ type: 'enum', enum: Tipo })
+  @Column({ type: 'enum', enum: Tipo, default: Tipo.INDIVIDUAL })
   tipo!: Tipo;
 
   @Column({ default: 0 })
@@ -57,7 +52,4 @@ export class Competencia extends BaseEntity {
 
   @OneToMany(() => Ranking, (r) => r.competencia)
   rankings!: Ranking[];
-
-  @OneToMany(() => Grupo, (g) => g.competencia)
-  grupos!: Grupo[];
 }

@@ -78,11 +78,6 @@ export interface CalificarEvent {
                             <div class="info-value">
                                 {{ solucion.problema_titulo }}
                             </div>
-                            @if (solucion.problema_descripcion) {
-                                <p class="text-color-secondary text-sm mt-1 mb-0">
-                                    {{ solucion.problema_descripcion }}
-                                </p>
-                            }
                         </div>
 
                         <div class="info-block">

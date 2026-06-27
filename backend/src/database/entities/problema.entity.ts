@@ -14,9 +14,6 @@ export class Problema extends BaseEntity {
   @Column()
   titulo!: string;
 
-  @Column('text')
-  descripcion!: string;
-
   @Column({ type: 'enum', enum: Dificultad })
   dificultad!: Dificultad;
 

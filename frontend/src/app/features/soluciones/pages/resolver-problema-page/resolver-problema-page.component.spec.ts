@@ -18,7 +18,6 @@ describe('ResolverProblemaPageComponent', () => {
         problema: {
             id: 1,
             titulo: 'Suma simple',
-            descripcion: 'Sumar dos numeros',
             dificultad: 'Facil' as const,
             formato_entrada: 'a b',
             formato_salida: 'a+b',

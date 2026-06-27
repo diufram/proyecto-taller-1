@@ -116,7 +116,6 @@ export class SolucionesService {
     };
   }
 
-
   async findAllByUser(user: JwtPayload, query: QuerySolucionesDto) {
     const page = query.page ?? 1;
     const limit = Math.min(query.limit ?? 10, 100);
@@ -234,7 +233,6 @@ export class SolucionesService {
 
     const sugerencia = await this.solucionesAiService.sugerir({
       problemaTitulo: problema.titulo,
-      problemaDescripcion: problema.descripcion,
       problemaFormatoEntrada: problema.formato_entrada,
       problemaFormatoSalida: problema.formato_salida,
       problemaEjemploEntrada: problema.ejemplo_entrada,
@@ -312,7 +310,6 @@ export class SolucionesService {
       problema_id: solucion.problema?.id,
       problema_titulo: solucion.problema?.titulo,
       problema_dificultad: solucion.problema?.dificultad,
-      problema_descripcion: solucion.problema?.descripcion,
       problema_formato_entrada: solucion.problema?.formato_entrada,
       problema_formato_salida: solucion.problema?.formato_salida,
       problema_ejemplo_entrada: solucion.problema?.ejemplo_entrada,

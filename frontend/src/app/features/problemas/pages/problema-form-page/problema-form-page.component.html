@@ -72,36 +72,6 @@
                 </div>
 
                 <div class="flex flex-col gap-2 mt-4">
-                    <div class="flex items-center justify-between">
-                        <label for="descripcion_input" class="field-label">
-                            Descripción <span class="required">*</span>
-                        </label>
-                        <span
-                            class="char-counter"
-                            [class.is-near-limit]="charCount('descripcion') > MAX_DESCRIPCION * 0.85"
-                        >
-                            {{ charCount('descripcion') }}/{{ MAX_DESCRIPCION }}
-                        </span>
-                    </div>
-                    <textarea
-                        pTextarea
-                        id="descripcion_input"
-                        formControlName="descripcion"
-                        rows="5"
-                        autoResize="true"
-                        class="w-full"
-                        [invalid]="isInvalid('descripcion')"
-                        [maxlength]="MAX_DESCRIPCION"
-                        placeholder="Describe el problema: qué debe hacer el programa, contexto, etc."
-                    ></textarea>
-                    @if (isInvalid("descripcion")) {
-                        <p-message severity="error" size="small" variant="simple">
-                            La descripción es requerida.
-                        </p-message>
-                    }
-                </div>
-
-                <div class="flex flex-col gap-2 mt-4">
                     <label for="dificultad_input" class="field-label">
                         Dificultad <span class="required">*</span>
                     </label>

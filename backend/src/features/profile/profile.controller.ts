@@ -42,7 +42,10 @@ export class ProfileController {
   @Put('username')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Actualizar nombre de usuario' })
-  @ApiResponse({ status: 200, description: 'Username actualizado correctamente' })
+  @ApiResponse({
+    status: 200,
+    description: 'Username actualizado correctamente',
+  })
   @ApiResponse({ status: 401, description: 'Contraseña incorrecta' })
   @ApiResponse({ status: 409, description: 'Nombre de usuario ya en uso' })
   updateUsername(
@@ -55,7 +58,10 @@ export class ProfileController {
   @Put('password')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Cambiar contraseña' })
-  @ApiResponse({ status: 200, description: 'Contraseña actualizada correctamente' })
+  @ApiResponse({
+    status: 200,
+    description: 'Contraseña actualizada correctamente',
+  })
   @ApiResponse({ status: 401, description: 'Contraseña actual incorrecta' })
   changePassword(
     @CurrentUser() user: JwtPayload,

@@ -19,7 +19,6 @@ const dataSource = new DataSource({
 
 interface ProblemaData {
     titulo: string;
-    descripcion: string;
     dificultad: Dificultad;
     formato_entrada: string;
     formato_salida: string;
@@ -32,8 +31,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Duelo de Algoritmos (Intermedio - Finalizada) ----------
     {
         titulo: 'Fibonacci',
-        descripcion:
-            'Dado un entero N, imprimir el N-ésimo término de la sucesión de Fibonacci. f(0) = 0, f(1) = 1, f(n) = f(n-1) + f(n-2).',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Un entero N (0 <= N <= 30).',
         formato_salida: 'El N-ésimo término de Fibonacci.',
@@ -43,8 +40,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Búsqueda Binaria',
-        descripcion:
-            'Dado un arreglo ordenado de N enteros y un valor X, encontrar el índice de X en el arreglo. Si no existe, devolver -1.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N. Segunda línea: N enteros ordenados. Tercera línea: X.',
@@ -55,8 +50,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Potencia Rápida',
-        descripcion:
-            'Dados dos enteros A y B, calcular A^B de forma eficiente (exponenciación binaria).',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Dos enteros A y B separados por espacio (0 <= A, B <= 30).',
         formato_salida: 'A elevado a la B.',
@@ -68,8 +61,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Maratón de Programación (Intermedio - Finalizada) ----------
     {
         titulo: 'Ordenamiento Burbuja',
-        descripcion:
-            'Dado un arreglo de N enteros, ordenarlo de forma ascendente usando el algoritmo de ordenamiento burbuja.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N (1 <= N <= 50). Segunda línea: N enteros.',
@@ -80,8 +71,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Contar Pares que Suman K',
-        descripcion:
-            'Dado un arreglo de N enteros y un valor K, contar cuántos pares de índices (i, j) con i < j cumplen que arr[i] + arr[j] = K.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N y K. Segunda línea: N enteros.',
@@ -92,8 +81,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Rotar Arreglo',
-        descripcion:
-            'Dado un arreglo de N enteros y un valor K, rotar el arreglo K posiciones a la derecha.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N y K. Segunda línea: N enteros.',
@@ -107,8 +94,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Olimpíadas de Código (Avanzado - Finalizada) ----------
     {
         titulo: 'Subconjunto que Suma X',
-        descripcion:
-            'Dado un arreglo de N enteros y un valor X, determinar si existe un subconjunto del arreglo cuyos elementos sumen exactamente X.',
         dificultad: Dificultad.DIFICIL,
         formato_entrada: 'Primera línea: N y X. Segunda línea: N enteros.',
         formato_salida: 'Imprimir "SI" si existe, "NO" en caso contrario.',
@@ -118,8 +103,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Camino más corto en grilla',
-        descripcion:
-            'Dada una grilla de N x M con 0 (casilla libre) y 1 (obstáculo), encontrar la longitud del camino más corto desde la esquina superior izquierda (0,0) hasta la esquina inferior derecha (N-1, M-1). Solo se puede mover arriba/abajo/izquierda/derecha.',
         dificultad: Dificultad.DIFICIL,
         formato_entrada:
             'Primera línea: N y M. Siguientes N líneas: M valores 0 o 1 separados por espacio.',
@@ -130,8 +113,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Contar Islas',
-        descripcion:
-            'Dada una grilla de N x M con 0 (agua) y 1 (tierra), contar la cantidad de islas (grupos de celdas conectadas horizontal o verticalmente).',
         dificultad: Dificultad.DIFICIL,
         formato_entrada:
             'Primera línea: N y M. Siguientes N líneas: M valores 0 o 1.',
@@ -144,8 +125,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Copa Junior 2026 (Principiante - En curso) ----------
     {
         titulo: 'Número Mayor entre Tres',
-        descripcion:
-            'Dados tres números enteros, imprimir el mayor de ellos.',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Tres enteros A, B y C separados por espacio.',
         formato_salida: 'El mayor de los tres.',
@@ -155,8 +134,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Suma de Pares',
-        descripcion:
-            'Dado un entero N, sumar todos los números pares desde 2 hasta N inclusive. Si N es impar, considerar hasta N-1.',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Un entero N (2 <= N <= 1000).',
         formato_salida: 'La suma de los pares.',
@@ -168,8 +145,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Proyecto Colaborativo 2026 (Intermedio - En curso) ----------
     {
         titulo: 'Frecuencia de Caracteres',
-        descripcion:
-            'Dado un string, contar la frecuencia de cada carácter (solo letras minúsculas). Imprimir los caracteres ordenados alfabéticamente seguidos de su cantidad.',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Una línea con texto en minúsculas (sin espacios, máximo 200 caracteres).',
         formato_salida:
@@ -180,8 +155,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Sumar Dos Arreglos',
-        descripcion:
-            'Dados dos arreglos de N enteros, generar un tercer arreglo donde cada posición i es arr1[i] + arr2[i].',
         dificultad: Dificultad.FACIL,
         formato_entrada:
             'Primera línea: N. Segunda línea: N enteros. Tercera línea: N enteros.',
@@ -194,8 +167,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Reto Inteligencia Artificial (Avanzado - Cancelada) ----------
     {
         titulo: 'Conteo de Palabras',
-        descripcion:
-            'Dado un texto, contar la cantidad de veces que aparece cada palabra (case-insensitive) e imprimir ordenadas alfabéticamente.',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Un texto de una o varias líneas terminado en EOF.',
         formato_salida: 'Una línea por palabra con formato "palabra:cantidad", orden alfabético.',
@@ -207,8 +178,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Reto Legacy (Principiante - Cancelada) ----------
     {
         titulo: 'Área de un Rectángulo',
-        descripcion:
-            'Dados el ancho y el alto de un rectángulo, calcular su área.',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Dos números reales separados por espacio.',
         formato_salida: 'El área con dos decimales.',
@@ -218,8 +187,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Convertir Celsius a Fahrenheit',
-        descripcion:
-            'Dada una temperatura en grados Celsius, convertirla a Fahrenheit usando F = C × 9/5 + 32.',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Un número real (la temperatura en Celsius).',
         formato_salida: 'La temperatura en Fahrenheit con dos decimales.',
@@ -229,8 +196,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Promedio de N Números',
-        descripcion:
-            'Dados N números reales, calcular su promedio.',
         dificultad: Dificultad.FACIL,
         formato_entrada:
             'Primera línea: N (1 <= N <= 100). Segunda línea: N números reales separados por espacio.',
@@ -243,8 +208,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Clasificatorio Regional 2026 (Avanzado - Abierta) ----------
     {
         titulo: 'Knapsack 0-1',
-        descripcion:
-            'Dados N objetos con un peso y un valor, y una mochila con capacidad W, encontrar el valor máximo que se puede obtener eligiendo un subconjunto de objetos (cada objeto se puede elegir a lo sumo una vez).',
         dificultad: Dificultad.DIFICIL,
         formato_entrada:
             'Primera línea: N y W. Siguientes N líneas: peso y valor de cada objeto.',
@@ -255,8 +218,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Dijkstra en Grafo Ponderado',
-        descripcion:
-            'Dado un grafo ponderado no dirigido con V vértices y E aristas, encontrar la distancia más corta desde el vértice 0 al vértice V-1.',
         dificultad: Dificultad.DIFICIL,
         formato_entrada:
             'Primera línea: V y E. Siguientes E líneas: u, v, w (peso).',
@@ -270,8 +231,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Olimpíada Matemática 2026 (Avanzado - Abierta) ----------
     {
         titulo: 'Número Primo',
-        descripcion:
-            'Dado un entero N, determinar si es primo. Un número primo es mayor que 1 y solo divisible por 1 y por sí mismo.',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Un entero N (0 <= N <= 10^6).',
         formato_salida: 'Imprimir "SI" si es primo, "NO" en caso contrario.',
@@ -281,8 +240,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Máximo Común Divisor',
-        descripcion:
-            'Dados dos enteros A y B, calcular su máximo común divisor usando el algoritmo de Euclides.',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Dos enteros A y B (1 <= A, B <= 10^9).',
         formato_salida: 'El MCD de A y B.',
@@ -292,8 +249,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Descomposición en Primos',
-        descripcion:
-            'Dado un entero N, imprimir su descomposición en factores primos en orden ascendente. Si un primo se repite, imprimirlo esa cantidad de veces.',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Un entero N (2 <= N <= 10^6).',
         formato_salida: 'Los factores primos separados por espacio.',
@@ -305,8 +260,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Desafío de Estructuras de Datos (Intermedio - Abierta) ----------
     {
         titulo: 'Invertir Lista Enlazada',
-        descripcion:
-            'Dado un arreglo de N enteros que representa los valores de una lista enlazada en orden, imprimir el arreglo invertido (que representa la lista en orden inverso).',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N (1 <= N <= 1000). Segunda línea: N enteros.',
@@ -317,8 +270,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Stack con Mínimo',
-        descripcion:
-            'Implementar las operaciones de un stack que además del push y pop, pueda devolver el mínimo actual en O(1). Se procesan M operaciones sobre un stack inicialmente vacío. Imprimir el resultado de cada operación pop o min.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: M. Siguientes M líneas: operación y valor (si aplica). Operaciones: "push X", "pop", "min".',
@@ -331,8 +282,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Recorrido BFS en Grafo',
-        descripcion:
-            'Dado un grafo no dirigido con V vértices y E aristas, imprimir el recorrido BFS partiendo del vértice 0.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: V y E. Siguientes E líneas: u, v (arista).',
@@ -345,8 +294,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Concurso de Programación Funcional (Avanzado - Abierta) ----------
     {
         titulo: 'Map y Filter',
-        descripcion:
-            'Dado un arreglo de N enteros, primero filtrar los pares y luego multiplicar cada uno por 2. Imprimir el resultado en el mismo orden.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N. Segunda línea: N enteros.',
@@ -357,8 +304,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Reduce - Sumar Arreglo',
-        descripcion:
-            'Dado un arreglo de N enteros, calcular su suma usando solo reduce o fold (sin ciclos imperativos).',
         dificultad: Dificultad.FACIL,
         formato_entrada:
             'Primera línea: N. Segunda línea: N enteros.',
@@ -369,8 +314,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Recursión - Potencia',
-        descripcion:
-            'Dados dos enteros A y B, calcular A^B usando solo recursión (sin bucles ni pow).',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Dos enteros A y B (0 <= A <= 20, 0 <= B <= 30).',
         formato_salida: 'A elevado a la B.',
@@ -382,8 +325,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Torneo Universitario de Algoritmos (Intermedio - Abierta, Grupal) ----------
     {
         titulo: 'Cumpleaños en Común',
-        descripcion:
-            'Dadas las fechas de cumpleaños de N personas, encontrar la fecha (día y mes) que más se repite. Si hay empate, devolver la menor.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N. Siguientes N líneas: día y mes separados por espacio.',
@@ -394,8 +335,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Matriz Simétrica',
-        descripcion:
-            'Dada una matriz N x N, determinar si es simétrica (A[i][j] == A[j][i] para todo i, j).',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N. Siguientes N líneas: N enteros separados por espacio.',
@@ -406,8 +345,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Punto más Cercano',
-        descripcion:
-            'Dados N puntos en el plano (x, y), encontrar el par de puntos con menor distancia euclidiana. Imprimir la distancia con 4 decimales.',
         dificultad: Dificultad.DIFICIL,
         formato_entrada:
             'Primera línea: N. Siguientes N líneas: x e y (números reales).',
@@ -420,8 +357,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Copa Femenina de Programación (Principiante - Abierta) ----------
     {
         titulo: 'Saludo Personalizado',
-        descripcion:
-            'Dado un nombre, imprimir "Hola, " seguido del nombre y un signo de exclamación.',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Una línea con un nombre (sin espacios, máximo 50 caracteres).',
         formato_salida: 'El saludo personalizado.',
@@ -431,7 +366,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Sumar Tres Números',
-        descripcion: 'Dados tres enteros, imprimir su suma.',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Tres enteros A, B y C separados por espacio.',
         formato_salida: 'La suma de los tres.',
@@ -441,8 +375,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Año Bisiesto',
-        descripcion:
-            'Dado un año, determinar si es bisiesto. Un año es bisiesto si es divisible por 4 y no por 100, o si es divisible por 400.',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Un entero A (1 <= A <= 9999).',
         formato_salida: 'Imprimir "SI" si es bisiesto, "NO" en caso contrario.',
@@ -454,8 +386,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Code Sprint Universitario (Intermedio - Abierta) ----------
     {
         titulo: 'Detección de Duplicados',
-        descripcion:
-            'Dado un arreglo de N enteros, determinar si tiene algún elemento duplicado.',
         dificultad: Dificultad.FACIL,
         formato_entrada:
             'Primera línea: N. Segunda línea: N enteros.',
@@ -466,8 +396,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Producto de Elementos Excepto Self',
-        descripcion:
-            'Dado un arreglo de N enteros, generar un nuevo arreglo donde cada posición i es el producto de todos los elementos excepto el de la posición i.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N. Segunda línea: N enteros (pueden ser 0).',
@@ -478,8 +406,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Longest Increasing Subsequence',
-        descripcion:
-            'Dado un arreglo de N enteros, encontrar la longitud de la subsecuencia creciente más larga.',
         dificultad: Dificultad.DIFICIL,
         formato_entrada:
             'Primera línea: N. Segunda línea: N enteros.',
@@ -492,8 +418,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Maratón de Verano 2026 (Intermedio - En curso) ----------
     {
         titulo: 'Temperaturas Extremas',
-        descripcion:
-            'Dada una lista de N temperaturas, encontrar la temperatura máxima y mínima, e imprimir su diferencia.',
         dificultad: Dificultad.FACIL,
         formato_entrada:
             'Primera línea: N. Segunda línea: N enteros.',
@@ -504,8 +428,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Lista de Compras',
-        descripcion:
-            'Dada una lista de productos y sus precios, calcular el total. Cada producto tiene un nombre (sin espacios) y un precio entero.',
         dificultad: Dificultad.FACIL,
         formato_entrada:
             'Primera línea: N. Siguientes N líneas: nombre y precio.',
@@ -516,8 +438,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Palabras más Largas',
-        descripcion:
-            'Dada una línea de texto, encontrar las palabras con la mayor longitud. Imprimirlas en el orden en que aparecen, separadas por espacio.',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Una línea de texto con varias palabras separadas por espacio.',
         formato_salida: 'Las palabras más largas separadas por espacio.',
@@ -529,8 +449,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Hackathon Universitario (Avanzado - En curso, Grupal) ----------
     {
         titulo: 'Trie - Búsqueda de Prefijo',
-        descripcion:
-            'Dada una lista de N palabras y M consultas (cada una con un prefijo), contar cuántas palabras de la lista empiezan con ese prefijo.',
         dificultad: Dificultad.DIFICIL,
         formato_entrada:
             'Primera línea: N. Siguientes N líneas: palabras. Luego una línea con M. Siguientes M líneas: prefijos.',
@@ -542,8 +460,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Union-Find (DSU)',
-        descripcion:
-            'Procesar N operaciones de union-find: "union X Y" une los conjuntos que contienen a X e Y; "find X" imprime el representante del conjunto de X.',
         dificultad: Dificultad.DIFICIL,
         formato_entrada:
             'Primera línea: N. Siguientes N líneas: operación y dos enteros si aplica.',
@@ -555,8 +471,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Top K Frecuentes',
-        descripcion:
-            'Dado un arreglo de N enteros y un K, imprimir los K elementos más frecuentes en orden descendente de frecuencia. En empate, menor valor primero.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N y K. Segunda línea: N enteros.',
@@ -569,8 +483,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Concurso de Verano Principiante (Principiante - En curso) ----------
     {
         titulo: 'Edad en Días',
-        descripcion:
-            'Dada una edad en años, calcular aproximadamente cuántos días ha vivido la persona (asumir 365 días por año).',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Un entero N (0 <= N <= 150).',
         formato_salida: 'La cantidad de días.',
@@ -580,8 +492,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Promedio Simple',
-        descripcion:
-            'Dadas 3 notas enteras, calcular el promedio entero (división entera).',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Tres enteros A, B y C separados por espacio.',
         formato_salida: 'El promedio entero de los tres.',
@@ -591,8 +501,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Tabla del 2 al 5',
-        descripcion:
-            'Imprimir las tablas de multiplicar del 2 al 5, cada tabla del 1 al 10, con el formato "N x i = resultado".',
         dificultad: Dificultad.FACIL,
         formato_entrada: 'Sin entrada.',
         formato_salida: 'Las tablas con una línea vacía entre ellas.',
@@ -605,8 +513,6 @@ const problemasData: ProblemaData[] = [
     // ---------- Liga de Programación Junior (Intermedio - En curso, Grupal) ----------
     {
         titulo: 'Validar RUT',
-        descripcion:
-            'Dado un número de RUT (sin puntos, con guión), validar que el dígito verificador sea correcto usando el algoritmo módulo 11.',
         dificultad: Dificultad.DIFICIL,
         formato_entrada: 'Una línea con el RUT en formato "12345678-9".',
         formato_salida: 'Imprimir "VALIDO" o "INVALIDO".',
@@ -616,8 +522,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Puntaje de Tenis',
-        descripcion:
-            'Dado el puntaje de dos jugadores de tenis en un game (15, 30, 40, "ventaja", "gana"), determinar quién gana o si el game está empatado.',
         dificultad: Dificultad.MEDIO,
         formato_entrada: 'Dos strings separados por espacio con los puntajes.',
         formato_salida:
@@ -628,8 +532,6 @@ const problemasData: ProblemaData[] = [
     },
     {
         titulo: 'Reconstruir Frase',
-        descripcion:
-            'Dada una lista de N palabras mezcladas y su orden original por número, reconstruir la frase en el orden correcto.',
         dificultad: Dificultad.MEDIO,
         formato_entrada:
             'Primera línea: N. Siguientes N líneas: "orden palabra" (orden de 1 a N).',
@@ -671,7 +573,6 @@ export const problemasSeed: Seed = {
 
             const problema = problemaRepository.create({
                 titulo: data.titulo,
-                descripcion: data.descripcion,
                 dificultad: data.dificultad,
                 formato_entrada: data.formato_entrada,
                 formato_salida: data.formato_salida,

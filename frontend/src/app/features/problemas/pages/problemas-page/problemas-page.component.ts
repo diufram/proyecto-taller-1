@@ -66,7 +66,6 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
 
     competenciaId!: number;
     competenciaNombre: string = '';
-    competenciaDescripcion: string = '';
     nivelDificultad: NivelCompetencia = 'Intermedio';
     tipo: TipoCompetencia = 'Individual';
 
@@ -101,8 +100,6 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
         this.competenciaNombre =
             history.state?.competenciaNombre ??
             `Competencia #${this.competenciaId}`;
-        this.competenciaDescripcion =
-            history.state?.competenciaDescripcion ?? '';
         this.nivelDificultad =
             (history.state?.nivelDificultad as NivelCompetencia) ??
             'Intermedio';
@@ -295,13 +292,11 @@ export class ProblemasPageComponent implements OnInit, OnDestroy {
 
     private getNavState(): {
         competenciaNombre: string;
-        competenciaDescripcion: string;
         nivelDificultad: NivelCompetencia;
         tipo: TipoCompetencia;
     } {
         return {
             competenciaNombre: this.competenciaNombre,
-            competenciaDescripcion: this.competenciaDescripcion,
             nivelDificultad: this.nivelDificultad,
             tipo: this.tipo,
         };

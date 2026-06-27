@@ -68,7 +68,6 @@ export class ProblemaGeneratePageComponent implements OnInit {
 
     competenciaId!: number;
     competenciaNombre: string = '';
-    competenciaDescripcion: string = '';
     nivelDificultad: NivelCompetencia = 'Intermedio';
     tipo: TipoCompetencia = 'Individual';
 
@@ -122,8 +121,6 @@ export class ProblemaGeneratePageComponent implements OnInit {
         this.competenciaNombre =
             history.state?.competenciaNombre ??
             `Competencia #${this.competenciaId}`;
-        this.competenciaDescripcion =
-            history.state?.competenciaDescripcion ?? '';
         this.nivelDificultad =
             (history.state?.nivelDificultad as NivelCompetencia) ??
             'Intermedio';
@@ -244,7 +241,6 @@ export class ProblemaGeneratePageComponent implements OnInit {
                 cantidad,
                 dificultad,
                 competenciaNombre: this.competenciaNombre,
-                competenciaDescripcion: this.competenciaDescripcion,
                 nivelDificultad: this.nivelDificultad,
                 tipo: this.tipo,
             })
@@ -273,7 +269,6 @@ export class ProblemaGeneratePageComponent implements OnInit {
             toSave.map((p) =>
                 this.problemasService.create(this.competenciaId!, {
                     titulo: p.titulo,
-                    descripcion: p.descripcion,
                     dificultad: p.dificultad,
                     formato_entrada: p.formato_entrada,
                     formato_salida: p.formato_salida,

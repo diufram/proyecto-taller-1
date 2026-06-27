@@ -12,7 +12,6 @@ describe('ProblemGeneratorService', () => {
 
     const baseOpts = {
         competenciaNombre: 'Compex Test',
-        competenciaDescripcion: 'Competencia de prueba',
         nivelDificultad: 'Intermedio' as const,
         tipo: 'Individual' as const,
     };
@@ -41,7 +40,6 @@ describe('ProblemGeneratorService', () => {
                 expect(result).toEqual([
                     {
                         titulo: 'Suma simple',
-                        descripcion: 'Sumar dos enteros.',
                         dificultad: 'Facil',
                         formato_entrada: 'Dos enteros separados por espacio.',
                         formato_salida: 'La suma de ambos enteros.',
@@ -60,7 +58,6 @@ describe('ProblemGeneratorService', () => {
             prompt: [
                 'Genera 2 problemas de suma',
                 'Competencia: Compex Test',
-                'Descripción de competencia: Competencia de prueba',
                 'Nivel: Intermedio',
                 'Tipo: Individual',
             ].join('\n'),
@@ -76,7 +73,6 @@ describe('ProblemGeneratorService', () => {
                 problemas: [
                     {
                         titulo: 'Suma simple',
-                        descripcion: 'Sumar dos enteros.',
                         dificultad: 'Facil',
                         formato_entrada: 'Dos enteros separados por espacio.',
                         formato_salida: 'La suma de ambos enteros.',
@@ -126,7 +122,6 @@ describe('ProblemGeneratorService', () => {
         expect(req.request.body).toEqual({
             prompt: [
                 'Competencia: Compex Test',
-                'Descripción de competencia: Competencia de prueba',
                 'Nivel: Intermedio',
                 'Tipo: Individual',
             ].join('\n'),

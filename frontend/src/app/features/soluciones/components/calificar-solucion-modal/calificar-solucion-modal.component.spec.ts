@@ -19,7 +19,6 @@ describe('CalificarSolucionModalComponent', () => {
         problema_id: 10,
         problema_titulo: 'Suma',
         problema_dificultad: 'Facil',
-        problema_descripcion: 'Sumar dos numeros',
         problema_formato_entrada: 'a b',
         problema_formato_salida: 'a+b',
         problema_ejemplo_entrada: '2 3',

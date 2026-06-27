@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormBuilder,
@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -28,7 +27,6 @@ import {
     CreateCompetenciaDto,
     ESTADOS,
     NIVELES,
-    TIPOS,
     UpdateCompetenciaDto,
 } from '@/features/competencias/models/competencia.model';
 import { CompetenciasService } from '@/features/competencias/services/competencias.service';
@@ -62,7 +60,6 @@ export class CompetenciaFormPageComponent implements OnInit {
     private fb = inject(FormBuilder);
     private competenciasService = inject(CompetenciasService);
     private toast = inject(ToastService);
-    private destroyRef = inject(DestroyRef);
 
     mode: CompetenciaFormMode = 'create';
     competenciaId?: number;
@@ -74,17 +71,14 @@ export class CompetenciaFormPageComponent implements OnInit {
 
     readonly niveles = NIVELES;
     readonly estados = ESTADOS;
-    readonly tipos = TIPOS;
 
     constructor() {
         this.form = this.fb.group({
             nombre: ['', Validators.required],
-            descripcion: ['', Validators.required],
             fecha_inicio: [null, Validators.required],
             fecha_fin: [null, Validators.required],
             nivel_dificultad: [null, Validators.required],
             estado: [null, Validators.required],
-            tipo: [null, Validators.required],
             max_participantes: [1, [Validators.required, Validators.min(1)]],
         });
     }
@@ -94,8 +88,6 @@ export class CompetenciaFormPageComponent implements OnInit {
             ? Number(this.route.snapshot.paramMap.get('id'))
             : undefined;
         this.mode = this.competenciaId ? 'edit' : 'create';
-
-        this.setupTipoBehavior();
 
         if (this.mode === 'edit' && this.competenciaId) {
             this.loadCompetencia();
@@ -108,10 +100,6 @@ export class CompetenciaFormPageComponent implements OnInit {
         return this.mode === 'create'
             ? 'Nueva Competencia'
             : `Editar Competencia${this.competencia?.nombre ? ` - ${this.competencia.nombre}` : ''}`;
-    }
-
-    get isGrupal(): boolean {
-        return this.form.get('tipo')?.value === 'Grupal';
     }
 
     get isValid(): boolean {
@@ -157,7 +145,6 @@ export class CompetenciaFormPageComponent implements OnInit {
         const formValues = this.form.getRawValue();
         const payload: CreateCompetenciaDto | UpdateCompetenciaDto = {
             nombre: formValues.nombre,
-            descripcion: formValues.descripcion || '',
             fecha_inicio: formValues.fecha_inicio
                 ? this.formatDate(formValues.fecha_inicio)
                 : '',
@@ -166,7 +153,6 @@ export class CompetenciaFormPageComponent implements OnInit {
                 : '',
             nivel_dificultad: formValues.nivel_dificultad,
             estado: formValues.estado,
-            tipo: formValues.tipo,
             max_participantes: formValues.max_participantes ?? 1,
         };
 
@@ -213,7 +199,6 @@ export class CompetenciaFormPageComponent implements OnInit {
                     this.competencia = res.competencia;
                     this.form.patchValue({
                         nombre: res.competencia.nombre,
-                        descripcion: res.competencia.descripcion,
                         fecha_inicio: res.competencia.fecha_inicio
                             ? new Date(res.competencia.fecha_inicio)
                             : null,
@@ -222,7 +207,6 @@ export class CompetenciaFormPageComponent implements OnInit {
                             : null,
                         nivel_dificultad: res.competencia.nivel_dificultad,
                         estado: res.competencia.estado,
-                        tipo: res.competencia.tipo,
                         max_participantes: res.competencia.max_participantes,
                     });
                 },
@@ -236,32 +220,12 @@ export class CompetenciaFormPageComponent implements OnInit {
     private resetFormForCreate(): void {
         this.form.reset({
             nombre: '',
-            descripcion: '',
             fecha_inicio: null,
             fecha_fin: null,
             nivel_dificultad: null,
             estado: null,
-            tipo: null,
             max_participantes: 1,
         });
-        this.form.get('max_participantes')?.disable();
-    }
-
-    private setupTipoBehavior(): void {
-        this.form
-            .get('tipo')
-            ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((tipo) => {
-                if (tipo === 'Individual') {
-                    this.form.patchValue(
-                        { max_participantes: 1 },
-                        { emitEvent: false },
-                    );
-                    this.form.get('max_participantes')?.disable();
-                } else {
-                    this.form.get('max_participantes')?.enable();
-                }
-            });
     }
 
     private goBack(): void {

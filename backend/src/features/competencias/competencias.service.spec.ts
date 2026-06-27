@@ -20,12 +20,10 @@ describe('CompetenciasService', () => {
         await expect(
             service.create({
                 nombre: 'X',
-                descripcion: 'Y',
                 fecha_inicio: '2026-07-10 10:00:00' as any,
                 fecha_fin: '2026-07-01 10:00:00' as any,
                 nivel_dificultad: 'Principiante' as any,
                 estado: 'Abierta' as any,
-                tipo: 'Individual' as any,
                 max_participantes: 1,
             }),
         ).rejects.toBeInstanceOf(UnprocessableEntityException);
@@ -36,12 +34,10 @@ describe('CompetenciasService', () => {
 
         await service.create({
             nombre: 'Test',
-            descripcion: 'Desc',
             fecha_inicio: '2026-07-01 10:00:00' as any,
             fecha_fin: '2026-07-10 10:00:00' as any,
             nivel_dificultad: 'Principiante' as any,
             estado: 'Abierta' as any,
-            tipo: 'Individual' as any,
             max_participantes: 30,
         });
 

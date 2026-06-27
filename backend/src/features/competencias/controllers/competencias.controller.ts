@@ -63,12 +63,18 @@ export class CompetenciasController {
   @Roles(Rol.ADMIN)
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Actualizar competencia' })
-  @ApiResponse({ status: 200, description: 'Competencia actualizada correctamente' })
+  @ApiResponse({
+    status: 200,
+    description: 'Competencia actualizada correctamente',
+  })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 403, description: 'Permisos insuficientes' })
   @ApiResponse({ status: 404, description: 'Competencia no encontrada' })
   @ApiResponse({ status: 422, description: 'Error de validacion de datos' })
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCompetenciaDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateCompetenciaDto,
+  ) {
     return this.competenciasService.update(id, dto);
   }
 
@@ -77,7 +83,10 @@ export class CompetenciasController {
   @Roles(Rol.ADMIN)
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Eliminar competencia' })
-  @ApiResponse({ status: 200, description: 'Competencia eliminada correctamente' })
+  @ApiResponse({
+    status: 200,
+    description: 'Competencia eliminada correctamente',
+  })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 403, description: 'Permisos insuficientes' })
   @ApiResponse({ status: 404, description: 'Competencia no encontrada' })
