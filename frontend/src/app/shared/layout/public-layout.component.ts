@@ -55,6 +55,14 @@ import { AuthService } from '@/features/auth/services/auth.service';
                                 class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300"
                                 >Competencias</a
                             >
+                            @if (isLoggedIn() && !isAdmin()) {
+                                <a
+                                    routerLink="/mis-competencias"
+                                    routerLinkActive="text-white"
+                                    class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300"
+                                    >Mis competencias</a
+                                >
+                            }
                             <a
                                 routerLink="/ranking"
                                 routerLinkActive="text-white"

@@ -136,7 +136,7 @@ export class RegisterComponent implements OnInit {
     }
 
     private getDefaultRoute(): string {
-        return this.authService.isAdmin() ? '/dashboard' : '/competencias';
+        return this.authService.isAdmin() ? '/dashboard' : '/mis-competencias';
     }
 
     private getPostRegisterRoute(): string {
@@ -163,4 +163,3 @@ export class RegisterComponent implements OnInit {
         return this.getDefaultRoute();
     }
 }
-

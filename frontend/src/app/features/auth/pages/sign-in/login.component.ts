@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
     }
 
     private getDefaultRoute(): string {
-        return this.authService.isAdmin() ? '/dashboard' : '/competencias';
+        return this.authService.isAdmin() ? '/dashboard' : '/mis-competencias';
     }
 
     private getPostLoginRoute(): string {
@@ -120,4 +120,3 @@ export class LoginComponent implements OnInit {
         return this.getDefaultRoute();
     }
 }
-

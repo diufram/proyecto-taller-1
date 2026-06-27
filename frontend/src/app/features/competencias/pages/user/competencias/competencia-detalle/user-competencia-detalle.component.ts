@@ -35,7 +35,7 @@ import { AuthService } from '@/features/auth/services/auth.service';
                         <h1 class="competencia-page-title">{{ competencia.nombre }}</h1>
                         <p class="competencia-page-subtitle">
                             Revisa el calendario, el cupo y tu estado de inscripción
-                            antes de entrar a resolver los problemas.
+                            antes de participar en esta competencia.
                         </p>
                         <div class="competencia-tags-row">
                             @if (miInscripcion) {
@@ -68,13 +68,7 @@ import { AuthService } from '@/features/auth/services/auth.service';
                             (onClick)="volver()"
                         ></p-button>
 
-                        @if (miInscripcion && puedeVerProblemas()) {
-                            <p-button
-                                label="Ver Problemas"
-                                icon="pi pi-list"
-                                severity="primary"
-                                (onClick)="verProblemas()"
-                            ></p-button>
+                        @if (miInscripcion) {
                             <p-button
                                 label="Desinscribirse"
                                 icon="pi pi-times"
@@ -170,7 +164,8 @@ import { AuthService } from '@/features/auth/services/auth.service';
                     <div class="info-notice">
                         <i class="pi pi-user"></i>
                         <p class="info-notice-text">
-                            Esta es una competencia individual.
+                            Esta vista es solo para inscripción. Para resolver
+                            problemas, entra desde Mis competencias.
                         </p>
                     </div>
                 </div>
@@ -262,20 +257,8 @@ export class UserCompetenciaDetalleComponent implements OnInit {
         }
     }
 
-    puedeVerProblemas(): boolean {
-        return (
-            this.competencia?.estado === 'Abierta' ||
-            this.competencia?.estado === 'En curso'
-        );
-    }
-
     volver(): void {
         this.router.navigate(['/competencias']);
-    }
-
-    verProblemas(): void {
-        if (!this.competencia) return;
-        this.router.navigate(['/competencias', this.competencia.id, 'problemas']);
     }
 
     goToLogin(): void {

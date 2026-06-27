@@ -1,0 +1,130 @@
+<div class="mis-competencias-page">
+    <header class="mis-competencias-hero">
+        <div class="mis-competencias-hero-copy">
+            <span class="eyebrow">Área de participante</span>
+            <h1>Mis competencias</h1>
+            <p>
+                Aquí aparecen solo las competencias en las que estás inscrito.
+                Entra a una competencia para resolver sus problemas y enviar tus
+                soluciones.
+            </p>
+            <div class="hero-actions">
+                <p-button
+                    label="Explorar competencias"
+                    icon="pi pi-arrow-up-right"
+                    severity="secondary"
+                    [outlined]="true"
+                    (onClick)="explorarCompetencias()"
+                ></p-button>
+            </div>
+        </div>
+
+        <div class="mis-competencias-hero-panel" aria-label="Resumen de mis competencias">
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ competenciasInscritas.length }}</span>
+                <span class="hero-stat-label">Inscritas</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ activas }}</span>
+                <span class="hero-stat-label">Activas</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ finalizadas }}</span>
+                <span class="hero-stat-label">Finalizadas</span>
+            </div>
+        </div>
+    </header>
+
+    @if (loading) {
+        <div class="mis-competencias-grid">
+            @for (i of [].constructor(6); track $index) {
+                <article class="mis-competencia-card is-skeleton">
+                    <div class="mis-competencia-field">
+                        <span class="label">Competencia</span>
+                        <p-skeleton width="75%" height="1.25rem"></p-skeleton>
+                    </div>
+                    <div class="mis-competencia-field">
+                        <span class="label">Estado</span>
+                        <p-skeleton width="40%" height="2rem"></p-skeleton>
+                    </div>
+                    <p-skeleton width="100%" height="4rem"></p-skeleton>
+                </article>
+            }
+        </div>
+    } @else {
+        <div class="mis-competencias-grid">
+            @if (competenciasInscritas.length === 0) {
+                <div class="empty-state">
+                    <i class="pi pi-inbox"></i>
+                    <h2>No tienes competencias inscritas</h2>
+                    <p>
+                        Explora el catálogo público, entra al detalle de una
+                        competencia abierta e inscríbete para resolver problemas.
+                    </p>
+                    <p-button
+                        label="Ver competencias"
+                        icon="pi pi-trophy"
+                        severity="success"
+                        (onClick)="explorarCompetencias()"
+                    ></p-button>
+                </div>
+            } @else {
+                @for (item of competenciasInscritas; track item.inscripcion.id) {
+                    <article class="mis-competencia-card">
+                        <div class="mis-competencia-topline">
+                            <span class="competition-number">#{{ item.competencia.id }}</span>
+                            <span class="competition-dot"></span>
+                        </div>
+
+                        <div class="mis-competencia-header">
+                            <h2>{{ item.competencia.nombre }}</h2>
+                            <div class="competencia-tags">
+                                <p-tag
+                                    [value]="item.competencia.estado"
+                                    [severity]="getEstadoSeverity(item.competencia.estado)"
+                                ></p-tag>
+                                <p-tag
+                                    [value]="item.competencia.nivel_dificultad"
+                                    severity="warn"
+                                ></p-tag>
+                            </div>
+                        </div>
+
+                        <div class="mis-competencia-meta">
+                            <div>
+                                <span class="label">Inscripción</span>
+                                <span class="meta-value">{{ item.inscripcion.fecha_inscripcion | date: 'dd/MM/yyyy' }}</span>
+                            </div>
+                            <div>
+                                <span class="label">Inicio</span>
+                                <span class="meta-value">{{ item.competencia.fecha_inicio | date: 'dd/MM/yyyy' }}</span>
+                            </div>
+                            <div>
+                                <span class="label">Fin</span>
+                                <span class="meta-value">{{ item.competencia.fecha_fin | date: 'dd/MM/yyyy' }}</span>
+                            </div>
+                        </div>
+
+                        <div class="mis-competencia-actions">
+                            <p-button
+                                label="Ver detalle"
+                                icon="pi pi-info-circle"
+                                severity="secondary"
+                                [outlined]="true"
+                                (onClick)="verDetalle(item)"
+                            ></p-button>
+                            <p-button
+                                label="Resolver problemas"
+                                icon="pi pi-code"
+                                severity="success"
+                                (onClick)="verProblemas(item)"
+                            ></p-button>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+    }
+</div>
+
+<p-toast></p-toast>

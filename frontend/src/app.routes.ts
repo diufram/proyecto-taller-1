@@ -47,6 +47,15 @@ export const appRoutes: Routes = [
                     ),
             },
             {
+                path: 'mis-competencias',
+                canActivate: [authGuard],
+                loadComponent: () =>
+                    import(
+                        './app/features/competencias/pages/user/mis-competencias/mis-competencias-page.component'
+                    ).then((m) => m.MisCompetenciasPageComponent),
+                title: 'Mis Competencias',
+            },
+            {
                 path: 'profile',
                 canActivate: [authGuard],
                 loadChildren: () =>

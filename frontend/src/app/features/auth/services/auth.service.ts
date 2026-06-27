@@ -55,8 +55,8 @@ export class AuthService {
     logout(): void {
         const finishLogout = () => {
             this.clearSession();
-            if (!this.router.url.startsWith('/auth/login')) {
-                this.router.navigate(['/auth/login']);
+            if (!this.router.url.startsWith('/landing')) {
+                this.router.navigate(['/landing']);
             }
         };
 

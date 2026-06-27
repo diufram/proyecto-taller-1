@@ -39,10 +39,10 @@ import { AuthService } from '@/features/auth/services/auth.service';
                         <div class="mt-10 flex flex-col gap-4 sm:flex-row">
                             @if (isLoggedIn()) {
                                 <p-button
-                                    label="Ver competencias"
+                                    label="Mis competencias"
                                     severity="success"
                                     size="large"
-                                    routerLink="/competencias"
+                                    routerLink="/mis-competencias"
                                     styleClass="w-full sm:w-auto px-8 py-4 text-base font-bold rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.28)] hover:scale-105 transition-all duration-300"
                                 ></p-button>
                                 <p-button
