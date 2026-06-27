@@ -165,7 +165,7 @@ export class ResolverProblemaPageComponent implements OnInit {
 
     volver(): void {
         this.router.navigate([
-            '/user/competencias',
+            '/competencias',
             this.competenciaId,
             'problemas',
         ]);

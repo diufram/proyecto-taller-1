@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '@/core/guards/auth.guard';
 
-export const USER_COMPETENCIAS_ROUTES: Routes = [
+export const COMPETENCIAS_ROUTES: Routes = [
     {
         path: '',
         loadComponent: () =>
@@ -21,6 +22,7 @@ export const USER_COMPETENCIAS_ROUTES: Routes = [
     },
     {
         path: ':id/problemas',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('./pages/user/competencias/competencia-problemas/competencia-problemas.component').then(
                 (m) => m.UserCompetenciaProblemasComponent,
@@ -30,6 +32,7 @@ export const USER_COMPETENCIAS_ROUTES: Routes = [
     },
     {
         path: ':id/problemas/:problemaId/resolver',
+        canActivate: [authGuard],
         loadComponent: () =>
             import('@/features/soluciones/pages/resolver-problema-page/resolver-problema-page.component').then(
                 (m) => m.ResolverProblemaPageComponent,

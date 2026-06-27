@@ -5,6 +5,152 @@
 :host ::ng-deep {
     .competencias-page {
         width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 0.25rem 4rem;
+    }
+
+    .competencias-hero {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 1.5rem;
+        background:
+            radial-gradient(700px circle at 15% 0%, rgba(16, 185, 129, 0.18), transparent 42%),
+            linear-gradient(135deg, rgba(18, 18, 26, 0.96), rgba(10, 10, 15, 0.96));
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+        overflow: hidden;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: -8rem;
+            top: -8rem;
+            width: 18rem;
+            height: 18rem;
+            border-radius: 999px;
+            border: 1px solid rgba(20, 184, 166, 0.24);
+            background: rgba(20, 184, 166, 0.05);
+        }
+
+        @media (min-width: 820px) {
+            grid-template-columns: minmax(0, 1fr) 22rem;
+            align-items: center;
+            padding: 2rem;
+        }
+    }
+
+    .competencias-hero-content,
+    .competencias-hero-panel {
+        position: relative;
+        z-index: 1;
+    }
+
+    .eyebrow {
+        display: inline-flex;
+        width: fit-content;
+        margin-bottom: 0.75rem;
+        padding: 0.35rem 0.7rem;
+        border: 1px solid rgba(16, 185, 129, 0.22);
+        border-radius: 999px;
+        color: #6ee7b7;
+        background: rgba(16, 185, 129, 0.08);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .competencias-title {
+        margin: 0;
+        max-width: 720px;
+        font-size: clamp(2.3rem, 7vw, 4.75rem);
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: -0.055em;
+        line-height: 0.94;
+    }
+
+    .competencias-subtitle {
+        max-width: 600px;
+        margin: 1rem 0 0;
+        color: #9ca3af;
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+
+    .hero-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.7rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.04);
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            border-color: rgba(16, 185, 129, 0.35);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        &.is-primary {
+            color: #06130f;
+            border-color: transparent;
+            background: linear-gradient(135deg, #34d399, #2dd4bf);
+        }
+    }
+
+    .competencias-hero-panel {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1.25rem;
+        background: rgba(10, 10, 15, 0.62);
+        backdrop-filter: blur(18px);
+    }
+
+    .hero-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        min-width: 0;
+        padding: 1rem 0.75rem;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.035);
+        text-align: center;
+    }
+
+    .hero-stat-value {
+        color: #ffffff;
+        font-size: 1.65rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .hero-stat-label {
+        color: #9ca3af;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
     }
 
     .competencias-skeleton-mobile {
@@ -24,11 +170,12 @@
     }
 
     .mobile-empty {
-        border: 1px dashed var(--surface-border);
-        border-radius: 12px;
-        padding: 1.1rem;
+        border: 1px dashed rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
         text-align: center;
-        color: var(--text-color-secondary);
+        color: #9ca3af;
+        background: rgba(18, 18, 26, 0.5);
     }
 
     .competencias-user-grid {
@@ -38,26 +185,90 @@
     }
 
     .competencia-user-card {
-        background: var(--surface-card);
-        border: 1px solid var(--surface-border);
-        border-radius: 16px;
-        padding: 1.25rem;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        background: #12121a;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 1.25rem;
+        padding: 1.5rem;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        transition: box-shadow 0.2s ease, transform 0.2s ease;
+        gap: 1.25rem;
+        transition: border-color 0.25s ease, transform 0.25s ease,
+            box-shadow 0.25s ease;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                600px circle at top right,
+                rgba(16, 185, 129, 0.06),
+                transparent 40%
+            );
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 3px;
+            background: linear-gradient(180deg, #34d399, #14b8a6);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
 
         &:hover {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
             transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+
+            &::before {
+                opacity: 1;
+            }
         }
+
+        &.is-inscrito {
+            border-color: rgba(16, 185, 129, 0.28);
+
+            &::after {
+                opacity: 1;
+            }
+        }
+    }
+
+    .competencia-card-topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1;
+    }
+
+    .competition-number {
+        color: #6ee7b7;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+    }
+
+    .competition-state-dot {
+        width: 0.55rem;
+        height: 0.55rem;
+        border-radius: 999px;
+        background: #34d399;
+        box-shadow: 0 0 18px rgba(52, 211, 153, 0.75);
     }
 
     .competencia-card-header {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.75rem;
+        position: relative;
+        z-index: 1;
     }
 
     .competencia-title-row {
@@ -69,9 +280,9 @@
 
         h4 {
             margin: 0;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-color);
+            font-size: 1.25rem;
+            font-weight: 750;
+            color: #ffffff;
             line-height: 1.3;
         }
     }
@@ -86,24 +297,16 @@
         gap: 0.4rem;
     }
 
-    .competencia-user-description {
-        margin: 0;
-        color: var(--text-color-secondary);
-        font-size: 0.9rem;
-        line-height: 1.5;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
     .competencia-card-meta {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 0.75rem;
-        padding: 0.75rem;
-        background: var(--surface-ground);
-        border-radius: 10px;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        position: relative;
+        z-index: 1;
     }
 
     .meta-item {
@@ -113,7 +316,7 @@
     }
 
     .meta-icon {
-        color: var(--text-color-secondary);
+        color: #10b981;
         font-size: 1rem;
     }
 
@@ -121,27 +324,39 @@
         display: flex;
         flex-direction: column;
         gap: 0.1rem;
+        min-width: 0;
     }
 
     .meta-label {
         font-size: 0.65rem;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: var(--text-color-secondary);
+        color: #9ca3af;
         font-weight: 600;
     }
 
     .meta-value {
         font-size: 0.85rem;
         font-weight: 600;
-        color: var(--text-color);
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .competencia-user-actions {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
-        margin-top: 0.25rem;
+        gap: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .action-hint {
+        color: #9ca3af;
+        font-size: 0.82rem;
+        font-weight: 600;
     }
 
     .user-empty {
@@ -152,15 +367,35 @@
         .competencias-user-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
-
-        .competencia-user-card {
-            min-height: 220px;
-        }
     }
 
     @media (min-width: 1300px) {
         .competencias-user-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 640px) {
+        .competencias-hero,
+        .competencia-user-card {
+            border-radius: 1rem;
+        }
+
+        .competencias-hero-panel {
+            grid-template-columns: 1fr;
+        }
+
+        .competencia-card-meta {
+            grid-template-columns: 1fr;
+        }
+
+        .competencia-user-actions {
+            align-items: stretch;
+            flex-direction: column;
+
+            .p-button {
+                width: 100%;
+            }
         }
     }
 }

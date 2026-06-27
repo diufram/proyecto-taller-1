@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
     FormBuilder,
     FormGroup,
@@ -34,6 +34,7 @@ import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconf
 export class RegisterComponent implements OnInit {
     private fb = inject(FormBuilder);
     private router = inject(Router);
+    private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
     private toast = inject(ToastService);
 
@@ -66,9 +67,7 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.router.navigate([
-                this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
-            ]);
+            this.router.navigate([this.getDefaultRoute()]);
         }
     }
 
@@ -125,9 +124,7 @@ export class RegisterComponent implements OnInit {
                 next: () => {
                     this.toast.success('Exito', 'Cuenta creada correctamente.');
                     this.loading = false;
-                    this.router.navigate([
-                        this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
-                    ]);
+                    this.router.navigate([this.getPostRegisterRoute()]);
                 },
                 error: (err) => {
                     console.error('Error en registro:', err);
@@ -137,4 +134,33 @@ export class RegisterComponent implements OnInit {
                 },
             });
     }
+
+    private getDefaultRoute(): string {
+        return this.authService.isAdmin() ? '/dashboard' : '/competencias';
+    }
+
+    private getPostRegisterRoute(): string {
+        const queryRedirect = this.route.snapshot.queryParamMap.get('redirect');
+        const storedRedirect =
+            typeof localStorage !== 'undefined'
+                ? localStorage.getItem('redirect_url')
+                : null;
+        const target = queryRedirect || storedRedirect;
+
+        if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('redirect_url');
+        }
+
+        if (target && target.startsWith('/')) {
+            if (this.authService.isAdmin()) {
+                return target.startsWith('/admin') || target === '/dashboard'
+                    ? target
+                    : '/dashboard';
+            }
+            return target;
+        }
+
+        return this.getDefaultRoute();
+    }
 }
+

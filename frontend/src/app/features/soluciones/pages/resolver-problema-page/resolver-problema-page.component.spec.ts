@@ -184,7 +184,7 @@ describe('ResolverProblemaPageComponent', () => {
         component.volver();
         expect(router.navigations.length).toBe(1);
         expect(router.navigations[0].commands).toEqual([
-            '/user/competencias',
+            '/competencias',
             10,
             'problemas',
         ]);

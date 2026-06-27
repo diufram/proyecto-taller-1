@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { RouterModule } from '@angular/router'; // Importante para routerLink
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { MyConfigurator } from './app.configurator';
@@ -24,6 +24,27 @@ import { AuthService } from '@/features/auth/services/auth.service';
                 <span>Compex</span>
             </a>
         </div>
+
+        <nav class="layout-topbar-nav hidden md:flex items-center gap-6 mr-3">
+            <a
+                routerLink="/competencias"
+                routerLinkActive="layout-topbar-nav-active"
+                class="layout-topbar-nav-link"
+            >
+                <i class="pi pi-trophy text-sm"></i>
+                <span>Competencias</span>
+            </a>
+            @if (!isAdmin()) {
+                <a
+                    routerLink="/ranking"
+                    routerLinkActive="layout-topbar-nav-active"
+                    class="layout-topbar-nav-link"
+                >
+                    <i class="pi pi-chart-line text-sm"></i>
+                    <span>Ranking</span>
+                </a>
+            }
+        </nav>
 
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
@@ -57,6 +78,26 @@ import { AuthService } from '@/features/auth/services/auth.service';
             </div>
         </div>
     </div>`,
+    styles: [
+        `
+            .layout-topbar-nav-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                color: var(--text-color-secondary);
+                font-size: 0.875rem;
+                font-weight: 500;
+                text-decoration: none;
+                transition: color 0.2s ease;
+            }
+            .layout-topbar-nav-link:hover {
+                color: var(--text-color);
+            }
+            .layout-topbar-nav-active {
+                color: var(--primary-color);
+            }
+        `,
+    ],
 })
 export class AppTopbar {
     items!: MenuItem[];
@@ -64,6 +105,10 @@ export class AppTopbar {
     private authService = inject(AuthService);
 
     constructor(public layoutService: LayoutService) {}
+
+    isAdmin(): boolean {
+        return this.authService.isAdmin();
+    }
 
     toggleDarkMode() {
         this.layoutService.toggleTheme();

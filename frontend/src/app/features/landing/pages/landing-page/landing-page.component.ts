@@ -2,73 +2,17 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '@/features/auth/services/auth.service';
 
 @Component({
     selector: 'app-landing-page',
     standalone: true,
     imports: [ButtonModule, RouterModule, CommonModule],
     template: `
-        <div
-            class="min-h-screen bg-[#0a0a0f] overflow-x-hidden text-white font-sans"
-        >
-            <!-- Navbar -->
-            <nav
-                class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5"
-            >
-                <div class="max-w-7xl mx-auto px-6 md:px-12 py-4">
-                    <div class="flex items-center justify-between">
-                        <div
-                            class="flex items-center gap-3 cursor-pointer"
-                            routerLink="/"
-                        >
-                            <div
-                                class="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20"
-                            >
-                                <i
-                                    class="pi pi-code text-[#0a0a0f] text-sm font-bold"
-                                ></i>
-                            </div>
-                            <span
-                                class="text-xl font-bold tracking-tight text-white"
-                            >
-                                Compex
-                            </span>
-                        </div>
-
-                        <div class="hidden md:flex items-center gap-8">
-                            <a
-                                href="#features"
-                                class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300"
-                                >Funciones</a
-                            >
-                            <a
-                                href="#how"
-                                class="text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300"
-                                >Cómo funciona</a
-                            >
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <a
-                                routerLink="/auth/login"
-                                class="hidden md:block text-sm font-medium text-gray-400 hover:text-white transition-colors"
-                                >Login</a
-                            >
-                            <p-button
-                                label="Comenzar"
-                                severity="success"
-                                size="small"
-                                routerLink="/auth/register"
-                                styleClass="font-semibold px-4 py-2 rounded-lg shadow-lg hover:scale-105 transition-transform"
-                            ></p-button>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
+        <div class="bg-[#0a0a0f] overflow-x-hidden text-white font-sans">
             <!-- Hero Section -->
             <section
-                class="relative pt-40 pb-24 px-6 md:px-12 flex flex-col items-center justify-center min-h-[90vh]"
+                class="relative pt-24 pb-24 px-6 md:px-12 flex flex-col items-center justify-center min-h-[80vh]"
             >
                 <!-- Background gradient -->
                 <div
@@ -116,23 +60,42 @@ import { CommonModule } from '@angular/common';
                     <div
                         class="flex flex-col sm:flex-row gap-4 justify-center items-center"
                     >
-                        <p-button
-                            label="Comenzar gratis"
-                            severity="success"
-                            size="large"
-                            routerLink="/auth/register"
-                            styleClass="px-8 py-4 text-lg font-bold rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-105 transition-all duration-300"
-                        ></p-button>
+                        @if (isLoggedIn()) {
+                            <p-button
+                                label="Ir a mis competencias"
+                                severity="success"
+                                size="large"
+                                routerLink="/competencias"
+                                styleClass="px-8 py-4 text-lg font-bold rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-105 transition-all duration-300"
+                            ></p-button>
+                            <p-button
+                                label="Ver ranking"
+                                [text]="true"
+                                size="large"
+                                icon="pi pi-chart-line"
+                                iconPos="left"
+                                routerLink="/ranking"
+                                styleClass="text-gray-400 hover:text-white hover:bg-white/5 px-8 py-4 rounded-xl transition-all"
+                            ></p-button>
+                        } @else {
+                            <p-button
+                                label="Comenzar gratis"
+                                severity="success"
+                                size="large"
+                                routerLink="/auth/register"
+                                styleClass="px-8 py-4 text-lg font-bold rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-105 transition-all duration-300"
+                            ></p-button>
 
-                        <p-button
-                            label="Ver demo"
-                            [text]="true"
-                            size="large"
-                            icon="pi pi-play-circle"
-                            iconPos="left"
-                            routerLink="/auth/login"
-                            styleClass="text-gray-400 hover:text-white hover:bg-white/5 px-8 py-4 rounded-xl transition-all"
-                        ></p-button>
+                            <p-button
+                                label="Ver demo"
+                                [text]="true"
+                                size="large"
+                                icon="pi pi-play-circle"
+                                iconPos="left"
+                                routerLink="/auth/login"
+                                styleClass="text-gray-400 hover:text-white hover:bg-white/5 px-8 py-4 rounded-xl transition-all"
+                            ></p-button>
+                        }
                     </div>
                 </div>
 
@@ -405,20 +368,37 @@ import { CommonModule } from '@angular/common';
                                 <div
                                     class="flex flex-col sm:flex-row gap-4 justify-center"
                                 >
-                                    <p-button
-                                        label="Crear cuenta gratis"
-                                        severity="success"
-                                        size="large"
-                                        routerLink="/auth/register"
-                                        styleClass="px-8 py-3 font-bold rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform w-full sm:w-auto"
-                                    ></p-button>
-                                    <p-button
-                                        label="Iniciar sesión"
-                                        [text]="true"
-                                        size="large"
-                                        routerLink="/auth/login"
-                                        styleClass="px-8 py-3 font-semibold rounded-xl border border-white/10 hover:bg-white/5 text-white transition-colors w-full sm:w-auto"
-                                    ></p-button>
+                                    @if (isLoggedIn()) {
+                                        <p-button
+                                            label="Ir a mis competencias"
+                                            severity="success"
+                                            size="large"
+                                            routerLink="/competencias"
+                                            styleClass="px-8 py-3 font-bold rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform w-full sm:w-auto"
+                                        ></p-button>
+                                        <p-button
+                                            label="Ver mi posición"
+                                            [text]="true"
+                                            size="large"
+                                            routerLink="/ranking"
+                                            styleClass="px-8 py-3 font-semibold rounded-xl border border-white/10 hover:bg-white/5 text-white transition-colors w-full sm:w-auto"
+                                        ></p-button>
+                                    } @else {
+                                        <p-button
+                                            label="Crear cuenta gratis"
+                                            severity="success"
+                                            size="large"
+                                            routerLink="/auth/register"
+                                            styleClass="px-8 py-3 font-bold rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform w-full sm:w-auto"
+                                        ></p-button>
+                                        <p-button
+                                            label="Iniciar sesión"
+                                            [text]="true"
+                                            size="large"
+                                            routerLink="/auth/login"
+                                            styleClass="px-8 py-3 font-semibold rounded-xl border border-white/10 hover:bg-white/5 text-white transition-colors w-full sm:w-auto"
+                                        ></p-button>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -474,6 +454,23 @@ import { CommonModule } from '@angular/common';
 })
 export class LandingPageComponent implements OnInit {
     private router = inject(Router);
+    private authService = inject(AuthService);
+
+    isLoggedIn(): boolean {
+        return this.authService.isAuthenticated();
+    }
+
+    isAdmin(): boolean {
+        return this.authService.isAdmin();
+    }
+
+    userName(): string {
+        return this.authService.currentUser()?.nombre_usuario ?? 'Usuario';
+    }
+
+    logout(): void {
+        this.authService.logout();
+    }
 
     codeLines: {
         id: number;
@@ -589,6 +586,11 @@ export class LandingPageComponent implements OnInit {
     ];
 
     ngOnInit(): void {
+        if (this.isLoggedIn() && this.isAdmin()) {
+            this.router.navigate(['/dashboard']);
+            return;
+        }
+
         const texts = [
             'const x = 42;',
             'if (a > b)',

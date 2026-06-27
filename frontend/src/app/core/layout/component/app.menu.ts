@@ -161,7 +161,7 @@ export class MyMenu implements OnInit {
                     {
                         label: 'Competencias',
                         icon: 'pi pi-fw pi-trophy',
-                        routerLink: isAdmin ? ['/admin/competencias'] : ['/user/competencias'],
+                        routerLink: isAdmin ? ['/admin/competencias'] : ['/competencias'],
                     },
                 ],
             },
@@ -171,7 +171,7 @@ export class MyMenu implements OnInit {
                     {
                         label: 'Ranking',
                         icon: 'pi pi-fw pi-chart-line',
-                        routerLink: ['/user/ranking'],
+                        routerLink: ['/ranking'],
                         visible: !isAdmin,
                     },
                 ],
