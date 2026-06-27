@@ -5,10 +5,7 @@ import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TableModule, Table } from 'primeng/table';
-import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
 import { PaginatorModule } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TooltipModule } from 'primeng/tooltip';
@@ -30,10 +27,7 @@ import { RowAction } from '@/shared/components/shared-table/interfaces/table-con
         FormsModule,
         ButtonModule,
         TableModule,
-        ToolbarModule,
         InputTextModule,
-        IconFieldModule,
-        InputIconModule,
         PaginatorModule,
         SkeletonModule,
         TooltipModule,
@@ -203,5 +197,19 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
             default:
                 return 'secondary';
         }
+    }
+
+    get countAbiertas(): number {
+        return this.competencias.filter((c) => c.estado === 'Abierta').length;
+    }
+
+    get countEnCurso(): number {
+        return this.competencias.filter((c) => c.estado === 'En curso').length;
+    }
+
+    get countFinalizadas(): number {
+        return this.competencias.filter(
+            (c) => c.estado === 'Finalizada' || c.estado === 'Cancelada',
+        ).length;
     }
 }

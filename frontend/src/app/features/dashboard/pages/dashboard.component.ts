@@ -38,6 +38,19 @@ export class DashboardPage implements OnInit {
     loading = false;
     error = '';
 
+    get summary() {
+        return (
+            this.stats?.summary ?? {
+                totalCompetencias: 0,
+                competenciasActivas: 0,
+                totalProblemas: 0,
+                totalUsuarios: 0,
+                totalSoluciones: 0,
+                tasaAcierto: 0,
+            }
+        );
+    }
+
     readonly competenciaEstados: CompetenciaEstado[] = [
         'Abierta',
         'En curso',

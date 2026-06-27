@@ -1,30 +1,35 @@
 <p-toast></p-toast>
 
 <div class="competencia-form-page">
-    <div class="mb-3 pl-1">
-        <h3 class="text-2xl font-bold text-color m-0">{{ pageTitle }}</h3>
-    </div>
+    <header class="competencia-form-hero">
+        <div class="competencia-form-hero-copy">
+            <span class="eyebrow">Administración</span>
+            <h1>{{ pageTitle }}</h1>
+            <p>
+                Configura los datos principales de la competencia. Los
+                participantes la verán con esta información al explorar el
+                catálogo público.
+            </p>
+        </div>
 
-    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
-        <ng-template pTemplate="left">
-            <div class="actions-container">
-                <p-button
-                    icon="pi pi-arrow-left"
-                    label="Volver"
-                    severity="secondary"
-                    [outlined]="true"
-                    [disabled]="saving"
-                    (onClick)="cancel()"
-                ></p-button>
-                <p-button
-                    [label]="saveLabel"
-                    [icon]="saveIcon"
-                    [disabled]="!isValid || saving"
-                    (onClick)="save()"
-                ></p-button>
-            </div>
-        </ng-template>
-    </p-toolbar>
+        <div class="competencia-form-hero-actions">
+            <p-button
+                icon="pi pi-arrow-left"
+                label="Volver"
+                severity="secondary"
+                [outlined]="true"
+                [disabled]="saving"
+                (onClick)="cancel()"
+            ></p-button>
+            <p-button
+                [label]="saveLabel"
+                [icon]="saveIcon"
+                severity="success"
+                [disabled]="!isValid || saving"
+                (onClick)="save()"
+            ></p-button>
+        </div>
+    </header>
 
     @if (loadingData) {
         <div class="loading-skeleton">
@@ -34,11 +39,16 @@
         </div>
     } @else {
         <form [formGroup]="form" class="competencia-form">
-            <div class="form-card">
-                <div class="section-header">
-                    <i class="pi pi-trophy"></i>
-                    <h4>Información general</h4>
-                </div>
+            <article class="form-card">
+                <header class="section-header">
+                    <span class="section-icon">
+                        <i class="pi pi-trophy"></i>
+                    </span>
+                    <div>
+                        <span class="label">Identidad</span>
+                        <h3>Información general</h3>
+                    </div>
+                </header>
 
                 <div class="flex flex-col gap-2">
                     <label for="nombre_input" class="field-label">
@@ -58,15 +68,20 @@
                         </p-message>
                     }
                 </div>
-            </div>
+            </article>
 
-            <div class="form-card">
-                <div class="section-header">
-                    <i class="pi pi-calendar"></i>
-                    <h4>Programación</h4>
-                </div>
+            <article class="form-card">
+                <header class="section-header">
+                    <span class="section-icon">
+                        <i class="pi pi-calendar"></i>
+                    </span>
+                    <div>
+                        <span class="label">Calendario</span>
+                        <h3>Programación</h3>
+                    </div>
+                </header>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-grid">
                     <div class="flex flex-col gap-2">
                         <label for="fecha_inicio_input" class="field-label">
                             Fecha inicio <span class="required">*</span>
@@ -114,15 +129,20 @@
                         }
                     </div>
                 </div>
-            </div>
+            </article>
 
-            <div class="form-card">
-                <div class="section-header">
-                    <i class="pi pi-sliders-h"></i>
-                    <h4>Configuración</h4>
-                </div>
+            <article class="form-card">
+                <header class="section-header">
+                    <span class="section-icon">
+                        <i class="pi pi-sliders-h"></i>
+                    </span>
+                    <div>
+                        <span class="label">Reglas</span>
+                        <h3>Configuración</h3>
+                    </div>
+                </header>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-grid">
                     <div class="flex flex-col gap-2">
                         <label for="nivel_input" class="field-label">
                             Nivel <span class="required">*</span>
@@ -181,7 +201,7 @@
                         </p-message>
                     }
                 </div>
-            </div>
+            </article>
         </form>
     }
 </div>

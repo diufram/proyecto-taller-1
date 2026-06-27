@@ -15,61 +15,200 @@ import { LayoutService } from '../service/layout.service';
             <button
                 class="layout-menu-button layout-topbar-action"
                 (click)="layoutService.onMenuToggle()"
+                aria-label="Alternar menú"
             >
                 <i class="pi pi-bars"></i>
             </button>
             <a class="layout-topbar-logo" routerLink="/dashboard">
-                <div class="logo-mask" role="img" aria-label="Logo"></div>
-                <span>Compex</span>
+                <span class="logo-mask" role="img" aria-label="Logo"></span>
+                <span class="logo-text">Compex</span>
             </a>
         </div>
 
-        <nav class="layout-topbar-nav hidden md:flex items-center gap-6 mr-3">
-            <a
-                routerLink="/admin/competencias"
-                routerLinkActive="layout-topbar-nav-active"
-                class="layout-topbar-nav-link"
-            >
-                <i class="pi pi-trophy text-sm"></i>
-                <span>Competencias</span>
-            </a>
-        </nav>
+        <div class="layout-topbar-spacer"></div>
 
         <div class="layout-topbar-actions">
-            <div class="layout-config-menu">
-                <button
-                    type="button"
-                    class="layout-topbar-action"
-                    (click)="toggleDarkMode()"
+            <span class="layout-topbar-eyebrow">Administración</span>
+            <div class="layout-topbar-divider"></div>
+            <button
+                type="button"
+                class="layout-topbar-action"
+                (click)="toggleDarkMode()"
+                [attr.aria-label]="
+                    layoutService.isDarkTheme() ? 'Modo claro' : 'Modo oscuro'
+                "
+            >
+                <i
+                    [ngClass]="{
+                        'pi ': true,
+                        'pi-moon': layoutService.isDarkTheme(),
+                        'pi-sun': !layoutService.isDarkTheme(),
+                    }"
+                ></i>
+            </button>
+            <div class="relative">
+                <!-- <button
+                    class="layout-topbar-action layout-topbar-action-highlight"
+                    pStyleClass="@next"
+                    enterFromClass="hidden"
+                    enterActiveClass="animate-scalein"
+                    leaveToClass="hidden"
+                    leaveActiveClass="animate-fadeout"
+                    [hideOnOutsideClick]="true"
                 >
-                    <i
-                        [ngClass]="{
-                            'pi ': true,
-                            'pi-moon': layoutService.isDarkTheme(),
-                            'pi-sun': !layoutService.isDarkTheme(),
-                        }"
-                    ></i>
-                </button>
-                <div class="relative">
-                    <!-- <button
-                        class="layout-topbar-action layout-topbar-action-highlight"
-                        pStyleClass="@next"
-                        enterFromClass="hidden"
-                        enterActiveClass="animate-scalein"
-                        leaveToClass="hidden"
-                        leaveActiveClass="animate-fadeout"
-                        [hideOnOutsideClick]="true"
-                    >
-                        <i class="pi pi-palette"></i>
-                    </button> -->
-                    <my-configurator />
-                </div>
+                    <i class="pi pi-palette"></i>
+                </button> -->
+                <my-configurator />
             </div>
         </div>
     </div>`,
     styles: [
         `
-            .layout-topbar-nav-link {
+            :host {
+                display: block;
+            }
+
+            :host ::ng-deep .layout-topbar {
+                position: fixed;
+                inset: 0 0 auto 0;
+                height: 4.25rem;
+                z-index: 997;
+                padding: 0 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                background: rgba(10, 10, 15, 0.72);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
+                color: #ffffff;
+            }
+
+            :host ::ng-deep .layout-topbar-logo-container {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                min-width: 0;
+            }
+
+            :host ::ng-deep .layout-menu-button {
+                width: 2.5rem;
+                height: 2.5rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 0.75rem;
+                color: #cbd5f5;
+                cursor: pointer;
+                transition:
+                    background-color 0.2s ease,
+                    color 0.2s ease,
+                    border-color 0.2s ease;
+            }
+
+            :host ::ng-deep .layout-menu-button:hover {
+                background: rgba(16, 185, 129, 0.12);
+                border-color: rgba(16, 185, 129, 0.35);
+                color: #6ee7b7;
+            }
+
+            :host ::ng-deep .layout-topbar-logo {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.6rem;
+                color: #ffffff;
+                text-decoration: none;
+                font-weight: 800;
+                font-size: 1.1rem;
+                letter-spacing: -0.01em;
+            }
+
+            :host ::ng-deep .layout-topbar-logo .logo-mask {
+                width: 2.1rem;
+                height: 2.1rem;
+                border-radius: 0.55rem;
+                background-color: rgba(16, 185, 129, 0.15);
+                border: 1px solid rgba(16, 185, 129, 0.32);
+                background-image: url('/icono_p.png');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 65%;
+                flex: 0 0 auto;
+            }
+
+            :host ::ng-deep .layout-topbar-logo .logo-text {
+                color: #ffffff;
+            }
+
+            :host ::ng-deep .layout-topbar-spacer {
+                flex: 1 1 auto;
+            }
+
+            :host ::ng-deep .layout-topbar-actions {
+                margin-left: 0;
+                display: flex;
+                align-items: center;
+                gap: 0.85rem;
+            }
+
+            :host ::ng-deep .layout-topbar-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.3rem 0.65rem;
+                border-radius: 999px;
+                border: 1px solid rgba(16, 185, 129, 0.25);
+                background: rgba(16, 185, 129, 0.08);
+                color: #6ee7b7;
+                font-size: 0.7rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+
+            :host ::ng-deep .layout-topbar-divider {
+                width: 1px;
+                height: 1.6rem;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 999px;
+            }
+
+            :host ::ng-deep .layout-topbar-action {
+                width: 2.5rem;
+                height: 2.5rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 0.75rem;
+                color: #cbd5f5;
+                cursor: pointer;
+                transition:
+                    background-color 0.2s ease,
+                    color 0.2s ease,
+                    border-color 0.2s ease;
+            }
+
+            :host ::ng-deep .layout-topbar-action:hover {
+                background: rgba(16, 185, 129, 0.12);
+                border-color: rgba(16, 185, 129, 0.35);
+                color: #6ee7b7;
+            }
+
+            :host ::ng-deep .layout-topbar-action i {
+                font-size: 1.05rem;
+            }
+
+            :host ::ng-deep .layout-config-menu {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            :host ::ng-deep .layout-topbar-nav-link {
                 display: inline-flex;
                 align-items: center;
                 gap: 0.4rem;
@@ -79,11 +218,24 @@ import { LayoutService } from '../service/layout.service';
                 text-decoration: none;
                 transition: color 0.2s ease;
             }
-            .layout-topbar-nav-link:hover {
+
+            :host ::ng-deep .layout-topbar-nav-link:hover {
                 color: var(--text-color);
             }
-            .layout-topbar-nav-active {
+
+            :host ::ng-deep .layout-topbar-nav-active {
                 color: var(--primary-color);
+            }
+
+            @media (max-width: 720px) {
+                :host ::ng-deep .layout-topbar-eyebrow,
+                :host ::ng-deep .layout-topbar-divider {
+                    display: none;
+                }
+
+                :host ::ng-deep .layout-topbar {
+                    padding: 0 1rem;
+                }
             }
         `,
     ],

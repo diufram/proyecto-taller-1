@@ -1,87 +1,94 @@
 <div class="dashboard-page">
-    <div class="dashboard-hero">
-        <div>
+    <header class="dashboard-hero">
+        <div class="dashboard-hero-copy">
             <span class="eyebrow">Panel de control</span>
             <h1>Dashboard</h1>
             @if (currentUser()) {
                 <p>
-                    Bienvenido, {{ currentUser()?.correo_electronico }}.
-                    @if (isAdmin()) {
-                        Revisá el estado general de competencias, problemas y participación.
-                    } @else {
-                        Este panel está optimizado para administradores.
-                    }
+                    Monitorea la salud general de Compex: competencias, problemas,
+                    soluciones y la participación de la comunidad desde un único
+                    espacio.
                 </p>
             }
+            <div class="hero-actions">
+                <p-button
+                    label="Actualizar"
+                    icon="pi pi-refresh"
+                    severity="secondary"
+                    [outlined]="true"
+                    [disabled]="loading"
+                    (onClick)="loadAdminStats()"
+                ></p-button>
+            </div>
         </div>
-        @if (isAdmin()) {
-            <p-button
-                label="Actualizar"
-                icon="pi pi-refresh"
-                severity="secondary"
-                [outlined]="true"
-                [disabled]="loading"
-                (onClick)="loadAdminStats()"
-            ></p-button>
-        }
-    </div>
+
+        <div class="dashboard-hero-panel" aria-label="Indicadores principales">
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ summary.totalCompetencias }}</span>
+                <span class="hero-stat-label">Competencias</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ summary.totalProblemas }}</span>
+                <span class="hero-stat-label">Problemas</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ summary.totalUsuarios }}</span>
+                <span class="hero-stat-label">Usuarios</span>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-value">{{ summary.totalSoluciones }}</span>
+                <span class="hero-stat-label">Soluciones</span>
+            </div>
+        </div>
+    </header>
 
     @if (!isAdmin()) {
-        <div class="empty-panel">
+        <div class="empty-state">
             <i class="pi pi-lock"></i>
-            <h3>Vista de administrador</h3>
+            <h2>Vista de administrador</h2>
             <p>Los KPIs de plataforma están disponibles para usuarios administradores.</p>
         </div>
     } @else if (loading) {
-        <div class="kpi-grid">
+        <div class="dashboard-grid is-wide">
             @for (i of [].constructor(5); track $index) {
-                <div class="kpi-card">
-                    <p-skeleton width="3rem" height="3rem"></p-skeleton>
-                    <p-skeleton width="70%" height="1rem"></p-skeleton>
-                    <p-skeleton width="45%" height="2rem"></p-skeleton>
-                </div>
-            }
-        </div>
-        <div class="dashboard-grid mt-4">
-            @for (i of [].constructor(4); track $index) {
-                <div class="panel-card">
-                    <p-skeleton width="50%" height="1.5rem" styleClass="mb-4"></p-skeleton>
-                    <p-skeleton width="100%" height="10rem"></p-skeleton>
-                </div>
+                <article class="dashboard-card is-skeleton">
+                    <p-skeleton width="50%" height="1.25rem"></p-skeleton>
+                    <p-skeleton width="100%" height="6rem"></p-skeleton>
+                </article>
             }
         </div>
     } @else if (error) {
-        <div class="empty-panel is-error">
+        <div class="empty-state is-error">
             <i class="pi pi-exclamation-triangle"></i>
-            <h3>No se pudo cargar el dashboard</h3>
+            <h2>No se pudo cargar el dashboard</h2>
             <p>{{ error }}</p>
             <p-button label="Reintentar" icon="pi pi-refresh" (onClick)="loadAdminStats()"></p-button>
         </div>
     } @else if (stats) {
-        <div class="kpi-grid">
+        <section class="dashboard-grid is-wide">
             @for (card of kpiCards; track card.label) {
-                <article class="kpi-card" [attr.data-tone]="card.tone">
-                    <div class="kpi-icon">
-                        <i [class]="card.icon"></i>
-                    </div>
-                    <div>
+                <article class="dashboard-card kpi-card" [attr.data-tone]="card.tone">
+                    <div class="kpi-topline">
                         <span class="kpi-label">{{ card.label }}</span>
-                        <strong>{{ card.value }}</strong>
-                        <small>{{ card.detail }}</small>
+                        <span class="kpi-icon">
+                            <i [class]="card.icon"></i>
+                        </span>
                     </div>
+                    <strong class="kpi-value">{{ card.value }}</strong>
+                    <small class="kpi-detail">{{ card.detail }}</small>
                 </article>
             }
-        </div>
+        </section>
 
-        <div class="dashboard-grid">
-            <section class="panel-card">
-                <div class="panel-header">
+        <section class="dashboard-grid">
+            <article class="dashboard-card">
+                <header class="dashboard-card-header">
                     <div>
+                        <span class="label">Distribución</span>
                         <h3>Competencias por estado</h3>
-                        <p>Distribución operativa actual</p>
                     </div>
                     <i class="pi pi-chart-bar"></i>
-                </div>
+                </header>
                 <div class="bar-list">
                     @for (estado of competenciaEstados; track estado) {
                         <div class="bar-row">
@@ -101,16 +108,16 @@
                         </div>
                     }
                 </div>
-            </section>
+            </article>
 
-            <section class="panel-card">
-                <div class="panel-header">
+            <article class="dashboard-card">
+                <header class="dashboard-card-header">
                     <div>
+                        <span class="label">Balance</span>
                         <h3>Problemas por dificultad</h3>
-                        <p>Balance de dificultad del banco</p>
                     </div>
                     <i class="pi pi-sliders-h"></i>
-                </div>
+                </header>
                 <div class="bar-list">
                     @for (dificultad of dificultadLabels; track dificultad) {
                         <div class="bar-row">
@@ -130,17 +137,17 @@
                         </div>
                     }
                 </div>
-            </section>
+            </article>
 
-            <section class="panel-card">
-                <div class="panel-header">
+            <article class="dashboard-card">
+                <header class="dashboard-card-header">
                     <div>
+                        <span class="label">Calidad</span>
                         <h3>Soluciones por estado</h3>
-                        <p>Calidad y flujo de revisión</p>
                     </div>
                     <i class="pi pi-check-square"></i>
-                </div>
-                <div class="solution-state-grid">
+                </header>
+                <div class="state-grid">
                     @for (estado of solucionEstados; track estado) {
                         <div class="state-pill">
                             <span>{{ estado }}</span>
@@ -148,37 +155,35 @@
                         </div>
                     }
                 </div>
-            </section>
+            </article>
 
-            <section class="panel-card feature-card">
-                <div class="panel-header">
+            <article class="dashboard-card feature-card">
+                <header class="dashboard-card-header">
                     <div>
+                        <span class="label">Destacada</span>
                         <h3>Competencia más activa</h3>
-                        <p>Mayor cantidad de soluciones enviadas</p>
                     </div>
                     <i class="pi pi-bolt"></i>
-                </div>
+                </header>
                 @if (stats.competenciaMasActiva) {
-                    <div class="feature-number">
-                        {{ stats.competenciaMasActiva.soluciones }}
-                    </div>
+                    <div class="feature-number">{{ stats.competenciaMasActiva.soluciones }}</div>
                     <p class="feature-title">{{ stats.competenciaMasActiva.nombre }}</p>
                     <span class="feature-caption">soluciones recibidas</span>
                 } @else {
                     <p class="muted">Todavía no hay soluciones enviadas.</p>
                 }
-            </section>
-        </div>
+            </article>
+        </section>
 
-        <div class="dashboard-grid is-wide">
-            <section class="panel-card">
-                <div class="panel-header">
+        <section class="dashboard-grid is-wide">
+            <article class="dashboard-card">
+                <header class="dashboard-card-header">
                     <div>
+                        <span class="label">Líderes</span>
                         <h3>Top usuarios</h3>
-                        <p>Ranking por puntos globales</p>
                     </div>
-                    <a routerLink="/ranking" class="panel-link">Ver ranking</a>
-                </div>
+                    <a routerLink="/ranking" class="card-link">Ver ranking</a>
+                </header>
                 <div class="rank-list">
                     @for (user of stats.topUsuarios; track user.position) {
                         <article class="rank-item">
@@ -195,16 +200,16 @@
                         <p class="muted">Todavía no hay usuarios en el ranking.</p>
                     }
                 </div>
-            </section>
+            </article>
 
-            <section class="panel-card">
-                <div class="panel-header">
+            <article class="dashboard-card">
+                <header class="dashboard-card-header">
                     <div>
-                        <h3>Problemas más difíciles</h3>
-                        <p>Menor tasa de acierto con actividad</p>
+                        <span class="label">Más difíciles</span>
+                        <h3>Problemas con menor acierto</h3>
                     </div>
                     <i class="pi pi-fire"></i>
-                </div>
+                </header>
                 <div class="problem-list">
                     @for (problem of stats.problemasMasDificiles; track problem.id) {
                         <article class="problem-item">
@@ -221,16 +226,16 @@
                         <p class="muted">Aún no hay actividad suficiente.</p>
                     }
                 </div>
-            </section>
+            </article>
 
-            <section class="panel-card">
-                <div class="panel-header">
+            <article class="dashboard-card">
+                <header class="dashboard-card-header">
                     <div>
+                        <span class="label">Atención</span>
                         <h3>Problemas sin actividad</h3>
-                        <p>Sin soluciones enviadas</p>
                     </div>
                     <i class="pi pi-eye-slash"></i>
-                </div>
+                </header>
                 <div class="problem-list">
                     @for (problem of stats.problemasSinActividad; track problem.id) {
                         <article class="problem-item">
@@ -247,16 +252,16 @@
                         <p class="muted">Todos los problemas tienen actividad.</p>
                     }
                 </div>
-            </section>
+            </article>
 
-            <section class="panel-card">
-                <div class="panel-header">
+            <article class="dashboard-card">
+                <header class="dashboard-card-header">
                     <div>
-                        <h3>Competencias recientes</h3>
-                        <p>Últimas creadas por administración</p>
+                        <span class="label">Recientes</span>
+                        <h3>Últimas competencias</h3>
                     </div>
-                    <a routerLink="/admin/competencias" class="panel-link">Gestionar</a>
-                </div>
+                    <a routerLink="/admin/competencias" class="card-link">Gestionar</a>
+                </header>
                 <div class="competition-list">
                     @for (competencia of stats.competenciasRecientes; track competencia.id) {
                         <article class="competition-item">
@@ -276,7 +281,7 @@
                         <p class="muted">No hay competencias creadas.</p>
                     }
                 </div>
-            </section>
-        </div>
+            </article>
+        </section>
     }
 </div>
