@@ -3,15 +3,16 @@
 }
 
 :host ::ng-deep {
-    .competencia-form-page {
+.competencia-form-page {
         width: 100%;
         max-width: 1100px;
         margin: 0 auto;
-        padding: 1rem 0.25rem 4rem;
+        padding: 1rem 0 4rem;
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
         color: var(--app-text);
+        min-width: 0;
     }
 
     .competencia-form-hero,
