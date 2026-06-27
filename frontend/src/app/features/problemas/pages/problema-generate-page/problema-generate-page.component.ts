@@ -17,11 +17,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
-import { MessageModule } from 'primeng/message';
-import { ToolbarModule } from 'primeng/toolbar';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 import { ToastService } from '@/core/services/toast.service';
@@ -48,11 +46,9 @@ import {
         SelectModule,
         TagModule,
         CheckboxModule,
-        DividerModule,
         TooltipModule,
         ToastModule,
-        MessageModule,
-        ToolbarModule,
+        FloatLabelModule,
         ToggleSwitchModule,
     ],
     templateUrl: './problema-generate-page.component.html',

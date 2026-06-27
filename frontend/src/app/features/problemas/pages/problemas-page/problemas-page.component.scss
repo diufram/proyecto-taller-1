@@ -3,12 +3,157 @@
 }
 
 :host ::ng-deep {
-    .problemas-page {
+    .problemas-admin-page {
         width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 0 4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        color: var(--app-text);
+        min-width: 0;
+    }
+
+    .problemas-hero {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-radius: 1rem;
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        box-shadow: var(--app-shadow-sm);
+    }
+
+    .problemas-hero-copy {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .label-eyebrow {
+        display: inline-flex;
+        padding: 0.3rem 0.65rem;
+        border-radius: 999px;
+        border: 1px solid var(--app-accent-border-softer);
+        background: var(--app-accent-softer);
+        color: var(--app-accent-text);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .problemas-hero-copy h1 {
+        margin: 0;
+        color: var(--app-text);
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .problemas-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.85rem;
+    }
+
+    .problemas-search {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.55rem 0.9rem;
+        border: 1px solid var(--app-border);
+        border-radius: 0.9rem;
+        background: var(--app-surface-soft);
+        flex: 1;
+        min-width: 16rem;
+
+        i {
+            color: var(--app-accent-text);
+        }
+
+        input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--app-text);
+            font-size: 0.95rem;
+
+            &::placeholder {
+                color: var(--app-text-muted);
+            }
+        }
+    }
+
+    .problemas-search-clear {
+        background: transparent;
+        border: none;
+        color: var(--app-text-muted);
+        cursor: pointer;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            color: var(--app-accent-text);
+        }
+    }
+
+    .problemas-filter {
+        min-width: 14rem;
+    }
+
+    .problemas-skeleton-desktop,
+    .problemas-skeleton-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+    }
+
+    .problemas-skeleton-mobile {
+        display: none;
+    }
+
+    .skeleton-row {
+        display: grid;
+        grid-template-columns: 50px 1.5fr 130px 90px 90px 150px 130px;
+        align-items: center;
+        gap: 0.85rem;
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        border-radius: 1rem;
+        padding: 0.95rem 1.1rem;
+        box-shadow: var(--app-shadow-sm);
     }
 
     .problemas-table-wrap {
         display: none;
+        border-radius: 1rem;
+        overflow: hidden;
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        box-shadow: var(--app-shadow-md);
     }
 
     .problemas-mobile-list {
@@ -17,76 +162,131 @@
         gap: 0.85rem;
     }
 
-    .problema-mobile-card {
-        background: var(--surface-card);
-        border: 1px solid var(--surface-border);
-        border-radius: 16px;
-        padding: 0.95rem;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    .problema-card {
         display: flex;
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 1rem;
+        padding: 1.25rem;
+        border-radius: 1.25rem;
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        box-shadow: var(--app-shadow-md);
+        position: relative;
+        overflow: hidden;
+        transition: border-color 0.25s ease, transform 0.25s ease,
+            box-shadow 0.25s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                600px circle at top right,
+                var(--app-accent-softer),
+                transparent 40%
+            );
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        &:hover {
+            border-color: var(--app-accent-border);
+            transform: translateY(-2px);
+            box-shadow: var(--app-shadow-md);
+
+            &::before {
+                opacity: 1;
+            }
+        }
+
+        &.is-skeleton {
+            gap: 0.75rem;
+        }
     }
 
-    .problema-mobile-card.is-skeleton {
-        gap: 0.6rem;
+    .problema-card-header,
+    .problema-card-stats,
+    .problema-card-actions {
+        position: relative;
+        z-index: 1;
     }
 
-    .problema-mobile-field {
+    .problema-card-header {
         display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+
+        h3 {
+            margin: 0.2rem 0 0;
+            color: var(--app-text);
+            font-size: 1.05rem;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+    }
+
+    .problema-id {
+        display: inline-flex;
+        padding: 0.2rem 0.55rem;
+        border-radius: 999px;
+        background: var(--app-accent-soft);
+        border: 1px solid var(--app-accent-border);
+        color: var(--app-accent-text);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+    }
+
+    .problema-card-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+        padding: 0.85rem;
+        border-radius: 0.9rem;
+        background: var(--app-surface-soft);
+        border: 1px solid var(--app-border-soft);
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 0;
+        }
     }
 
     .label {
-        font-size: 0.72rem;
+        color: var(--app-text-secondary);
+        font-size: 0.68rem;
+        font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: var(--text-color-secondary);
-        font-weight: 600;
     }
 
     .value {
-        font-size: 1.28rem;
-        font-weight: 500;
-        color: var(--text-color);
-        line-height: 1.2;
+        color: var(--app-text);
+        font-size: 0.95rem;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .problema-mobile-actions,
-    .problema-mobile-actions-skeleton {
+    .tasa-mini {
+        color: var(--app-accent-text);
+        font-weight: 800;
+    }
+
+    .problema-card-actions {
         display: flex;
-        align-items: center;
-        gap: 0.35rem;
-    }
+        flex-wrap: wrap;
+        gap: 0.5rem;
 
-    .mobile-empty {
-        border: 1px dashed var(--surface-border);
-        border-radius: 12px;
-        padding: 1.1rem;
-        text-align: center;
-        color: var(--text-color-secondary);
-    }
-
-    .problemas-skeleton-desktop {
-        display: none;
-    }
-
-    .problemas-skeleton-mobile {
-        display: flex;
-        flex-direction: column;
-        gap: 0.85rem;
-    }
-
-    .skeleton-row {
-        display: grid;
-        grid-template-columns: 50px 1.5fr 100px 80px 80px 90px 120px;
-        align-items: center;
-        gap: 0.85rem;
-        background: var(--surface-card);
-        border: 1px solid var(--surface-border);
-        border-radius: 12px;
-        padding: 0.75rem 0.9rem;
+        .p-button {
+            flex: 1;
+            min-width: 7rem;
+        }
     }
 
     .desktop-actions {
@@ -95,30 +295,38 @@
         gap: 0.35rem;
     }
 
+    .problema-id,
+    .problema-title {
+        display: block;
+        color: var(--app-text);
+        font-weight: 700;
+    }
+
     .tasa-bar {
         position: relative;
         width: 100%;
         height: 1.4rem;
-        background: var(--surface-ground);
+        background: var(--app-surface-hover);
         border-radius: 999px;
         overflow: hidden;
+        border: 1px solid var(--app-border);
     }
 
     .tasa-fill {
         position: absolute;
         inset: 0 auto 0 0;
-        background: var(--primary-color);
-        border-radius: 999px;
+        background: linear-gradient(90deg, var(--app-accent), #14b8a6);
+        border-radius: inherit;
         transition: width 0.4s ease;
 
         &[data-severity='success'] {
-            background: rgb(34, 197, 94);
+            background: linear-gradient(90deg, #16a34a, #22c55e);
         }
         &[data-severity='warn'] {
-            background: rgb(234, 179, 8);
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
         }
         &[data-severity='danger'] {
-            background: rgb(239, 68, 68);
+            background: linear-gradient(90deg, #ef4444, #f87171);
         }
     }
 
@@ -128,92 +336,121 @@
         display: grid;
         place-items: center;
         font-size: 0.75rem;
-        font-weight: 700;
-        color: var(--text-color);
+        font-weight: 800;
+        color: var(--app-text);
         mix-blend-mode: difference;
-        color: white;
     }
 
-    .actions-container > * {
-        width: 100%;
-    }
-
-    .actions-container p-button .p-button {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .p-toolbar {
+    .empty-state {
+        display: flex;
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 3rem 1rem;
+        border: 1px dashed var(--app-border-strong);
+        border-radius: 1rem;
+        background: var(--app-surface-softer-2);
+        text-align: center;
+        color: var(--app-text);
+
+        i {
+            color: var(--app-accent-text);
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            margin: 0;
+            color: var(--app-text);
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        p {
+            max-width: 520px;
+            margin: 0;
+            color: var(--app-text-secondary);
+            line-height: 1.6;
+        }
     }
 
-    .p-toolbar-group-left,
-    .p-toolbar-group-right {
-        width: 100%;
+    .empty-state-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .empty-state.is-inline {
+        padding: 2.5rem 1rem;
+        background: transparent;
+        border: none;
+    }
+
+    .p-paginator {
+        background: transparent;
+        color: var(--app-text-secondary);
+    }
+
+    .p-paginator .p-paginator-page.p-highlight {
+        background: var(--app-accent-soft);
+        color: var(--app-accent-text);
     }
 
     @media (min-width: 960px) {
-        .problemas-table-wrap {
-            display: block;
+        .problemas-skeleton-desktop {
+            display: flex;
         }
 
-        .problemas-mobile-list,
         .problemas-skeleton-mobile {
             display: none;
         }
 
-        .problemas-skeleton-desktop {
-            display: flex;
-            flex-direction: column;
-            gap: 0.55rem;
+        .problemas-table-wrap {
+            display: block;
         }
 
-        .skeleton-row {
-            display: grid;
-            grid-template-columns: 50px 1.5fr 100px 80px 80px 90px 120px;
-            align-items: center;
-            gap: 0.85rem;
-            background: var(--surface-card);
-            border: 1px solid var(--surface-border);
-            border-radius: 12px;
-            padding: 0.75rem 0.9rem;
-        }
-
-        .actions-container {
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .actions-container > * {
-            width: auto;
-        }
-
-        .actions-container p-button .p-button {
-            width: auto;
-        }
-
-        .p-toolbar {
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .p-toolbar-group-left,
-        .p-toolbar-group-right {
-            width: auto;
+        .problemas-mobile-list {
+            display: none;
         }
 
         .problemas-table {
-            .p-datatable-thead > tr > th {
-                font-size: 0.8rem;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                color: var(--text-color-secondary);
-            }
+            background: transparent;
+        }
 
-            .p-datatable-tbody > tr > td {
-                vertical-align: middle;
-            }
+        .problemas-table .p-datatable-thead > tr > th {
+            background: var(--app-surface-soft);
+            color: var(--app-text-secondary);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: none;
+        }
+
+        .problemas-table .p-datatable-tbody > tr {
+            background: transparent;
+            transition: background 0.2s ease;
+        }
+
+        .problemas-table .p-datatable-tbody > tr > td {
+            background: transparent;
+            color: var(--app-text);
+            border-color: var(--app-border);
+        }
+
+        .problemas-table .p-datatable-tbody > tr:hover {
+            background: var(--app-accent-softer);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .problemas-hero,
+        .problema-card {
+            border-radius: 0.85rem;
+        }
+
+        .problema-card-stats {
+            grid-template-columns: 1fr;
         }
     }
 }

@@ -1,79 +1,85 @@
-<div class="problemas-page">
-    <div class="mb-3 pl-1">
-        <h3 class="text-2xl font-bold text-color m-0">
-            Problemas - {{ competenciaNombre }}
-        </h3>
-    </div>
+<div class="problemas-admin-page">
+    <header class="problemas-hero">
+        <div class="problemas-hero-copy">
+            <span class="label-eyebrow">Competencia</span>
+            <h1>{{ competenciaNombre }}</h1>
+        </div>
 
-    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
-        <ng-template pTemplate="left">
-            <div class="actions-container flex flex-col md:flex-row w-full gap-2 items-stretch md:items-center">
-                <p-button
-                    icon="pi pi-arrow-left"
-                    label="Volver"
-                    severity="secondary"
-                    [outlined]="true"
-                    class="w-full md:w-auto"
-                    (onClick)="volver()"
-                ></p-button>
-                <p-button
-                    label="Nuevo"
-                    icon="pi pi-plus"
-                    severity="primary"
-                    class="w-full md:w-auto"
-                    (onClick)="goToCreate()"
-                ></p-button>
-                <p-button
-                    label="Generar con IA"
-                    icon="pi pi-sparkles"
-                    severity="info"
-                    [outlined]="true"
-                    class="w-full md:w-auto"
-                    (onClick)="goToGenerate()"
-                ></p-button>
-                <p-button
-                    label="Ver soluciones"
-                    icon="pi pi-check-square"
-                    severity="success"
-                    [outlined]="true"
-                    class="w-full md:w-auto"
-                    (onClick)="goToSoluciones()"
-                ></p-button>
-                <p-select
-                    [options]="dificultadFiltroOptions"
-                    [ngModel]="currentDificultad"
-                    (ngModelChange)="onDificultadFilterChange($event)"
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="Dificultad"
-                    styleClass="w-full md:w-14rem"
-                    appendTo="body"
-                ></p-select>
-                <p-button
-                    *ngIf="hasActiveFilters"
-                    label="Limpiar"
-                    icon="pi pi-filter-slash"
-                    severity="secondary"
-                    [text]="true"
-                    (onClick)="clearFilters()"
-                ></p-button>
-            </div>
-        </ng-template>
+        <div class="hero-actions">
+            <p-button
+                icon="pi pi-arrow-left"
+                label="Volver"
+                severity="secondary"
+                [outlined]="true"
+                (onClick)="volver()"
+            ></p-button>
+            <p-button
+                label="Nuevo"
+                icon="pi pi-plus"
+                severity="success"
+                (onClick)="goToCreate()"
+            ></p-button>
+            <p-button
+                label="Generar con IA"
+                icon="pi pi-sparkles"
+                severity="info"
+                [outlined]="true"
+                (onClick)="goToGenerate()"
+            ></p-button>
+            <p-button
+                label="Ver soluciones"
+                icon="pi pi-check-square"
+                severity="secondary"
+                [outlined]="true"
+                (onClick)="goToSoluciones()"
+            ></p-button>
+        </div>
+    </header>
 
-        <ng-template pTemplate="right">
-            <p-iconfield iconPosition="left" class="w-full md:w-auto mt-2 md:mt-0">
-                <p-inputicon styleClass="pi pi-search text-gray-400" />
-                <input
-                    pInputText
-                    type="text"
-                    [value]="currentSearch"
-                    (input)="onSearchInput($event)"
-                    placeholder="Buscar..."
-                    class="w-full md:w-15rem pl-10"
-                />
-            </p-iconfield>
-        </ng-template>
-    </p-toolbar>
+    <section class="problemas-toolbar">
+        <div class="problemas-search">
+            <i class="pi pi-search"></i>
+            <input
+                pInputText
+                type="text"
+                [value]="currentSearch"
+                (input)="onSearchInput($event)"
+                placeholder="Buscar problema por título..."
+            />
+            @if (currentSearch) {
+                <button
+                    type="button"
+                    class="problemas-search-clear"
+                    (click)="currentSearch = ''; load(1, '')"
+                    aria-label="Limpiar búsqueda"
+                >
+                    <i class="pi pi-times-circle"></i>
+                </button>
+            }
+        </div>
+
+        <p-select
+            [options]="dificultadFiltroOptions"
+            [ngModel]="currentDificultad"
+            (ngModelChange)="onDificultadFilterChange($event)"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Dificultad"
+            styleClass="problemas-filter"
+            appendTo="body"
+        ></p-select>
+
+        @if (hasActiveFilters) {
+            <p-button
+                label="Limpiar filtros"
+                icon="pi pi-filter-slash"
+                severity="secondary"
+                [text]="true"
+                size="small"
+                (onClick)="clearFilters()"
+            ></p-button>
+        }
+    </section>
 
     @if (loading) {
         <div class="problemas-skeleton-desktop">
@@ -84,200 +90,208 @@
                     <p-skeleton width="80px" height="2rem"></p-skeleton>
                     <p-skeleton width="60px" height="1.1rem"></p-skeleton>
                     <p-skeleton width="60px" height="1.1rem"></p-skeleton>
-                    <p-skeleton width="90px" height="1.1rem"></p-skeleton>
-                    <p-skeleton width="90px" height="2rem"></p-skeleton>
+                    <p-skeleton width="120px" height="1.1rem"></p-skeleton>
+                    <p-skeleton width="120px" height="2rem"></p-skeleton>
                 </div>
             }
         </div>
 
         <div class="problemas-skeleton-mobile">
             @for (i of [].constructor(rows); track $index) {
-                <div class="problema-mobile-card is-skeleton">
-                    <div class="problema-mobile-field">
-                        <span class="label">Titulo</span>
-                        <p-skeleton width="70%" height="1.1rem"></p-skeleton>
-                    </div>
-                    <div class="problema-mobile-field">
-                        <span class="label">Dificultad</span>
-                        <p-skeleton width="40%" height="2rem"></p-skeleton>
-                    </div>
-                    <div class="problema-mobile-field">
-                        <span class="label">Envios</span>
-                        <p-skeleton width="40%" height="1.1rem"></p-skeleton>
-                    </div>
-                    <div class="problema-mobile-field">
-                        <span class="label">Acciones</span>
-                        <div class="problema-mobile-actions-skeleton">
-                            <p-skeleton width="2rem" height="2rem"></p-skeleton>
-                            <p-skeleton width="2rem" height="2rem"></p-skeleton>
-                        </div>
-                    </div>
-                </div>
+                <article class="problema-card is-skeleton">
+                    <p-skeleton width="30%" height="0.8rem"></p-skeleton>
+                    <p-skeleton width="90%" height="1.4rem"></p-skeleton>
+                    <p-skeleton width="60%" height="1.6rem"></p-skeleton>
+                </article>
             }
         </div>
     } @else {
-        <div class="problemas-table-wrap">
-            <p-table
-                #dt
-                [value]="problemas"
-                responsiveLayout="scroll"
-                styleClass="problemas-table"
-                [tableStyle]="{ 'min-width': '100%' }"
-            >
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width: 60px">#</th>
-                        <th>Titulo</th>
-                        <th style="width: 130px">Dificultad</th>
-                        <th style="width: 100px">Envios</th>
-                        <th style="width: 100px">Aciertos</th>
-                        <th style="width: 130px">Tasa</th>
-                        <th class="text-right" style="width: 120px">Acciones</th>
-                    </tr>
-                </ng-template>
+        @if (problemas.length === 0) {
+            <div class="empty-state">
+                <i class="pi pi-inbox"></i>
+                <h2>No hay problemas en esta competencia</h2>
+                <p>
+                    Creá uno nuevo o generá varios con IA a partir de los datos
+                    de la competencia.
+                </p>
+                <div class="empty-state-actions">
+                    <p-button
+                        label="Nuevo problema"
+                        icon="pi pi-plus"
+                        severity="success"
+                        (onClick)="goToCreate()"
+                    ></p-button>
+                    <p-button
+                        label="Generar con IA"
+                        icon="pi pi-sparkles"
+                        severity="info"
+                        [outlined]="true"
+                        (onClick)="goToGenerate()"
+                    ></p-button>
+                </div>
+            </div>
+        } @else {
+            <div class="problemas-table-wrap">
+                <p-table
+                    #dt
+                    [value]="problemas"
+                    responsiveLayout="scroll"
+                    styleClass="problemas-table"
+                    [tableStyle]="{ 'min-width': '100%' }"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 60px">#</th>
+                            <th>Título</th>
+                            <th style="width: 130px">Dificultad</th>
+                            <th style="width: 90px">Envíos</th>
+                            <th style="width: 90px">Aciertos</th>
+                            <th style="width: 150px">Tasa</th>
+                            <th class="text-right" style="width: 130px">Acciones</th>
+                        </tr>
+                    </ng-template>
 
-                <ng-template pTemplate="body" let-p>
-                    <tr>
-                        <td>{{ p.id }}</td>
-                        <td>{{ p.titulo }}</td>
-                        <td>
-                            <p-tag
-                                [value]="getDificultadLabel(p.dificultad)"
-                                [severity]="getDificultadSeverity(p.dificultad)"
-                            ></p-tag>
-                        </td>
-                        <td>{{ p.total_soluciones }}</td>
-                        <td>{{ p.soluciones_correctas }}</td>
-                        <td>
-                            <div class="tasa-bar">
-                                <div
-                                    class="tasa-fill"
-                                    [style.width.%]="getPorcentajeAciertos(p)"
-                                    [attr.data-severity]="getDificultadSeverity(p.dificultad)"
-                                ></div>
-                                <span class="tasa-label">
-                                    {{ getPorcentajeAciertos(p) }}%
-                                </span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="desktop-actions">
-                                <p-button
-                                    icon="pi pi-check-square"
-                                    severity="primary"
-                                    [text]="true"
-                                    [rounded]="true"
-                                    pTooltip="Ver soluciones"
-                                    tooltipPosition="top"
-                                    (onClick)="goToSolucionesDeProblema(p)"
-                                ></p-button>
-                                <p-button
-                                    icon="pi pi-pencil"
-                                    severity="warn"
-                                    [text]="true"
-                                    [rounded]="true"
-                                    pTooltip="Editar"
-                                    tooltipPosition="top"
-                                    (onClick)="goToEdit(p)"
-                                ></p-button>
-                                <p-button
-                                    icon="pi pi-trash"
-                                    severity="danger"
-                                    [text]="true"
-                                    [rounded]="true"
-                                    pTooltip="Eliminar"
-                                    tooltipPosition="top"
-                                    (onClick)="openDeleteModal(p)"
-                                ></p-button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
+                    <ng-template pTemplate="body" let-p>
+                        <tr>
+                            <td>
+                                <span class="problema-id">#{{ p.id }}</span>
+                            </td>
+                            <td>
+                                <span class="problema-title">{{ p.titulo }}</span>
+                            </td>
+                            <td>
+                                <p-tag
+                                    [value]="getDificultadLabel(p.dificultad)"
+                                    [severity]="getDificultadSeverity(p.dificultad)"
+                                ></p-tag>
+                            </td>
+                            <td>{{ p.total_soluciones }}</td>
+                            <td>{{ p.soluciones_correctas }}</td>
+                            <td>
+                                <div class="tasa-bar">
+                                    <div
+                                        class="tasa-fill"
+                                        [style.width.%]="getPorcentajeAciertos(p)"
+                                        [attr.data-severity]="getDificultadSeverity(p.dificultad)"
+                                    ></div>
+                                    <span class="tasa-label">
+                                        {{ getPorcentajeAciertos(p) }}%
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="desktop-actions">
+                                    <p-button
+                                        icon="pi pi-check-square"
+                                        severity="info"
+                                        [text]="true"
+                                        [rounded]="true"
+                                        pTooltip="Ver soluciones"
+                                        tooltipPosition="top"
+                                        (onClick)="goToSolucionesDeProblema(p)"
+                                    ></p-button>
+                                    <p-button
+                                        icon="pi pi-pencil"
+                                        severity="warn"
+                                        [text]="true"
+                                        [rounded]="true"
+                                        pTooltip="Editar"
+                                        tooltipPosition="top"
+                                        (onClick)="goToEdit(p)"
+                                    ></p-button>
+                                    <p-button
+                                        icon="pi pi-trash"
+                                        severity="danger"
+                                        [text]="true"
+                                        [rounded]="true"
+                                        pTooltip="Eliminar"
+                                        tooltipPosition="top"
+                                        (onClick)="openDeleteModal(p)"
+                                    ></p-button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
 
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="7" class="text-center p-5">
-                            <span class="font-medium text-color-secondary">No se encontraron registros</span>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state is-inline">
+                                    <i class="pi pi-search"></i>
+                                    <h2>No se encontraron problemas</h2>
+                                    <p>Probá con otro término de búsqueda o filtro.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
 
-        <div class="problemas-mobile-list">
-            @if (problemas.length === 0) {
-                <div class="mobile-empty">No se encontraron registros</div>
-            } @else {
+            <div class="problemas-mobile-list">
                 @for (problema of problemas; track problema.id) {
-                    <article class="problema-mobile-card">
-                        <div class="problema-mobile-field">
-                            <span class="label">Titulo</span>
-                            <span class="value">#{{ problema.id }} · {{ problema.titulo }}</span>
-                        </div>
-
-                        <div class="problema-mobile-field">
-                            <span class="label">Dificultad</span>
+                    <article class="problema-card">
+                        <header class="problema-card-header">
+                            <div>
+                                <span class="problema-id">#{{ problema.id }}</span>
+                                <h3>{{ problema.titulo }}</h3>
+                            </div>
                             <p-tag
                                 [value]="getDificultadLabel(problema.dificultad)"
                                 [severity]="getDificultadSeverity(problema.dificultad)"
                             ></p-tag>
-                        </div>
+                        </header>
 
-                        <div class="problema-mobile-field">
-                            <span class="label">Envios</span>
-                            <span class="value">{{ problema.total_soluciones }}</span>
-                        </div>
-
-                        <div class="problema-mobile-field">
-                            <span class="label">Aciertos</span>
-                            <span class="value">{{ problema.soluciones_correctas }}</span>
-                        </div>
-
-                        <div class="problema-mobile-field">
-                            <span class="label">Tasa</span>
-                            <span class="value">{{ getPorcentajeAciertos(problema) }}%</span>
-                        </div>
-
-                        <div class="problema-mobile-field">
-                            <span class="label">Acciones</span>
-                            <div class="problema-mobile-actions">
-                                <p-button
-                                    icon="pi pi-check-square"
-                                    severity="primary"
-                                    [text]="true"
-                                    [rounded]="true"
-                                    pTooltip="Ver soluciones"
-                                    tooltipPosition="top"
-                                    (onClick)="goToSolucionesDeProblema(problema)"
-                                ></p-button>
-                                <p-button
-                                    icon="pi pi-pencil"
-                                    severity="warn"
-                                    [text]="true"
-                                    [rounded]="true"
-                                    pTooltip="Editar"
-                                    tooltipPosition="top"
-                                    (onClick)="goToEdit(problema)"
-                                ></p-button>
-                                <p-button
-                                    icon="pi pi-trash"
-                                    severity="danger"
-                                    [text]="true"
-                                    [rounded]="true"
-                                    pTooltip="Eliminar"
-                                    tooltipPosition="top"
-                                    (onClick)="openDeleteModal(problema)"
-                                ></p-button>
+                        <div class="problema-card-stats">
+                            <div>
+                                <span class="label">Envíos</span>
+                                <span class="value">{{ problema.total_soluciones }}</span>
                             </div>
+                            <div>
+                                <span class="label">Aciertos</span>
+                                <span class="value">{{ problema.soluciones_correctas }}</span>
+                            </div>
+                            <div>
+                                <span class="label">Tasa</span>
+                                <span class="value tasa-mini">
+                                    {{ getPorcentajeAciertos(problema) }}%
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="problema-card-actions">
+                            <p-button
+                                icon="pi pi-check-square"
+                                label="Soluciones"
+                                severity="info"
+                                [outlined]="true"
+                                size="small"
+                                (onClick)="goToSolucionesDeProblema(problema)"
+                            ></p-button>
+                            <p-button
+                                icon="pi pi-pencil"
+                                label="Editar"
+                                severity="warn"
+                                [outlined]="true"
+                                size="small"
+                                (onClick)="goToEdit(problema)"
+                            ></p-button>
+                            <p-button
+                                icon="pi pi-trash"
+                                label="Eliminar"
+                                severity="danger"
+                                [outlined]="true"
+                                size="small"
+                                (onClick)="openDeleteModal(problema)"
+                            ></p-button>
                         </div>
                     </article>
                 }
-            }
-        </div>
+            </div>
+        }
     }
 
     <p-paginator
-        *ngIf="!loading"
+        *ngIf="!loading && problemas.length > 0"
         [rows]="rows"
         [first]="(currentPage - 1) * rows"
         [totalRecords]="totalRecords"

@@ -19,12 +19,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
-import { MessageModule } from 'primeng/message';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
 import { SkeletonModule } from 'primeng/skeleton';
-import { ToolbarModule } from 'primeng/toolbar';
 
 import { ToastService } from '@/core/services/toast.service';
 import { ProblemasService } from '../../services/problemas.service';
@@ -51,12 +48,9 @@ export type ProblemaFormMode = 'create' | 'edit';
         TextareaModule,
         SelectModule,
         ToastModule,
-        MessageModule,
         FloatLabelModule,
-        DividerModule,
         TooltipModule,
         SkeletonModule,
-        ToolbarModule,
     ],
     templateUrl: './problema-form-page.component.html',
     styleUrl: './problema-form-page.component.scss',

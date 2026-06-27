@@ -1,53 +1,61 @@
 <p-toast></p-toast>
 
 <div class="problema-form-page">
-    <div class="mb-3 pl-1">
-        <h3 class="text-2xl font-bold text-color m-0">
-            {{ pageTitle }} - {{ competenciaNombre }}
-        </h3>
-    </div>
+    <header class="problema-form-hero">
+        <div class="problema-form-hero-copy">
+            <span class="label-eyebrow">{{ competenciaNombre }}</span>
+            <h1>{{ pageTitle }}</h1>
+        </div>
 
-    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
-        <ng-template pTemplate="left">
-            <div class="actions-container">
-                <p-button
-                    icon="pi pi-arrow-left"
-                    label="Volver"
-                    severity="secondary"
-                    [outlined]="true"
-                    (onClick)="cancel()"
-                    [disabled]="saving"
-                ></p-button>
-                <p-button
-                    [label]="saveLabel"
-                    [icon]="saveIcon"
-                    [disabled]="!isValid || saving"
-                    (onClick)="save()"
-                ></p-button>
-            </div>
-        </ng-template>
-    </p-toolbar>
+        <div class="hero-actions">
+            <p-button
+                icon="pi pi-arrow-left"
+                label="Volver"
+                severity="secondary"
+                [outlined]="true"
+                [disabled]="saving"
+                (onClick)="cancel()"
+            ></p-button>
+            <p-button
+                [label]="saveLabel"
+                [icon]="saveIcon"
+                severity="success"
+                [disabled]="!isValid || saving"
+                (onClick)="save()"
+            ></p-button>
+        </div>
+    </header>
 
     @if (loadingData) {
         <div class="loading-skeleton">
             <p-skeleton width="100%" height="3.5rem" styleClass="mb-3"></p-skeleton>
             <p-skeleton width="100%" height="8rem" styleClass="mb-3"></p-skeleton>
-            <p-skeleton width="40%" height="2.5rem" styleClass="mb-3"></p-skeleton>
             <p-skeleton width="100%" height="6rem" styleClass="mb-3"></p-skeleton>
         </div>
     } @else {
-        <form [formGroup]="form" class="problema-form">
-            <div class="form-card">
-                <div class="section-header">
-                    <i class="pi pi-info-circle"></i>
-                    <h4>Información general</h4>
-                </div>
+        <form [formGroup]="form" class="problema-form-card">
+            <section class="form-section">
+                <header class="section-header">
+                    <span class="label">Identidad</span>
+                    <h3>Información general</h3>
+                </header>
 
-                <div class="flex flex-col gap-2">
-                    <div class="flex items-center justify-between">
-                        <label for="titulo_input" class="field-label">
-                            Título <span class="required">*</span>
-                        </label>
+                <div class="form-field">
+                    <div class="field-row">
+                        <p-floatlabel variant="on">
+                            <input
+                                pInputText
+                                id="titulo_input"
+                                type="text"
+                                formControlName="titulo"
+                                class="w-full"
+                                variant="filled"
+                                pSize="small"
+                                [maxlength]="MAX_TITULO"
+                                [invalid]="isInvalid('titulo')"
+                            />
+                            <label for="titulo_input">Título</label>
+                        </p-floatlabel>
                         <span
                             class="char-counter"
                             [class.is-near-limit]="charCount('titulo') > MAX_TITULO * 0.85"
@@ -55,66 +63,71 @@
                             {{ charCount('titulo') }}/{{ MAX_TITULO }}
                         </span>
                     </div>
-                    <input
-                        pInputText
-                        id="titulo_input"
-                        formControlName="titulo"
-                        class="w-full"
-                        [invalid]="isInvalid('titulo')"
-                        [maxlength]="MAX_TITULO"
-                        placeholder="Ej: Suma de dos números"
-                    />
                     @if (isInvalid("titulo")) {
-                        <p-message severity="error" size="small" variant="simple">
+                        <small class="text-red-500 mt-1 block">
                             El título es requerido (máx. {{ MAX_TITULO }} caracteres).
-                        </p-message>
+                        </small>
                     }
                 </div>
 
-                <div class="flex flex-col gap-2 mt-4">
-                    <label for="dificultad_input" class="field-label">
-                        Dificultad <span class="required">*</span>
-                    </label>
-                    <p-select
-                        inputId="dificultad_input"
-                        [options]="dificultades"
-                        formControlName="dificultad"
-                        [invalid]="isInvalid('dificultad')"
-                        class="w-full"
-                        [appendTo]="'body'"
-                        placeholder="Selecciona una dificultad"
-                    >
-                        <ng-template let-opt pTemplate="item">
-                            <div class="dificultad-option">
-                                <span
-                                    class="dificultad-dot"
-                                    [attr.data-dificultad]="opt"
-                                ></span>
-                                <span>{{ getDificultadLabel(opt) }}</span>
-                            </div>
-                        </ng-template>
-                    </p-select>
+                <div class="form-field">
+                    <p-floatlabel variant="on">
+                        <p-select
+                            inputId="dificultad_input"
+                            [options]="dificultades"
+                            formControlName="dificultad"
+                            [invalid]="isInvalid('dificultad')"
+                            class="w-full"
+                            [appendTo]="'body'"
+                            placeholder=" "
+                        >
+                            <ng-template let-opt pTemplate="item">
+                                <div class="dificultad-option">
+                                    <span
+                                        class="dificultad-dot"
+                                        [attr.data-dificultad]="opt"
+                                    ></span>
+                                    <span>{{ getDificultadLabel(opt) }}</span>
+                                </div>
+                            </ng-template>
+                        </p-select>
+                        <label for="dificultad_input">Dificultad</label>
+                    </p-floatlabel>
                     @if (isInvalid("dificultad")) {
-                        <p-message severity="error" size="small" variant="simple">
+                        <small class="text-red-500 mt-1 block">
                             La dificultad es requerida.
-                        </p-message>
+                        </small>
                     }
                 </div>
-            </div>
+            </section>
 
-            <div class="form-card">
-                <div class="section-header">
-                    <i class="pi pi-code"></i>
-                    <h4>Formato de entrada y salida</h4>
-                </div>
+            <div class="section-divider"></div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex items-center justify-between">
-                            <label for="formato_entrada_input" class="field-label">
-                                Formato de entrada
-                                <span class="required">*</span>
-                            </label>
+            <section class="form-section">
+                <header class="section-header">
+                    <span class="label">Especificación</span>
+                    <h3>Formato de entrada y salida</h3>
+                </header>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <div class="field-row">
+                            <p-floatlabel variant="on">
+                                <textarea
+                                    pTextarea
+                                    id="formato_entrada_input"
+                                    formControlName="formato_entrada"
+                                    rows="4"
+                                    autoResize="true"
+                                    class="w-full"
+                                    variant="filled"
+                                    [maxlength]="MAX_FORMATO"
+                                    [invalid]="isInvalid('formato_entrada')"
+                                ></textarea>
+                                <label for="formato_entrada_input">
+                                    Formato de entrada
+                                </label>
+                            </p-floatlabel>
                             <span
                                 class="char-counter"
                                 [class.is-near-limit]="charCount('formato_entrada') > MAX_FORMATO * 0.85"
@@ -122,30 +135,31 @@
                                 {{ charCount('formato_entrada') }}/{{ MAX_FORMATO }}
                             </span>
                         </div>
-                        <textarea
-                            pTextarea
-                            id="formato_entrada_input"
-                            formControlName="formato_entrada"
-                            rows="4"
-                            autoResize="true"
-                            class="w-full"
-                            [invalid]="isInvalid('formato_entrada')"
-                            [maxlength]="MAX_FORMATO"
-                            placeholder="Describe cómo será la entrada..."
-                        ></textarea>
                         @if (isInvalid("formato_entrada")) {
-                            <p-message severity="error" size="small" variant="simple">
+                            <small class="text-red-500 mt-1 block">
                                 El formato de entrada es requerido.
-                            </p-message>
+                            </small>
                         }
                     </div>
 
-                    <div class="flex flex-col gap-2">
-                        <div class="flex items-center justify-between">
-                            <label for="formato_salida_input" class="field-label">
-                                Formato de salida
-                                <span class="required">*</span>
-                            </label>
+                    <div class="form-field">
+                        <div class="field-row">
+                            <p-floatlabel variant="on">
+                                <textarea
+                                    pTextarea
+                                    id="formato_salida_input"
+                                    formControlName="formato_salida"
+                                    rows="4"
+                                    autoResize="true"
+                                    class="w-full"
+                                    variant="filled"
+                                    [maxlength]="MAX_FORMATO"
+                                    [invalid]="isInvalid('formato_salida')"
+                                ></textarea>
+                                <label for="formato_salida_input">
+                                    Formato de salida
+                                </label>
+                            </p-floatlabel>
                             <span
                                 class="char-counter"
                                 [class.is-near-limit]="charCount('formato_salida') > MAX_FORMATO * 0.85"
@@ -153,50 +167,53 @@
                                 {{ charCount('formato_salida') }}/{{ MAX_FORMATO }}
                             </span>
                         </div>
-                        <textarea
-                            pTextarea
-                            id="formato_salida_input"
-                            formControlName="formato_salida"
-                            rows="4"
-                            autoResize="true"
-                            class="w-full"
-                            [invalid]="isInvalid('formato_salida')"
-                            [maxlength]="MAX_FORMATO"
-                            placeholder="Describe qué debe imprimir el programa..."
-                        ></textarea>
                         @if (isInvalid("formato_salida")) {
-                            <p-message severity="error" size="small" variant="simple">
+                            <small class="text-red-500 mt-1 block">
                                 El formato de salida es requerido.
-                            </p-message>
+                            </small>
                         }
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="form-card">
-                <div class="section-header">
-                    <i class="pi pi-pencil"></i>
-                    <h4>Ejemplo</h4>
-                    <div class="flex gap-2 ml-auto">
-                        <p-button
-                            icon="pi pi-bolt"
-                            label="Auto-rellenar"
-                            severity="secondary"
-                            [text]="true"
-                            size="small"
-                            pTooltip="Genera un ejemplo de suma a partir de la entrada"
-                            (onClick)="fillExampleEntrada()"
-                        ></p-button>
+            <div class="section-divider"></div>
+
+            <section class="form-section">
+                <header class="section-header section-header-row">
+                    <div>
+                        <span class="label">Muestra</span>
+                        <h3>Ejemplo</h3>
                     </div>
-                </div>
+                    <p-button
+                        icon="pi pi-bolt"
+                        label="Auto-rellenar"
+                        severity="secondary"
+                        [text]="true"
+                        size="small"
+                        pTooltip="Genera un ejemplo de suma a partir de la entrada"
+                        (onClick)="fillExampleEntrada()"
+                    ></p-button>
+                </header>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex items-center justify-between">
-                            <label for="ejemplo_entrada_input" class="field-label">
-                                Ejemplo de entrada
-                                <span class="required">*</span>
-                            </label>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <div class="field-row">
+                            <p-floatlabel variant="on">
+                                <textarea
+                                    pTextarea
+                                    id="ejemplo_entrada_input"
+                                    formControlName="ejemplo_entrada"
+                                    rows="5"
+                                    autoResize="true"
+                                    class="w-full mono"
+                                    variant="filled"
+                                    [maxlength]="MAX_EJEMPLO"
+                                    [invalid]="isInvalid('ejemplo_entrada')"
+                                ></textarea>
+                                <label for="ejemplo_entrada_input">
+                                    Ejemplo de entrada
+                                </label>
+                            </p-floatlabel>
                             <span
                                 class="char-counter"
                                 [class.is-near-limit]="charCount('ejemplo_entrada') > MAX_EJEMPLO * 0.85"
@@ -204,30 +221,31 @@
                                 {{ charCount('ejemplo_entrada') }}/{{ MAX_EJEMPLO }}
                             </span>
                         </div>
-                        <textarea
-                            pTextarea
-                            id="ejemplo_entrada_input"
-                            formControlName="ejemplo_entrada"
-                            rows="5"
-                            autoResize="true"
-                            class="w-full mono"
-                            [invalid]="isInvalid('ejemplo_entrada')"
-                            [maxlength]="MAX_EJEMPLO"
-                            placeholder="3 5"
-                        ></textarea>
                         @if (isInvalid("ejemplo_entrada")) {
-                            <p-message severity="error" size="small" variant="simple">
+                            <small class="text-red-500 mt-1 block">
                                 El ejemplo de entrada es requerido.
-                            </p-message>
+                            </small>
                         }
                     </div>
 
-                    <div class="flex flex-col gap-2">
-                        <div class="flex items-center justify-between">
-                            <label for="ejemplo_salida_input" class="field-label">
-                                Ejemplo de salida
-                                <span class="required">*</span>
-                            </label>
+                    <div class="form-field">
+                        <div class="field-row">
+                            <p-floatlabel variant="on">
+                                <textarea
+                                    pTextarea
+                                    id="ejemplo_salida_input"
+                                    formControlName="ejemplo_salida"
+                                    rows="5"
+                                    autoResize="true"
+                                    class="w-full mono"
+                                    variant="filled"
+                                    [maxlength]="MAX_EJEMPLO"
+                                    [invalid]="isInvalid('ejemplo_salida')"
+                                ></textarea>
+                                <label for="ejemplo_salida_input">
+                                    Ejemplo de salida
+                                </label>
+                            </p-floatlabel>
                             <span
                                 class="char-counter"
                                 [class.is-near-limit]="charCount('ejemplo_salida') > MAX_EJEMPLO * 0.85"
@@ -243,27 +261,16 @@
                                 (onClick)="fillExampleSalida()"
                             ></p-button>
                         </div>
-                        <textarea
-                            pTextarea
-                            id="ejemplo_salida_input"
-                            formControlName="ejemplo_salida"
-                            rows="5"
-                            autoResize="true"
-                            class="w-full mono"
-                            [invalid]="isInvalid('ejemplo_salida')"
-                            [maxlength]="MAX_EJEMPLO"
-                            placeholder="8"
-                        ></textarea>
                         @if (isInvalid("ejemplo_salida")) {
-                            <p-message severity="error" size="small" variant="simple">
+                            <small class="text-red-500 mt-1 block">
                                 El ejemplo de salida es requerido.
-                            </p-message>
+                            </small>
                         }
                     </div>
                 </div>
 
                 @if (form.value.ejemplo_entrada || form.value.ejemplo_salida) {
-                    <div class="example-preview mt-4">
+                    <div class="example-preview">
                         <div class="preview-label">
                             <i class="pi pi-eye"></i>
                             <span>Vista previa del ejemplo</span>
@@ -298,8 +305,7 @@
                         </div>
                     </div>
                 }
-            </div>
-
+            </section>
         </form>
     }
 </div>
