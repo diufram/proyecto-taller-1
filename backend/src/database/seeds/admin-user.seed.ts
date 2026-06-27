@@ -39,7 +39,6 @@ export const adminUserSeed: Seed = {
     const hashedPassword = await hash('123123123', 10);
 
     const admin = repository.create({
-      nombre_usuario: 'admin',
       correo_electronico: 'admin@gmail.com',
       contrasena: hashedPassword,
       rol: Rol.ADMIN,

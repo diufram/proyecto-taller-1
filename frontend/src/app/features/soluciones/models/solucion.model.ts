@@ -33,7 +33,7 @@ export interface AdminSolucion extends Solucion {
     problema_ejemplo_salida?: string;
     competencia_nombre?: string;
     usuario_id: number;
-    usuario_nombre_usuario: string;
+    usuario_email: string;
     usuario_nombre?: string | null;
     usuario_apellido?: string | null;
 }

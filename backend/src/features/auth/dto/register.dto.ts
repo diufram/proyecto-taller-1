@@ -18,12 +18,6 @@ export class RegisterDto {
   @IsNotEmpty()
   apellido!: string;
 
-  @ApiProperty({ example: 'matias.dev' })
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(3)
-  nombre_usuario!: string;
-
   @ApiProperty({ example: 'matias@correo.com' })
   @IsEmail()
   correo_electronico!: string;

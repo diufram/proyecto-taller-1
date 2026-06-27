@@ -10,9 +10,6 @@ export enum Rol {
 
 @Entity('usuarios')
 export class Usuario extends BaseEntity {
-  @Column()
-  nombre_usuario!: string;
-
   @Column({ unique: true })
   correo_electronico!: string;
 
@@ -21,9 +18,6 @@ export class Usuario extends BaseEntity {
 
   @Column({ type: 'enum', enum: Rol, default: Rol.USER })
   rol!: Rol;
-
-  @Column({ name: 'esta_verificado', default: false })
-  esta_verificado!: boolean;
 
   @Column({ nullable: true })
   foto?: string;

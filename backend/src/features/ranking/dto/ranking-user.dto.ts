@@ -7,9 +7,6 @@ export class RankingUserDto {
   @ApiProperty({ example: 'Matias' })
   name!: string;
 
-  @ApiProperty({ example: 'matias_ramos' })
-  username!: string;
-
   @ApiProperty({ example: 250 })
   points!: number;
 

@@ -149,7 +149,7 @@ export class DashboardService {
       .where('u.rol = :rol', { rol: Rol.USER })
       .select([
         'u.id AS id',
-        'u.nombre_usuario AS username',
+        'u.correo_electronico AS correo_electronico',
         'u.puntos_totales AS points',
         'COUNT(DISTINCT s.id)::int AS solved_problems',
         'COUNT(DISTINCT i.id)::int AS competitions',
@@ -163,7 +163,7 @@ export class DashboardService {
       .addOrderBy('u.created_at', 'ASC')
       .limit(5)
       .getRawMany<{
-        username: string;
+        correo_electronico: string;
         points: number | string;
         solved_problems: number | string;
         competitions: number | string;
@@ -173,8 +173,7 @@ export class DashboardService {
 
     return rows.map((row, index) => ({
       position: index + 1,
-      username: row.username,
-      name: this.displayName(row.nombre, row.apellido, row.username),
+      name: this.displayName(row.nombre, row.apellido, row.correo_electronico),
       points: Number(row.points) || 0,
       solvedProblems: Number(row.solved_problems) || 0,
       competitions: Number(row.competitions) || 0,
@@ -346,9 +345,9 @@ export class DashboardService {
   private displayName(
     nombre: string | null,
     apellido: string | null,
-    username: string,
+    email: string,
   ): string {
     const fullName = [nombre, apellido].filter(Boolean).join(' ').trim();
-    return fullName || username;
+    return fullName || email;
   }
 }

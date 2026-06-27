@@ -152,7 +152,7 @@ export class PublicLayoutComponent {
     }
 
     userName(): string {
-        return this.authService.currentUser()?.nombre_usuario ?? 'Usuario';
+        return this.authService.currentUser()?.correo_electronico ?? 'Usuario';
     }
 
     logout(): void {

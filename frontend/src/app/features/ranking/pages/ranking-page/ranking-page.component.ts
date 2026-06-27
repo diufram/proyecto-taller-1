@@ -157,9 +157,6 @@ import { AuthService } from '@/features/auth/services/auth.service';
                                 </div>
                                 <span class="podium-position">#{{ user.position }}</span>
                                 <span class="podium-name">{{ user.name }}</span>
-                                <span class="podium-handle"
-                                    >&#64;{{ user.username }}</span
-                                >
                                 <div class="podium-stats">
                                     <div>
                                         <span class="label">Puntos</span>
@@ -213,9 +210,6 @@ import { AuthService } from '@/features/auth/services/auth.service';
                                             <span
                                                 class="ranking-name-primary"
                                                 >{{ user.name }}</span
-                                            >
-                                            <span class="ranking-name-secondary"
-                                                >&#64;{{ user.username }}</span
                                             >
                                         </div>
                                         <div class="ranking-mobile-points">

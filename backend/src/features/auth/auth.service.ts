@@ -38,7 +38,6 @@ export class AuthService {
 
     const passwordHash = await hash(dto.contrasena, 10);
     const usuario = await this.authRepository.crearUsuario({
-      nombre_usuario: dto.nombre_usuario,
       correo_electronico: dto.correo_electronico,
       contrasena: passwordHash,
     });
@@ -225,7 +224,6 @@ export class AuthService {
   private serializarUsuario(usuario: Usuario) {
     return {
       id: usuario.id,
-      nombre_usuario: usuario.nombre_usuario,
       correo_electronico: usuario.correo_electronico,
       rol: usuario.rol,
       created_at: usuario.createdAt,

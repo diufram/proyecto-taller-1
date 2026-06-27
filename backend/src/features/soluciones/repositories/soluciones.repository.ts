@@ -76,7 +76,7 @@ export class SolucionesRepository {
       qb.andWhere(
         new Brackets((sub) => {
           sub
-            .where('u.nombre_usuario ILIKE :term', { term })
+            .where('u.correo_electronico ILIKE :term', { term })
             .orWhere('p.titulo ILIKE :term', { term })
             .orWhere('per.nombre ILIKE :term', { term })
             .orWhere('per.apellido ILIKE :term', { term });

@@ -13,7 +13,6 @@ export interface DashboardSummary {
 
 export interface DashboardTopUser {
     position: number;
-    username: string;
     name: string;
     points: number;
     solvedProblems: number;

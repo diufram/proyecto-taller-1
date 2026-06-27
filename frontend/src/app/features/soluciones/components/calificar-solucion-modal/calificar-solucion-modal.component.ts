@@ -61,7 +61,7 @@ export interface CalificarEvent {
                                     {{ displayName(solucion) }}
                                 </span>
                                 <span class="text-color-secondary ml-1">
-                                    &#64;{{ solucion.usuario_nombre_usuario }}
+                                    {{ solucion.usuario_email }}
                                 </span>
                             </div>
                         </div>
@@ -470,7 +470,7 @@ export class CalificarSolucionModalComponent implements OnChanges {
         if (nombre || apellido) {
             return `${nombre ?? ''} ${apellido ?? ''}`.trim();
         }
-        return `@${s.usuario_nombre_usuario}`;
+        return s.usuario_email;
     }
 
     estadoLabel(estado: EstadoSolucion): string {

@@ -317,7 +317,7 @@ export class SolucionesService {
       competencia_id: solucion.problema?.competencia?.id,
       competencia_nombre: solucion.problema?.competencia?.nombre,
       usuario_id: solucion.usuario?.id,
-      usuario_nombre_usuario: solucion.usuario?.nombre_usuario,
+      usuario_email: solucion.usuario?.correo_electronico,
       usuario_nombre: personaNombre ?? null,
       usuario_apellido: personaApellido ?? null,
       created_at: solucion.createdAt,

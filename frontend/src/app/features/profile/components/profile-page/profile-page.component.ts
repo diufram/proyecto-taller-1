@@ -48,27 +48,11 @@ export class ProfilePageComponent implements OnInit {
 
     profile?: Profile;
     loading = false;
-    savingUsername = false;
     savingPassword = false;
-    checkingUsername = false;
-    usernameAvailable = true;
 
-    usernameForm: FormGroup;
     passwordForm: FormGroup;
 
     constructor() {
-        this.usernameForm = this.fb.group({
-            username: [
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(100),
-                ],
-            ],
-            current_password: ['', Validators.required],
-        });
-
         this.passwordForm = this.fb.group(
             {
                 current_password: ['', Validators.required],
@@ -94,9 +78,6 @@ export class ProfilePageComponent implements OnInit {
             .subscribe({
                 next: (profile) => {
                     this.profile = profile;
-                    this.usernameForm.patchValue({
-                        username: profile.username,
-                    });
                 },
                 error: () => {
                     this.toast.error('Error al cargar el perfil');
@@ -111,53 +92,6 @@ export class ProfilePageComponent implements OnInit {
             control.invalid &&
             (control.dirty || control.touched)
         );
-    }
-
-    checkUsernameAvailability() {
-        const username = this.usernameForm.get('username')?.value;
-        if (!username || username === this.profile?.username) {
-            this.usernameAvailable = true;
-            return;
-        }
-
-        this.checkingUsername = true;
-        this.profileService
-            .checkUsernameAvailability(username)
-            .pipe(finalize(() => (this.checkingUsername = false)))
-            .subscribe({
-                next: (response) => {
-                    this.usernameAvailable = response.available;
-                    if (!response.available) {
-                        this.toast.error('Username no disponible');
-                    }
-                },
-            });
-    }
-
-    onUsernameSubmit() {
-        if (this.usernameForm.invalid || !this.usernameAvailable) {
-            this.usernameForm.markAllAsTouched();
-            return;
-        }
-
-        this.savingUsername = true;
-        this.profileService
-            .updateUsername(this.usernameForm.value)
-            .pipe(finalize(() => (this.savingUsername = false)))
-            .subscribe({
-                next: (profile) => {
-                    this.profile = profile;
-                    this.toast.success('Username actualizado exitosamente');
-                    this.usernameForm.patchValue({ current_password: '' });
-                },
-                error: (err) => {
-                    if (err.error?.message?.includes('contraseña')) {
-                        this.toast.error('Contraseña incorrecta');
-                    } else {
-                        this.toast.error('Error al actualizar username');
-                    }
-                },
-            });
     }
 
     onPasswordSubmit() {
@@ -216,14 +150,14 @@ export class ProfilePageComponent implements OnInit {
     get displayName(): string {
         if (!this.profile) return 'Usuario';
         const fullName = `${this.profile.first_name ?? ''} ${this.profile.last_name ?? ''}`.trim();
-        return fullName || this.profile.username;
+        return fullName || this.profile.email;
     }
 
     getInitials(): string {
         if (!this.profile) return '?';
         const first = this.profile.first_name?.[0] ?? '';
         const last = this.profile.last_name?.[0] ?? '';
-        if (!first && !last) return this.profile.username?.[0]?.toUpperCase() ?? '?';
+        if (!first && !last) return this.profile.email?.[0]?.toUpperCase() ?? '?';
         return `${first}${last}`.toUpperCase();
     }
 }

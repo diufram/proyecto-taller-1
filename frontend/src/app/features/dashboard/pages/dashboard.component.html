@@ -5,7 +5,7 @@
             <h1>Dashboard</h1>
             @if (currentUser()) {
                 <p>
-                    Bienvenido, {{ currentUser()?.nombre_usuario }}.
+                    Bienvenido, {{ currentUser()?.correo_electronico }}.
                     @if (isAdmin()) {
                         Revisá el estado general de competencias, problemas y participación.
                     } @else {
@@ -180,12 +180,11 @@
                     <a routerLink="/ranking" class="panel-link">Ver ranking</a>
                 </div>
                 <div class="rank-list">
-                    @for (user of stats.topUsuarios; track user.username) {
+                    @for (user of stats.topUsuarios; track user.position) {
                         <article class="rank-item">
                             <span class="rank-position">#{{ user.position }}</span>
                             <div class="rank-user">
                                 <strong>{{ user.name }}</strong>
-                                <small>@{{ user.username }}</small>
                             </div>
                             <div class="rank-score">
                                 <strong>{{ user.points }}</strong>

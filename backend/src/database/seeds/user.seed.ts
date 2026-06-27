@@ -27,48 +27,21 @@ export const userSeed: Seed = {
     const repository = dataSource.getRepository(Usuario);
 
     const usuariosData = [
-      { nombre_usuario: 'matias_ramos', correo_electronico: 'm@gmail.com' },
-      { nombre_usuario: 'lucas_garcia', correo_electronico: 'lucas@gmail.com' },
-      {
-        nombre_usuario: 'sofia_martinez',
-        correo_electronico: 'sofia@gmail.com',
-      },
-      {
-        nombre_usuario: 'valentina_lopez',
-        correo_electronico: 'valentina@gmail.com',
-      },
-      {
-        nombre_usuario: 'santiago_rodriguez',
-        correo_electronico: 'santiago@gmail.com',
-      },
-      {
-        nombre_usuario: 'camila_fernandez',
-        correo_electronico: 'camila@gmail.com',
-      },
-      { nombre_usuario: 'juan_pereyra', correo_electronico: 'juan@gmail.com' },
-      { nombre_usuario: 'maria_torres', correo_electronico: 'maria@gmail.com' },
-      {
-        nombre_usuario: 'martin_acosta',
-        correo_electronico: 'martin@gmail.com',
-      },
-      {
-        nombre_usuario: 'florencia_vega',
-        correo_electronico: 'florencia@gmail.com',
-      },
-      { nombre_usuario: 'diego_suarez', correo_electronico: 'diego@gmail.com' },
-      { nombre_usuario: 'paula_romero', correo_electronico: 'paula@gmail.com' },
-      {
-        nombre_usuario: 'bruno_aguilar',
-        correo_electronico: 'bruno@gmail.com',
-      },
-      {
-        nombre_usuario: 'renata_castro',
-        correo_electronico: 'renata@gmail.com',
-      },
-      {
-        nombre_usuario: 'facundo_mendez',
-        correo_electronico: 'facundo@gmail.com',
-      },
+      { correo_electronico: 'm@gmail.com' },
+      { correo_electronico: 'lucas@gmail.com' },
+      { correo_electronico: 'sofia@gmail.com' },
+      { correo_electronico: 'valentina@gmail.com' },
+      { correo_electronico: 'santiago@gmail.com' },
+      { correo_electronico: 'camila@gmail.com' },
+      { correo_electronico: 'juan@gmail.com' },
+      { correo_electronico: 'maria@gmail.com' },
+      { correo_electronico: 'martin@gmail.com' },
+      { correo_electronico: 'florencia@gmail.com' },
+      { correo_electronico: 'diego@gmail.com' },
+      { correo_electronico: 'paula@gmail.com' },
+      { correo_electronico: 'bruno@gmail.com' },
+      { correo_electronico: 'renata@gmail.com' },
+      { correo_electronico: 'facundo@gmail.com' },
     ];
 
     const hashedPassword = await hash('123123123', 10);
@@ -86,16 +59,14 @@ export const userSeed: Seed = {
       }
 
       const user = repository.create({
-        nombre_usuario: userData.nombre_usuario,
         correo_electronico: userData.correo_electronico,
         contrasena: hashedPassword,
         rol: Rol.USER,
-        esta_verificado: true,
       });
 
       await repository.save(user);
       console.log(
-        `✅ Usuario creado: ${userData.nombre_usuario} (${userData.correo_electronico})`,
+        `✅ Usuario creado: ${userData.correo_electronico}`,
       );
     }
 

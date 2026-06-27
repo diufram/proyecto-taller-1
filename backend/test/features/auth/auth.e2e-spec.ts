@@ -27,7 +27,8 @@ describe('Auth feature (e2e)', () => {
     return request(app.getHttpServer())
       .post('/auth/register')
       .send({
-        nombre_usuario: 'nuevo_usuario',
+        nombre: 'Nuevo',
+        apellido: 'Usuario',
         correo_electronico: email,
         contrasena: 'Password123',
       })
@@ -45,7 +46,8 @@ describe('Auth feature (e2e)', () => {
     const email = `dup_${Date.now()}@correo.com`;
 
     await request(app.getHttpServer()).post('/auth/register').send({
-      nombre_usuario: 'usuario_duplicado',
+      nombre: 'Usuario',
+      apellido: 'Duplicado',
       correo_electronico: email,
       contrasena: 'Password123',
     });
@@ -53,7 +55,8 @@ describe('Auth feature (e2e)', () => {
     await request(app.getHttpServer())
       .post('/auth/register')
       .send({
-        nombre_usuario: 'usuario_duplicado_2',
+        nombre: 'Usuario',
+        apellido: 'Duplicado Dos',
         correo_electronico: email,
         contrasena: 'Password123',
       })

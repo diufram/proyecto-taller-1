@@ -27,7 +27,7 @@ describe('AdminSolucionesPageComponent', () => {
         competencia_id: 1,
         competencia_nombre: 'Olimpiada',
         usuario_id: 10,
-        usuario_nombre_usuario: 'juanp',
+        usuario_email: 'juan@example.com',
         usuario_nombre: 'Juan',
         usuario_apellido: 'Perez',
         created_at: '2026-01-01T00:00:00Z',
@@ -90,9 +90,9 @@ describe('AdminSolucionesPageComponent', () => {
         expect(component.displayName(solucionMock(1, 'Pendiente'))).toBe('Juan Perez');
     });
 
-    it('should fallback to username when persona missing', () => {
+    it('should fallback to email when persona missing', () => {
         const s = { ...solucionMock(1, 'Pendiente'), usuario_nombre: null, usuario_apellido: null };
-        expect(component.displayName(s)).toBe('@juanp');
+        expect(component.displayName(s)).toBe('juan@example.com');
     });
 
     it('should open modal with target', () => {

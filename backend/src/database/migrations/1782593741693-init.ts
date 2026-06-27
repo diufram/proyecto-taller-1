@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Init1782585731475 implements MigrationInterface {
-    name = 'Init1782585731475'
+export class Init1782593741693 implements MigrationInterface {
+    name = 'Init1782593741693'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."soluciones_estado_enum" AS ENUM('Pendiente', 'Correcto', 'Incorrecto', 'En revisión')`);
@@ -17,7 +17,7 @@ export class Init1782585731475 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "inscripciones" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "fecha_inscripcion" TIMESTAMP NOT NULL, "usuarioId" integer, "competenciaId" integer, CONSTRAINT "PK_17a12f6ab342f6762d81e940d19" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "retroalimentacion_problemas" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "retroalimentacion" text NOT NULL, "usuarioId" integer, "problemaId" integer, CONSTRAINT "PK_136bd74d10d8c4495befdbdef5a" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TYPE "public"."usuarios_rol_enum" AS ENUM('user', 'admin')`);
-        await queryRunner.query(`CREATE TABLE "usuarios" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "nombre_usuario" character varying NOT NULL, "correo_electronico" character varying NOT NULL, "contrasena" character varying NOT NULL, "rol" "public"."usuarios_rol_enum" NOT NULL DEFAULT 'user', "esta_verificado" boolean NOT NULL DEFAULT false, "foto" character varying, "puntos_totales" integer NOT NULL DEFAULT '0', "posicion_global" integer, CONSTRAINT "UQ_e871b7157e4b74290df9baa9c93" UNIQUE ("correo_electronico"), CONSTRAINT "PK_d7281c63c176e152e4c531594a8" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "usuarios" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "correo_electronico" character varying NOT NULL, "contrasena" character varying NOT NULL, "rol" "public"."usuarios_rol_enum" NOT NULL DEFAULT 'user', "foto" character varying, "puntos_totales" integer NOT NULL DEFAULT '0', "posicion_global" integer, CONSTRAINT "UQ_e871b7157e4b74290df9baa9c93" UNIQUE ("correo_electronico"), CONSTRAINT "PK_d7281c63c176e152e4c531594a8" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "refresh_tokens" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "token_hash" character varying(255) NOT NULL, "expires_at" TIMESTAMP NOT NULL, "revoked_at" TIMESTAMP, "usuario_id" integer NOT NULL, CONSTRAINT "UQ_a7838d2ba25be1342091b6695f1" UNIQUE ("token_hash"), CONSTRAINT "PK_7d8bee0204106019488c4c50ffa" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "personas" ("id" SERIAL NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, "nombre" character varying NOT NULL, "apellido" character varying NOT NULL, "celular" character varying, "usuarioId" integer, CONSTRAINT "REL_7c8c9bafba93459a6217ef8277" UNIQUE ("usuarioId"), CONSTRAINT "PK_714aa5d028f8f3e6645e971cecd" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "soluciones" ADD CONSTRAINT "FK_a0ae4081c1192b4c388f9b4f647" FOREIGN KEY ("problemaId") REFERENCES "problemas"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);

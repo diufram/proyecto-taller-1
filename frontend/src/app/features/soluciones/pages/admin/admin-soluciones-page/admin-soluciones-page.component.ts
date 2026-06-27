@@ -317,7 +317,7 @@ export class AdminSolucionesPageComponent implements OnInit, OnDestroy {
         if (nombre || apellido) {
             return `${nombre ?? ''} ${apellido ?? ''}`.trim();
         }
-        return `@${s.usuario_nombre_usuario}`;
+        return s.usuario_email;
     }
 
     estadoLabel(estado: EstadoSolucion): string {

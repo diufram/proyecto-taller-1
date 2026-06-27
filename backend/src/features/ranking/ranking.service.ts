@@ -39,7 +39,7 @@ export class RankingService {
       .where('u.rol = :rol', { rol: Rol.USER })
       .select([
         'u.id AS id',
-        'u.nombre_usuario AS username',
+        'u.correo_electronico AS correo_electronico',
         'u.puntos_totales AS puntos_totales',
         'u.posicion_global AS posicion_global',
         'COUNT(DISTINCT s.id)::int AS solved_problems',
@@ -57,7 +57,7 @@ export class RankingService {
 
     interface RankingRow {
       id: number;
-      username: string;
+      correo_electronico: string;
       puntos_totales: number | string;
       posicion_global: number | null;
       solved_problems: number | string;
@@ -71,11 +71,11 @@ export class RankingService {
         const firstName = u.nombre;
         const lastName = u.apellido;
         const name =
-          [firstName, lastName].filter(Boolean).join(' ') || u.username;
+          [firstName, lastName].filter(Boolean).join(' ') ||
+          u.correo_electronico;
         return {
           position: idx + 1,
           name: this.capitalize(name),
-          username: u.username,
           points: Number(u.puntos_totales) || 0,
           solvedProblems: Number(u.solved_problems) || 0,
           competitions: Number(u.competitions) || 0,

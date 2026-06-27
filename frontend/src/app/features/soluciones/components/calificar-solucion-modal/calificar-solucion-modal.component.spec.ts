@@ -26,7 +26,7 @@ describe('CalificarSolucionModalComponent', () => {
         competencia_id: 1,
         competencia_nombre: 'Olimpiada 2026',
         usuario_id: 7,
-        usuario_nombre_usuario: 'juanp',
+        usuario_email: 'juan@example.com',
         usuario_nombre: 'Juan',
         usuario_apellido: 'Perez',
         created_at: '2026-01-15T10:30:00Z',
@@ -54,13 +54,13 @@ describe('CalificarSolucionModalComponent', () => {
         expect(component.displayName(solucionMock)).toBe('Juan Perez');
     });
 
-    it('should fallback to username when persona is missing', () => {
+    it('should fallback to email when persona is missing', () => {
         const sinPersona: AdminSolucion = {
             ...solucionMock,
             usuario_nombre: null,
             usuario_apellido: null,
         };
-        expect(component.displayName(sinPersona)).toBe('@juanp');
+        expect(component.displayName(sinPersona)).toBe('juan@example.com');
     });
 
     it('should emit "En revisión" without confirm', () => {

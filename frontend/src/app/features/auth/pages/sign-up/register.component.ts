@@ -46,10 +46,6 @@ export class RegisterComponent implements OnInit {
             {
                 nombre: ['', Validators.required],
                 apellido: ['', Validators.required],
-                nombre_usuario: [
-                    '',
-                    [Validators.required, Validators.minLength(3)],
-                ],
                 correo_electronico: [
                     '',
                     [Validators.required, Validators.email],
@@ -105,7 +101,6 @@ export class RegisterComponent implements OnInit {
         const {
             nombre,
             apellido,
-            nombre_usuario,
             correo_electronico,
             celular,
             contrasena,
@@ -115,7 +110,6 @@ export class RegisterComponent implements OnInit {
             .register({
                 nombre,
                 apellido,
-                nombre_usuario,
                 correo_electronico,
                 celular: celular || undefined,
                 contrasena,

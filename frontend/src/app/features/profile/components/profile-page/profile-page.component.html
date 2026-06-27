@@ -21,8 +21,8 @@
                 <span class="eyebrow">Cuenta personal</span>
                 <h1>Tu perfil en Compex</h1>
                 <p>
-                    Administra tu nombre de usuario y seguridad sin salir del
-                    entorno público de competencias.
+                    Consulta tus datos de cuenta y administra tu seguridad sin
+                    salir del entorno público de competencias.
                 </p>
             </div>
 
@@ -41,16 +41,6 @@
                     <h2>{{ displayName }}</h2>
                     <p>{{ profile.email }}</p>
 
-                    <div class="profile-tags">
-                        <span class="profile-pill">
-                            <i class="pi pi-user"></i>
-                            {{ profile.username }}
-                        </span>
-                        <span *ngIf="profile.is_verified" class="profile-pill is-success">
-                            <i class="pi pi-check-circle"></i>
-                            Verificado
-                        </span>
-                    </div>
                 </div>
             </div>
         </header>
@@ -63,61 +53,21 @@
                     </div>
                     <div>
                         <span>Identidad</span>
-                        <h3>Nombre de usuario</h3>
+                        <h3>Datos de cuenta</h3>
                     </div>
                 </div>
 
-                <form [formGroup]="usernameForm" (ngSubmit)="onUsernameSubmit()" class="profile-form">
+                <div class="profile-form">
                     <div class="form-field">
-                        <label for="username">Nombre de usuario</label>
-                        <input
-                            pInputText
-                            id="username"
-                            formControlName="username"
-                            (blur)="checkUsernameAvailability()"
-                            class="w-full"
-                        />
-                        @if (isInvalid('username', usernameForm)) {
-                            <small class="form-error">Mínimo 3 caracteres requeridos</small>
-                        }
-                        @if (!usernameAvailable && !checkingUsername) {
-                            <small class="form-error">
-                                <i class="pi pi-times-circle"></i> Username no disponible
-                            </small>
-                        }
-                        @if (checkingUsername) {
-                            <small class="form-help">
-                                <i class="pi pi-spin pi-spinner"></i> Verificando disponibilidad...
-                            </small>
-                        }
+                        <label>Nombre</label>
+                        <input pInputText [value]="displayName" class="w-full" readonly />
                     </div>
 
                     <div class="form-field">
-                        <label for="current_password_username">Contraseña actual</label>
-                        <p-password
-                            inputId="current_password_username"
-                            formControlName="current_password"
-                            [toggleMask]="true"
-                            styleClass="w-full"
-                            [fluid]="true"
-                            [feedback]="false"
-                        ></p-password>
-                        @if (isInvalid('current_password', usernameForm)) {
-                            <small class="form-error">La contraseña es requerida</small>
-                        }
+                        <label>Correo electrónico</label>
+                        <input pInputText [value]="profile.email" class="w-full" readonly />
                     </div>
-
-                    <div class="form-actions">
-                        <p-button
-                            type="submit"
-                            label="Guardar usuario"
-                            icon="pi pi-save"
-                            severity="success"
-                            [loading]="savingUsername"
-                            [disabled]="usernameForm.invalid || !usernameAvailable"
-                        ></p-button>
-                    </div>
-                </form>
+                </div>
             </article>
 
             <article class="profile-form-card">
