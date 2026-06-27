@@ -3,102 +3,54 @@
 }
 
 :host ::ng-deep {
-.competencia-form-page {
+    .competencia-form-page {
         width: 100%;
-        max-width: 1100px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 1rem 0 4rem;
+        padding: 0 0 4rem;
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 1rem;
         color: var(--app-text);
         min-width: 0;
     }
 
-    .competencia-form-hero,
-    .form-card {
+    .competencia-form-hero {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-radius: 1rem;
         background: var(--app-surface);
         border: 1px solid var(--app-border);
-        box-shadow: var(--app-shadow-md);
+        box-shadow: var(--app-shadow-sm);
     }
 
-    .competencia-form-hero {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-        padding: 1.5rem;
-        border-radius: 1.5rem;
-        background: var(--app-hero-gradient);
-        position: relative;
-        overflow: hidden;
+    .competencia-form-hero-copy {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        flex: 1 1 auto;
 
-        &::after {
-            content: '';
-            position: absolute;
-            right: -8rem;
-            top: -8rem;
-            width: 18rem;
-            height: 18rem;
-            border-radius: 999px;
-            border: 1px solid var(--app-hero-circle-border);
-            background: var(--app-hero-circle-bg);
+        h1 {
+            margin: 0;
+            color: var(--app-text);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
-        @media (min-width: 820px) {
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-items: center;
-            padding: 2rem;
-        }
-    }
-
-    .competencia-form-hero-copy,
-    .competencia-form-hero-actions {
-        position: relative;
-        z-index: 1;
     }
 
     .competencia-form-hero-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.75rem;
-        justify-content: flex-start;
-
-        @media (min-width: 820px) {
-            justify-content: flex-end;
-        }
-    }
-
-    .eyebrow {
-        display: inline-flex;
-        width: fit-content;
-        margin-bottom: 0.75rem;
-        padding: 0.35rem 0.7rem;
-        border: 1px solid var(--app-accent-border-soft);
-        border-radius: 999px;
-        color: var(--app-accent-text);
-        background: var(--app-accent-softer);
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-    }
-
-    .competencia-form-hero-copy h1 {
-        max-width: 720px;
-        margin: 0;
-        color: var(--app-text);
-        font-size: clamp(1.8rem, 5vw, 2.6rem);
-        font-weight: 800;
-        letter-spacing: -0.04em;
-        line-height: 1;
-    }
-
-    .competencia-form-hero-copy p {
-        max-width: 620px;
-        margin: 1rem 0 0;
-        color: var(--app-text-secondary);
-        font-size: 1rem;
-        line-height: 1.7;
+        gap: 0.5rem;
     }
 
     .loading-skeleton {
@@ -108,69 +60,49 @@
         padding: 1.5rem;
     }
 
-    .competencia-form {
+    .competencia-form-card {
+        padding: 1.5rem;
+        border: 1px solid var(--app-border);
+        border-radius: 1rem;
+        background: var(--app-surface);
+        box-shadow: var(--app-shadow-sm);
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 1.5rem;
     }
 
-    .form-card {
-        border-radius: 1.25rem;
-        padding: 1.5rem;
-        position: relative;
-        overflow: hidden;
-        transition: border-color 0.25s ease, transform 0.25s ease,
-            box-shadow 0.25s ease;
+    .form-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+    }
 
-        &::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(
-                600px circle at top right,
-                var(--app-accent-softer),
-                transparent 40%
-            );
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
-        &:hover {
-            border-color: var(--app-accent-border);
-            transform: translateY(-2px);
-            box-shadow: var(--app-shadow-md);
-        }
+    .section-divider {
+        height: 1px;
+        background: var(--app-border);
+        border-radius: 999px;
     }
 
     .section-header {
-        position: relative;
-        z-index: 1;
         display: flex;
-        align-items: center;
-        gap: 0.85rem;
-        margin-bottom: 1.25rem;
+        flex-direction: column;
+        gap: 0.15rem;
 
         h3 {
-            margin: 0.15rem 0 0;
+            margin: 0;
             color: var(--app-text);
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 800;
+            letter-spacing: -0.01em;
         }
     }
 
-    .section-icon {
-        width: 2.6rem;
-        height: 2.6rem;
-        border-radius: 0.85rem;
-        display: grid;
-        place-items: center;
-        background: var(--app-accent-soft);
-        border: 1px solid var(--app-accent-border);
-        color: var(--app-accent-text);
-
-        i {
-            font-size: 1.15rem;
-        }
+    .label {
+        color: var(--app-text-secondary);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
     }
 
     .form-grid {
@@ -178,9 +110,23 @@
         grid-template-columns: 1fr;
         gap: 1rem;
 
+        &.is-single {
+            grid-template-columns: 1fr;
+        }
+
         @media (min-width: 720px) {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            &.is-single {
+                grid-template-columns: 1fr;
+            }
         }
+    }
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
     }
 
     .field-label {
@@ -194,14 +140,6 @@
     .required {
         color: var(--app-danger);
         font-weight: 700;
-    }
-
-    .label {
-        color: var(--app-text-secondary);
-        font-size: 0.68rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
     }
 
     .p-inputtext,
@@ -218,6 +156,18 @@
             border-color: var(--app-accent-border) !important;
             box-shadow: var(--app-ring) !important;
         }
+    }
+
+    .p-inputtext.ng-invalid.ng-dirty,
+    .p-inputtext.ng-invalid.ng-touched,
+    .p-inputnumber.ng-invalid.ng-dirty > .p-inputnumber-input,
+    .p-inputnumber.ng-invalid.ng-touched > .p-inputnumber-input,
+    .p-select.ng-invalid.ng-dirty,
+    .p-select.ng-invalid.ng-touched,
+    .p-datepicker.ng-invalid.ng-dirty > .p-datepicker-input,
+    .p-datepicker.ng-invalid.ng-touched > .p-datepicker-input {
+        border-color: var(--app-danger) !important;
+        box-shadow: 0 0 0 1px var(--app-danger) !important;
     }
 
     .p-select-overlay {
@@ -239,17 +189,20 @@
         }
     }
 
-    .p-message.p-message-error {
-        background: var(--app-danger-soft);
-        border: 1px solid rgba(220, 38, 38, 0.25);
-        color: var(--app-danger);
-        border-radius: 0.65rem;
+    .p-floatlabel label {
+        color: var(--app-text-secondary);
+    }
+
+    small.text-red-500 {
+        color: var(--app-danger) !important;
+        font-size: 0.78rem;
+        font-weight: 600;
     }
 
     @media (max-width: 640px) {
         .competencia-form-hero,
-        .form-card {
-            border-radius: 1rem;
+        .competencia-form-card {
+            border-radius: 0.85rem;
         }
     }
 }

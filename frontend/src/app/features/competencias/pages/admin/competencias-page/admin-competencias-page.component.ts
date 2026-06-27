@@ -198,18 +198,4 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
                 return 'secondary';
         }
     }
-
-    get countAbiertas(): number {
-        return this.competencias.filter((c) => c.estado === 'Abierta').length;
-    }
-
-    get countEnCurso(): number {
-        return this.competencias.filter((c) => c.estado === 'En curso').length;
-    }
-
-    get countFinalizadas(): number {
-        return this.competencias.filter(
-            (c) => c.estado === 'Finalizada' || c.estado === 'Cancelada',
-        ).length;
-    }
 }

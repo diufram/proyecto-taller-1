@@ -40,6 +40,9 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
             :host {
                 display: block;
                 color: var(--app-text);
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
             }
 
             :host ::ng-deep .breadcrumb-container {

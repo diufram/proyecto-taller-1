@@ -12,9 +12,9 @@ import { finalize } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
 import { SelectModule } from 'primeng/select';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TextareaModule } from 'primeng/textarea';
@@ -42,9 +42,9 @@ type CompetenciaFormMode = 'create' | 'edit';
         ReactiveFormsModule,
         ButtonModule,
         DatePickerModule,
+        FloatLabelModule,
         InputNumberModule,
         InputTextModule,
-        MessageModule,
         SelectModule,
         SkeletonModule,
         TextareaModule,
