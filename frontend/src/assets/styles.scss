@@ -1,5 +1,6 @@
 /* 1. TODOS los @use al principio del archivo */
 @use './tailwind.css';
+@use '../app/core/theme/tokens.scss';
 @use './layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './demo/demo.scss';

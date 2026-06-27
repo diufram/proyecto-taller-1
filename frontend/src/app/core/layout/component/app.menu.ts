@@ -25,7 +25,7 @@ import { filter } from 'rxjs/operators';
                 justify-content: space-between;
                 overflow-x: hidden;
                 width: 100%;
-                color: #e5e7eb;
+                color: var(--app-text);
             }
 
             :host ::ng-deep .layout-menu {
@@ -44,13 +44,13 @@ import { filter } from 'rxjs/operators';
                 font-size: 0.7rem;
                 text-transform: uppercase;
                 font-weight: 800;
-                color: #6ee7b7;
+                color: var(--app-accent-text);
                 margin: 1.1rem 0 0.45rem 1rem;
                 letter-spacing: 0.12em;
                 padding: 0.25rem 0.55rem;
                 border-radius: 999px;
-                background: rgba(16, 185, 129, 0.08);
-                border: 1px solid rgba(16, 185, 129, 0.18);
+                background: var(--app-accent-softer);
+                border: 1px solid var(--app-accent-border-softer);
             }
 
             :host
@@ -71,7 +71,7 @@ import { filter } from 'rxjs/operators';
                 align-items: center;
                 gap: 0.65rem;
                 text-decoration: none;
-                color: #cbd5f5;
+                color: var(--app-text-secondary);
                 font-weight: 600;
                 font-size: 0.92rem;
                 background: transparent;
@@ -83,30 +83,30 @@ import { filter } from 'rxjs/operators';
             }
 
             :host ::ng-deep .layout-menu li a i {
-                color: #94a3b8;
+                color: var(--app-text-muted);
                 transition: color 0.2s ease;
             }
 
             :host ::ng-deep .layout-menu li a:hover {
-                background: rgba(16, 185, 129, 0.08) !important;
-                border-color: rgba(16, 185, 129, 0.22) !important;
-                color: #ffffff;
+                background: var(--app-accent-softer) !important;
+                border-color: var(--app-accent-border-softer) !important;
+                color: var(--app-text);
                 transform: translateX(2px);
             }
 
             :host ::ng-deep .layout-menu li a:hover i {
-                color: #6ee7b7;
+                color: var(--app-accent-text);
             }
 
             :host ::ng-deep .layout-menu li a.router-link-active,
             :host ::ng-deep .layout-menu li a.active-route {
                 background: linear-gradient(
                     135deg,
-                    rgba(16, 185, 129, 0.22),
+                    var(--app-accent-soft),
                     rgba(20, 184, 166, 0.18)
                 ) !important;
-                border: 1px solid rgba(16, 185, 129, 0.4) !important;
-                color: #ffffff !important;
+                border: 1px solid var(--app-accent-border) !important;
+                color: var(--app-text) !important;
                 font-weight: 700 !important;
                 box-shadow:
                     0 12px 24px rgba(16, 185, 129, 0.18),
@@ -115,7 +115,7 @@ import { filter } from 'rxjs/operators';
 
             :host ::ng-deep .layout-menu li a.router-link-active i,
             :host ::ng-deep .layout-menu li a.active-route i {
-                color: #6ee7b7 !important;
+                color: var(--app-accent-text) !important;
             }
 
             :host ::ng-deep .layout-menu-item-icon {
@@ -133,8 +133,8 @@ import { filter } from 'rxjs/operators';
                 margin: 0.85rem 0.85rem 0.4rem;
                 padding: 0.85rem 1rem;
                 border-radius: 0.95rem;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.05);
+                background: var(--app-surface-soft);
+                border: 1px solid var(--app-border-soft);
             }
 
             .sidebar-footer-avatar {
@@ -144,7 +144,7 @@ import { filter } from 'rxjs/operators';
                 display: grid;
                 place-items: center;
                 background: linear-gradient(135deg, #10b981, #14b8a6);
-                color: #0a0a0f;
+                color: #ffffff;
                 font-weight: 800;
                 font-size: 0.9rem;
                 box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
@@ -158,14 +158,14 @@ import { filter } from 'rxjs/operators';
             }
 
             .sidebar-footer-title {
-                color: #ffffff;
+                color: var(--app-text);
                 font-size: 0.82rem;
                 font-weight: 800;
                 letter-spacing: 0.04em;
             }
 
             .sidebar-footer-sub {
-                color: #9ca3af;
+                color: var(--app-text-secondary);
                 font-size: 0.7rem;
                 font-weight: 600;
                 letter-spacing: 0.04em;

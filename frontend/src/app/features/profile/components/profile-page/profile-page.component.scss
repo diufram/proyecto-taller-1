@@ -23,11 +23,11 @@
         align-items: center;
         justify-content: center;
         gap: 0.75rem;
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         text-align: center;
 
         i {
-            color: #10b981;
+            color: var(--app-accent);
             font-size: 2.5rem;
         }
 
@@ -37,7 +37,7 @@
         }
 
         &.is-error i {
-            color: #f87171;
+            color: var(--app-danger);
         }
     }
 
@@ -46,12 +46,10 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
         padding: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--app-border);
         border-radius: 1.5rem;
-        background:
-            radial-gradient(700px circle at 15% 0%, rgba(16, 185, 129, 0.18), transparent 42%),
-            linear-gradient(135deg, rgba(18, 18, 26, 0.96), rgba(10, 10, 15, 0.96));
-        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+        background: var(--app-hero-gradient);
+        box-shadow: var(--app-shadow-md);
         overflow: hidden;
         position: relative;
 
@@ -63,8 +61,8 @@
             width: 18rem;
             height: 18rem;
             border-radius: 999px;
-            border: 1px solid rgba(20, 184, 166, 0.24);
-            background: rgba(20, 184, 166, 0.05);
+            border: 1px solid var(--app-hero-circle-border);
+            background: var(--app-hero-circle-bg);
         }
 
         @media (min-width: 860px) {
@@ -85,10 +83,10 @@
         width: fit-content;
         margin-bottom: 0.75rem;
         padding: 0.35rem 0.7rem;
-        border: 1px solid rgba(16, 185, 129, 0.22);
+        border: 1px solid var(--app-accent-border-soft);
         border-radius: 999px;
-        color: #6ee7b7;
-        background: rgba(16, 185, 129, 0.08);
+        color: var(--app-accent-text);
+        background: var(--app-accent-softer);
         font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.12em;
@@ -98,7 +96,7 @@
     .profile-hero-copy h1 {
         max-width: 720px;
         margin: 0;
-        color: #ffffff;
+        color: var(--app-text);
         font-size: clamp(2.3rem, 7vw, 4.75rem);
         font-weight: 800;
         letter-spacing: -0.055em;
@@ -108,7 +106,7 @@
     .profile-hero-copy p {
         max-width: 600px;
         margin: 1rem 0 0;
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 1.05rem;
         line-height: 1.7;
     }
@@ -118,9 +116,9 @@
         align-items: center;
         gap: 1rem;
         padding: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--app-border);
         border-radius: 1.25rem;
-        background: rgba(10, 10, 15, 0.62);
+        background: var(--app-surface-translucent-strong);
         backdrop-filter: blur(18px);
     }
 
@@ -154,7 +152,7 @@
     }
 
     .identity-label {
-        color: #6ee7b7;
+        color: var(--app-accent-text);
         font-size: 0.68rem;
         font-weight: 800;
         letter-spacing: 0.12em;
@@ -163,7 +161,7 @@
 
     .profile-identity-copy h2 {
         margin: 0.25rem 0 0;
-        color: #ffffff;
+        color: var(--app-text);
         font-size: 1.5rem;
         font-weight: 800;
         line-height: 1.1;
@@ -171,7 +169,7 @@
 
     .profile-identity-copy p {
         margin: 0.35rem 0 0;
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 0.9rem;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -190,9 +188,10 @@
 
     .profile-form-card {
         padding: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--app-border);
         border-radius: 1.25rem;
-        background: #12121a;
+        background: var(--app-surface);
+        box-shadow: var(--app-shadow-md);
         position: relative;
         overflow: hidden;
 
@@ -202,7 +201,7 @@
             inset: 0;
             background: radial-gradient(
                 520px circle at top right,
-                rgba(16, 185, 129, 0.06),
+                var(--app-accent-softer),
                 transparent 44%
             );
             pointer-events: none;
@@ -227,14 +226,14 @@
         height: 2.75rem;
         display: grid;
         place-items: center;
-        border: 1px solid rgba(16, 185, 129, 0.2);
+        border: 1px solid var(--app-accent-border-softer);
         border-radius: 0.9rem;
-        background: rgba(16, 185, 129, 0.1);
-        color: #6ee7b7;
+        background: var(--app-accent-softer);
+        color: var(--app-accent-text);
     }
 
     .form-card-heading span {
-        color: #6ee7b7;
+        color: var(--app-accent-text);
         font-size: 0.68rem;
         font-weight: 800;
         letter-spacing: 0.12em;
@@ -243,7 +242,7 @@
 
     .form-card-heading h3 {
         margin: 0.15rem 0 0;
-        color: #ffffff;
+        color: var(--app-text);
         font-size: 1.25rem;
         font-weight: 800;
     }
@@ -261,7 +260,7 @@
     }
 
     .form-field label {
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 0.72rem;
         font-weight: 800;
         letter-spacing: 0.08em;
@@ -271,17 +270,17 @@
     .form-field .p-inputtext,
     .form-field .p-password-input {
         width: 100%;
-        color: #ffffff;
-        background: rgba(10, 10, 15, 0.72);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--app-text);
+        background: var(--app-input-bg);
+        border: 1px solid var(--app-input-border);
         border-radius: 0.85rem;
         padding: 0.85rem 1rem;
     }
 
     .form-field .p-inputtext:enabled:focus,
     .form-field .p-password-input:enabled:focus {
-        border-color: rgba(16, 185, 129, 0.5);
-        box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.18);
+        border-color: var(--app-accent-border);
+        box-shadow: var(--app-ring);
     }
 
     .form-error,
@@ -294,11 +293,11 @@
     }
 
     .form-error {
-        color: #f87171;
+        color: var(--app-danger);
     }
 
     .form-help {
-        color: #9ca3af;
+        color: var(--app-text-secondary);
     }
 
     .form-actions {
@@ -312,18 +311,18 @@
         align-items: center;
         gap: 0.9rem;
         padding: 1rem 1.25rem;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--app-border);
         border-radius: 1rem;
-        background: rgba(255, 255, 255, 0.03);
+        background: var(--app-surface-soft);
 
         i {
-            color: #6ee7b7;
+            color: var(--app-accent-text);
             font-size: 1.25rem;
         }
 
         p {
             margin: 0;
-            color: #9ca3af;
+            color: var(--app-text-secondary);
             font-size: 0.92rem;
             line-height: 1.6;
         }

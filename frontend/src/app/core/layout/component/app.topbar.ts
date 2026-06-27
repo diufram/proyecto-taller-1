@@ -47,17 +47,6 @@ import { LayoutService } from '../service/layout.service';
                 ></i>
             </button>
             <div class="relative">
-                <!-- <button
-                    class="layout-topbar-action layout-topbar-action-highlight"
-                    pStyleClass="@next"
-                    enterFromClass="hidden"
-                    enterActiveClass="animate-scalein"
-                    leaveToClass="hidden"
-                    leaveActiveClass="animate-fadeout"
-                    [hideOnOutsideClick]="true"
-                >
-                    <i class="pi pi-palette"></i>
-                </button> -->
                 <my-configurator />
             </div>
         </div>
@@ -77,12 +66,12 @@ import { LayoutService } from '../service/layout.service';
                 display: flex;
                 align-items: center;
                 gap: 1rem;
-                background: rgba(10, 10, 15, 0.72);
+                background: var(--app-surface-translucent);
                 backdrop-filter: blur(16px);
                 -webkit-backdrop-filter: blur(16px);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
-                color: #ffffff;
+                border-bottom: 1px solid var(--app-border);
+                box-shadow: var(--app-shadow-sm);
+                color: var(--app-text);
             }
 
             :host ::ng-deep .layout-topbar-logo-container {
@@ -98,10 +87,10 @@ import { LayoutService } from '../service/layout.service';
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                background: rgba(255, 255, 255, 0.04);
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: var(--app-surface-soft);
+                border: 1px solid var(--app-border);
                 border-radius: 0.75rem;
-                color: #cbd5f5;
+                color: var(--app-text-secondary);
                 cursor: pointer;
                 transition:
                     background-color 0.2s ease,
@@ -110,16 +99,16 @@ import { LayoutService } from '../service/layout.service';
             }
 
             :host ::ng-deep .layout-menu-button:hover {
-                background: rgba(16, 185, 129, 0.12);
-                border-color: rgba(16, 185, 129, 0.35);
-                color: #6ee7b7;
+                background: var(--app-accent-softer);
+                border-color: var(--app-accent-border-soft);
+                color: var(--app-accent-text);
             }
 
             :host ::ng-deep .layout-topbar-logo {
                 display: inline-flex;
                 align-items: center;
                 gap: 0.6rem;
-                color: #ffffff;
+                color: var(--app-text);
                 text-decoration: none;
                 font-weight: 800;
                 font-size: 1.1rem;
@@ -130,8 +119,8 @@ import { LayoutService } from '../service/layout.service';
                 width: 2.1rem;
                 height: 2.1rem;
                 border-radius: 0.55rem;
-                background-color: rgba(16, 185, 129, 0.15);
-                border: 1px solid rgba(16, 185, 129, 0.32);
+                background-color: var(--app-accent-soft);
+                border: 1px solid var(--app-accent-border);
                 background-image: url('/icono_p.png');
                 background-repeat: no-repeat;
                 background-position: center;
@@ -140,7 +129,7 @@ import { LayoutService } from '../service/layout.service';
             }
 
             :host ::ng-deep .layout-topbar-logo .logo-text {
-                color: #ffffff;
+                color: var(--app-text);
             }
 
             :host ::ng-deep .layout-topbar-spacer {
@@ -159,9 +148,9 @@ import { LayoutService } from '../service/layout.service';
                 align-items: center;
                 padding: 0.3rem 0.65rem;
                 border-radius: 999px;
-                border: 1px solid rgba(16, 185, 129, 0.25);
-                background: rgba(16, 185, 129, 0.08);
-                color: #6ee7b7;
+                border: 1px solid var(--app-accent-border-soft);
+                background: var(--app-accent-softer);
+                color: var(--app-accent-text);
                 font-size: 0.7rem;
                 font-weight: 700;
                 letter-spacing: 0.12em;
@@ -171,7 +160,7 @@ import { LayoutService } from '../service/layout.service';
             :host ::ng-deep .layout-topbar-divider {
                 width: 1px;
                 height: 1.6rem;
-                background: rgba(255, 255, 255, 0.08);
+                background: var(--app-border);
                 border-radius: 999px;
             }
 
@@ -181,10 +170,10 @@ import { LayoutService } from '../service/layout.service';
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                background: rgba(255, 255, 255, 0.04);
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: var(--app-surface-soft);
+                border: 1px solid var(--app-border);
                 border-radius: 0.75rem;
-                color: #cbd5f5;
+                color: var(--app-text-secondary);
                 cursor: pointer;
                 transition:
                     background-color 0.2s ease,
@@ -193,9 +182,9 @@ import { LayoutService } from '../service/layout.service';
             }
 
             :host ::ng-deep .layout-topbar-action:hover {
-                background: rgba(16, 185, 129, 0.12);
-                border-color: rgba(16, 185, 129, 0.35);
-                color: #6ee7b7;
+                background: var(--app-accent-softer);
+                border-color: var(--app-accent-border-soft);
+                color: var(--app-accent-text);
             }
 
             :host ::ng-deep .layout-topbar-action i {
@@ -212,7 +201,7 @@ import { LayoutService } from '../service/layout.service';
                 display: inline-flex;
                 align-items: center;
                 gap: 0.4rem;
-                color: var(--text-color-secondary);
+                color: var(--app-text-secondary);
                 font-size: 0.875rem;
                 font-weight: 500;
                 text-decoration: none;
@@ -220,11 +209,11 @@ import { LayoutService } from '../service/layout.service';
             }
 
             :host ::ng-deep .layout-topbar-nav-link:hover {
-                color: var(--text-color);
+                color: var(--app-text);
             }
 
             :host ::ng-deep .layout-topbar-nav-active {
-                color: var(--primary-color);
+                color: var(--app-accent-text);
             }
 
             @media (max-width: 720px) {

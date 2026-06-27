@@ -18,12 +18,9 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
         padding: 1.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--app-border);
         border-radius: 1.5rem;
-        background:
-            radial-gradient(700px circle at 12% 0%, rgba(20, 184, 166, 0.18), transparent 42%),
-            radial-gradient(500px circle at 95% 20%, rgba(245, 158, 11, 0.1), transparent 44%),
-            linear-gradient(135deg, rgba(18, 18, 26, 0.96), rgba(10, 10, 15, 0.96));
+        background: var(--app-hero-gradient), var(--app-hero-gradient);
         box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
         overflow: hidden;
         position: relative;
@@ -36,8 +33,8 @@
             width: 22rem;
             height: 22rem;
             border-radius: 999px;
-            border: 1px solid rgba(16, 185, 129, 0.18);
-            background: rgba(16, 185, 129, 0.04);
+            border: 1px solid var(--app-accent-border-softer);
+            background: var(--app-accent-softer);
         }
 
         @media (min-width: 820px) {
@@ -58,10 +55,10 @@
         width: fit-content;
         margin-bottom: 0.75rem;
         padding: 0.35rem 0.7rem;
-        border: 1px solid rgba(16, 185, 129, 0.22);
+        border: 1px solid var(--app-accent-border-soft);
         border-radius: 999px;
-        color: #6ee7b7;
-        background: rgba(16, 185, 129, 0.08);
+        color: var(--app-accent-text);
+        background: var(--app-accent-softer);
         font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.12em;
@@ -73,7 +70,7 @@
         max-width: 720px;
         font-size: clamp(2.3rem, 7vw, 4.75rem);
         font-weight: 800;
-        color: #ffffff;
+        color: var(--app-text);
         letter-spacing: -0.055em;
         line-height: 0.94;
     }
@@ -81,7 +78,7 @@
     .ranking-subtitle {
         max-width: 620px;
         margin: 1rem 0 0;
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 1.05rem;
         line-height: 1.7;
     }
@@ -91,9 +88,9 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 0.75rem;
         padding: 0.75rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--app-border-strong);
         border-radius: 1.25rem;
-        background: rgba(10, 10, 15, 0.62);
+        background: var(--app-surface-translucent-strong);
         backdrop-filter: blur(18px);
     }
 
@@ -104,19 +101,19 @@
         min-width: 0;
         padding: 1rem 0.75rem;
         border-radius: 1rem;
-        background: rgba(255, 255, 255, 0.035);
+        background: var(--app-surface-softer);
         text-align: center;
     }
 
     .hero-stat-value {
-        color: #ffffff;
+        color: var(--app-text);
         font-size: 1.65rem;
         font-weight: 800;
         line-height: 1;
     }
 
     .hero-stat-label {
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.08em;
@@ -135,11 +132,11 @@
         flex-direction: column;
         align-items: center;
         gap: 0.75rem;
-        background: #12121a;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: var(--app-surface);
+        border: 1px solid var(--app-border-soft);
         border-radius: 1rem;
         padding: 2rem;
-        color: #f87171;
+        color: var(--app-danger);
 
         i {
             font-size: 2rem;
@@ -148,8 +145,8 @@
 
     /* My stats card */
     .my-stats-card {
-        background: linear-gradient(135deg, rgba(18, 18, 26, 0.98), rgba(16, 24, 28, 0.98));
-        border: 1px solid rgba(16, 185, 129, 0.18);
+        background: linear-gradient(135deg, var(--app-surface), var(--app-surface-elevated));
+        border: 1px solid var(--app-accent-border-softer);
         border-radius: 1.25rem;
         padding: 1.5rem 2rem;
         position: relative;
@@ -197,11 +194,11 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
 
         i {
             font-size: 1.5rem;
-            color: #ffffff;
+            color: var(--app-text);
         }
     }
 
@@ -215,7 +212,7 @@
     .position-number {
         font-size: 2.25rem;
         font-weight: 800;
-        color: #ffffff;
+        color: var(--app-text);
         letter-spacing: -0.02em;
         line-height: 1;
     }
@@ -235,19 +232,19 @@
         font-size: 0.65rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-weight: 600;
     }
 
     .value {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #ffffff;
+        color: var(--app-text);
         margin-top: 0.15rem;
     }
 
     .text-emerald {
-        color: #10b981;
+        color: var(--app-accent);
     }
 
     /* Login CTA */
@@ -255,8 +252,8 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        background: rgba(18, 18, 26, 0.88);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: var(--app-surface-translucent-strong);
+        border: 1px solid var(--app-border);
         border-radius: 1.25rem;
         padding: 1.5rem;
         align-items: flex-start;
@@ -269,20 +266,20 @@
 
         i {
             font-size: 1.75rem;
-            color: #10b981;
+            color: var(--app-accent);
         }
     }
 
     .login-cta-title {
         margin: 0;
         font-weight: 600;
-        color: #ffffff;
+        color: var(--app-text);
     }
 
     .login-cta-sub {
         margin: 0.25rem 0 0;
         font-size: 0.9rem;
-        color: #9ca3af;
+        color: var(--app-text-secondary);
     }
 
     /* Podium */
@@ -298,7 +295,7 @@
         gap: 0.15rem;
 
         span {
-            color: #6ee7b7;
+            color: var(--app-accent-text);
             font-size: 0.72rem;
             font-weight: 800;
             letter-spacing: 0.12em;
@@ -306,7 +303,7 @@
         }
 
         strong {
-            color: #ffffff;
+            color: var(--app-text);
             font-size: 1.25rem;
         }
     }
@@ -329,8 +326,8 @@
         text-align: center;
         gap: 0.6rem;
         padding: 1.75rem 1.25rem;
-        background: #12121a;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
         border-radius: 1.25rem;
         transition: transform 0.25s ease, box-shadow 0.25s ease;
         position: relative;
@@ -422,7 +419,7 @@
 
         &.bronze {
             background: linear-gradient(135deg, #cd7f32, #daa520);
-            color: #ffffff;
+            color: var(--app-text);
             box-shadow: 0 8px 20px rgba(205, 127, 50, 0.35);
         }
 
@@ -435,14 +432,14 @@
         width: 3.5rem;
         height: 3.5rem;
         border-radius: 50%;
-        background: linear-gradient(135deg, #12121a, #1f1f2e);
-        color: #ffffff;
+        background: linear-gradient(135deg, var(--app-surface), var(--app-surface-elevated));
+        color: var(--app-text);
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
         font-size: 1.25rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--app-border-strong);
         position: relative;
         z-index: 1;
     }
@@ -451,8 +448,8 @@
         display: inline-flex;
         padding: 0.25rem 0.6rem;
         border-radius: 999px;
-        color: #6ee7b7;
-        background: rgba(16, 185, 129, 0.1);
+        color: var(--app-accent-text);
+        background: var(--app-accent-soft);
         font-size: 0.78rem;
         font-weight: 800;
         position: relative;
@@ -462,14 +459,14 @@
     .podium-name {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #ffffff;
+        color: var(--app-text);
         position: relative;
         z-index: 1;
     }
 
     .podium-handle {
         font-size: 0.85rem;
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         position: relative;
         z-index: 1;
     }
@@ -484,8 +481,8 @@
 
     /* Ranking list */
     .ranking-list-card {
-        background: #12121a;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
         border-radius: 1.25rem;
         overflow: hidden;
     }
@@ -496,13 +493,13 @@
         align-items: center;
         gap: 1rem;
         padding: 1rem 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        background: rgba(255, 255, 255, 0.02);
+        border-bottom: 1px solid var(--app-border-soft);
+        background: var(--app-surface-softer-2);
     }
 
     .ranking-list-kicker {
         display: block;
-        color: #6ee7b7;
+        color: var(--app-accent-text);
         font-size: 0.68rem;
         font-weight: 800;
         letter-spacing: 0.12em;
@@ -513,11 +510,11 @@
         display: block;
         font-size: 1.1rem;
         font-weight: 600;
-        color: #ffffff;
+        color: var(--app-text);
     }
 
     .ranking-list-count {
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 0.85rem;
         font-weight: 600;
     }
@@ -532,7 +529,7 @@
         align-items: center;
         gap: 1rem;
         padding: 1rem 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid var(--app-border-soft);
         transition: background 0.15s ease, transform 0.15s ease;
 
         &:last-child {
@@ -540,7 +537,7 @@
         }
 
         &:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--app-surface-soft);
             transform: translateX(3px);
         }
     }
@@ -568,13 +565,13 @@
 
         &.bronze {
             background: linear-gradient(135deg, #cd7f32, #daa520);
-            color: #ffffff;
+            color: var(--app-text);
         }
 
         &.normal {
-            background: rgba(255, 255, 255, 0.06);
-            color: #9ca3af;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--app-surface-hover);
+            color: var(--app-text-secondary);
+            border: 1px solid var(--app-border-strong);
         }
     }
 
@@ -583,14 +580,14 @@
         height: 2.5rem;
         border-radius: 50%;
         background: linear-gradient(135deg, #1f2937, #111827);
-        color: #ffffff;
+        color: var(--app-text);
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
         font-size: 0.95rem;
         flex-shrink: 0;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--app-border);
     }
 
     .ranking-name {
@@ -603,13 +600,13 @@
 
     .ranking-name-primary {
         font-weight: 600;
-        color: #ffffff;
+        color: var(--app-text);
         font-size: 0.95rem;
     }
 
     .ranking-name-secondary {
         font-size: 0.8rem;
-        color: #9ca3af;
+        color: var(--app-text-secondary);
     }
 
     .ranking-stats {
@@ -622,11 +619,11 @@
         display: none;
         align-items: baseline;
         gap: 0.2rem;
-        color: #10b981;
+        color: var(--app-accent);
         font-weight: 800;
 
         small {
-            color: #9ca3af;
+            color: var(--app-text-secondary);
             font-size: 0.7rem;
             font-weight: 700;
         }
@@ -644,15 +641,15 @@
     }
 
     .trend-up {
-        color: #10b981;
+        color: var(--app-accent);
     }
 
     .trend-down {
-        color: #f87171;
+        color: var(--app-danger);
     }
 
     .trend-flat {
-        color: #9ca3af;
+        color: var(--app-text-secondary);
     }
 
     .empty-state {
@@ -661,18 +658,18 @@
         align-items: center;
         gap: 0.5rem;
         padding: 3rem 1rem;
-        background: #12121a;
-        border: 1px dashed rgba(255, 255, 255, 0.08);
+        background: var(--app-surface);
+        border: 1px dashed var(--app-border);
         border-radius: 1rem;
 
         i {
             font-size: 3rem;
-            color: #9ca3af;
+            color: var(--app-text-secondary);
         }
 
         p {
             margin: 0;
-            color: #9ca3af;
+            color: var(--app-text-secondary);
             font-size: 1rem;
         }
 

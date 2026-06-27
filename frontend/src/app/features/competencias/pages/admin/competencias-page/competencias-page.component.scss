@@ -11,7 +11,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        color: #e5e7eb;
+        color: var(--app-text);
     }
 
     .competencias-hero {
@@ -22,9 +22,9 @@
         gap: 1.25rem;
         padding: 1.1rem 1.35rem;
         border-radius: 1rem;
-        background: #12121a;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        box-shadow: var(--app-shadow-sm);
     }
 
     .competencias-hero-copy {
@@ -42,9 +42,9 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 0.5rem;
         padding: 0.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--app-border);
         border-radius: 0.85rem;
-        background: rgba(10, 10, 15, 0.55);
+        background: var(--app-surface-soft);
 
         @media (min-width: 540px) {
             grid-template-columns: repeat(4, 1fr);
@@ -54,10 +54,10 @@
     .eyebrow {
         display: inline-flex;
         padding: 0.3rem 0.65rem;
-        border: 1px solid rgba(16, 185, 129, 0.22);
+        border: 1px solid var(--app-accent-border-soft);
         border-radius: 999px;
-        color: #6ee7b7;
-        background: rgba(16, 185, 129, 0.08);
+        color: var(--app-accent-text);
+        background: var(--app-accent-softer);
         font-size: 0.7rem;
         font-weight: 700;
         letter-spacing: 0.12em;
@@ -67,7 +67,7 @@
 
     .competencias-hero-copy h1 {
         margin: 0;
-        color: #ffffff;
+        color: var(--app-text);
         font-size: 1.25rem;
         font-weight: 700;
         letter-spacing: -0.01em;
@@ -92,19 +92,19 @@
         min-width: 0;
         padding: 0.55rem 0.6rem;
         border-radius: 0.65rem;
-        background: rgba(255, 255, 255, 0.03);
+        background: var(--app-surface-softer);
         text-align: center;
     }
 
     .hero-stat-value {
-        color: #ffffff;
+        color: var(--app-text);
         font-size: 1.15rem;
         font-weight: 700;
         line-height: 1;
     }
 
     .hero-stat-label {
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 0.62rem;
         font-weight: 700;
         letter-spacing: 0.08em;
@@ -123,14 +123,14 @@
         align-items: center;
         gap: 0.6rem;
         padding: 0.55rem 0.9rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--app-border);
         border-radius: 0.9rem;
-        background: rgba(18, 18, 26, 0.85);
+        background: var(--app-surface-soft);
         flex: 1;
         min-width: 16rem;
 
         i {
-            color: #6ee7b7;
+            color: var(--app-accent-text);
         }
 
         input {
@@ -138,17 +138,17 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #ffffff;
+            color: var(--app-text);
             font-size: 0.95rem;
 
             &::placeholder {
-                color: #6b7280;
+                color: var(--app-text-muted);
             }
         }
     }
 
     .competencias-search-hint {
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 0.78rem;
         font-weight: 600;
     }
@@ -171,18 +171,18 @@
         gap: 0.85rem;
         border-radius: 1rem;
         padding: 0.95rem 1.1rem;
-        background: #12121a;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        box-shadow: var(--app-shadow-sm);
     }
 
     .competencias-table-wrap {
         display: none;
         border-radius: 1rem;
         overflow: hidden;
-        background: #12121a;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        box-shadow: var(--app-shadow-md);
     }
 
     .competencias-mobile-list {
@@ -197,9 +197,9 @@
         gap: 1rem;
         padding: 1.25rem;
         border-radius: 1.25rem;
-        background: #12121a;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+        background: var(--app-surface);
+        border: 1px solid var(--app-border);
+        box-shadow: var(--app-shadow-md);
         position: relative;
         overflow: hidden;
         transition: border-color 0.25s ease, transform 0.25s ease,
@@ -211,7 +211,7 @@
             inset: 0;
             background: radial-gradient(
                 600px circle at top right,
-                rgba(16, 185, 129, 0.06),
+                var(--app-accent-softer),
                 transparent 40%
             );
             pointer-events: none;
@@ -220,9 +220,9 @@
         }
 
         &:hover {
-            border-color: rgba(16, 185, 129, 0.3);
+            border-color: var(--app-accent-border);
             transform: translateY(-2px);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--app-shadow-md);
 
             &::before {
                 opacity: 1;
@@ -249,7 +249,7 @@
 
         h3 {
             margin: 0.2rem 0 0;
-            color: #ffffff;
+            color: var(--app-text);
             font-size: 1.15rem;
             font-weight: 800;
         }
@@ -259,9 +259,9 @@
         display: inline-flex;
         padding: 0.2rem 0.55rem;
         border-radius: 999px;
-        background: rgba(16, 185, 129, 0.12);
-        border: 1px solid rgba(16, 185, 129, 0.28);
-        color: #6ee7b7;
+        background: var(--app-accent-soft);
+        border: 1px solid var(--app-accent-border);
+        color: var(--app-accent-text);
         font-size: 0.7rem;
         font-weight: 800;
         letter-spacing: 0.08em;
@@ -273,8 +273,8 @@
         gap: 0.75rem;
         padding: 0.85rem;
         border-radius: 0.9rem;
-        background: rgba(255, 255, 255, 0.035);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: var(--app-surface-soft);
+        border: 1px solid var(--app-border-soft);
 
         > div {
             display: flex;
@@ -285,7 +285,7 @@
     }
 
     .label {
-        color: #9ca3af;
+        color: var(--app-text-secondary);
         font-size: 0.68rem;
         font-weight: 800;
         letter-spacing: 0.08em;
@@ -293,7 +293,7 @@
     }
 
     .value {
-        color: #ffffff;
+        color: var(--app-text);
         font-size: 0.95rem;
         font-weight: 700;
         white-space: nowrap;
@@ -320,14 +320,14 @@
 
     .competencia-name {
         display: block;
-        color: #ffffff;
+        color: var(--app-text);
         font-weight: 700;
     }
 
     .competencia-id {
         display: block;
         margin-top: 0.2rem;
-        color: #6ee7b7;
+        color: var(--app-accent-text);
         font-size: 0.7rem;
         font-weight: 800;
         letter-spacing: 0.08em;
@@ -339,20 +339,20 @@
         align-items: center;
         gap: 0.75rem;
         padding: 3rem 1rem;
-        border: 1px dashed rgba(255, 255, 255, 0.1);
+        border: 1px dashed var(--app-border-strong);
         border-radius: 1rem;
-        background: rgba(18, 18, 26, 0.5);
+        background: var(--app-surface-softer-2);
         text-align: center;
-        color: #e5e7eb;
+        color: var(--app-text);
 
         i {
-            color: #6ee7b7;
+            color: var(--app-accent-text);
             font-size: 2.5rem;
         }
 
         h2 {
             margin: 0;
-            color: #ffffff;
+            color: var(--app-text);
             font-size: 1.25rem;
             font-weight: 800;
         }
@@ -360,7 +360,7 @@
         p {
             max-width: 520px;
             margin: 0;
-            color: #9ca3af;
+            color: var(--app-text-secondary);
             line-height: 1.6;
         }
     }
@@ -373,12 +373,12 @@
 
     .p-paginator {
         background: transparent;
-        color: #cbd5f5;
+        color: var(--app-text-secondary);
     }
 
     .p-paginator .p-paginator-page.p-highlight {
-        background: rgba(16, 185, 129, 0.18);
-        color: #6ee7b7;
+        background: var(--app-accent-soft);
+        color: var(--app-accent-text);
     }
 
     @media (min-width: 960px) {
@@ -403,8 +403,8 @@
         }
 
         .competencias-table .p-datatable-thead > tr > th {
-            background: rgba(255, 255, 255, 0.04);
-            color: #9ca3af;
+            background: var(--app-surface-soft);
+            color: var(--app-text-secondary);
             font-size: 0.72rem;
             font-weight: 800;
             letter-spacing: 0.08em;
@@ -419,16 +419,16 @@
 
         .competencias-table .p-datatable-tbody > tr > td {
             background: transparent;
-            color: #e5e7eb;
-            border-color: rgba(255, 255, 255, 0.06);
+            color: var(--app-text);
+            border-color: var(--app-border);
         }
 
         .competencias-table .p-datatable-tbody > tr:hover {
-            background: rgba(16, 185, 129, 0.06);
+            background: var(--app-accent-softer);
         }
 
         .competencias-table .p-sortable-column.p-highlight {
-            color: #6ee7b7;
+            color: var(--app-accent-text);
         }
     }
 
