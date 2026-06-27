@@ -1,452 +1,289 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
 import { AuthService } from '@/features/auth/services/auth.service';
 
 @Component({
     selector: 'app-landing-page',
     standalone: true,
-    imports: [ButtonModule, RouterModule, CommonModule],
+    imports: [CommonModule, RouterModule, ButtonModule],
     template: `
         <div class="bg-[#0a0a0f] overflow-x-hidden text-white font-sans">
-            <!-- Hero Section -->
-            <section
-                class="relative pt-24 pb-24 px-6 md:px-12 flex flex-col items-center justify-center min-h-[80vh]"
-            >
-                <!-- Background gradient -->
+            <section class="relative px-6 pb-24 pt-16 md:px-12 md:pb-28 md:pt-24">
                 <div
-                    class="absolute inset-0 bg-gradient-to-b from-emerald-900/10 via-transparent to-[#0a0a0f] pointer-events-none"
-                ></div>
-                <div
-                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none"
+                    class="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(16,185,129,0.18),transparent_34%),radial-gradient(circle_at_80%_18%,rgba(20,184,166,0.1),transparent_30%)] pointer-events-none"
                 ></div>
 
-                <div class="max-w-4xl mx-auto text-center relative z-10 w-full">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-emerald-400 text-xs font-semibold tracking-wide uppercase mb-8"
-                    >
-                        <span class="relative flex h-2 w-2">
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
-                            ></span>
-                            <span
-                                class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"
-                            ></span>
-                        </span>
-                        <span>Competiciones en vivo 24/7</span>
-                    </div>
-
-                    <h1
-                        class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 tracking-tight leading-[1.1]"
-                    >
-                        Domina el arte de
-                        <br />
-                        <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400"
-                        >
-                            programar
-                        </span>
-                    </h1>
-
-                    <p
-                        class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed"
-                    >
-                        Plataforma profesional para competencias de código.
-                        Evalúa, compara y perfecciona tus habilidades con
-                        desafíos del mundo real y feedback instantáneo.
-                    </p>
-
-                    <div
-                        class="flex flex-col sm:flex-row gap-4 justify-center items-center"
-                    >
-                        @if (isLoggedIn()) {
-                            <p-button
-                                label="Ir a mis competencias"
-                                severity="success"
-                                size="large"
-                                routerLink="/competencias"
-                                styleClass="px-8 py-4 text-lg font-bold rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-105 transition-all duration-300"
-                            ></p-button>
-                            <p-button
-                                label="Ver ranking"
-                                [text]="true"
-                                size="large"
-                                icon="pi pi-chart-line"
-                                iconPos="left"
-                                routerLink="/ranking"
-                                styleClass="text-gray-400 hover:text-white hover:bg-white/5 px-8 py-4 rounded-xl transition-all"
-                            ></p-button>
-                        } @else {
-                            <p-button
-                                label="Comenzar gratis"
-                                severity="success"
-                                size="large"
-                                routerLink="/auth/register"
-                                styleClass="px-8 py-4 text-lg font-bold rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:scale-105 transition-all duration-300"
-                            ></p-button>
-
-                            <p-button
-                                label="Ver demo"
-                                [text]="true"
-                                size="large"
-                                icon="pi pi-play-circle"
-                                iconPos="left"
-                                routerLink="/auth/login"
-                                styleClass="text-gray-400 hover:text-white hover:bg-white/5 px-8 py-4 rounded-xl transition-all"
-                            ></p-button>
-                        }
-                    </div>
-                </div>
-
-                <!-- Hero Floating Code Window -->
-                <div class="w-full max-w-4xl mx-auto mt-20 relative z-20">
-                    <div
-                        class="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl opacity-30"
-                    ></div>
-                    <div
-                        class="bg-[#0d1117] rounded-2xl overflow-hidden shadow-2xl border border-white/10"
-                    >
+                <div class="relative z-10 mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(0,1fr)_440px] lg:items-center">
+                    <div>
                         <div
-                            class="flex items-center gap-2 px-4 py-3 bg-[#161b22] border-b border-white/5"
+                            class="mb-8 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-emerald-300"
                         >
-                            <div
-                                class="w-3 h-3 rounded-full bg-red-500/80"
-                            ></div>
-                            <div
-                                class="w-3 h-3 rounded-full bg-yellow-500/80"
-                            ></div>
-                            <div
-                                class="w-3 h-3 rounded-full bg-green-500/80"
-                            ></div>
-                            <span class="text-xs font-mono text-gray-500 ml-4"
-                                >solucion.ts</span
-                            >
+                            <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.85)]"></span>
+                            Competencias de programación
                         </div>
-                        <pre
-                            class="text-sm md:text-base font-mono text-gray-300 bg-[#0d1117] p-6 overflow-x-auto leading-relaxed"
-                        ><code><span class="text-emerald-400">function</span> <span class="text-blue-400">resolverProblema</span>(<span class="text-orange-400">problema</span>): <span class="text-teal-300">Solucion</span> {{ '{' }}
-  <span class="text-emerald-400">const</span> <span class="text-green-400">solucion</span> = <span class="text-emerald-400">evaluar</span>(problema);
-  <span class="text-emerald-400">return</span> optimizacion(solucion);
-{{ '}' }}
 
-<span class="text-gray-500">// Ejecutando evaluación...</span>
-<span class="text-emerald-400">✓</span> <span class="text-gray-400">Test Case 1: Rendimiento</span> <span class="text-gray-600">........</span> <span class="text-emerald-400">PASS (12ms)</span>
-<span class="text-emerald-400">✓</span> <span class="text-gray-400">Test Case 2: Casos límite</span> <span class="text-gray-600">......</span> <span class="text-emerald-400">PASS (08ms)</span>
-<span class="text-emerald-400">✓</span> <span class="text-gray-400">Test Case 3: Memoria</span> <span class="text-gray-600">............</span> <span class="text-emerald-400">PASS (2.1MB)</span>
-
-<span class="text-emerald-300 font-bold">¡Solución Aceptada! Has subido al puesto #42</span></code></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Features Grid -->
-            <section
-                class="py-24 px-6 md:px-12 bg-[#0f0f15] border-y border-white/5"
-            >
-                <div class="max-w-7xl mx-auto">
-                    <div class="grid md:grid-cols-3 gap-6">
-                        @for (card of featureCards; track card.title) {
-                            <div
-                                class="group p-8 rounded-2xl bg-[#12121a] border border-white/5 hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-1"
-                            >
-                                <div
-                                    class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6"
-                                >
-                                    <i
-                                        [class]="
-                                            'pi ' +
-                                            card.icon +
-                                            ' text-xl text-emerald-400'
-                                        "
-                                    ></i>
-                                </div>
-                                <h3 class="text-xl font-bold text-white mb-3">
-                                    {{ card.title }}
-                                </h3>
-                                <p
-                                    class="text-gray-400 text-sm leading-relaxed"
-                                >
-                                    {{ card.description }}
-                                </p>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </section>
-
-            <!-- Detailed Features -->
-            <section id="features" class="py-32 px-6 md:px-12">
-                <div
-                    class="absolute right-0 top-1/4 w-[500px] h-[500px] bg-emerald-900/10 rounded-full blur-[150px] pointer-events-none"
-                ></div>
-
-                <div class="max-w-7xl mx-auto">
-                    <div class="text-center mb-24">
-                        <h2
-                            class="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight"
+                        <h1
+                            class="max-w-4xl text-5xl font-black leading-[0.95] tracking-[-0.06em] text-white md:text-7xl lg:text-8xl"
                         >
-                            Todo lo que necesitas para
-                            <span class="text-emerald-400">destacar</span>
-                        </h2>
-                        <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-                            Herramientas de grado profesional diseñadas para
-                            llevar tu lógica y velocidad de programación al
-                            siguiente nivel.
+                            Compite, resuelve y sube en el ranking.
+                        </h1>
+
+                        <p class="mt-8 max-w-2xl text-lg leading-8 text-gray-400 md:text-xl">
+                            Compex reúne competencias públicas, inscripción de
+                            participantes, problemas para resolver y un ranking
+                            global para comparar el desempeño de cada usuario.
                         </p>
+
+                        <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+                            @if (isLoggedIn()) {
+                                <p-button
+                                    label="Ver competencias"
+                                    severity="success"
+                                    size="large"
+                                    routerLink="/competencias"
+                                    styleClass="w-full sm:w-auto px-8 py-4 text-base font-bold rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.28)] hover:scale-105 transition-all duration-300"
+                                ></p-button>
+                                <p-button
+                                    label="Ver ranking"
+                                    [outlined]="true"
+                                    severity="secondary"
+                                    size="large"
+                                    icon="pi pi-chart-line"
+                                    routerLink="/ranking"
+                                    styleClass="w-full sm:w-auto px-8 py-4 text-base font-bold rounded-xl border-white/10 text-white hover:bg-white/5"
+                                ></p-button>
+                            } @else {
+                                <p-button
+                                    label="Crear cuenta"
+                                    severity="success"
+                                    size="large"
+                                    routerLink="/auth/register"
+                                    styleClass="w-full sm:w-auto px-8 py-4 text-base font-bold rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.28)] hover:scale-105 transition-all duration-300"
+                                ></p-button>
+                                <p-button
+                                    label="Explorar competencias"
+                                    [outlined]="true"
+                                    severity="secondary"
+                                    size="large"
+                                    icon="pi pi-arrow-up-right"
+                                    routerLink="/competencias"
+                                    styleClass="w-full sm:w-auto px-8 py-4 text-base font-bold rounded-xl border-white/10 text-white hover:bg-white/5"
+                                ></p-button>
+                            }
+                        </div>
                     </div>
 
-                    <div class="space-y-24">
-                        @for (
-                            feature of features;
-                            track feature.title;
-                            let i = $index
-                        ) {
-                            <div
-                                class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center"
-                                [class.lg:grid-flow-col-dense]="true"
-                            >
-                                <div [class.lg:col-start-2]="i % 2 === 1">
-                                    <span
-                                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-4"
-                                    >
-                                        <i
-                                            class="pi pi-sparkles text-[10px]"
-                                        ></i>
-                                        {{ feature.tag }}
-                                    </span>
-                                    <h3
-                                        class="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight"
-                                    >
-                                        {{ feature.title }}
-                                    </h3>
-                                    <p
-                                        class="text-gray-400 text-base mb-6 leading-relaxed"
-                                    >
-                                        {{ feature.description }}
-                                    </p>
-                                    <ul class="space-y-3">
-                                        @for (
-                                            item of feature.items;
-                                            track item
-                                        ) {
-                                            <li
-                                                class="flex items-center gap-3 text-gray-300"
-                                            >
-                                                <div
-                                                    class="w-6 h-6 rounded-md bg-emerald-500/10 flex items-center justify-center shrink-0"
-                                                >
-                                                    <i
-                                                        class="pi pi-check text-xs text-emerald-400"
-                                                    ></i>
-                                                </div>
-                                                <span
-                                                    class="font-medium text-sm"
-                                                    >{{ item }}</span
-                                                >
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                                <div
-                                    [class.lg:col-start-1]="i % 2 === 1"
-                                    class="relative"
-                                >
-                                    <div
-                                        class="absolute -inset-1 bg-gradient-to-br from-emerald-500/10 to-transparent rounded-2xl"
-                                    ></div>
-                                    <div
-                                        class="bg-[#0d1117] rounded-xl p-1 border border-white/10 overflow-hidden"
-                                    >
-                                        <div
-                                            class="flex items-center gap-2 px-4 py-2 bg-[#161b22] rounded-t-lg border-b border-white/5"
-                                        >
-                                            <div
-                                                class="w-2.5 h-2.5 rounded-full bg-gray-600"
-                                            ></div>
-                                            <div
-                                                class="w-2.5 h-2.5 rounded-full bg-gray-600"
-                                            ></div>
-                                            <div
-                                                class="w-2.5 h-2.5 rounded-full bg-gray-600"
-                                            ></div>
-                                        </div>
-                                        <pre
-                                            class="text-xs font-mono text-gray-400 p-4 overflow-x-auto leading-relaxed"
-                                        ><code [innerHTML]="feature.code"></code></pre>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </section>
-
-            <!-- How it works -->
-            <section
-                id="how"
-                class="py-32 px-6 md:px-12 bg-[#0f0f15] border-t border-white/5"
-            >
-                <div class="max-w-5xl mx-auto">
-                    <div class="text-center mb-16">
-                        <h2
-                            class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight"
-                        >
-                            ¿Cómo funciona?
-                        </h2>
-                        <p class="text-lg text-gray-400">
-                            Tres simples pasos para entrar a la arena
-                        </p>
-                    </div>
-
-                    <div class="relative">
+                    <aside class="relative">
                         <div
-                            class="hidden md:block absolute top-10 left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"
+                            class="absolute -inset-1 rounded-[2rem] bg-gradient-to-br from-emerald-400/25 to-teal-400/10 blur-xl"
                         ></div>
+                        <div
+                            class="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#12121a]/95 p-5 shadow-2xl"
+                        >
+                            <div class="mb-5 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-300">Arena</span>
+                                    <h2 class="mt-1 text-2xl font-black tracking-tight text-white">
+                                        Estado público
+                                    </h2>
+                                </div>
+                                <div class="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-3 text-emerald-300">
+                                    <i class="pi pi-trophy text-xl"></i>
+                                </div>
+                            </div>
 
-                        <div class="grid md:grid-cols-3 gap-8 relative z-10">
-                            @for (
-                                step of steps;
-                                track step.number;
-                                let i = $index
-                            ) {
-                                <div class="relative text-center">
+                            <div class="space-y-3">
+                                @for (item of heroPreview; track item.label) {
                                     <div
-                                        class="w-20 h-20 rounded-2xl bg-[#12121a] border border-white/10 flex items-center justify-center mx-auto mb-6 shadow-xl"
+                                        class="flex items-center justify-between rounded-2xl border border-white/5 bg-white/[0.03] px-4 py-3"
                                     >
-                                        <span
-                                            class="text-3xl font-black text-white"
-                                        >
-                                            {{ step.number }}
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-300"
+                                            >
+                                                <i [class]="'pi ' + item.icon"></i>
+                                            </div>
+                                            <div>
+                                                <p class="m-0 text-sm font-bold text-white">
+                                                    {{ item.label }}
+                                                </p>
+                                                <p class="m-0 text-xs text-gray-500">
+                                                    {{ item.caption }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <span class="text-sm font-black text-emerald-300">
+                                            {{ item.value }}
                                         </span>
                                     </div>
-                                    <h4
-                                        class="text-xl font-bold text-white mb-3"
-                                    >
+                                }
+                            </div>
+
+                            <div class="mt-5 rounded-2xl border border-white/5 bg-[#0d1117] p-4 font-mono text-sm">
+                                <div class="mb-3 flex items-center gap-2 text-xs text-gray-500">
+                                    <span class="h-2.5 w-2.5 rounded-full bg-red-500/80"></span>
+                                    <span class="h-2.5 w-2.5 rounded-full bg-yellow-500/80"></span>
+                                    <span class="h-2.5 w-2.5 rounded-full bg-green-500/80"></span>
+                                    <span class="ml-2">flujo.txt</span>
+                                </div>
+                                <p class="m-0 text-gray-400">
+                                    <span class="text-emerald-300">1.</span> Revisar competencia abierta
+                                </p>
+                                <p class="m-0 text-gray-400">
+                                    <span class="text-emerald-300">2.</span> Inscribirse con cuenta
+                                </p>
+                                <p class="m-0 text-gray-400">
+                                    <span class="text-emerald-300">3.</span> Resolver problemas
+                                </p>
+                                <p class="m-0 text-gray-400">
+                                    <span class="text-emerald-300">4.</span> Comparar puntos en ranking
+                                </p>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+            <section id="features" class="border-y border-white/5 bg-[#0f0f15] px-6 py-20 md:px-12">
+                <div class="mx-auto max-w-7xl">
+                    <div class="mb-12 max-w-2xl">
+                        <span class="text-sm font-bold uppercase tracking-[0.18em] text-emerald-300">Lo que hay en la plataforma</span>
+                        <h2 class="mt-4 text-4xl font-black tracking-[-0.04em] text-white md:text-5xl">
+                            Un flujo simple para competir
+                        </h2>
+                        <p class="mt-4 text-gray-400">
+                            El foco del proyecto es administrar competencias,
+                            permitir participación individual y mostrar resultados
+                            mediante un ranking público.
+                        </p>
+                    </div>
+
+                    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+                        @for (card of featureCards; track card.title) {
+                            <article
+                                class="group rounded-3xl border border-white/5 bg-[#12121a] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/30 hover:shadow-2xl hover:shadow-black/30"
+                            >
+                                <div
+                                    class="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/20 bg-emerald-400/10 text-emerald-300"
+                                >
+                                    <i [class]="'pi ' + card.icon + ' text-xl'"></i>
+                                </div>
+                                <h3 class="mb-3 text-xl font-black text-white">
+                                    {{ card.title }}
+                                </h3>
+                                <p class="m-0 text-sm leading-6 text-gray-400">
+                                    {{ card.description }}
+                                </p>
+                            </article>
+                        }
+                    </div>
+                </div>
+            </section>
+
+            <section id="how" class="px-6 py-24 md:px-12">
+                <div class="mx-auto max-w-7xl">
+                    <div class="grid gap-12 lg:grid-cols-[380px_minmax(0,1fr)] lg:items-start">
+                        <div>
+                            <span class="text-sm font-bold uppercase tracking-[0.18em] text-emerald-300">Cómo funciona</span>
+                            <h2 class="mt-4 text-4xl font-black tracking-[-0.04em] text-white md:text-5xl">
+                                De visitante a participante
+                            </h2>
+                            <p class="mt-4 text-gray-400">
+                                Puedes explorar competencias y ranking sin cuenta.
+                                Para inscribirte y ver tu posición personal,
+                                necesitas iniciar sesión.
+                            </p>
+                        </div>
+
+                        <div class="grid gap-4 md:grid-cols-3">
+                            @for (step of steps; track step.number) {
+                                <article
+                                    class="relative overflow-hidden rounded-3xl border border-white/5 bg-[#12121a] p-6"
+                                >
+                                    <span class="text-5xl font-black tracking-[-0.08em] text-white/10">
+                                        0{{ step.number }}
+                                    </span>
+                                    <h3 class="mt-8 text-xl font-black text-white">
                                         {{ step.title }}
-                                    </h4>
-                                    <p
-                                        class="text-gray-400 text-sm leading-relaxed"
-                                    >
+                                    </h3>
+                                    <p class="mt-3 text-sm leading-6 text-gray-400">
                                         {{ step.description }}
                                     </p>
-                                </div>
+                                </article>
                             }
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- CTA Section -->
-            <section class="py-24 px-6 md:px-12">
-                <div class="max-w-4xl mx-auto">
-                    <div class="relative group">
+            <section class="border-y border-white/5 bg-[#0f0f15] px-6 py-20 md:px-12">
+                <div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-3">
+                    @for (item of audienceCards; track item.title) {
+                        <article class="rounded-3xl border border-white/5 bg-[#12121a] p-7">
+                            <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/[0.04] text-emerald-300">
+                                <i [class]="'pi ' + item.icon + ' text-xl'"></i>
+                            </div>
+                            <h3 class="text-xl font-black text-white">{{ item.title }}</h3>
+                            <p class="mt-3 text-sm leading-6 text-gray-400">
+                                {{ item.description }}
+                            </p>
+                        </article>
+                    }
+                </div>
+            </section>
+
+            <section class="px-6 py-24 md:px-12">
+                <div class="mx-auto max-w-5xl">
+                    <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#12121a] p-8 text-center shadow-2xl md:p-14">
                         <div
-                            class="absolute -inset-1 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600 rounded-3xl blur-lg opacity-20 group-hover:opacity-30 transition duration-500"
+                            class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.18),transparent_42%)] pointer-events-none"
                         ></div>
-
-                        <div
-                            class="relative bg-[#12121a] rounded-2xl p-10 md:p-16 border border-white/10 overflow-hidden"
-                        >
-                            <div
-                                class="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"
-                            ></div>
-
-                            <div class="text-center relative z-10">
-                                <h2
-                                    class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight"
-                                >
-                                    ¿Listo para la
-                                    <span class="text-emerald-400"
-                                        >competencia?</span
-                                    >
-                                </h2>
-                                <p class="text-gray-400 mb-8 max-w-xl mx-auto">
-                                    Únete a miles de programadores que ya están
-                                    mejorando su lógica y velocidad con Compex.
-                                </p>
-                                <div
-                                    class="flex flex-col sm:flex-row gap-4 justify-center"
-                                >
-                                    @if (isLoggedIn()) {
-                                        <p-button
-                                            label="Ir a mis competencias"
-                                            severity="success"
-                                            size="large"
-                                            routerLink="/competencias"
-                                            styleClass="px-8 py-3 font-bold rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform w-full sm:w-auto"
-                                        ></p-button>
-                                        <p-button
-                                            label="Ver mi posición"
-                                            [text]="true"
-                                            size="large"
-                                            routerLink="/ranking"
-                                            styleClass="px-8 py-3 font-semibold rounded-xl border border-white/10 hover:bg-white/5 text-white transition-colors w-full sm:w-auto"
-                                        ></p-button>
-                                    } @else {
-                                        <p-button
-                                            label="Crear cuenta gratis"
-                                            severity="success"
-                                            size="large"
-                                            routerLink="/auth/register"
-                                            styleClass="px-8 py-3 font-bold rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform w-full sm:w-auto"
-                                        ></p-button>
-                                        <p-button
-                                            label="Iniciar sesión"
-                                            [text]="true"
-                                            size="large"
-                                            routerLink="/auth/login"
-                                            styleClass="px-8 py-3 font-semibold rounded-xl border border-white/10 hover:bg-white/5 text-white transition-colors w-full sm:w-auto"
-                                        ></p-button>
-                                    }
-                                </div>
+                        <div class="relative z-10">
+                            <h2 class="text-4xl font-black tracking-[-0.04em] text-white md:text-5xl">
+                                Empieza por una competencia abierta
+                            </h2>
+                            <p class="mx-auto mt-5 max-w-2xl text-gray-400">
+                                Explora la lista pública, entra al detalle y crea
+                                tu cuenta solo cuando quieras inscribirte.
+                            </p>
+                            <div class="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                                <p-button
+                                    label="Ver competencias"
+                                    severity="success"
+                                    size="large"
+                                    routerLink="/competencias"
+                                    styleClass="w-full sm:w-auto px-8 py-3 font-bold rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 transition-transform"
+                                ></p-button>
+                                <p-button
+                                    label="Ver ranking"
+                                    [outlined]="true"
+                                    severity="secondary"
+                                    size="large"
+                                    routerLink="/ranking"
+                                    styleClass="w-full sm:w-auto px-8 py-3 font-bold rounded-xl border-white/10 text-white hover:bg-white/5"
+                                ></p-button>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Footer -->
-            <footer
-                class="py-10 px-6 md:px-12 border-t border-white/5 bg-[#0a0a0f]"
-            >
-                <div class="max-w-7xl mx-auto">
-                    <div
-                        class="flex flex-col md:flex-row items-center justify-between gap-6"
-                    >
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="w-6 h-6 rounded bg-white/10 flex items-center justify-center"
-                            >
-                                <i class="pi pi-code text-gray-400 text-xs"></i>
-                            </div>
-                            <span class="text-sm font-bold text-gray-300">
-                                Compex
-                            </span>
+            <footer class="border-t border-white/5 bg-[#0a0a0f] px-6 py-10 md:px-12">
+                <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 text-sm text-gray-500 md:flex-row">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
+                            <i class="pi pi-code text-xs text-gray-400"></i>
                         </div>
-
-                        <div
-                            class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-gray-500 text-sm"
-                        >
-                            <a
-                                href="#"
-                                class="hover:text-emerald-400 transition-colors"
-                                >Términos</a
-                            >
-                            <a
-                                href="#"
-                                class="hover:text-emerald-400 transition-colors"
-                                >Privacidad</a
-                            >
-                            <a
-                                href="#"
-                                class="hover:text-emerald-400 transition-colors"
-                                >Contacto</a
-                            >
-                        </div>
-
-                        <div class="text-gray-600 text-sm">© 2024 Compex</div>
+                        <span class="font-bold text-gray-300">Compex</span>
                     </div>
+                    <div class="flex flex-wrap justify-center gap-5">
+                        <a routerLink="/competencias" class="hover:text-emerald-300">Competencias</a>
+                        <a routerLink="/ranking" class="hover:text-emerald-300">Ranking</a>
+                        <a routerLink="/auth/login" class="hover:text-emerald-300">Login</a>
+                    </div>
+                    <span>Proyecto Taller 1</span>
                 </div>
             </footer>
         </div>
@@ -456,162 +293,107 @@ export class LandingPageComponent implements OnInit {
     private router = inject(Router);
     private authService = inject(AuthService);
 
-    isLoggedIn(): boolean {
-        return this.authService.isAuthenticated();
-    }
-
-    isAdmin(): boolean {
-        return this.authService.isAdmin();
-    }
-
-    userName(): string {
-        return this.authService.currentUser()?.nombre_usuario ?? 'Usuario';
-    }
-
-    logout(): void {
-        this.authService.logout();
-    }
-
-    codeLines: {
-        id: number;
-        x: string;
-        text: string;
-        duration: number;
-        delay: number;
-    }[] = [];
+    heroPreview = [
+        {
+            icon: 'pi-list',
+            label: 'Competencias',
+            caption: 'Listado público y detalle',
+            value: 'Público',
+        },
+        {
+            icon: 'pi-user-plus',
+            label: 'Inscripción',
+            caption: 'Disponible para usuarios',
+            value: 'Login',
+        },
+        {
+            icon: 'pi-chart-line',
+            label: 'Ranking',
+            caption: 'Tabla global de puntos',
+            value: 'Global',
+        },
+    ];
 
     featureCards = [
         {
             icon: 'pi-trophy',
-            title: 'Competiciones en vivo',
+            title: 'Competencias públicas',
             description:
-                'Participa en desafíos de programación con evaluación automatizada y ranking global en tiempo real.',
+                'Cualquier visitante puede revisar competencias, fechas, estado, nivel y cupo disponible.',
         },
         {
-            icon: 'pi-chart-line',
-            title: 'Análisis profundo',
+            icon: 'pi-user-plus',
+            title: 'Inscripción individual',
             description:
-                'Estadísticas detalladas de tu desempeño, velocidad, uso de memoria e identificación de áreas de mejora.',
+                'Los usuarios autenticados pueden inscribirse o desinscribirse desde el detalle de cada competencia.',
         },
         {
-            icon: 'pi-users',
-            title: 'Comunidad activa',
+            icon: 'pi-code',
+            title: 'Problemas por competencia',
             description:
-                'Conecta con otros programadores top, forma equipos invencibles y colabora en torneos masivos.',
-        },
-    ];
-
-    features = [
-        {
-            tag: 'Problemas',
-            title: 'Biblioteca de desafíos',
-            description:
-                'Miles de problemas organizados por dificultad y categoría. Practica con casos reales y prepárate para entrevistas en las mejores empresas tech.',
-            items: [
-                'Múltiples lenguajes soportados',
-                'Casos de prueba exhaustivos',
-                'Evaluación instantánea',
-            ],
-            code: `<span class="text-emerald-400">const</span> <span class="text-blue-400">problema</span> = {
-  <span class="text-orange-400">id</span>: <span class="text-green-400">42</span>,
-  <span class="text-orange-400">titulo</span>: <span class="text-green-400">"Árboles Binarios Invertidos"</span>,
-  <span class="text-orange-400">dificultad</span>: <span class="text-yellow-400">"Hard"</span>,
-  <span class="text-orange-400">tiempo_max</span>: <span class="text-green-400">"2000ms"</span>
-};
-
-<span class="text-emerald-400">await</span> engine.resolver(problema);
-<span class="text-green-400 font-bold">✓</span> <span class="text-gray-400">¡Reto completado con éxito!</span>`,
+                'Al participar, el usuario accede a los problemas asociados para resolverlos dentro de la competencia.',
         },
         {
-            tag: 'Ranking',
-            title: 'Tabla de posiciones global',
+            icon: 'pi-chart-bar',
+            title: 'Ranking global',
             description:
-                'Compite con otros desarrolladores alrededor del mundo y escala posiciones. Demuestra quién es el más eficiente resolviendo algoritmos complejos.',
-            items: [
-                'Posiciones en vivo',
-                'Sistema de Ligas (Elo)',
-                'Métricas de progreso',
-            ],
-            code: `<span class="text-gray-500">// Estado de tu perfil competitivo</span>
-<span class="text-emerald-400">const</span> <span class="text-blue-400">rank</span> = {
-  <span class="text-orange-400">liga</span>: <span class="text-green-400">"Diamante II"</span>,
-  <span class="text-orange-400">posicion_global</span>: <span class="text-green-400">#147</span>,
-  <span class="text-orange-400">elo_rating</span>: <span class="text-green-400">2840</span>
-};
-
-<span class="text-emerald-400">if</span> (rank.elo_rating > anterior) {
-  <span class="text-yellow-400">🏆</span> <span class="text-gray-400">¡Ascendiste de división!</span>
-}`,
-        },
-        {
-            tag: 'Feedback',
-            title: 'Retroalimentación precisa',
-            description:
-                'Recibe análisis detallados de la complejidad de tu código (Big O). Mejora continuamente entendiendo no solo si funciona, sino cómo optimizarlo.',
-            items: [
-                'Análisis de Complejidad Temporal',
-                'Uso de Memoria',
-                'Refactorizaciones sugeridas',
-            ],
-            code: `<span class="text-emerald-400">const</span> <span class="text-blue-400">analisis</span> = {
-  <span class="text-orange-400">tiempo</span>: <span class="text-green-400">"O(n log n)"</span>,
-  <span class="text-orange-400">memoria</span>: <span class="text-green-400">"O(1)"</span>,
-  <span class="text-orange-400">puntuacion</span>: <span class="text-green-400">98/100</span>,
-  <span class="text-orange-400">sugerencia</span>: <span class="text-yellow-400">"Excelente uso de punteros. Podrías evitar la variable auxiliar en la línea 12."</span>
-};
-
-<span class="text-emerald-400">console</span>.<span class="text-blue-400">log</span>(<span class="text-green-400">"Código optimizado al máximo"</span>);`,
+                'El ranking muestra posiciones, puntos, problemas resueltos y competencias participadas.',
         },
     ];
 
     steps = [
         {
             number: 1,
-            title: 'Regístrate',
+            title: 'Explora',
             description:
-                'Crea tu perfil de desarrollador en segundos y configura tus lenguajes favoritos.',
+                'Entra a competencias o ranking sin iniciar sesión para revisar qué hay disponible.',
         },
         {
             number: 2,
-            title: 'Únete a la arena',
+            title: 'Inscríbete',
             description:
-                'Explora torneos activos, retos diarios o practica en solitario a tu ritmo.',
+                'Crea una cuenta o inicia sesión para participar en una competencia abierta.',
         },
         {
             number: 3,
-            title: 'Demuestra tu skill',
+            title: 'Compite',
             description:
-                'Sube tu código, supera los casos de prueba cerrados y conquista el ranking.',
+                'Resuelve problemas, acumula puntos y revisa tu avance en el ranking.',
+        },
+    ];
+
+    audienceCards = [
+        {
+            icon: 'pi-user',
+            title: 'Para participantes',
+            description:
+                'Un lugar directo para encontrar competencias abiertas, entrar al detalle y seguir el progreso personal.',
+        },
+        {
+            icon: 'pi-globe',
+            title: 'Para visitantes',
+            description:
+                'Competencias y ranking son públicos, por lo que se puede revisar la actividad antes de crear cuenta.',
+        },
+        {
+            icon: 'pi-shield',
+            title: 'Para administradores',
+            description:
+                'La administración vive en el dashboard separado, donde se gestionan competencias y problemas.',
         },
     ];
 
     ngOnInit(): void {
         if (this.isLoggedIn() && this.isAdmin()) {
             this.router.navigate(['/dashboard']);
-            return;
         }
+    }
 
-        const texts = [
-            'const x = 42;',
-            'if (a > b)',
-            'return true;',
-            'for (let i = 0)',
-            'array.map(x => x * 2)',
-            'import { core }',
-            'async function()',
-            'await Promise.all()',
-            '...spread_operator',
-            '{ key: val }',
-            'O(n log n)',
-            'try { execute() }',
-        ];
+    isLoggedIn(): boolean {
+        return this.authService.isAuthenticated();
+    }
 
-        this.codeLines = Array.from({ length: 25 }, (_, i) => ({
-            id: i,
-            x: String(Math.random() * 100),
-            text: texts[Math.floor(Math.random() * texts.length)],
-            duration: 10 + Math.random() * 15,
-            delay: Math.random() * 15,
-        }));
+    isAdmin(): boolean {
+        return this.authService.isAdmin();
     }
 }
