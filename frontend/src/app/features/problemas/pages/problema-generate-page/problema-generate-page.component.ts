@@ -12,6 +12,7 @@ import { finalize, forkJoin } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
@@ -41,6 +42,7 @@ import {
         ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
+        MessageModule,
         TextareaModule,
         InputNumberModule,
         SelectModule,

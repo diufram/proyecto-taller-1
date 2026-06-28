@@ -28,11 +28,6 @@
 
     <form [formGroup]="form" class="generate-form-card">
         <section class="form-section">
-            <header class="section-header">
-                <span class="label">Prompt</span>
-                <h3>Descripción opcional</h3>
-            </header>
-
             <div class="prompt-switch-row">
                 <div>
                     <span class="hint-text">Activa esta opción solo si querés guiar la generación con una descripción propia.</span>
@@ -54,16 +49,18 @@
                             rows="4"
                             autoResize="true"
                             class="w-full"
-                            variant="filled"
                             [invalid]="promptInvalid"
                             placeholder=" "
                         ></textarea>
                         <label for="prompt_input">Descripción</label>
                     </p-floatlabel>
                     @if (promptInvalid) {
-                        <small class="text-red-500 mt-1 block">
-                            Describí al menos 5 caracteres lo que querés generar.
-                        </small>
+                        <p-message
+                            severity="error"
+                            size="small"
+                            variant="simple"
+                            >Describí al menos 5 caracteres lo que querés generar.</p-message
+                        >
                     }
                     <span class="hint-text">{{ promptHint }}</span>
 
@@ -85,14 +82,7 @@
             }
         </section>
 
-        <div class="section-divider"></div>
-
         <section class="form-section">
-            <header class="section-header">
-                <span class="label">Opciones</span>
-                <h3>Cantidad y dificultad</h3>
-            </header>
-
             <div class="form-grid">
                 <div class="form-field">
                     <p-floatlabel variant="on">
