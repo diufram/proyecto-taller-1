@@ -34,9 +34,8 @@ interface SolucionData {
 }
 
 /**
- * 26 soluciones distribuidas en las 18 competencias del seed, con
- * ~65% en `Pendiente` (para que el admin pruebe la sugerencia IA) y el
- * resto distribuido en Correcto/Incorrecto/En revisión para variedad.
+ * Soluciones distribuidas en competencias finalizadas, en curso y abiertas,
+ * con variedad de estados para probar listados, filtros, ranking y calificación.
  */
 const solucionesData: SolucionData[] = [
   // ===== Duelo de Algoritmos (Finalizada - Intermedio) =====
@@ -311,6 +310,169 @@ const solucionesData: SolucionData[] = [
     resultado_validacion: false,
     respuesta:
       'const [rut, dv] = require("fs").readFileSync(0, "utf8").trim().split("-");\nlet s = 0, m = 2;\nfor (let i = rut.length - 1; i >= 0; i--) { s += Number(rut[i]) * m; m = m < 7 ? m + 1 : 2; }\nlet calc = 11 - (s % 11);\nlet calcDv = calc === 11 ? "0" : calc === 10 ? "K" : String(calc);\nconsole.log(calcDv === dv ? "VALIDO" : "INVALIDO");',
+  },
+
+  // ===== Clasificatorio Regional 2026 (Abierta - Avanzado) =====
+  {
+    usuario_correo: 'matias@gmail.com',
+    problema_titulo: 'Knapsack 0-1',
+    competencia_nombre: 'Clasificatorio Regional 2026',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.PENDIENTE,
+    resultado_validacion: false,
+    respuesta:
+      'n, w = map(int, input().split())\ndp = [0] * (w + 1)\nfor _ in range(n):\n    peso, valor = map(int, input().split())\n    for cap in range(w, peso - 1, -1):\n        dp[cap] = max(dp[cap], dp[cap - peso] + valor)\nprint(dp[w])',
+  },
+  {
+    usuario_correo: 'lucas@gmail.com',
+    problema_titulo: 'Dijkstra en Grafo Ponderado',
+    competencia_nombre: 'Clasificatorio Regional 2026',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.REVISION,
+    resultado_validacion: false,
+    respuesta:
+      'import heapq\nn, m = map(int, input().split())\ng = [[] for _ in range(n)]\nfor _ in range(m):\n    a, b, c = map(int, input().split())\n    g[a].append((b, c))\nd = [10**18] * n\nd[0] = 0\npq = [(0, 0)]\nwhile pq:\n    dist, u = heapq.heappop(pq)\n    if dist != d[u]: continue\n    for v, c in g[u]:\n        if d[v] > dist + c:\n            d[v] = dist + c\n            heapq.heappush(pq, (d[v], v))\nprint(d[n - 1] if d[n - 1] < 10**18 else -1)',
+  },
+
+  // ===== Olimpíada Matemática 2026 (Abierta - Avanzado) =====
+  {
+    usuario_correo: 'sofia@gmail.com',
+    problema_titulo: 'Número Primo',
+    competencia_nombre: 'Olimpíada Matemática 2026',
+    lenguaje: Lenguaje.JAVASCRIPT,
+    estado: EstadoSolucion.CORRECTO,
+    resultado_validacion: true,
+    respuesta:
+      'const n = Number(require("fs").readFileSync(0, "utf8"));\nlet ok = n > 1;\nfor (let i = 2; i * i <= n; i++) if (n % i === 0) ok = false;\nconsole.log(ok ? "SI" : "NO");',
+  },
+  {
+    usuario_correo: 'camila@gmail.com',
+    problema_titulo: 'Máximo Común Divisor',
+    competencia_nombre: 'Olimpíada Matemática 2026',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.PENDIENTE,
+    resultado_validacion: false,
+    respuesta:
+      'a, b = map(int, input().split())\nwhile b:\n    a, b = b, a % b\nprint(a)',
+  },
+  {
+    usuario_correo: 'florencia@gmail.com',
+    problema_titulo: 'Descomposición en Primos',
+    competencia_nombre: 'Olimpíada Matemática 2026',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.INCORRECTO,
+    resultado_validacion: false,
+    respuesta:
+      'n = int(input())\nprint(n)',
+  },
+
+  // ===== Desafío de Estructuras de Datos (Abierta - Intermedio) =====
+  {
+    usuario_correo: 'martin@gmail.com',
+    problema_titulo: 'Stack con Mínimo',
+    competencia_nombre: 'Desafío de Estructuras de Datos',
+    lenguaje: Lenguaje.JAVA,
+    estado: EstadoSolucion.PENDIENTE,
+    resultado_validacion: false,
+    respuesta:
+      'import java.util.*;\nclass Main { public static void main(String[] args) { Scanner sc = new Scanner(System.in); Stack<Integer> st = new Stack<>(), mn = new Stack<>(); int q = sc.nextInt(); while(q-- > 0){ String op=sc.next(); if(op.equals("push")){ int x=sc.nextInt(); st.push(x); mn.push(mn.empty()?x:Math.min(x,mn.peek())); } else if(op.equals("pop")){ st.pop(); mn.pop(); } else System.out.println(mn.peek()); } } }',
+  },
+  {
+    usuario_correo: 'diego@gmail.com',
+    problema_titulo: 'Recorrido BFS en Grafo',
+    competencia_nombre: 'Desafío de Estructuras de Datos',
+    lenguaje: Lenguaje.C,
+    estado: EstadoSolucion.REVISION,
+    resultado_validacion: false,
+    respuesta:
+      '#include <stdio.h>\nint main(){ int n,m; scanf("%d %d", &n, &m); for(int i=0;i<n;i++) printf("%d ", i); return 0; }',
+  },
+
+  // ===== Concurso de Programación Funcional (Abierta - Avanzado) =====
+  {
+    usuario_correo: 'paula@gmail.com',
+    problema_titulo: 'Map y Filter',
+    competencia_nombre: 'Concurso de Programación Funcional',
+    lenguaje: Lenguaje.JAVASCRIPT,
+    estado: EstadoSolucion.CORRECTO,
+    resultado_validacion: true,
+    respuesta:
+      'const arr = require("fs").readFileSync(0, "utf8").trim().split(/\\s+/).map(Number);\nconsole.log(arr.map(x => x * 2).filter(x => x % 3 === 0).join(" "));',
+  },
+  {
+    usuario_correo: 'bruno@gmail.com',
+    problema_titulo: 'Reduce - Sumar Arreglo',
+    competencia_nombre: 'Concurso de Programación Funcional',
+    lenguaje: Lenguaje.JAVASCRIPT,
+    estado: EstadoSolucion.PENDIENTE,
+    resultado_validacion: false,
+    respuesta:
+      'const nums = require("fs").readFileSync(0, "utf8").trim().split(/\\s+/).map(Number);\nconsole.log(nums.reduce((a, b) => a + b, 0));',
+  },
+
+  // ===== Torneo Universitario de Algoritmos (Abierta - Intermedio) =====
+  {
+    usuario_correo: 'juan@gmail.com',
+    problema_titulo: 'Cumpleaños en Común',
+    competencia_nombre: 'Torneo Universitario de Algoritmos',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.PENDIENTE,
+    resultado_validacion: false,
+    respuesta:
+      'n = int(input())\nseen = set()\nans = "NO"\nfor _ in range(n):\n    d = input().strip()\n    if d in seen: ans = "SI"\n    seen.add(d)\nprint(ans)',
+  },
+  {
+    usuario_correo: 'maria@gmail.com',
+    problema_titulo: 'Matriz Simétrica',
+    competencia_nombre: 'Torneo Universitario de Algoritmos',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.CORRECTO,
+    resultado_validacion: true,
+    respuesta:
+      'n = int(input())\na = [list(map(int, input().split())) for _ in range(n)]\nprint("SI" if all(a[i][j] == a[j][i] for i in range(n) for j in range(n)) else "NO")',
+  },
+
+  // ===== Copa Femenina de Programación (Abierta - Principiante) =====
+  {
+    usuario_correo: 'valentina@gmail.com',
+    problema_titulo: 'Saludo Personalizado',
+    competencia_nombre: 'Copa Femenina de Programación',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.CORRECTO,
+    resultado_validacion: true,
+    respuesta: 'nombre = input().strip()\nprint(f"Hola, {nombre}!")',
+  },
+  {
+    usuario_correo: 'maria@gmail.com',
+    problema_titulo: 'Año Bisiesto',
+    competencia_nombre: 'Copa Femenina de Programación',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.PENDIENTE,
+    resultado_validacion: false,
+    respuesta:
+      'y = int(input())\nprint("SI" if (y % 400 == 0 or (y % 4 == 0 and y % 100 != 0)) else "NO")',
+  },
+
+  // ===== Code Sprint Universitario (Abierta - Intermedio) =====
+  {
+    usuario_correo: 'renata@gmail.com',
+    problema_titulo: 'Detección de Duplicados',
+    competencia_nombre: 'Code Sprint Universitario',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.PENDIENTE,
+    resultado_validacion: false,
+    respuesta:
+      'arr = list(map(int, input().split()))\nprint("SI" if len(arr) != len(set(arr)) else "NO")',
+  },
+  {
+    usuario_correo: 'facundo@gmail.com',
+    problema_titulo: 'Producto de Elementos Excepto Self',
+    competencia_nombre: 'Code Sprint Universitario',
+    lenguaje: Lenguaje.PYTHON,
+    estado: EstadoSolucion.REVISION,
+    resultado_validacion: false,
+    respuesta:
+      'a = list(map(int, input().split()))\nprod = 1\nfor x in a: prod *= x\nprint(" ".join(str(prod // x) for x in a))',
   },
 ];
 

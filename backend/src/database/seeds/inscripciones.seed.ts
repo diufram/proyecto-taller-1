@@ -113,6 +113,10 @@ const inscripcionesData: InscripcionData[] = [
     competencia_nombre: 'Hackathon Universitario',
   },
   {
+    usuario_correo: 'martin@gmail.com',
+    competencia_nombre: 'Hackathon Universitario',
+  },
+  {
     usuario_correo: 'bruno@gmail.com',
     competencia_nombre: 'Hackathon Universitario',
   },

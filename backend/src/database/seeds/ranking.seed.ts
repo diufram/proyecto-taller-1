@@ -52,6 +52,7 @@ export const rankingSeed: Seed = {
     // Sumar puntos por cada solución CORRECTA
     const correctas = await solucionRepository.find({
       where: { estado: EstadoSolucion.CORRECTO },
+      relations: ['usuario', 'problema'],
     });
 
     const puntosPorUsuario = new Map<number, number>();

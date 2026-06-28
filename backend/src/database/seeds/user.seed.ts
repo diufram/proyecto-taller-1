@@ -28,6 +28,7 @@ export const userSeed: Seed = {
 
     const usuariosData = [
       { correo_electronico: 'm@gmail.com' },
+      { correo_electronico: 'matias@gmail.com' },
       { correo_electronico: 'lucas@gmail.com' },
       { correo_electronico: 'sofia@gmail.com' },
       { correo_electronico: 'valentina@gmail.com' },
