@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TableModule, Table } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { PaginatorModule } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TooltipModule } from 'primeng/tooltip';
@@ -28,6 +30,8 @@ import { RowAction } from '@/shared/components/shared-table/interfaces/table-con
         ButtonModule,
         TableModule,
         InputTextModule,
+        IconFieldModule,
+        InputIconModule,
         PaginatorModule,
         SkeletonModule,
         TooltipModule,

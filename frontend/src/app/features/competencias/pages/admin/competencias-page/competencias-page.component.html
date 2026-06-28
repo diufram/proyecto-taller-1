@@ -15,16 +15,20 @@
     </header>
 
     <section class="competencias-toolbar">
-        <div class="competencias-search">
-            <i class="pi pi-search"></i>
+        <p-iconfield
+            iconPosition="left"
+            class="competencias-search w-full"
+        >
+            <p-inputicon styleClass="pi pi-search" />
             <input
                 pInputText
                 type="text"
+                class="w-full"
                 [value]="currentSearch"
                 (input)="onSearchInput($event)"
                 placeholder="Buscar competencia por nombre..."
             />
-        </div>
+        </p-iconfield>
         @if (currentSearch) {
             <span class="competencias-search-hint">
                 Filtrando por "{{ currentSearch }}"

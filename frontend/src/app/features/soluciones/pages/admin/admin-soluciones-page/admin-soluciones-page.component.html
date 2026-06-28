@@ -24,16 +24,20 @@
     </header>
 
     <section class="soluciones-toolbar">
-        <div class="soluciones-search">
-            <i class="pi pi-search"></i>
+        <p-iconfield
+            iconPosition="left"
+            class="soluciones-search w-full"
+        >
+            <p-inputicon styleClass="pi pi-search" />
             <input
                 pInputText
                 type="text"
+                class="w-full"
                 [value]="currentSearch"
                 (input)="onSearchInput($event)"
                 placeholder="Buscar por usuario o problema..."
             />
-        </div>
+        </p-iconfield>
 
         <div class="soluciones-filters">
             <p-select

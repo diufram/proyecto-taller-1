@@ -79,38 +79,18 @@
     .problemas-search {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
-        padding: 0.65rem 1rem;
-        border: 1px solid var(--app-border);
-        border-radius: 0.75rem;
-        background: var(--app-surface);
+        gap: 0.5rem;
         flex: 1;
         min-width: 16rem;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        &:focus-within {
-            border-color: var(--app-accent);
-            box-shadow: var(--app-ring);
-        }
+    .problemas-search .p-iconfield {
+        flex: 1;
+        width: 100%;
+    }
 
-        i {
-            color: var(--app-accent-text);
-        }
-
-        input {
-            flex: 1;
-            background: transparent !important;
-            border: none !important;
-            outline: none;
-            box-shadow: none !important;
-            color: var(--app-text);
-            font-size: 0.95rem;
-            padding: 0;
-
-            &::placeholder {
-                color: var(--app-text-muted);
-            }
-        }
+    .problemas-search input {
+        width: 100%;
     }
 
     .problemas-search-clear {

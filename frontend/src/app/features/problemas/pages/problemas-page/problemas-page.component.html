@@ -38,14 +38,20 @@
 
     <section class="problemas-toolbar">
         <div class="problemas-search">
-            <i class="pi pi-search"></i>
-            <input
-                pInputText
-                type="text"
-                [value]="currentSearch"
-                (input)="onSearchInput($event)"
-                placeholder="Buscar problema por título..."
-            />
+            <p-iconfield
+                iconPosition="left"
+                class="w-full"
+            >
+                <p-inputicon styleClass="pi pi-search" />
+                <input
+                    pInputText
+                    type="text"
+                    class="w-full"
+                    [value]="currentSearch"
+                    (input)="onSearchInput($event)"
+                    placeholder="Buscar problema por título..."
+                />
+            </p-iconfield>
             @if (currentSearch) {
                 <button
                     type="button"
