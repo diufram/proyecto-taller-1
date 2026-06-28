@@ -113,12 +113,18 @@
         display: flex;
         align-items: center;
         gap: 0.6rem;
-        padding: 0.55rem 0.9rem;
+        padding: 0.65rem 1rem;
         border: 1px solid var(--app-border);
-        border-radius: 0.9rem;
-        background: var(--app-surface-soft);
+        border-radius: 0.75rem;
+        background: var(--app-surface);
         flex: 1;
         min-width: 16rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &:focus-within {
+            border-color: var(--app-accent);
+            box-shadow: var(--app-ring);
+        }
 
         i {
             color: var(--app-accent-text);
@@ -126,11 +132,13 @@
 
         input {
             flex: 1;
-            background: transparent;
-            border: none;
+            background: transparent !important;
+            border: none !important;
             outline: none;
+            box-shadow: none !important;
             color: var(--app-text);
             font-size: 0.95rem;
+            padding: 0;
 
             &::placeholder {
                 color: var(--app-text-muted);

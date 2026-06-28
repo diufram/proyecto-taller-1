@@ -13,10 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TableModule, Table } from 'primeng/table';
-import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
 import { PaginatorModule } from 'primeng/paginator';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TooltipModule } from 'primeng/tooltip';
@@ -68,10 +65,7 @@ interface LenguajeFiltro {
         FormsModule,
         ButtonModule,
         TableModule,
-        ToolbarModule,
         InputTextModule,
-        IconFieldModule,
-        InputIconModule,
         PaginatorModule,
         SkeletonModule,
         TooltipModule,

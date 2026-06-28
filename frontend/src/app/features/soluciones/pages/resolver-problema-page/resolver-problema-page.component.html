@@ -4,73 +4,44 @@
             <p-skeleton height="1rem" width="11rem"></p-skeleton>
             <p-skeleton height="3rem" width="70%"></p-skeleton>
             <p-skeleton height="1rem" width="55%"></p-skeleton>
-            <p-skeleton height="6rem" width="100%"></p-skeleton>
         </div>
     } @else if (problema(); as p) {
         <header class="resolver-hero">
             <div class="resolver-hero-copy">
-                <span class="eyebrow">Resolver problema</span>
                 <h1>{{ p.titulo }}</h1>
-                <p>
-                    Lee el formato de entrada/salida, revisa los ejemplos y
-                    envía una única solución para este desafío.
-                </p>
-                <div class="hero-actions">
-                    <p-button
-                        icon="pi pi-arrow-left"
-                        label="Volver a problemas"
-                        severity="secondary"
-                        [outlined]="true"
-                        (onClick)="volver()"
-                    ></p-button>
-                </div>
             </div>
 
-            <div class="resolver-hero-panel">
-                <span class="panel-label">Dificultad</span>
-                <strong>{{ getDificultadLabel(p.dificultad) }}</strong>
-                <p-tag
-                    [value]="getDificultadLabel(p.dificultad)"
-                    [severity]="getDificultadSeverity(p.dificultad)"
-                ></p-tag>
+            <div class="hero-actions">
+                <p-button
+                    icon="pi pi-arrow-left"
+                    label="Volver a problemas"
+                    severity="secondary"
+                    [outlined]="true"
+                    (onClick)="volver()"
+                ></p-button>
             </div>
         </header>
 
         <article class="problema-card">
-            <div class="section-heading">
-                <span>Enunciado</span>
-                <strong>Formato del problema</strong>
+            <div class="formato-block">
+                <span class="label">Formato de entrada</span>
+                <p class="meta-value">{{ p.formato_entrada }}</p>
             </div>
-
-            <div class="problema-formato">
-                <div class="formato-block">
-                    <span class="label">Formato de entrada</span>
-                    <p class="meta-value">{{ p.formato_entrada }}</p>
-                </div>
-                <div class="formato-block">
-                    <span class="label">Formato de salida</span>
-                    <p class="meta-value">{{ p.formato_salida }}</p>
-                </div>
+            <div class="formato-block">
+                <span class="label">Formato de salida</span>
+                <p class="meta-value">{{ p.formato_salida }}</p>
             </div>
-
-            <div class="problema-ejemplos">
-                <div class="formato-block">
-                    <span class="label">Ejemplo de entrada</span>
-                    <pre class="code-block">{{ p.ejemplo_entrada }}</pre>
-                </div>
-                <div class="formato-block">
-                    <span class="label">Ejemplo de salida</span>
-                    <pre class="code-block">{{ p.ejemplo_salida }}</pre>
-                </div>
+            <div class="formato-block">
+                <span class="label">Ejemplo de entrada</span>
+                <pre class="code-block">{{ p.ejemplo_entrada }}</pre>
+            </div>
+            <div class="formato-block">
+                <span class="label">Ejemplo de salida</span>
+                <pre class="code-block">{{ p.ejemplo_salida }}</pre>
             </div>
         </article>
 
-        <section class="envio-section">
-            <div class="section-heading">
-                <span>Envío</span>
-                <strong>Tu solución</strong>
-            </div>
-
+        <section class="envio-card">
             @if (loadingSolucion()) {
                 <p-skeleton height="3rem" width="100%"></p-skeleton>
             } @else if (miSolucion(); as s) {
@@ -101,7 +72,7 @@
                         </div>
                     </div>
 
-                    <div class="formato-block mt-3">
+                    <div class="formato-block">
                         <span class="label">Tu respuesta</span>
                         <pre class="code-block respuesta">{{ s.respuesta }}</pre>
                     </div>
@@ -118,50 +89,58 @@
                     class="envio-form"
                 >
                     <div class="form-field">
-                        <label for="lenguaje" class="label">Lenguaje</label>
-                        <p-select
-                            inputId="lenguaje"
-                            formControlName="lenguaje_programacion"
-                            [options]="lenguajes"
-                            optionLabel="label"
-                            optionValue="value"
-                            placeholder="Selecciona un lenguaje"
-                            [filter]="true"
-                            styleClass="w-full"
-                        ></p-select>
-                        @if (
-                            form.get('lenguaje_programacion')?.invalid &&
-                            form.get('lenguaje_programacion')?.touched
-                        ) {
-                            <small class="p-error">El lenguaje es obligatorio.</small>
+                        <p-floatlabel variant="on">
+                            <p-select
+                                inputId="lenguaje"
+                                formControlName="lenguaje_programacion"
+                                [options]="lenguajes"
+                                optionLabel="label"
+                                optionValue="value"
+                                [filter]="true"
+                                class="w-full"
+                                [invalid]="isInvalid('lenguaje_programacion')"
+                                appendTo="body"
+                            ></p-select>
+                            <label for="lenguaje">Lenguaje</label>
+                        </p-floatlabel>
+                        @if (isInvalid("lenguaje_programacion")) {
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >El lenguaje es obligatorio.</p-message
+                            >
                         }
                     </div>
 
                     <div class="form-field">
-                        <label for="respuesta" class="label">Respuesta</label>
-                        <div class="editor-toolbar">
-                            <span>Editor de solución</span>
-                            <small>Un envío por participante</small>
-                        </div>
-                        <textarea
-                            pTextarea
-                            inputId="respuesta"
-                            formControlName="respuesta"
-                            rows="14"
-                            autoResize="false"
-                            class="w-full codigo-textarea"
-                            placeholder="Escribe aquí tu solución..."
-                        ></textarea>
-                        @if (
-                            form.get('respuesta')?.invalid &&
-                            form.get('respuesta')?.touched
-                        ) {
-                            <small class="p-error">La respuesta es obligatoria.</small>
+                        <p-floatlabel variant="on">
+                            <textarea
+                                pTextarea
+                                inputId="respuesta"
+                                formControlName="respuesta"
+                                rows="14"
+                                autoResize="false"
+                                class="w-full codigo-textarea"
+                                [invalid]="isInvalid('respuesta')"
+                                placeholder=" "
+                            ></textarea>
+                            <label for="respuesta">Respuesta</label>
+                        </p-floatlabel>
+                        @if (isInvalid("respuesta")) {
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >La respuesta es obligatoria.</p-message
+                            >
                         }
                     </div>
 
                     <div class="form-actions">
-                        <span class="submit-hint">Revisa tu respuesta antes de enviar.</span>
+                        <span class="submit-hint"
+                            >Revisa tu respuesta antes de enviar.</span
+                        >
                         <p-button
                             type="submit"
                             label="Enviar solución"

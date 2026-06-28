@@ -1,290 +1,273 @@
 <div class="admin-soluciones-page">
-    <div class="mb-3 pl-1">
-        <h3 class="text-2xl font-bold text-color m-0">
-            @if (problema(); as p) {
-                Soluciones: {{ p.titulo }}
-            } @else if (competencia(); as c) {
-                Soluciones: {{ c.nombre }}
-            } @else {
-                Calificar soluciones
-            }
-        </h3>
-        <p class="text-color-secondary text-sm m-0 mt-1">
-            {{ totalRecords() }}
-            {{ totalRecords() === 1 ? 'solución' : 'soluciones' }}
-        </p>
-    </div>
+    <header class="soluciones-hero">
+        <div class="soluciones-hero-copy">
+            <h1>
+                @if (problema(); as p) {
+                    {{ p.titulo }}
+                } @else if (competencia(); as c) {
+                    {{ c.nombre }}
+                } @else {
+                    Calificar soluciones
+                }
+            </h1>
+        </div>
 
-    <p-toolbar styleClass="mb-3 gap-2 w-full border-none p-0 bg-transparent">
-        <ng-template pTemplate="left">
-            <div
-                class="actions-container flex flex-col md:flex-row w-full gap-2 items-stretch md:items-center flex-wrap"
-            >
+        <div class="hero-actions">
+            <p-button
+                icon="pi pi-arrow-left"
+                label="Volver"
+                severity="secondary"
+                [outlined]="true"
+                (onClick)="volver()"
+            ></p-button>
+        </div>
+    </header>
+
+    <section class="soluciones-toolbar">
+        <div class="soluciones-search">
+            <i class="pi pi-search"></i>
+            <input
+                pInputText
+                type="text"
+                [value]="currentSearch"
+                (input)="onSearchInput($event)"
+                placeholder="Buscar por usuario o problema..."
+            />
+        </div>
+
+        <div class="soluciones-filters">
+            <p-select
+                [options]="estadoFiltroOptions"
+                [ngModel]="currentEstado"
+                (ngModelChange)="onEstadoFilterChange($event)"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Estado"
+                [showClear]="false"
+                styleClass="soluciones-filter-select"
+                appendTo="body"
+            ></p-select>
+
+            <p-select
+                [options]="lenguajeFiltroOptions"
+                [ngModel]="currentLenguaje"
+                (ngModelChange)="onLenguajeFilterChange($event)"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Lenguaje"
+                [showClear]="false"
+                styleClass="soluciones-filter-select"
+                appendTo="body"
+            ></p-select>
+
+            @if (hasActiveFilters) {
                 <p-button
-                    icon="pi pi-arrow-left"
-                    label="Volver"
+                    label="Limpiar"
+                    icon="pi pi-filter-slash"
                     severity="secondary"
                     [outlined]="true"
-                    (onClick)="volver()"
+                    (onClick)="clearFilters()"
                 ></p-button>
-
-                <p-select
-                    [options]="estadoFiltroOptions"
-                    [ngModel]="currentEstado"
-                    (ngModelChange)="onEstadoFilterChange($event)"
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="Estado"
-                    [showClear]="false"
-                    styleClass="w-full md:w-12rem"
-                    appendTo="body"
-                ></p-select>
-
-                <p-select
-                    [options]="lenguajeFiltroOptions"
-                    [ngModel]="currentLenguaje"
-                    (ngModelChange)="onLenguajeFilterChange($event)"
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="Lenguaje"
-                    [showClear]="false"
-                    styleClass="w-full md:w-12rem"
-                    appendTo="body"
-                ></p-select>
-
-                @if (hasActiveFilters) {
-                    <p-button
-                        label="Limpiar"
-                        icon="pi pi-filter-slash"
-                        severity="secondary"
-                        [outlined]="true"
-                        (onClick)="clearFilters()"
-                    ></p-button>
-                }
-            </div>
-        </ng-template>
-
-        <ng-template pTemplate="right">
-            <p-iconfield
-                iconPosition="left"
-                class="w-full md:w-auto mt-2 md:mt-0"
-            >
-                <p-inputicon styleClass="pi pi-search text-gray-400" />
-                <input
-                    pInputText
-                    type="text"
-                    [value]="currentSearch"
-                    (input)="onSearchInput($event)"
-                    placeholder="Buscar por usuario o problema..."
-                    class="w-full md:w-18rem pl-10"
-                />
-            </p-iconfield>
-        </ng-template>
-    </p-toolbar>
+            }
+        </div>
+    </section>
 
     @if (loading()) {
         <div class="soluciones-skeleton-desktop">
             @for (i of [].constructor(rows); track $index) {
-                <div class="skeleton-row">
-                    <p-skeleton width="60%" height="1.1rem"></p-skeleton>
-                    <p-skeleton width="80%" height="1.1rem"></p-skeleton>
-                    <p-skeleton width="60px" height="2rem"></p-skeleton>
-                    <p-skeleton width="60px" height="2rem"></p-skeleton>
-                    <p-skeleton width="80px" height="1.1rem"></p-skeleton>
-                    <p-skeleton width="80px" height="2rem"></p-skeleton>
-                </div>
+                <article class="solucion-row-skeleton">
+                    <div>
+                        <p-skeleton width="50%" height="0.8rem"></p-skeleton>
+                        <p-skeleton width="80%" height="1.1rem"></p-skeleton>
+                    </div>
+                    <p-skeleton width="90px" height="1.6rem"></p-skeleton>
+                    <p-skeleton width="80px" height="1.6rem"></p-skeleton>
+                    <p-skeleton width="100px" height="1rem"></p-skeleton>
+                    <p-skeleton width="70px" height="2rem"></p-skeleton>
+                </article>
             }
         </div>
 
         <div class="soluciones-skeleton-mobile">
             @for (i of [].constructor(rows); track $index) {
-                <div class="solucion-mobile-card is-skeleton">
-                    <div class="solucion-mobile-field">
-                        <span class="label">Estudiante</span>
-                        <p-skeleton width="70%" height="1.1rem"></p-skeleton>
-                    </div>
-                    <div class="solucion-mobile-field">
-                        <span class="label">Problema</span>
-                        <p-skeleton width="80%" height="1.1rem"></p-skeleton>
-                    </div>
-                    <div class="solucion-mobile-field">
-                        <span class="label">Estado</span>
-                        <p-skeleton width="40%" height="2rem"></p-skeleton>
-                    </div>
-                </div>
+                <article class="solucion-card is-skeleton">
+                    <p-skeleton width="60%" height="0.9rem"></p-skeleton>
+                    <p-skeleton width="90%" height="1.5rem"></p-skeleton>
+                    <p-skeleton width="50%" height="1rem"></p-skeleton>
+                    <p-skeleton width="40%" height="1rem"></p-skeleton>
+                </article>
             }
         </div>
     } @else {
         <div class="soluciones-table-wrap">
-            <p-table
-                #dt
-                [value]="soluciones()"
-                responsiveLayout="scroll"
-                styleClass="soluciones-table"
-                [tableStyle]="{ 'min-width': '100%' }"
-            >
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Estudiante</th>
-                        @if (!problemaId) {
-                            <th>Problema</th>
-                        }
-                        @if (!competenciaId) {
-                            <th>Competencia</th>
-                        }
-                        <th>Lenguaje</th>
-                        <th>Estado</th>
-                        <th>Enviado</th>
-                        <th class="text-right" style="width: 120px">
-                            Acciones
-                        </th>
-                    </tr>
-                </ng-template>
+            @if (soluciones().length === 0) {
+                <div class="empty-state">
+                    <i class="pi pi-inbox"></i>
+                    <h2>No hay soluciones</h2>
+                    <p>Cuando los estudiantes envíen soluciones para calificar aparecerán acá.</p>
+                </div>
+            } @else {
+                <p-table
+                    #dt
+                    [value]="soluciones()"
+                    responsiveLayout="scroll"
+                    styleClass="soluciones-table"
+                    [tableStyle]="{ 'min-width': '100%' }"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Estudiante</th>
+                            @if (!problemaId) {
+                                <th>Problema</th>
+                            }
+                            @if (!competenciaId) {
+                                <th>Competencia</th>
+                            }
+                            <th>Lenguaje</th>
+                            <th>Estado</th>
+                            <th>Enviado</th>
+                            <th class="text-right">Acciones</th>
+                        </tr>
+                    </ng-template>
 
-                <ng-template pTemplate="body" let-s>
-                    <tr>
-                        <td>
-                            <div class="flex flex-col">
-                                <span class="font-bold">{{
-                                    displayName(s)
-                                }}</span>
-                                <span class="text-color-secondary text-sm"
-                                    >{{ s.usuario_email }}</span
-                                >
-                            </div>
-                        </td>
-                        @if (!problemaId) {
+                    <ng-template pTemplate="body" let-s>
+                        <tr>
                             <td>
                                 <div class="flex flex-col">
-                                    <span class="font-medium">{{
-                                        s.problema_titulo
+                                    <span class="solucion-name">{{
+                                        displayName(s)
                                     }}</span>
-                                    <span
-                                        class="text-color-secondary text-sm"
-                                        >{{ s.problema_dificultad }}</span
-                                    >
+                                    <span class="solucion-email">{{
+                                        s.usuario_email
+                                    }}</span>
                                 </div>
                             </td>
-                        }
-                        @if (!competenciaId) {
-                            <td>{{ s.competencia_nombre || '—' }}</td>
-                        }
-                        <td>
-                            <p-tag
-                                [value]="s.lenguaje_programacion"
-                                severity="info"
-                            ></p-tag>
-                        </td>
-                        <td>
-                            <p-tag
-                                [value]="estadoLabel(s.estado)"
-                                [severity]="estadoSeverity(s.estado)"
-                            ></p-tag>
-                        </td>
-                        <td>{{ s.created_at | date: 'short' }}</td>
-                        <td>
-                            <div class="desktop-actions">
-                                <p-button
-                                    icon="pi pi-check-square"
-                                    severity="primary"
-                                    [text]="true"
-                                    [rounded]="true"
-                                    pTooltip="Calificar"
-                                    tooltipPosition="top"
-                                    (onClick)="openCalificar(s)"
-                                ></p-button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="6" class="text-center p-5">
-                            <span class="font-medium text-color-secondary">
-                                No se encontraron soluciones
-                            </span>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-
-        <div class="soluciones-mobile-list">
-            @if (soluciones().length === 0) {
-                <div class="mobile-empty">No se encontraron soluciones</div>
-            } @else {
-                @for (s of soluciones(); track s.id) {
-                    <article class="solucion-mobile-card">
-                        <div class="solucion-mobile-field">
-                            <span class="label">Estudiante</span>
-                            <div class="flex flex-col">
-                                <span class="value">{{ displayName(s) }}</span>
-                                <span
-                                    class="text-color-secondary text-sm"
-                                    >{{ s.usuario_email }}</span
-                                >
-                            </div>
-                        </div>
-
-                        @if (!problemaId) {
-                            <div class="solucion-mobile-field">
-                                <span class="label">Problema</span>
-                                <span class="value">{{
-                                    s.problema_titulo
-                                }}</span>
-                            </div>
-                        }
-
-                        @if (!competenciaId) {
-                            <div class="solucion-mobile-field">
-                                <span class="label">Competencia</span>
-                                <span class="value">{{
-                                    s.competencia_nombre || '—'
-                                }}</span>
-                            </div>
-                        }
-
-                        <div class="solucion-mobile-field">
-                            <span class="label">Lenguaje</span>
-                            <div>
+                            @if (!problemaId) {
+                                <td>
+                                    <div class="flex flex-col">
+                                        <span class="solucion-problema">{{
+                                            s.problema_titulo
+                                        }}</span>
+                                        <span class="solucion-dificultad">{{
+                                            s.problema_dificultad
+                                        }}</span>
+                                    </div>
+                                </td>
+                            }
+                            @if (!competenciaId) {
+                                <td>{{ s.competencia_nombre || '—' }}</td>
+                            }
+                            <td>
                                 <p-tag
                                     [value]="s.lenguaje_programacion"
                                     severity="info"
                                 ></p-tag>
-                            </div>
-                        </div>
-
-                        <div class="solucion-mobile-field">
-                            <span class="label">Estado</span>
-                            <div>
+                            </td>
+                            <td>
                                 <p-tag
                                     [value]="estadoLabel(s.estado)"
                                     [severity]="estadoSeverity(s.estado)"
                                 ></p-tag>
+                            </td>
+                            <td>{{ s.created_at | date: 'short' }}</td>
+                            <td>
+                                <div class="desktop-actions">
+                                    <p-button
+                                        icon="pi pi-check-square"
+                                        label="Calificar"
+                                        severity="secondary"
+                                        [outlined]="true"
+                                        size="small"
+                                        (onClick)="openCalificar(s)"
+                                    ></p-button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state is-inline">
+                                    <i class="pi pi-inbox"></i>
+                                    <h2>No se encontraron soluciones</h2>
+                                    <p>Probá con otro término de búsqueda o cambiá los filtros.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            }
+        </div>
+
+        <div class="soluciones-mobile-list">
+            @if (soluciones().length === 0) {
+                <div class="empty-state">
+                    <i class="pi pi-inbox"></i>
+                    <h2>No hay soluciones</h2>
+                    <p>Cuando los estudiantes envíen soluciones para calificar aparecerán acá.</p>
+                </div>
+            } @else {
+                @for (s of soluciones(); track s.id) {
+                    <article class="solucion-card">
+                        <header class="solucion-card-header">
+                            <div>
+                                <span class="solucion-name">{{
+                                    displayName(s)
+                                }}</span>
+                                <span class="solucion-email">{{
+                                    s.usuario_email
+                                }}</span>
+                            </div>
+                            <p-tag
+                                [value]="estadoLabel(s.estado)"
+                                [severity]="estadoSeverity(s.estado)"
+                            ></p-tag>
+                        </header>
+
+                        <div class="solucion-card-meta">
+                            @if (!problemaId) {
+                                <div>
+                                    <span class="label">Problema</span>
+                                    <span class="value">{{
+                                        s.problema_titulo
+                                    }}</span>
+                                </div>
+                            }
+                            @if (!competenciaId) {
+                                <div>
+                                    <span class="label">Competencia</span>
+                                    <span class="value">{{
+                                        s.competencia_nombre || '—'
+                                    }}</span>
+                                </div>
+                            }
+                            <div>
+                                <span class="label">Lenguaje</span>
+                                <div>
+                                    <p-tag
+                                        [value]="s.lenguaje_programacion"
+                                        severity="info"
+                                    ></p-tag>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="label">Enviado</span>
+                                <span class="value">{{
+                                    s.created_at | date: 'short'
+                                }}</span>
                             </div>
                         </div>
 
-                        <div class="solucion-mobile-field">
-                            <span class="label">Enviado</span>
-                            <span class="value">{{
-                                s.created_at | date: 'short'
-                            }}</span>
-                        </div>
-
-                        <div class="solucion-mobile-field">
-                            <span class="label">Acciones</span>
-                            <div class="solucion-mobile-actions">
-                                <p-button
-                                    icon="pi pi-check-square"
-                                    severity="primary"
-                                    [text]="true"
-                                    [rounded]="true"
-                                    pTooltip="Calificar"
-                                    tooltipPosition="top"
-                                    (onClick)="openCalificar(s)"
-                                ></p-button>
-                            </div>
+                        <div class="solucion-card-actions">
+                            <p-button
+                                icon="pi pi-check-square"
+                                label="Calificar"
+                                severity="secondary"
+                                [outlined]="true"
+                                size="small"
+                                (onClick)="openCalificar(s)"
+                            ></p-button>
                         </div>
                     </article>
                 }
