@@ -10,11 +10,10 @@ import {
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { MessageModule } from 'primeng/message';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '@/core/services/toast.service';
-import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconfigurator';
 
 @Component({
     selector: 'app-register',
@@ -24,12 +23,12 @@ import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconf
         ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
-        PasswordModule,
         FloatLabelModule,
+        MessageModule,
         RouterModule,
-        MyFloatingConfigurator,
     ],
     templateUrl: './register.component.html',
+    styleUrl: './register.component.scss',
 })
 export class RegisterComponent implements OnInit {
     private fb = inject(FormBuilder);
