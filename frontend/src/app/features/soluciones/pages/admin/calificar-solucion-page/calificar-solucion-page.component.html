@@ -1,0 +1,214 @@
+<p-toast></p-toast>
+
+<div class="calificar-page">
+    <header class="calificar-hero">
+        <div class="calificar-hero-copy">
+            <h1>Calificar solución</h1>
+        </div>
+
+        <div class="hero-actions">
+            <p-button
+                icon="pi pi-arrow-left"
+                label="Volver"
+                severity="secondary"
+                [outlined]="true"
+                [disabled]="submitting()"
+                (onClick)="volver()"
+            ></p-button>
+        </div>
+    </header>
+
+    @if (loading()) {
+        <section class="calificar-card">
+            <p-skeleton width="35%" height="1rem"></p-skeleton>
+            <p-skeleton width="100%" height="4rem"></p-skeleton>
+            <p-skeleton width="100%" height="12rem"></p-skeleton>
+            <p-skeleton width="100%" height="4rem"></p-skeleton>
+        </section>
+    } @else if (solucion(); as s) {
+        <section class="calificar-card">
+            <div class="summary-grid">
+                <div class="info-block is-wide">
+                    <span class="label">Estudiante</span>
+                    <strong>{{ displayName(s) }}</strong>
+                    <span class="muted">{{ s.usuario_email }}</span>
+                </div>
+
+                <div class="info-block">
+                    <span class="label">Estado actual</span>
+                    <p-tag
+                        [value]="estadoLabel(s.estado)"
+                        [severity]="estadoSeverity(s.estado)"
+                    ></p-tag>
+                </div>
+
+                <div class="info-block">
+                    <span class="label">Lenguaje</span>
+                    <p-tag [value]="s.lenguaje_programacion" severity="info"></p-tag>
+                </div>
+
+                <div class="info-block">
+                    <span class="label">Enviado</span>
+                    <span class="value">{{ s.created_at | date: 'dd/MM/yyyy HH:mm' }}</span>
+                </div>
+            </div>
+
+            <div class="problem-header">
+                <div>
+                    <span class="label">Problema</span>
+                    <h2>{{ s.problema_titulo }}</h2>
+                    <p>{{ s.competencia_nombre || 'Sin competencia asociada' }}</p>
+                </div>
+                <p-tag
+                    [value]="s.problema_dificultad"
+                    severity="secondary"
+                ></p-tag>
+            </div>
+
+            <div class="problem-grid">
+                @if (s.problema_formato_entrada) {
+                    <div class="info-block">
+                        <span class="label">Formato de entrada</span>
+                        <p class="value multiline">{{ s.problema_formato_entrada }}</p>
+                    </div>
+                }
+
+                @if (s.problema_formato_salida) {
+                    <div class="info-block">
+                        <span class="label">Formato de salida</span>
+                        <p class="value multiline">{{ s.problema_formato_salida }}</p>
+                    </div>
+                }
+
+                @if (s.problema_ejemplo_entrada) {
+                    <div class="info-block">
+                        <span class="label">Ejemplo de entrada</span>
+                        <pre class="code-block">{{ s.problema_ejemplo_entrada }}</pre>
+                    </div>
+                }
+
+                @if (s.problema_ejemplo_salida) {
+                    <div class="info-block">
+                        <span class="label">Ejemplo de salida</span>
+                        <pre class="code-block">{{ s.problema_ejemplo_salida }}</pre>
+                    </div>
+                }
+            </div>
+
+            <div class="answer-section">
+                <div class="answer-heading">
+                    <div>
+                        <span class="label">Respuesta del estudiante</span>
+                        <h3>Solución enviada</h3>
+                    </div>
+                    <p-button
+                        icon="pi pi-copy"
+                        label="Copiar"
+                        severity="secondary"
+                        [outlined]="true"
+                        size="small"
+                        (onClick)="copiarRespuesta()"
+                    ></p-button>
+                </div>
+                <pre class="code-block answer-code">{{ s.respuesta }}</pre>
+            </div>
+
+            @if (sugerencia(); as sug) {
+                <div class="sugerencia-panel" data-testid="sugerencia-panel">
+                    <div class="sugerencia-header">
+                        <div>
+                            <span class="label">Sugerencia de la IA</span>
+                            <h3>Evaluación automática</h3>
+                        </div>
+                        <p-tag
+                            [value]="estadoLabel(sug.estado)"
+                            [severity]="estadoSeverity(sug.estado)"
+                        ></p-tag>
+                    </div>
+
+                    <div class="sugerencia-grid">
+                        <div class="info-block">
+                            <span class="label">Confianza</span>
+                            <div class="confianza-wrap">
+                                <p-progressbar
+                                    [value]="confianzaPorcentaje(sug)"
+                                    [showValue]="false"
+                                    styleClass="confianza-bar"
+                                ></p-progressbar>
+                                <strong>{{ formatConfianza(sug) }}</strong>
+                            </div>
+                        </div>
+                        <div class="info-block is-wide">
+                            <span class="label">Justificación</span>
+                            <p class="value multiline">{{ sug.justificacion }}</p>
+                        </div>
+                    </div>
+
+                    <div class="sugerencia-actions">
+                        <p-button
+                            label="Descartar"
+                            icon="pi pi-times"
+                            severity="secondary"
+                            [text]="true"
+                            (onClick)="descartarSugerencia()"
+                        ></p-button>
+                        <p-button
+                            label="Aplicar sugerencia"
+                            icon="pi pi-check"
+                            severity="info"
+                            [outlined]="true"
+                            [loading]="submitting()"
+                            [disabled]="submitting()"
+                            (onClick)="aplicarSugerencia()"
+                        ></p-button>
+                    </div>
+                </div>
+            }
+        </section>
+
+        <section class="actions-card">
+            <div>
+                <span class="label">Calificación</span>
+                <h2>Definir resultado</h2>
+                <p>La calificación actualiza el estado de la solución y recalcula los puntos si corresponde.</p>
+            </div>
+
+            <div class="grade-actions">
+                <p-button
+                    label="Sugerir con IA"
+                    icon="pi pi-sparkles"
+                    severity="info"
+                    [outlined]="true"
+                    [loading]="sugiriendo()"
+                    [disabled]="sugiriendo() || submitting() || !!sugerencia()"
+                    (onClick)="sugerir()"
+                ></p-button>
+                <p-button
+                    label="En revisión"
+                    icon="pi pi-eye"
+                    severity="warn"
+                    [outlined]="true"
+                    [loading]="submitting() && selectedEstado() === 'En revisión'"
+                    [disabled]="submitting()"
+                    (onClick)="calificar('En revisión')"
+                ></p-button>
+                <p-button
+                    label="Incorrecto"
+                    icon="pi pi-times"
+                    severity="danger"
+                    [loading]="submitting() && selectedEstado() === 'Incorrecto'"
+                    [disabled]="submitting()"
+                    (onClick)="onIncorrecto()"
+                ></p-button>
+                <p-button
+                    label="Correcto"
+                    icon="pi pi-check"
+                    severity="success"
+                    [loading]="submitting() && selectedEstado() === 'Correcto'"
+                    [disabled]="submitting()"
+                    (onClick)="calificar('Correcto')"
+                ></p-button>
+            </div>
+        </section>
+    }
+</div>

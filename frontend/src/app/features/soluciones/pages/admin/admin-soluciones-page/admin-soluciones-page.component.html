@@ -292,11 +292,3 @@
 </div>
 
 <p-toast></p-toast>
-
-<app-calificar-solucion-modal
-    [(visible)]="calificarVisible"
-    [solucion]="calificarTarget()"
-    [submitting]="submitting()"
-    (calificarEmit)="onCalificar($event)"
-    (sugerirError)="onSugerirError($event)"
-></app-calificar-solucion-modal>

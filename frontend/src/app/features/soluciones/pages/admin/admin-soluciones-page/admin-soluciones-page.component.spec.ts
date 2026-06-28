@@ -95,29 +95,22 @@ describe('AdminSolucionesPageComponent', () => {
         expect(component.displayName(s)).toBe('juan@example.com');
     });
 
-    it('should open modal with target', () => {
+    it('should navigate to grading page with target', () => {
         const s = solucionMock(2, 'Pendiente');
+        component.competenciaId = 1;
+        component.problemaId = 3;
+
         component.openCalificar(s);
-        expect(component.calificarTarget()?.id).toBe(2);
-        expect(component.calificarVisible()).toBe(true);
-    });
 
-    it('should PATCH /soluciones/:id/estado on calificar', () => {
-        api.when('PATCH', 'soluciones/1/estado', {
-            solucion: solucionMock(1, 'Correcto'),
-            delta_puntos: 10,
-            message: 'ok',
-        });
-        api.when('GET', 'soluciones', listResponse([solucionMock(1, 'Correcto')], 1));
-
-        component.openCalificar(solucionMock(1, 'Pendiente'));
-        component.onCalificar({ estado: 'Correcto' });
-
-        const patch = api.requests.find(
-            (r) => r.method === 'PATCH' && r.url === 'PATCH soluciones/1/estado',
-        );
-        expect(patch).toBeDefined();
-        expect(patch?.body).toEqual({ estado: 'Correcto' });
+        expect(router.navigations.at(-1)?.commands).toEqual([
+            '/admin/competencias/problemas',
+            1,
+            'problema',
+            3,
+            'soluciones',
+            2,
+            'calificar',
+        ]);
     });
 
     it('should map estado to severity', () => {

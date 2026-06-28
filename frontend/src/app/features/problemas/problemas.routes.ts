@@ -47,6 +47,15 @@ export const PROBLEMAS_ROUTES: Routes = [
         data: { breadcrumb: 'Soluciones' },
     },
     {
+        path: 'soluciones/:solucionId/calificar',
+        loadComponent: () =>
+            import(
+                '@/features/soluciones/pages/admin/calificar-solucion-page/calificar-solucion-page.component'
+            ).then((m) => m.CalificarSolucionPageComponent),
+        title: 'Calificar solución',
+        data: { breadcrumb: 'Calificar' },
+    },
+    {
         path: 'problema/:problemaId/soluciones',
         loadComponent: () =>
             import(
@@ -54,5 +63,14 @@ export const PROBLEMAS_ROUTES: Routes = [
             ).then((m) => m.AdminSolucionesPageComponent),
         title: 'Soluciones del problema',
         data: { breadcrumb: 'Soluciones' },
+    },
+    {
+        path: 'problema/:problemaId/soluciones/:solucionId/calificar',
+        loadComponent: () =>
+            import(
+                '@/features/soluciones/pages/admin/calificar-solucion-page/calificar-solucion-page.component'
+            ).then((m) => m.CalificarSolucionPageComponent),
+        title: 'Calificar solución',
+        data: { breadcrumb: 'Calificar' },
     },
 ];

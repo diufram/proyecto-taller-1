@@ -42,8 +42,8 @@ export class SolucionesService {
         });
     }
 
-    getById(id: number): Observable<{ solucion: Solucion }> {
-        return this.api.get<{ solucion: Solucion }>(`${this.endpoint}/${id}`);
+    getById(id: number): Observable<{ solucion: AdminSolucion }> {
+        return this.api.get<{ solucion: AdminSolucion }>(`${this.endpoint}/${id}`);
     }
 
     getAllAdmin(
