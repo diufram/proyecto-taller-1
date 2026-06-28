@@ -270,17 +270,6 @@
     .form-field .p-inputtext,
     .form-field .p-password-input {
         width: 100%;
-        color: var(--app-text);
-        background: var(--app-input-bg);
-        border: 1px solid var(--app-input-border);
-        border-radius: 0.85rem;
-        padding: 0.85rem 1rem;
-    }
-
-    .form-field .p-inputtext:enabled:focus,
-    .form-field .p-password-input:enabled:focus {
-        border-color: var(--app-accent-border);
-        box-shadow: var(--app-ring);
     }
 
     .form-error,

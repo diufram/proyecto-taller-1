@@ -231,10 +231,6 @@
     .form-field .p-textarea,
     .codigo-textarea {
         width: 100%;
-        color: var(--app-text);
-                background: var(--app-surface-translucent);
-        border: 1px solid var(--app-border-strong);
-        border-radius: 1rem;
     }
 
     .codigo-textarea {
@@ -243,12 +239,6 @@
         font-family: 'JetBrains Mono', 'Fira Code', Menlo, Consolas, monospace;
         font-size: 0.9rem;
         line-height: 1.65;
-    }
-
-    .codigo-textarea:enabled:focus,
-    .form-field .p-select:not(.p-disabled).p-focus {
-        border-color: var(--app-accent-border);
-        box-shadow: var(--app-ring);
     }
 
     .editor-toolbar {

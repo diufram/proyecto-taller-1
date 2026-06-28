@@ -99,7 +99,7 @@
         gap: 0.45rem;
     }
 
-    .mono ::ng-deep .p-inputtext,
+    .mono .p-inputtext,
     .mono textarea {
         font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
         font-size: 0.85rem;
@@ -189,54 +189,6 @@
         overflow: auto;
         white-space: pre-wrap;
         word-break: break-word;
-    }
-
-    .p-inputtext,
-    .p-select,
-    .p-inputnumber-input,
-    .p-datepicker-input,
-    .p-inputtextarea,
-    textarea.p-inputtext {
-        background: var(--app-input-bg) !important;
-        color: var(--app-text) !important;
-        border-radius: 0.75rem !important;
-        border-color: var(--app-input-border) !important;
-
-        &:focus,
-        &:hover {
-            border-color: var(--app-accent-border) !important;
-            box-shadow: var(--app-ring) !important;
-        }
-    }
-
-    .p-select-overlay {
-        background: var(--app-surface);
-        border: 1px solid var(--app-border);
-    }
-
-    .p-select-overlay .p-select-option {
-        color: var(--app-text);
-
-        &:hover,
-        &.p-focus {
-            background: var(--app-accent-softer);
-        }
-
-        &.p-select-option-selected {
-            background: var(--app-accent-soft);
-            color: var(--app-accent-text);
-        }
-    }
-
-    .p-floatlabel label {
-        color: var(--app-text-secondary);
-    }
-
-    .p-inputtext.ng-invalid,
-    .p-select.ng-invalid,
-    textarea.ng-invalid {
-        border-color: var(--app-danger) !important;
-        box-shadow: 0 0 0 1px var(--app-danger) !important;
     }
 
     small.text-red-500 {
