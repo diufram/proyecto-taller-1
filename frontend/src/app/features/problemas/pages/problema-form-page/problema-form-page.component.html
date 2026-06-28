@@ -41,7 +41,7 @@
                             id="titulo_input"
                             formControlName="titulo"
                             class="w-full"
-                            [class.ng-invalid]="isInvalid('titulo')"
+                            [invalid]="isInvalid('titulo')"
                             [maxlength]="MAX_TITULO"
                             autocomplete="off"
                         />
@@ -54,7 +54,7 @@
                             class="w-full"
                             [options]="dificultades"
                             formControlName="dificultad"
-                            [class.ng-invalid]="isInvalid('dificultad')"
+                            [invalid]="isInvalid('dificultad')"
                             [appendTo]="'body'"
                         >
                             <ng-template let-opt pTemplate="item">
@@ -72,13 +72,19 @@
                 </div>
 
                 @if (isInvalid("titulo")) {
-                    <small class="text-red-500 mt-1 block"
-                        >El título es requerido (máx. {{ MAX_TITULO }} caracteres).</small
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        >El título es requerido (máx. {{ MAX_TITULO }} caracteres).</p-message
                     >
                 }
                 @if (isInvalid("dificultad")) {
-                    <small class="text-red-500 mt-1 block"
-                        >La dificultad es requerida.</small
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        >La dificultad es requerida.</p-message
                     >
                 }
             </section>
@@ -93,7 +99,7 @@
                             class="w-full"
                             rows="4"
                             autoResize="true"
-                            [class.ng-invalid]="isInvalid('formato_entrada')"
+                            [invalid]="isInvalid('formato_entrada')"
                             [maxlength]="MAX_FORMATO"
                         ></textarea>
                         <label for="formato_entrada_input"
@@ -109,7 +115,7 @@
                             class="w-full"
                             rows="4"
                             autoResize="true"
-                            [class.ng-invalid]="isInvalid('formato_salida')"
+                            [invalid]="isInvalid('formato_salida')"
                             [maxlength]="MAX_FORMATO"
                         ></textarea>
                         <label for="formato_salida_input"
@@ -119,13 +125,19 @@
                 </div>
 
                 @if (isInvalid("formato_entrada")) {
-                    <small class="text-red-500 mt-1 block"
-                        >El formato de entrada es requerido.</small
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        >El formato de entrada es requerido.</p-message
                     >
                 }
                 @if (isInvalid("formato_salida")) {
-                    <small class="text-red-500 mt-1 block"
-                        >El formato de salida es requerido.</small
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        >El formato de salida es requerido.</p-message
                     >
                 }
             </section>
@@ -140,7 +152,7 @@
                             class="w-full mono"
                             rows="5"
                             autoResize="true"
-                            [class.ng-invalid]="isInvalid('ejemplo_entrada')"
+                            [invalid]="isInvalid('ejemplo_entrada')"
                             [maxlength]="MAX_EJEMPLO"
                         ></textarea>
                         <label for="ejemplo_entrada_input"
@@ -156,7 +168,7 @@
                             class="w-full mono"
                             rows="5"
                             autoResize="true"
-                            [class.ng-invalid]="isInvalid('ejemplo_salida')"
+                            [invalid]="isInvalid('ejemplo_salida')"
                             [maxlength]="MAX_EJEMPLO"
                         ></textarea>
                         <label for="ejemplo_salida_input"
@@ -166,13 +178,19 @@
                 </div>
 
                 @if (isInvalid("ejemplo_entrada")) {
-                    <small class="text-red-500 mt-1 block"
-                        >El ejemplo de entrada es requerido.</small
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        >El ejemplo de entrada es requerido.</p-message
                     >
                 }
                 @if (isInvalid("ejemplo_salida")) {
-                    <small class="text-red-500 mt-1 block"
-                        >El ejemplo de salida es requerido.</small
+                    <p-message
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        >El ejemplo de salida es requerido.</p-message
                     >
                 }
 

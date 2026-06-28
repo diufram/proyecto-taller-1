@@ -35,7 +35,7 @@
         <form [formGroup]="form" class="competencia-form-card">
             <section class="form-section">
                 <div class="form-grid is-single">
-                    <div class="mb-4">
+                    <div class="form-field">
                         <p-floatlabel variant="on">
                             <input
                                 pInputText
@@ -43,26 +43,26 @@
                                 type="text"
                                 formControlName="nombre"
                                 class="w-full"
-                                variant="filled"
-                                pSize="small"
                                 [invalid]="isInvalid('nombre')"
+                                autocomplete="off"
                             />
                             <label for="nombre_input">Nombre</label>
                         </p-floatlabel>
                         @if (isInvalid("nombre")) {
-                            <small class="text-red-500 mt-1 block"
-                                >El nombre es requerido.</small
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >El nombre es requerido.</p-message
                             >
                         }
                     </div>
                 </div>
             </section>
 
-            <div class="section-divider"></div>
-
             <section class="form-section">
                 <div class="form-grid">
-                    <div class="mb-4">
+                    <div class="form-field">
                         <p-floatlabel variant="on">
                             <p-datepicker
                                 inputId="fecha_inicio_input"
@@ -72,19 +72,21 @@
                                 iconDisplay="input"
                                 styleClass="w-full"
                                 [inputStyle]="{ width: '100%' }"
-                                variant="filled"
                                 [invalid]="isInvalid('fecha_inicio')"
                             ></p-datepicker>
                             <label for="fecha_inicio_input">Fecha inicio</label>
                         </p-floatlabel>
                         @if (isInvalid("fecha_inicio")) {
-                            <small class="text-red-500 mt-1 block"
-                                >La fecha de inicio es requerida.</small
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >La fecha de inicio es requerida.</p-message
                             >
                         }
                     </div>
 
-                    <div class="mb-4">
+                    <div class="form-field">
                         <p-floatlabel variant="on">
                             <p-datepicker
                                 inputId="fecha_fin_input"
@@ -94,30 +96,33 @@
                                 iconDisplay="input"
                                 styleClass="w-full"
                                 [inputStyle]="{ width: '100%' }"
-                                variant="filled"
                                 [invalid]="isInvalid('fecha_fin') || hasDateValidationError()"
                             ></p-datepicker>
                             <label for="fecha_fin_input">Fecha fin</label>
                         </p-floatlabel>
                         @if (isInvalid("fecha_fin")) {
-                            <small class="text-red-500 mt-1 block"
-                                >La fecha de fin es requerida.</small
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >La fecha de fin es requerida.</p-message
                             >
                         }
                         @if (hasDateValidationError()) {
-                            <small class="text-red-500 mt-1 block"
-                                >La fecha de fin debe ser posterior a la fecha de inicio.</small
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >La fecha de fin debe ser posterior a la fecha de inicio.</p-message
                             >
                         }
                     </div>
                 </div>
             </section>
 
-            <div class="section-divider"></div>
-
             <section class="form-section">
                 <div class="form-grid">
-                    <div class="mb-4">
+                    <div class="form-field">
                         <p-floatlabel variant="on">
                             <p-select
                                 inputId="nivel_input"
@@ -130,13 +135,16 @@
                             <label for="nivel_input">Nivel</label>
                         </p-floatlabel>
                         @if (isInvalid("nivel_dificultad")) {
-                            <small class="text-red-500 mt-1 block"
-                                >El nivel es requerido.</small
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >El nivel es requerido.</p-message
                             >
                         }
                     </div>
 
-                    <div class="mb-4">
+                    <div class="form-field">
                         <p-floatlabel variant="on">
                             <p-select
                                 inputId="estado_input"
@@ -149,15 +157,18 @@
                             <label for="estado_input">Estado</label>
                         </p-floatlabel>
                         @if (isInvalid("estado")) {
-                            <small class="text-red-500 mt-1 block"
-                                >El estado es requerido.</small
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >El estado es requerido.</p-message
                             >
                         }
                     </div>
                 </div>
 
                 <div class="form-grid is-single">
-                    <div class="mb-4">
+                    <div class="form-field">
                         <p-floatlabel variant="on">
                             <p-inputNumber
                                 inputId="max_input"
@@ -170,8 +181,11 @@
                             <label for="max_input">Máx. participantes</label>
                         </p-floatlabel>
                         @if (isInvalid("max_participantes")) {
-                            <small class="text-red-500 mt-1 block"
-                                >Debe ser un número válido.</small
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >Debe ser un número válido.</p-message
                             >
                         }
                     </div>

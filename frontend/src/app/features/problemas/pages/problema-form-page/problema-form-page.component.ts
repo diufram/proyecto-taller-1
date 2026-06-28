@@ -16,6 +16,7 @@ import { finalize } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
@@ -45,6 +46,7 @@ export type ProblemaFormMode = 'create' | 'edit';
         ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
+        MessageModule,
         TextareaModule,
         SelectModule,
         ToastModule,
