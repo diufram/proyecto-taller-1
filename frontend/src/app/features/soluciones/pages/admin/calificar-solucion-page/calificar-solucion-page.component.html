@@ -164,50 +164,50 @@
                     </div>
                 </div>
             }
-        </section>
 
-        <section class="actions-card">
-            <div>
-                <span class="label">Calificación</span>
-                <h2>Definir resultado</h2>
-                <p>La calificación actualiza el estado de la solución y recalcula los puntos si corresponde.</p>
-            </div>
+            <div class="grade-panel">
+                <div>
+                    <span class="label">Calificación</span>
+                    <h2>Definir resultado</h2>
+                    <p>La calificación actualiza el estado de la solución y recalcula los puntos si corresponde.</p>
+                </div>
 
-            <div class="grade-actions">
-                <p-button
-                    label="Sugerir con IA"
-                    icon="pi pi-sparkles"
-                    severity="info"
-                    [outlined]="true"
-                    [loading]="sugiriendo()"
-                    [disabled]="sugiriendo() || submitting() || !!sugerencia()"
-                    (onClick)="sugerir()"
-                ></p-button>
-                <p-button
-                    label="En revisión"
-                    icon="pi pi-eye"
-                    severity="warn"
-                    [outlined]="true"
-                    [loading]="submitting() && selectedEstado() === 'En revisión'"
-                    [disabled]="submitting()"
-                    (onClick)="calificar('En revisión')"
-                ></p-button>
-                <p-button
-                    label="Incorrecto"
-                    icon="pi pi-times"
-                    severity="danger"
-                    [loading]="submitting() && selectedEstado() === 'Incorrecto'"
-                    [disabled]="submitting()"
-                    (onClick)="onIncorrecto()"
-                ></p-button>
-                <p-button
-                    label="Correcto"
-                    icon="pi pi-check"
-                    severity="success"
-                    [loading]="submitting() && selectedEstado() === 'Correcto'"
-                    [disabled]="submitting()"
-                    (onClick)="calificar('Correcto')"
-                ></p-button>
+                <div class="grade-actions">
+                    <p-button
+                        label="Sugerir con IA"
+                        icon="pi pi-sparkles"
+                        severity="info"
+                        [outlined]="true"
+                        [loading]="sugiriendo()"
+                        [disabled]="sugiriendo() || submitting() || !!sugerencia()"
+                        (onClick)="sugerir()"
+                    ></p-button>
+                    <p-button
+                        label="En revisión"
+                        icon="pi pi-eye"
+                        severity="warn"
+                        [outlined]="true"
+                        [loading]="submitting() && selectedEstado() === 'En revisión'"
+                        [disabled]="submitting()"
+                        (onClick)="calificar('En revisión')"
+                    ></p-button>
+                    <p-button
+                        label="Incorrecto"
+                        icon="pi pi-times"
+                        severity="danger"
+                        [loading]="submitting() && selectedEstado() === 'Incorrecto'"
+                        [disabled]="submitting()"
+                        (onClick)="onIncorrecto()"
+                    ></p-button>
+                    <p-button
+                        label="Correcto"
+                        icon="pi pi-check"
+                        severity="success"
+                        [loading]="submitting() && selectedEstado() === 'Correcto'"
+                        [disabled]="submitting()"
+                        (onClick)="calificar('Correcto')"
+                    ></p-button>
+                </div>
             </div>
         </section>
     }

@@ -16,8 +16,7 @@
     }
 
     .calificar-hero,
-    .calificar-card,
-    .actions-card {
+    .calificar-card {
         background: var(--app-surface);
         border: 1px solid var(--app-border);
         border-radius: 1rem;
@@ -47,12 +46,11 @@
         gap: 0.5rem;
     }
 
-    .calificar-card,
-    .actions-card {
+    .calificar-card {
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 1.5rem;
     }
 
     .summary-grid,
@@ -68,6 +66,9 @@
     }
 
     .summary-grid {
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--app-border-soft);
+
         @media (min-width: 960px) {
             grid-template-columns: 2fr 1fr 1fr 1fr;
         }
@@ -78,10 +79,7 @@
         flex-direction: column;
         gap: 0.35rem;
         min-width: 0;
-        padding: 0.85rem;
-        border-radius: 0.9rem;
-        background: var(--app-surface-soft);
-        border: 1px solid var(--app-border-soft);
+        padding: 0;
     }
 
     .info-block.is-wide {
@@ -126,7 +124,7 @@
     .problem-header,
     .answer-heading,
     .sugerencia-header,
-    .actions-card {
+    .grade-panel {
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
@@ -134,16 +132,14 @@
     }
 
     .problem-header {
-        padding: 1rem;
-        border-radius: 0.95rem;
-        background: var(--app-surface-softer-2);
-        border: 1px solid var(--app-border-soft);
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--app-border-soft);
     }
 
     .problem-header h2,
     .answer-heading h3,
     .sugerencia-header h3,
-    .actions-card h2 {
+    .grade-panel h2 {
         margin: 0.2rem 0 0;
         color: var(--app-text);
         font-size: 1.15rem;
@@ -152,7 +148,7 @@
     }
 
     .problem-header p,
-    .actions-card p {
+    .grade-panel p {
         margin: 0.25rem 0 0;
         color: var(--app-text-secondary);
         line-height: 1.5;
@@ -187,9 +183,14 @@
 
     .sugerencia-panel {
         padding: 1rem;
-        border-radius: 1rem;
+        border-radius: 0.85rem;
         background: var(--app-accent-softer);
-        border: 1px solid var(--app-accent-border-softer);
+        border-left: 3px solid var(--app-accent);
+    }
+
+    .grade-panel {
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--app-border-soft);
     }
 
     .confianza-wrap {
@@ -216,15 +217,14 @@
 
     @media (max-width: 640px) {
         .calificar-hero,
-        .calificar-card,
-        .actions-card {
+        .calificar-card {
             border-radius: 0.85rem;
         }
 
         .problem-header,
         .answer-heading,
         .sugerencia-header,
-        .actions-card {
+        .grade-panel {
             flex-direction: column;
             align-items: stretch;
         }
