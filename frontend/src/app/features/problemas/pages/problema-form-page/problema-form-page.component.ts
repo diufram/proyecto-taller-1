@@ -176,30 +176,6 @@ export class ProblemaFormPageComponent implements OnInit {
             .catch(() => this.toast.error('No se pudo copiar'));
     }
 
-    fillExampleEntrada(): void {
-        this.form
-            .get('ejemplo_entrada')
-            ?.setValue('3 5\n2 7\n10 20');
-    }
-
-    fillExampleSalida(): void {
-        const entrada = this.form.get('ejemplo_entrada')?.value ?? '';
-        const lineas = entrada
-            .split('\n')
-            .map((l: string) => l.trim())
-            .filter((l: string) => l.length > 0)
-            .map((l: string) => {
-                const nums = l.split(/\s+/).map(Number);
-                if (nums.length === 2 && nums.every((n) => !isNaN(n))) {
-                    return String(nums[0] + nums[1]);
-                }
-                return '';
-            })
-            .filter((s: string) => s.length > 0)
-            .join('\n');
-        this.form.get('ejemplo_salida')?.setValue(lineas);
-    }
-
     save(): void {
         if (this.form.invalid) {
             this.form.markAllAsTouched();

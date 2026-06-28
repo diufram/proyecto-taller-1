@@ -31,38 +31,23 @@
     .problema-form-hero-copy {
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
-        gap: 0.75rem;
         min-width: 0;
         flex: 1 1 auto;
+
+        h1 {
+            margin: 0;
+            color: var(--app-text);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
-    .label-eyebrow {
-        display: inline-flex;
-        padding: 0.3rem 0.65rem;
-        border-radius: 999px;
-        border: 1px solid var(--app-accent-border-softer);
-        background: var(--app-accent-softer);
-        color: var(--app-accent-text);
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-    }
-
-    .problema-form-hero-copy h1 {
-        margin: 0;
-        color: var(--app-text);
-        font-size: 1.25rem;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        line-height: 1.2;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .hero-actions {
+    .problema-form-hero-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
@@ -86,46 +71,16 @@
         gap: 1.5rem;
     }
 
-    .form-section {
+.form-section {
         display: flex;
         flex-direction: column;
         gap: 1.1rem;
     }
 
-    .section-divider {
-        height: 1px;
-        background: var(--app-border);
-        border-radius: 999px;
-    }
-
-    .section-header {
-        display: flex;
-        flex-direction: column;
-        gap: 0.15rem;
-
-        h3 {
-            margin: 0;
-            color: var(--app-text);
-            font-size: 1rem;
-            font-weight: 800;
-            letter-spacing: -0.01em;
-        }
-
-        &.section-header-row {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-    }
-
-    .label {
+    .hint-text {
+        font-size: 0.72rem;
         color: var(--app-text-secondary);
-        font-size: 0.68rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+        font-style: italic;
     }
 
     .form-grid {
@@ -142,25 +97,6 @@
         display: flex;
         flex-direction: column;
         gap: 0.45rem;
-    }
-
-    .field-row {
-        position: relative;
-    }
-
-    .char-counter {
-        position: absolute;
-        right: 0.85rem;
-        bottom: 0.65rem;
-        font-size: 0.68rem;
-        color: var(--app-text-secondary);
-        font-weight: 700;
-        font-variant-numeric: tabular-nums;
-        pointer-events: none;
-
-        &.is-near-limit {
-            color: var(--app-warn);
-        }
     }
 
     .mono ::ng-deep .p-inputtext,
@@ -262,9 +198,9 @@
     .p-inputtextarea,
     textarea.p-inputtext {
         background: var(--app-input-bg) !important;
-        border: 1px solid var(--app-input-border) !important;
         color: var(--app-text) !important;
         border-radius: 0.75rem !important;
+        border-color: var(--app-input-border) !important;
 
         &:focus,
         &:hover {
@@ -296,12 +232,9 @@
         color: var(--app-text-secondary);
     }
 
-    .p-inputtext.ng-invalid.ng-dirty,
-    .p-inputtext.ng-invalid.ng-touched,
-    .p-select.ng-invalid.ng-dirty,
-    .p-select.ng-invalid.ng-touched,
-    textarea.ng-invalid.ng-dirty,
-    textarea.ng-invalid.ng-touched {
+    .p-inputtext.ng-invalid,
+    .p-select.ng-invalid,
+    textarea.ng-invalid {
         border-color: var(--app-danger) !important;
         box-shadow: 0 0 0 1px var(--app-danger) !important;
     }

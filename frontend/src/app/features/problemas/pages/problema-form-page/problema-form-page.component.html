@@ -3,11 +3,10 @@
 <div class="problema-form-page">
     <header class="problema-form-hero">
         <div class="problema-form-hero-copy">
-            <span class="label-eyebrow">{{ competenciaNombre }}</span>
             <h1>{{ pageTitle }}</h1>
         </div>
 
-        <div class="hero-actions">
+        <div class="problema-form-hero-actions">
             <p-button
                 icon="pi pi-arrow-left"
                 label="Volver"
@@ -35,51 +34,28 @@
     } @else {
         <form [formGroup]="form" class="problema-form-card">
             <section class="form-section">
-                <header class="section-header">
-                    <span class="label">Identidad</span>
-                    <h3>Información general</h3>
-                </header>
+                <div class="form-grid">
+                    <p-floatlabel variant="on">
+                        <input
+                            pInputText
+                            id="titulo_input"
+                            formControlName="titulo"
+                            class="w-full"
+                            [class.ng-invalid]="isInvalid('titulo')"
+                            [maxlength]="MAX_TITULO"
+                            autocomplete="off"
+                        />
+                        <label for="titulo_input">Título</label>
+                    </p-floatlabel>
 
-                <div class="form-field">
-                    <div class="field-row">
-                        <p-floatlabel variant="on">
-                            <input
-                                pInputText
-                                id="titulo_input"
-                                type="text"
-                                formControlName="titulo"
-                                class="w-full"
-                                variant="filled"
-                                pSize="small"
-                                [maxlength]="MAX_TITULO"
-                                [invalid]="isInvalid('titulo')"
-                            />
-                            <label for="titulo_input">Título</label>
-                        </p-floatlabel>
-                        <span
-                            class="char-counter"
-                            [class.is-near-limit]="charCount('titulo') > MAX_TITULO * 0.85"
-                        >
-                            {{ charCount('titulo') }}/{{ MAX_TITULO }}
-                        </span>
-                    </div>
-                    @if (isInvalid("titulo")) {
-                        <small class="text-red-500 mt-1 block">
-                            El título es requerido (máx. {{ MAX_TITULO }} caracteres).
-                        </small>
-                    }
-                </div>
-
-                <div class="form-field">
                     <p-floatlabel variant="on">
                         <p-select
                             inputId="dificultad_input"
+                            class="w-full"
                             [options]="dificultades"
                             formControlName="dificultad"
-                            [invalid]="isInvalid('dificultad')"
-                            class="w-full"
+                            [class.ng-invalid]="isInvalid('dificultad')"
                             [appendTo]="'body'"
-                            placeholder=" "
                         >
                             <ng-template let-opt pTemplate="item">
                                 <div class="dificultad-option">
@@ -93,181 +69,112 @@
                         </p-select>
                         <label for="dificultad_input">Dificultad</label>
                     </p-floatlabel>
-                    @if (isInvalid("dificultad")) {
-                        <small class="text-red-500 mt-1 block">
-                            La dificultad es requerida.
-                        </small>
-                    }
                 </div>
+
+                @if (isInvalid("titulo")) {
+                    <small class="text-red-500 mt-1 block"
+                        >El título es requerido (máx. {{ MAX_TITULO }} caracteres).</small
+                    >
+                }
+                @if (isInvalid("dificultad")) {
+                    <small class="text-red-500 mt-1 block"
+                        >La dificultad es requerida.</small
+                    >
+                }
             </section>
 
-            <div class="section-divider"></div>
-
             <section class="form-section">
-                <header class="section-header">
-                    <span class="label">Especificación</span>
-                    <h3>Formato de entrada y salida</h3>
-                </header>
-
                 <div class="form-grid">
-                    <div class="form-field">
-                        <div class="field-row">
-                            <p-floatlabel variant="on">
-                                <textarea
-                                    pTextarea
-                                    id="formato_entrada_input"
-                                    formControlName="formato_entrada"
-                                    rows="4"
-                                    autoResize="true"
-                                    class="w-full"
-                                    variant="filled"
-                                    [maxlength]="MAX_FORMATO"
-                                    [invalid]="isInvalid('formato_entrada')"
-                                ></textarea>
-                                <label for="formato_entrada_input">
-                                    Formato de entrada
-                                </label>
-                            </p-floatlabel>
-                            <span
-                                class="char-counter"
-                                [class.is-near-limit]="charCount('formato_entrada') > MAX_FORMATO * 0.85"
-                            >
-                                {{ charCount('formato_entrada') }}/{{ MAX_FORMATO }}
-                            </span>
-                        </div>
-                        @if (isInvalid("formato_entrada")) {
-                            <small class="text-red-500 mt-1 block">
-                                El formato de entrada es requerido.
-                            </small>
-                        }
-                    </div>
+                    <p-floatlabel variant="on">
+                        <textarea
+                            pTextarea
+                            id="formato_entrada_input"
+                            formControlName="formato_entrada"
+                            class="w-full"
+                            rows="4"
+                            autoResize="true"
+                            [class.ng-invalid]="isInvalid('formato_entrada')"
+                            [maxlength]="MAX_FORMATO"
+                        ></textarea>
+                        <label for="formato_entrada_input"
+                            >Formato de entrada</label
+                        >
+                    </p-floatlabel>
 
-                    <div class="form-field">
-                        <div class="field-row">
-                            <p-floatlabel variant="on">
-                                <textarea
-                                    pTextarea
-                                    id="formato_salida_input"
-                                    formControlName="formato_salida"
-                                    rows="4"
-                                    autoResize="true"
-                                    class="w-full"
-                                    variant="filled"
-                                    [maxlength]="MAX_FORMATO"
-                                    [invalid]="isInvalid('formato_salida')"
-                                ></textarea>
-                                <label for="formato_salida_input">
-                                    Formato de salida
-                                </label>
-                            </p-floatlabel>
-                            <span
-                                class="char-counter"
-                                [class.is-near-limit]="charCount('formato_salida') > MAX_FORMATO * 0.85"
-                            >
-                                {{ charCount('formato_salida') }}/{{ MAX_FORMATO }}
-                            </span>
-                        </div>
-                        @if (isInvalid("formato_salida")) {
-                            <small class="text-red-500 mt-1 block">
-                                El formato de salida es requerido.
-                            </small>
-                        }
-                    </div>
+                    <p-floatlabel variant="on">
+                        <textarea
+                            pTextarea
+                            id="formato_salida_input"
+                            formControlName="formato_salida"
+                            class="w-full"
+                            rows="4"
+                            autoResize="true"
+                            [class.ng-invalid]="isInvalid('formato_salida')"
+                            [maxlength]="MAX_FORMATO"
+                        ></textarea>
+                        <label for="formato_salida_input"
+                            >Formato de salida</label
+                        >
+                    </p-floatlabel>
                 </div>
+
+                @if (isInvalid("formato_entrada")) {
+                    <small class="text-red-500 mt-1 block"
+                        >El formato de entrada es requerido.</small
+                    >
+                }
+                @if (isInvalid("formato_salida")) {
+                    <small class="text-red-500 mt-1 block"
+                        >El formato de salida es requerido.</small
+                    >
+                }
             </section>
 
-            <div class="section-divider"></div>
-
             <section class="form-section">
-                <header class="section-header section-header-row">
-                    <div>
-                        <span class="label">Muestra</span>
-                        <h3>Ejemplo</h3>
-                    </div>
-                    <p-button
-                        icon="pi pi-bolt"
-                        label="Auto-rellenar"
-                        severity="secondary"
-                        [text]="true"
-                        size="small"
-                        pTooltip="Genera un ejemplo de suma a partir de la entrada"
-                        (onClick)="fillExampleEntrada()"
-                    ></p-button>
-                </header>
-
                 <div class="form-grid">
-                    <div class="form-field">
-                        <div class="field-row">
-                            <p-floatlabel variant="on">
-                                <textarea
-                                    pTextarea
-                                    id="ejemplo_entrada_input"
-                                    formControlName="ejemplo_entrada"
-                                    rows="5"
-                                    autoResize="true"
-                                    class="w-full mono"
-                                    variant="filled"
-                                    [maxlength]="MAX_EJEMPLO"
-                                    [invalid]="isInvalid('ejemplo_entrada')"
-                                ></textarea>
-                                <label for="ejemplo_entrada_input">
-                                    Ejemplo de entrada
-                                </label>
-                            </p-floatlabel>
-                            <span
-                                class="char-counter"
-                                [class.is-near-limit]="charCount('ejemplo_entrada') > MAX_EJEMPLO * 0.85"
-                            >
-                                {{ charCount('ejemplo_entrada') }}/{{ MAX_EJEMPLO }}
-                            </span>
-                        </div>
-                        @if (isInvalid("ejemplo_entrada")) {
-                            <small class="text-red-500 mt-1 block">
-                                El ejemplo de entrada es requerido.
-                            </small>
-                        }
-                    </div>
+                    <p-floatlabel variant="on">
+                        <textarea
+                            pTextarea
+                            id="ejemplo_entrada_input"
+                            formControlName="ejemplo_entrada"
+                            class="w-full mono"
+                            rows="5"
+                            autoResize="true"
+                            [class.ng-invalid]="isInvalid('ejemplo_entrada')"
+                            [maxlength]="MAX_EJEMPLO"
+                        ></textarea>
+                        <label for="ejemplo_entrada_input"
+                            >Ejemplo de entrada</label
+                        >
+                    </p-floatlabel>
 
-                    <div class="form-field">
-                        <div class="field-row">
-                            <p-floatlabel variant="on">
-                                <textarea
-                                    pTextarea
-                                    id="ejemplo_salida_input"
-                                    formControlName="ejemplo_salida"
-                                    rows="5"
-                                    autoResize="true"
-                                    class="w-full mono"
-                                    variant="filled"
-                                    [maxlength]="MAX_EJEMPLO"
-                                    [invalid]="isInvalid('ejemplo_salida')"
-                                ></textarea>
-                                <label for="ejemplo_salida_input">
-                                    Ejemplo de salida
-                                </label>
-                            </p-floatlabel>
-                            <span
-                                class="char-counter"
-                                [class.is-near-limit]="charCount('ejemplo_salida') > MAX_EJEMPLO * 0.85"
-                            >
-                                {{ charCount('ejemplo_salida') }}/{{ MAX_EJEMPLO }}
-                            </span>
-                            <p-button
-                                icon="pi pi-sparkles"
-                                severity="secondary"
-                                [text]="true"
-                                size="small"
-                                pTooltip="Derivar salida de la entrada (sumas)"
-                                (onClick)="fillExampleSalida()"
-                            ></p-button>
-                        </div>
-                        @if (isInvalid("ejemplo_salida")) {
-                            <small class="text-red-500 mt-1 block">
-                                El ejemplo de salida es requerido.
-                            </small>
-                        }
-                    </div>
+                    <p-floatlabel variant="on">
+                        <textarea
+                            pTextarea
+                            id="ejemplo_salida_input"
+                            formControlName="ejemplo_salida"
+                            class="w-full mono"
+                            rows="5"
+                            autoResize="true"
+                            [class.ng-invalid]="isInvalid('ejemplo_salida')"
+                            [maxlength]="MAX_EJEMPLO"
+                        ></textarea>
+                        <label for="ejemplo_salida_input"
+                            >Ejemplo de salida</label
+                        >
+                    </p-floatlabel>
                 </div>
+
+                @if (isInvalid("ejemplo_entrada")) {
+                    <small class="text-red-500 mt-1 block"
+                        >El ejemplo de entrada es requerido.</small
+                    >
+                }
+                @if (isInvalid("ejemplo_salida")) {
+                    <small class="text-red-500 mt-1 block"
+                        >El ejemplo de salida es requerido.</small
+                    >
+                }
 
                 @if (form.value.ejemplo_entrada || form.value.ejemplo_salida) {
                     <div class="example-preview">

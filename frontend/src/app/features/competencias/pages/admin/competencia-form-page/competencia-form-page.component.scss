@@ -71,7 +71,7 @@
         gap: 1.5rem;
     }
 
-    .form-section {
+.form-section {
         display: flex;
         flex-direction: column;
         gap: 1.1rem;
@@ -85,8 +85,8 @@
 
     .section-header {
         display: flex;
-        flex-direction: column;
-        gap: 0.15rem;
+        align-items: center;
+        gap: 0.75rem;
 
         h3 {
             margin: 0;
@@ -95,14 +95,6 @@
             font-weight: 800;
             letter-spacing: -0.01em;
         }
-    }
-
-    .label {
-        color: var(--app-text-secondary);
-        font-size: 0.68rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
     }
 
     .form-grid {
@@ -147,27 +139,15 @@
     .p-inputnumber-input,
     .p-datepicker-input {
         background: var(--app-input-bg) !important;
-        border: 1px solid var(--app-input-border) !important;
         color: var(--app-text) !important;
         border-radius: 0.75rem !important;
+        border-color: var(--app-input-border) !important;
 
         &:focus,
         &:hover {
             border-color: var(--app-accent-border) !important;
             box-shadow: var(--app-ring) !important;
         }
-    }
-
-    .p-inputtext.ng-invalid.ng-dirty,
-    .p-inputtext.ng-invalid.ng-touched,
-    .p-inputnumber.ng-invalid.ng-dirty > .p-inputnumber-input,
-    .p-inputnumber.ng-invalid.ng-touched > .p-inputnumber-input,
-    .p-select.ng-invalid.ng-dirty,
-    .p-select.ng-invalid.ng-touched,
-    .p-datepicker.ng-invalid.ng-dirty > .p-datepicker-input,
-    .p-datepicker.ng-invalid.ng-touched > .p-datepicker-input {
-        border-color: var(--app-danger) !important;
-        box-shadow: 0 0 0 1px var(--app-danger) !important;
     }
 
     .p-select-overlay {
@@ -191,6 +171,13 @@
 
     .p-floatlabel label {
         color: var(--app-text-secondary);
+    }
+
+    .p-inputtext.ng-invalid,
+    .p-select.ng-invalid,
+    .p-datepicker.ng-invalid {
+        border-color: var(--app-danger) !important;
+        box-shadow: 0 0 0 1px var(--app-danger) !important;
     }
 
     small.text-red-500 {
