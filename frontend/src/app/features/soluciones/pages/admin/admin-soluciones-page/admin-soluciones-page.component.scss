@@ -225,6 +225,28 @@
         font-weight: 600;
     }
 
+    .score-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        padding: 0.3rem 0.6rem;
+        border-radius: 999px;
+        color: var(--app-accent-text-strong);
+        background: var(--app-accent-softer);
+        border: 1px solid var(--app-accent-border-softer);
+        font-size: 0.82rem;
+        font-weight: 900;
+        white-space: nowrap;
+    }
+
+    .score-empty {
+        color: var(--app-text-secondary);
+        font-size: 0.82rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
     .empty-state {
         display: flex;
         flex-direction: column;

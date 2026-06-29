@@ -129,6 +129,7 @@
                             }
                             <th>Lenguaje</th>
                             <th>Estado</th>
+                            <th>Calificación</th>
                             <th>Enviado</th>
                             <th class="text-right">Acciones</th>
                         </tr>
@@ -172,6 +173,13 @@
                                     [value]="estadoLabel(s.estado)"
                                     [severity]="estadoSeverity(s.estado)"
                                 ></p-tag>
+                            </td>
+                            <td>
+                                @if (s.criterios_evaluacion?.length || s.puntaje_total > 0) {
+                                    <span class="score-badge">{{ s.puntaje_total }} / 100</span>
+                                } @else {
+                                    <span class="score-empty">Sin calificar</span>
+                                }
                             </td>
                             <td>{{ s.created_at | date: 'short' }}</td>
                             <td>
@@ -254,6 +262,14 @@
                                         severity="info"
                                     ></p-tag>
                                 </div>
+                            </div>
+                            <div>
+                                <span class="label">Calificación</span>
+                                @if (s.criterios_evaluacion?.length || s.puntaje_total > 0) {
+                                    <span class="score-badge">{{ s.puntaje_total }} / 100</span>
+                                } @else {
+                                    <span class="score-empty">Sin calificar</span>
+                                }
                             </div>
                             <div>
                                 <span class="label">Enviado</span>
