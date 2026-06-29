@@ -40,7 +40,7 @@ export const rankingSeed: Seed = {
       .createQueryBuilder()
       .update(Usuario)
       .set({ puntos_totales: 0, posicion_global: () => 'NULL' })
-      .where('rol = :rol', { rol: Rol.USER })
+      .where('rol = :rol', { rol: Rol.ESTUDIANTE })
       .execute();
 
     const problemas = await problemaRepository.find();
@@ -89,7 +89,7 @@ async function recomputarPosiciones(repo: Repository<Usuario>) {
       'ROW_NUMBER() OVER (ORDER BY u.puntos_totales DESC, u.created_at ASC)',
       'pos',
     )
-    .where('u.rol = :rol', { rol: 'user' })
+    .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
     .getRawMany<{ id: number; pos: string }>();
 
   for (const r of ranking) {

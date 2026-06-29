@@ -106,7 +106,7 @@ export class DashboardPage implements OnInit {
                 value: summary.totalUsuarios,
                 icon: 'pi pi-users',
                 tone: 'blue',
-                detail: 'Participantes con rol usuario',
+                detail: 'Participantes con rol estudiante',
             },
             {
                 label: 'Soluciones enviadas',

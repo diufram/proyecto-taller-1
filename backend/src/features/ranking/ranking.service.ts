@@ -23,7 +23,7 @@ export class RankingService {
 
   async getGlobalRanking(limit = 20): Promise<RankingResponseDto> {
     const totalUsers = await this.usuarioRepository.count({
-      where: { rol: Rol.USER },
+      where: { rol: Rol.ESTUDIANTE },
     });
 
     const usuarios = await this.usuarioRepository
@@ -36,7 +36,7 @@ export class RankingService {
         { correcto: EstadoSolucion.CORRECTO },
       )
       .leftJoin('personas', 'p', 'p.usuarioId = u.id')
-      .where('u.rol = :rol', { rol: Rol.USER })
+      .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
       .select([
         'u.id AS id',
         'u.correo_electronico AS correo_electronico',
@@ -107,7 +107,7 @@ export class RankingService {
       this.inscripcionRepository.count({
         where: { usuario: { id: usuarioId } },
       }),
-      this.usuarioRepository.count({ where: { rol: Rol.USER } }),
+      this.usuarioRepository.count({ where: { rol: Rol.ESTUDIANTE } }),
     ]);
 
     let position = usuario.posicion_global ?? null;
@@ -132,7 +132,7 @@ export class RankingService {
 
     const count = await this.usuarioRepository
       .createQueryBuilder('u')
-      .where('u.rol = :rol', { rol: Rol.USER })
+      .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
       .andWhere(
         '(u.puntos_totales > :puntos) OR (u.puntos_totales = :puntos AND u.created_at < :createdAt)',
         { puntos: target.puntos_totales, createdAt: target.createdAt },

@@ -62,7 +62,7 @@ export const userSeed: Seed = {
       const user = repository.create({
         correo_electronico: userData.correo_electronico,
         contrasena: hashedPassword,
-        rol: Rol.USER,
+        rol: Rol.ESTUDIANTE,
       });
 
       await repository.save(user);

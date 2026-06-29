@@ -51,7 +51,7 @@ export class DashboardService {
         })
         .getCount(),
       this.problemaRepository.count(),
-      this.usuarioRepository.count({ where: { rol: Rol.USER } }),
+      this.usuarioRepository.count({ where: { rol: Rol.ESTUDIANTE } }),
       this.solucionRepository.count(),
       this.solucionRepository.count({
         where: { estado: EstadoSolucion.CORRECTO },
@@ -146,7 +146,7 @@ export class DashboardService {
         { correcto: EstadoSolucion.CORRECTO },
       )
       .leftJoin('personas', 'p', 'p.usuarioId = u.id')
-      .where('u.rol = :rol', { rol: Rol.USER })
+      .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
       .select([
         'u.id AS id',
         'u.correo_electronico AS correo_electronico',

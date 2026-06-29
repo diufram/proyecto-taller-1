@@ -93,7 +93,7 @@ describe('AuthService', () => {
                         usuario: {
                             id: 1,
                             correo_electronico: 'a@b.com',
-                            rol: 'user',
+                            rol: 'estudiante',
                         },
                     }),
                     revocarRefreshToken: jest.fn().mockResolvedValue(undefined),
