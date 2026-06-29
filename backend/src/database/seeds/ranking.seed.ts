@@ -49,16 +49,17 @@ export const rankingSeed: Seed = {
       puntosPorProblema.set(p.id, PUNTOS_POR_DIFICULTAD[p.dificultad] ?? 0);
     }
 
-    // Sumar puntos por cada solución CORRECTA
+    // Sumar puntos por cada solución REVISADA proporcional al puntaje obtenido.
     const correctas = await solucionRepository.find({
-      where: { estado: EstadoSolucion.CORRECTO },
+      where: { estado: EstadoSolucion.REVISADO },
       relations: ['usuario', 'problema'],
     });
 
     const puntosPorUsuario = new Map<number, number>();
     for (const s of correctas) {
       if (!s.usuario) continue;
-      const puntos = puntosPorProblema.get(s.problema.id) ?? 0;
+      const maxPuntos = puntosPorProblema.get(s.problema.id) ?? 0;
+      const puntos = Math.round(maxPuntos * ((s.puntaje_total ?? 0) / 100));
       puntosPorUsuario.set(
         s.usuario.id,
         (puntosPorUsuario.get(s.usuario.id) ?? 0) + puntos,

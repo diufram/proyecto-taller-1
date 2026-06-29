@@ -1,8 +1,7 @@
 export type EstadoSolucion =
     | 'Pendiente'
-    | 'Correcto'
-    | 'Incorrecto'
-    | 'En revisión';
+    | 'En revisión'
+    | 'Revisado';
 
 export type Lenguaje =
     | 'Python'
@@ -12,12 +11,38 @@ export type Lenguaje =
     | 'Pseudocodigo'
     | 'Otro';
 
+export type TipoCriterioEvaluacion = 'Obligatorio' | 'Objetivo';
+
+export interface CriterioEvaluacionSolucion {
+    criterio: string;
+    peso: number;
+    tipo: TipoCriterioEvaluacion;
+    puntaje: number;
+    comentario: string;
+}
+
+export const RUBRICA_SOLUCION: Array<
+    Pick<CriterioEvaluacionSolucion, 'criterio' | 'peso' | 'tipo'>
+> = [
+    { criterio: 'Correctitud', peso: 40, tipo: 'Obligatorio' },
+    { criterio: 'Tiempo', peso: 20, tipo: 'Objetivo' },
+    { criterio: 'Memoria', peso: 15, tipo: 'Objetivo' },
+    { criterio: 'Calidad del código', peso: 10, tipo: 'Objetivo' },
+    { criterio: 'Complejidad algorítmica', peso: 5, tipo: 'Objetivo' },
+    { criterio: 'Uso de estructuras de datos', peso: 5, tipo: 'Objetivo' },
+    { criterio: 'Robustez', peso: 5, tipo: 'Objetivo' },
+];
+
 export interface Solucion {
     id: number;
     respuesta: string;
     lenguaje_programacion: Lenguaje;
     estado: EstadoSolucion;
     resultado_validacion: boolean;
+    puntaje_total: number;
+    confianza_ia?: number | null;
+    justificacion_ia?: string | null;
+    criterios_evaluacion?: CriterioEvaluacionSolucion[] | null;
     problema_id: number;
     problema_titulo: string;
     problema_dificultad: string;
@@ -47,12 +72,18 @@ export interface CreateSolucionDto {
 export interface CalificarSolucionDto {
     estado: EstadoSolucion;
     resultado_validacion?: boolean;
+    puntaje_total?: number;
+    confianza_ia?: number;
+    justificacion_ia?: string;
+    criterios_evaluacion?: CriterioEvaluacionSolucion[];
 }
 
 export interface SugerenciaIA {
     estado: EstadoSolucion;
     confianza: number;
+    puntaje_total: number;
     justificacion: string;
+    criterios: CriterioEvaluacionSolucion[];
 }
 
 export interface SugerirCalificacionRequest {
@@ -97,9 +128,8 @@ export const LENGUAJES: Lenguaje[] = [
 
 export const ESTADO_SOLUCION_LABELS: Record<EstadoSolucion, string> = {
     Pendiente: 'Pendiente',
-    Correcto: 'Correcto',
-    Incorrecto: 'Incorrecto',
     'En revisión': 'En revisión',
+    Revisado: 'Revisado',
 };
 
 export const ESTADO_SOLUCION_SEVERITY: Record<
@@ -108,13 +138,11 @@ export const ESTADO_SOLUCION_SEVERITY: Record<
 > = {
     Pendiente: 'info',
     'En revisión': 'warn',
-    Correcto: 'success',
-    Incorrecto: 'danger',
+    Revisado: 'success',
 };
 
 export const ESTADOS_SOLUCION: EstadoSolucion[] = [
     'Pendiente',
     'En revisión',
-    'Correcto',
-    'Incorrecto',
+    'Revisado',
 ];

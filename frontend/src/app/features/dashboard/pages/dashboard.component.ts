@@ -60,9 +60,8 @@ export class DashboardPage implements OnInit {
     readonly dificultadLabels: ProblemaDificultad[] = ['Facil', 'Medio', 'Dificil'];
     readonly solucionEstados: SolucionEstado[] = [
         'Pendiente',
-        'Correcto',
-        'Incorrecto',
         'En revisión',
+        'Revisado',
     ];
 
     ngOnInit(): void {

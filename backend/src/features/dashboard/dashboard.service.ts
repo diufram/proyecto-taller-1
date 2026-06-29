@@ -33,7 +33,7 @@ export class DashboardService {
       totalProblemas,
       totalUsuarios,
       totalSoluciones,
-      solucionesCorrectas,
+      solucionesRevisadas,
       competenciasPorEstado,
       problemasPorDificultad,
       solucionesPorEstado,
@@ -54,7 +54,7 @@ export class DashboardService {
       this.usuarioRepository.count({ where: { rol: Rol.ESTUDIANTE } }),
       this.solucionRepository.count(),
       this.solucionRepository.count({
-        where: { estado: EstadoSolucion.CORRECTO },
+        where: { estado: EstadoSolucion.REVISADO },
       }),
       this.getCompetenciasPorEstado(),
       this.getProblemasPorDificultad(),
@@ -73,7 +73,7 @@ export class DashboardService {
         totalProblemas,
         totalUsuarios,
         totalSoluciones,
-        tasaAcierto: this.percent(solucionesCorrectas, totalSoluciones),
+        tasaAcierto: this.percent(solucionesRevisadas, totalSoluciones),
       },
       competenciasPorEstado,
       problemasPorDificultad,
@@ -142,8 +142,8 @@ export class DashboardService {
       .leftJoin(
         'soluciones',
         's',
-        's.usuarioId = u.id AND s.estado = :correcto AND s.deleted_at IS NULL',
-        { correcto: EstadoSolucion.CORRECTO },
+        's.usuarioId = u.id AND s.estado = :revisado AND s.deleted_at IS NULL',
+        { revisado: EstadoSolucion.REVISADO },
       )
       .leftJoin('personas', 'p', 'p.usuarioId = u.id')
       .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
@@ -190,13 +190,13 @@ export class DashboardService {
       .addSelect('c.nombre', 'competencia')
       .addSelect('COUNT(s.id)::int', 'total_soluciones')
       .addSelect(
-        `COUNT(s.id) FILTER (WHERE s.estado = '${EstadoSolucion.CORRECTO}')::int`,
+        `COUNT(s.id) FILTER (WHERE s.estado = '${EstadoSolucion.REVISADO}')::int`,
         'correctas',
       )
       .groupBy('p.id')
       .addGroupBy('c.nombre')
       .orderBy(
-        `CASE WHEN COUNT(s.id) = 0 THEN 100 ELSE (COUNT(s.id) FILTER (WHERE s.estado = '${EstadoSolucion.CORRECTO}')::float / COUNT(s.id)) END`,
+        `CASE WHEN COUNT(s.id) = 0 THEN 100 ELSE (COUNT(s.id) FILTER (WHERE s.estado = '${EstadoSolucion.REVISADO}')::float / COUNT(s.id)) END`,
         'ASC',
       )
       .addOrderBy('COUNT(s.id)', 'DESC')
@@ -331,9 +331,8 @@ export class DashboardService {
   private emptyEstadoSolucionRecord(): Record<EstadoSolucion, number> {
     return {
       [EstadoSolucion.PENDIENTE]: 0,
-      [EstadoSolucion.CORRECTO]: 0,
-      [EstadoSolucion.INCORRECTO]: 0,
       [EstadoSolucion.REVISION]: 0,
+      [EstadoSolucion.REVISADO]: 0,
     };
   }
 

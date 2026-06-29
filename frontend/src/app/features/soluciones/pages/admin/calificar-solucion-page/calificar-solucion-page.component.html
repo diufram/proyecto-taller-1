@@ -138,6 +138,10 @@
                                 <strong>{{ formatConfianza(sug) }}</strong>
                             </div>
                         </div>
+                        <div class="info-block">
+                            <span class="label">Puntaje sugerido</span>
+                            <strong>{{ sug.puntaje_total }} / 100</strong>
+                        </div>
                         <div class="info-block is-wide">
                             <span class="label">Justificación</span>
                             <p class="value multiline">{{ sug.justificacion }}</p>
@@ -152,15 +156,65 @@
                             [text]="true"
                             (onClick)="descartarSugerencia()"
                         ></p-button>
-                        <p-button
-                            label="Aplicar sugerencia"
-                            icon="pi pi-check"
-                            severity="info"
-                            [outlined]="true"
-                            [loading]="submitting()"
-                            [disabled]="submitting()"
-                            (onClick)="aplicarSugerencia()"
-                        ></p-button>
+                    </div>
+                </div>
+            }
+
+            @if (criteriosVisibles().length > 0) {
+                <div class="criterios-section">
+                    <div class="section-heading">
+                        <div>
+                            <span class="label">Rúbrica</span>
+                            <h3>Criterios de evaluación</h3>
+                        </div>
+                        <strong class="score-pill">{{ puntajeVisible() }} / 100</strong>
+                    </div>
+
+                    <div class="criterios-table-wrap">
+                        <table class="criterios-table">
+                            <thead>
+                                <tr>
+                                    <th>Criterio</th>
+                                    <th>Peso</th>
+                                    <th>Tipo</th>
+                                    <th>Puntaje</th>
+                                    <th>Comentario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (c of criteriosVisibles(); track c.criterio; let i = $index) {
+                                    <tr>
+                                        <td>{{ c.criterio }}</td>
+                                        <td>{{ c.peso }}%</td>
+                                        <td>{{ c.tipo }}</td>
+                                        <td>
+                                            <div class="score-editor">
+                                                <p-inputnumber
+                                                    [ngModel]="c.puntaje"
+                                                    (ngModelChange)="updatePuntaje(i, $event)"
+                                                    [min]="0"
+                                                    [max]="c.peso"
+                                                    [useGrouping]="false"
+                                                    inputStyleClass="criterio-score-input"
+                                                    styleClass="criterio-score-control"
+                                                ></p-inputnumber>
+                                                <span>/ {{ c.peso }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <textarea
+                                                pTextarea
+                                                rows="2"
+                                                [ngModel]="c.comentario"
+                                                (ngModelChange)="updateComentario(i, $event)"
+                                                placeholder="Comentario del criterio"
+                                                class="criterio-comment"
+                                            ></textarea>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             }
@@ -192,20 +246,12 @@
                         (onClick)="calificar('En revisión')"
                     ></p-button>
                     <p-button
-                        label="Incorrecto"
-                        icon="pi pi-times"
-                        severity="danger"
-                        [loading]="submitting() && selectedEstado() === 'Incorrecto'"
-                        [disabled]="submitting()"
-                        (onClick)="onIncorrecto()"
-                    ></p-button>
-                    <p-button
-                        label="Correcto"
+                        label="Revisado"
                         icon="pi pi-check"
                         severity="success"
-                        [loading]="submitting() && selectedEstado() === 'Correcto'"
+                        [loading]="submitting() && selectedEstado() === 'Revisado'"
                         [disabled]="submitting()"
-                        (onClick)="calificar('Correcto')"
+                        (onClick)="calificar('Revisado')"
                     ></p-button>
                 </div>
             </div>

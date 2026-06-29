@@ -3,11 +3,20 @@ import { Problema } from './problema.entity';
 import { Usuario } from './usuario.entity';
 import { BaseEntity } from '../../core/entities/base.entity';
 
+export type TipoCriterioEvaluacion = 'Obligatorio' | 'Objetivo';
+
+export interface CriterioEvaluacionSolucion {
+  criterio: string;
+  peso: number;
+  tipo: TipoCriterioEvaluacion;
+  puntaje: number;
+  comentario: string;
+}
+
 export enum EstadoSolucion {
   PENDIENTE = 'Pendiente',
-  CORRECTO = 'Correcto',
-  INCORRECTO = 'Incorrecto',
   REVISION = 'En revisión',
+  REVISADO = 'Revisado',
 }
 
 export enum Lenguaje {
@@ -32,6 +41,18 @@ export class Solucion extends BaseEntity {
 
   @Column({ default: false })
   resultado_validacion!: boolean;
+
+  @Column({ type: 'integer', default: 0 })
+  puntaje_total!: number;
+
+  @Column({ type: 'float', nullable: true })
+  confianza_ia?: number | null;
+
+  @Column({ type: 'text', nullable: true })
+  justificacion_ia?: string | null;
+
+  @Column({ type: 'jsonb', nullable: true })
+  criterios_evaluacion?: CriterioEvaluacionSolucion[] | null;
 
   @ManyToOne(() => Problema, (p) => p.soluciones)
   problema!: Problema;

@@ -1,6 +1,6 @@
 export type CompetenciaEstado = 'Abierta' | 'En curso' | 'Finalizada' | 'Cancelada';
 export type ProblemaDificultad = 'Facil' | 'Medio' | 'Dificil';
-export type SolucionEstado = 'Pendiente' | 'Correcto' | 'Incorrecto' | 'En revisión';
+export type SolucionEstado = 'Pendiente' | 'En revisión' | 'Revisado';
 
 export interface DashboardSummary {
     totalCompetencias: number;

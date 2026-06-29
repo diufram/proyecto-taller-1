@@ -155,7 +155,8 @@
     }
 
     .answer-section,
-    .sugerencia-panel {
+    .sugerencia-panel,
+    .criterios-section {
         display: flex;
         flex-direction: column;
         gap: 0.85rem;
@@ -193,6 +194,104 @@
         border-top: 1px solid var(--app-border-soft);
     }
 
+    .section-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .section-heading h3 {
+        margin: 0.2rem 0 0;
+        color: var(--app-text);
+        font-size: 1.15rem;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+    }
+
+    .score-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 5.5rem;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        color: var(--app-accent-text-strong);
+        background: var(--app-accent-softer);
+        border: 1px solid var(--app-accent-border-softer);
+        font-weight: 900;
+    }
+
+    .criterios-table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--app-border-soft);
+        border-radius: 0.85rem;
+    }
+
+    .criterios-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+    }
+
+    .criterios-table th,
+    .criterios-table td {
+        padding: 0.75rem 0.85rem;
+        border-bottom: 1px solid var(--app-border-soft);
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .criterios-table th {
+        color: var(--app-text);
+        background: var(--app-surface-soft);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .criterios-table td {
+        color: var(--app-text-secondary);
+        font-size: 0.88rem;
+        line-height: 1.45;
+    }
+
+    .criterios-table td:first-child,
+    .criterios-table td strong {
+        color: var(--app-text);
+        font-weight: 800;
+    }
+
+    .score-editor {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: var(--app-text-secondary);
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .criterio-score-control {
+        width: 4.75rem;
+    }
+
+    .criterio-score-input {
+        width: 100%;
+        text-align: center;
+        font-weight: 800;
+    }
+
+    .criterio-comment {
+        width: 100%;
+        min-width: 18rem;
+        resize: vertical;
+    }
+
+    .criterios-table tr:last-child td {
+        border-bottom: 0;
+    }
+
     .confianza-wrap {
         display: flex;
         align-items: center;
@@ -224,6 +323,7 @@
         .problem-header,
         .answer-heading,
         .sugerencia-header,
+        .section-heading,
         .grade-panel {
             flex-direction: column;
             align-items: stretch;

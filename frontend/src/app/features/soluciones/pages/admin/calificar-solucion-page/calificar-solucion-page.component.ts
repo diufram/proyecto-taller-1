@@ -1,19 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 
 import {
     AdminSolucion,
     CalificarSolucionDto,
+    CriterioEvaluacionSolucion,
     ESTADO_SOLUCION_LABELS,
     ESTADO_SOLUCION_SEVERITY,
     EstadoSolucion,
+    RUBRICA_SOLUCION,
     SugerenciaIA,
 } from '../../../models/solucion.model';
 import { SolucionesAiService } from '../../../services/soluciones-ai.service';
@@ -26,10 +31,13 @@ import { ToastService } from '@/core/services/toast.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CommonModule,
+        FormsModule,
         ButtonModule,
         ProgressBarModule,
         SkeletonModule,
         TagModule,
+        InputNumberModule,
+        TextareaModule,
         ToastModule,
     ],
     templateUrl: './calificar-solucion-page.component.html',
@@ -47,6 +55,7 @@ export class CalificarSolucionPageComponent implements OnInit {
     submitting = signal(false);
     sugiriendo = signal(false);
     sugerencia = signal<SugerenciaIA | null>(null);
+    criteriosDraft = signal<CriterioEvaluacionSolucion[]>(this.emptyCriterios());
     selectedEstado = signal<EstadoSolucion | null>(null);
 
     competenciaId: number | null = null;
@@ -73,6 +82,11 @@ export class CalificarSolucionPageComponent implements OnInit {
         this.solucionesService.getById(this.solucionId).subscribe({
             next: (res) => {
                 this.solucion.set(res.solucion as AdminSolucion);
+                this.criteriosDraft.set(
+                    res.solucion.criterios_evaluacion?.length
+                        ? res.solucion.criterios_evaluacion
+                        : this.emptyCriterios(),
+                );
                 this.loading.set(false);
             },
             error: (err) => {
@@ -107,14 +121,21 @@ export class CalificarSolucionPageComponent implements OnInit {
         this.router.navigate(['/admin/competencias']);
     }
 
-    calificar(estado: EstadoSolucion, resultado_validacion?: boolean): void {
+    calificar(estado: EstadoSolucion): void {
         const solucion = this.solucion();
         if (!solucion || this.submitting()) return;
 
         this.selectedEstado.set(estado);
-        const dto: CalificarSolucionDto = { estado };
-        if (resultado_validacion !== undefined) {
-            dto.resultado_validacion = resultado_validacion;
+        const sug = this.sugerencia();
+        const dto: CalificarSolucionDto = {
+            estado,
+            resultado_validacion: estado === 'Revisado',
+            puntaje_total: this.puntajeVisible(),
+            criterios_evaluacion: this.criteriosDraft(),
+        };
+        if (sug) {
+            dto.confianza_ia = sug.confianza;
+            dto.justificacion_ia = sug.justificacion;
         }
 
         this.submitting.set(true);
@@ -124,6 +145,11 @@ export class CalificarSolucionPageComponent implements OnInit {
                 this.selectedEstado.set(null);
                 this.sugerencia.set(null);
                 this.solucion.set(res.solucion);
+                this.criteriosDraft.set(
+                    res.solucion.criterios_evaluacion?.length
+                        ? res.solucion.criterios_evaluacion
+                        : this.emptyCriterios(),
+                );
 
                 const deltaTxt = res.delta_puntos > 0 ? `+${res.delta_puntos}` : `${res.delta_puntos}`;
                 this.toast.success(`${res.message} (${deltaTxt} puntos)`);
@@ -136,19 +162,6 @@ export class CalificarSolucionPageComponent implements OnInit {
         });
     }
 
-    onIncorrecto(): void {
-        const solucion = this.solucion();
-        if (
-            solucion?.estado === 'Correcto' &&
-            !window.confirm(
-                'Esta solución ya estaba como Correcta. Al marcarla como Incorrecta se restarán los puntos otorgados al estudiante. ¿Desea continuar?',
-            )
-        ) {
-            return;
-        }
-        this.calificar('Incorrecto', false);
-    }
-
     sugerir(): void {
         const solucion = this.solucion();
         if (!solucion || this.sugiriendo()) return;
@@ -157,6 +170,7 @@ export class CalificarSolucionPageComponent implements OnInit {
         this.aiService.sugerir(solucion.id).subscribe({
             next: (res) => {
                 this.sugerencia.set(res.sugerencia);
+                this.criteriosDraft.set(res.sugerencia.criterios);
                 this.sugiriendo.set(false);
             },
             error: (err) => {
@@ -166,14 +180,28 @@ export class CalificarSolucionPageComponent implements OnInit {
         });
     }
 
-    aplicarSugerencia(): void {
-        const sug = this.sugerencia();
-        if (!sug) return;
-        if (sug.estado === 'Incorrecto') {
-            this.onIncorrecto();
-        } else {
-            this.calificar(sug.estado);
-        }
+    criteriosVisibles(): CriterioEvaluacionSolucion[] {
+        return this.criteriosDraft();
+    }
+
+    puntajeVisible(): number {
+        return this.criteriosDraft().reduce((sum, c) => sum + (Number(c.puntaje) || 0), 0);
+    }
+
+    updatePuntaje(index: number, value: number | null): void {
+        this.criteriosDraft.update((criterios) =>
+            criterios.map((c, i) =>
+                i === index
+                    ? { ...c, puntaje: Math.max(0, Math.min(c.peso, Number(value) || 0)) }
+                    : c,
+            ),
+        );
+    }
+
+    updateComentario(index: number, value: string): void {
+        this.criteriosDraft.update((criterios) =>
+            criterios.map((c, i) => (i === index ? { ...c, comentario: value } : c)),
+        );
     }
 
     descartarSugerencia(): void {
@@ -224,5 +252,9 @@ export class CalificarSolucionPageComponent implements OnInit {
             current = current.parent;
         }
         return null;
+    }
+
+    private emptyCriterios(): CriterioEvaluacionSolucion[] {
+        return RUBRICA_SOLUCION.map((c) => ({ ...c, puntaje: 0, comentario: '' }));
     }
 }

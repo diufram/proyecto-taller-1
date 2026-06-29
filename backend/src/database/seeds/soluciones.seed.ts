@@ -4,6 +4,7 @@ import {
   Solucion,
   EstadoSolucion,
   Lenguaje,
+  CriterioEvaluacionSolucion,
 } from '../entities/solucion.entity';
 import { Usuario } from '../entities/usuario.entity';
 import { Inscripcion } from '../entities/inscripcion.entity';
@@ -31,6 +32,72 @@ interface SolucionData {
   respuesta: string;
   estado: EstadoSolucion;
   resultado_validacion: boolean;
+}
+
+const RUBRICA_BASE: Array<Pick<CriterioEvaluacionSolucion, 'criterio' | 'peso' | 'tipo'>> = [
+  { criterio: 'Correctitud', peso: 40, tipo: 'Obligatorio' },
+  { criterio: 'Tiempo', peso: 20, tipo: 'Objetivo' },
+  { criterio: 'Memoria', peso: 15, tipo: 'Objetivo' },
+  { criterio: 'Calidad del código', peso: 10, tipo: 'Objetivo' },
+  { criterio: 'Complejidad algorítmica', peso: 5, tipo: 'Objetivo' },
+  { criterio: 'Uso de estructuras de datos', peso: 5, tipo: 'Objetivo' },
+  { criterio: 'Robustez', peso: 5, tipo: 'Objetivo' },
+];
+
+const PORCENTAJE_POR_ESTADO: Record<EstadoSolucion, number> = {
+  [EstadoSolucion.REVISION]: 0.62,
+  [EstadoSolucion.REVISADO]: 0.92,
+  [EstadoSolucion.PENDIENTE]: 0,
+};
+
+function buildEvaluacionSeed(estado: EstadoSolucion, resultadoValidacion: boolean): {
+  puntaje_total: number;
+  confianza_ia: number | null;
+  justificacion_ia: string | null;
+  criterios_evaluacion: CriterioEvaluacionSolucion[] | null;
+} {
+  if (estado === EstadoSolucion.PENDIENTE) {
+    return {
+      puntaje_total: 0,
+      confianza_ia: null,
+      justificacion_ia: null,
+      criterios_evaluacion: null,
+    };
+  }
+
+  const factor =
+    estado === EstadoSolucion.REVISADO && !resultadoValidacion
+      ? 0.28
+      : PORCENTAJE_POR_ESTADO[estado];
+  const criterios = RUBRICA_BASE.map((criterio) => {
+    const puntaje = Math.min(criterio.peso, Math.round(criterio.peso * factor));
+    return {
+      ...criterio,
+      puntaje,
+      comentario: comentarioSeed(estado, criterio.criterio),
+    };
+  });
+
+  return {
+    puntaje_total: criterios.reduce((sum, c) => sum + c.puntaje, 0),
+    confianza_ia: estado === EstadoSolucion.REVISION ? 0.68 : 0.86,
+    justificacion_ia: justificacionSeed(estado),
+    criterios_evaluacion: criterios,
+  };
+}
+
+function justificacionSeed(estado: EstadoSolucion): string {
+  if (estado === EstadoSolucion.REVISADO) {
+    return 'Solución de ejemplo evaluada con rúbrica para datos de demostración.';
+  }
+  return 'Solución de ejemplo que requiere revisión manual por criterios mixtos.';
+}
+
+function comentarioSeed(estado: EstadoSolucion, criterio: string): string {
+  if (estado === EstadoSolucion.REVISADO) {
+    return `${criterio} fue evaluado para el caso de demostración.`;
+  }
+  return `${criterio} requiere revisión manual antes de confirmar la calificación.`;
 }
 
 /**
@@ -86,7 +153,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Contar Pares que Suman K',
     competencia_nombre: 'Maratón de Programación 2026',
     lenguaje: Lenguaje.PYTHON,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta:
       'n, k = map(int, input().split())\narr = list(map(int, input().split()))\nseen = {}\ncnt = 0\nfor x in arr:\n    cnt += seen.get(k - x, 0)\n    seen[x] = seen.get(x, 0) + 1\nprint(cnt)',
@@ -118,7 +185,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Contar Islas',
     competencia_nombre: 'Olimpíadas de Código',
     lenguaje: Lenguaje.C,
-    estado: EstadoSolucion.INCORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: false,
     respuesta:
       '#include <stdio.h>\nint grid[100][100], n, m;\nint main() { scanf("%d %d", &n, &m); for (int i=0;i<n;i++) for (int j=0;j<m;j++) scanf("%d", &grid[i][j]); printf("0\\n"); return 0; }',
@@ -182,7 +249,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Lista de Compras',
     competencia_nombre: 'Maratón de Verano 2026',
     lenguaje: Lenguaje.JAVASCRIPT,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta:
       'const lines = require("fs").readFileSync(0, "utf8").trim().split("\\n");\nconst n = Number(lines[0]);\nlet total = 0;\nfor (let i = 1; i <= n; i++) { const parts = lines[i].split(" "); total += Number(parts[1]); }\nconsole.log(total);',
@@ -214,7 +281,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Union-Find (DSU)',
     competencia_nombre: 'Hackathon Universitario',
     lenguaje: Lenguaje.C,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta:
       '#include <stdio.h>\nint parent[100001], rank_[100001];\nint find(int x) { return parent[x] == x ? x : (parent[x] = find(parent[x])); }\nvoid unite(int a, int b) { a = find(a); b = find(b); if (a == b) return; if (rank_[a] < rank_[b]) { int t = a; a = b; b = t; } parent[b] = a; if (rank_[a] == rank_[b]) rank_[a]++; }\nint main() { int n; scanf("%d", &n); for (int i = 0; i <= 100000; i++) { parent[i] = i; rank_[i] = 0; } char op[8]; int x, y; for (int i = 0; i < n; i++) { scanf("%s", op); if (op[0] == \'u\') { scanf("%d %d", &x, &y); unite(x, y); } else { scanf("%d", &x); printf("%d\\n", find(x)); } } return 0; }',
@@ -234,7 +301,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Recorrido BFS en Grafo',
     competencia_nombre: 'Hackathon Universitario',
     lenguaje: Lenguaje.PYTHON,
-    estado: EstadoSolucion.INCORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: false,
     respuesta:
       'v, e = map(int, input().split())\nadj = [[] for _ in range(v)]\nfor _ in range(e):\n    a, b = map(int, input().split())\n    adj[a].append(b)\nprint(" ".join(str(x) for x in range(v)))',
@@ -255,7 +322,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Promedio Simple',
     competencia_nombre: 'Concurso de Verano Principiante',
     lenguaje: Lenguaje.PYTHON,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta: 'a, b, c = map(int, input().split())\nprint((a + b + c) // 3)',
   },
@@ -286,7 +353,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Puntaje de Tenis',
     competencia_nombre: 'Liga de Programación Junior',
     lenguaje: Lenguaje.PYTHON,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta:
       'a, b = input().split()\nif a == b: print("EMPATE")\nelif (a, b) in [("40", "ventaja"), ("30", "40")]: print("Jugador 1")\nelif (a, b) in [("ventaja", "40"), ("40", "30")]: print("Jugador 2")\nelif a == "gana": print("Jugador 1")\nelif b == "gana": print("Jugador 2")\nelif a == "ventaja": print("Jugador 1")\nelif b == "ventaja": print("Jugador 2")\nelse: print("Jugador 1" if a > b else "Jugador 2")',
@@ -306,7 +373,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Validar RUT',
     competencia_nombre: 'Liga de Programación Junior',
     lenguaje: Lenguaje.JAVASCRIPT,
-    estado: EstadoSolucion.INCORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: false,
     respuesta:
       'const [rut, dv] = require("fs").readFileSync(0, "utf8").trim().split("-");\nlet s = 0, m = 2;\nfor (let i = rut.length - 1; i >= 0; i--) { s += Number(rut[i]) * m; m = m < 7 ? m + 1 : 2; }\nlet calc = 11 - (s % 11);\nlet calcDv = calc === 11 ? "0" : calc === 10 ? "K" : String(calc);\nconsole.log(calcDv === dv ? "VALIDO" : "INVALIDO");',
@@ -340,7 +407,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Número Primo',
     competencia_nombre: 'Olimpíada Matemática 2026',
     lenguaje: Lenguaje.JAVASCRIPT,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta:
       'const n = Number(require("fs").readFileSync(0, "utf8"));\nlet ok = n > 1;\nfor (let i = 2; i * i <= n; i++) if (n % i === 0) ok = false;\nconsole.log(ok ? "SI" : "NO");',
@@ -360,7 +427,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Descomposición en Primos',
     competencia_nombre: 'Olimpíada Matemática 2026',
     lenguaje: Lenguaje.PYTHON,
-    estado: EstadoSolucion.INCORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: false,
     respuesta:
       'n = int(input())\nprint(n)',
@@ -394,7 +461,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Map y Filter',
     competencia_nombre: 'Concurso de Programación Funcional',
     lenguaje: Lenguaje.JAVASCRIPT,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta:
       'const arr = require("fs").readFileSync(0, "utf8").trim().split(/\\s+/).map(Number);\nconsole.log(arr.map(x => x * 2).filter(x => x % 3 === 0).join(" "));',
@@ -426,7 +493,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Matriz Simétrica',
     competencia_nombre: 'Torneo Universitario de Algoritmos',
     lenguaje: Lenguaje.PYTHON,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta:
       'n = int(input())\na = [list(map(int, input().split())) for _ in range(n)]\nprint("SI" if all(a[i][j] == a[j][i] for i in range(n) for j in range(n)) else "NO")',
@@ -438,7 +505,7 @@ const solucionesData: SolucionData[] = [
     problema_titulo: 'Saludo Personalizado',
     competencia_nombre: 'Copa Femenina de Programación',
     lenguaje: Lenguaje.PYTHON,
-    estado: EstadoSolucion.CORRECTO,
+    estado: EstadoSolucion.REVISADO,
     resultado_validacion: true,
     respuesta: 'nombre = input().strip()\nprint(f"Hola, {nombre}!")',
   },
@@ -547,11 +614,13 @@ export const solucionesSeed: Seed = {
         continue;
       }
 
+      const evaluacion = buildEvaluacionSeed(data.estado, data.resultado_validacion);
       const solucion = solucionRepository.create({
         respuesta: data.respuesta,
         lenguaje_programacion: data.lenguaje,
         estado: data.estado,
         resultado_validacion: data.resultado_validacion,
+        ...evaluacion,
         problema: { id: problema.id },
         usuario: { id: usuario.id },
       });

@@ -20,6 +20,7 @@ describe('CalificarSolucionPageComponent', () => {
         lenguaje_programacion: 'Python',
         estado,
         resultado_validacion: false,
+        puntaje_total: 0,
         problema_id: 3,
         problema_titulo: 'Suma',
         problema_dificultad: 'Facil',
@@ -77,19 +78,64 @@ describe('CalificarSolucionPageComponent', () => {
 
     it('should PATCH /soluciones/:id/estado on calificar', () => {
         api.when('PATCH', 'soluciones/1/estado', {
-            solucion: solucionMock('Correcto'),
+            solucion: solucionMock('Revisado'),
             delta_puntos: 10,
             message: 'ok',
         });
 
-        component.calificar('Correcto');
+        component.calificar('Revisado');
 
         const patch = api.requests.find(
             (r) => r.method === 'PATCH' && r.url === 'PATCH soluciones/1/estado',
         );
         expect(patch).toBeDefined();
-        expect(patch?.body).toEqual({ estado: 'Correcto' });
-        expect(component.solucion()?.estado).toBe('Correcto');
+        expect(patch?.body).toEqual(
+            expect.objectContaining({
+                estado: 'Revisado',
+                resultado_validacion: true,
+                puntaje_total: 0,
+            }),
+        );
+        expect(component.solucion()?.estado).toBe('Revisado');
+    });
+
+    it('should send evaluation criteria when saving after AI suggestion', () => {
+        const criterios = [
+            {
+                criterio: 'Correctitud',
+                peso: 40,
+                tipo: 'Obligatorio' as const,
+                puntaje: 38,
+                comentario: 'Resuelve los casos principales.',
+            },
+        ];
+        component.sugerencia.set({
+            estado: 'Revisado',
+            confianza: 0.9,
+            puntaje_total: 38,
+            justificacion: 'Buena solución.',
+            criterios,
+        });
+        component.criteriosDraft.set(criterios);
+        api.when('PATCH', 'soluciones/1/estado', {
+            solucion: { ...solucionMock('Revisado'), puntaje_total: 38, criterios_evaluacion: criterios },
+            delta_puntos: 10,
+            message: 'ok',
+        });
+
+        component.calificar('Revisado');
+
+        const patch = api.requests.find(
+            (r) => r.method === 'PATCH' && r.url === 'PATCH soluciones/1/estado',
+        );
+        expect(patch?.body).toEqual({
+            estado: 'Revisado',
+            resultado_validacion: true,
+            puntaje_total: 38,
+            confianza_ia: 0.9,
+            justificacion_ia: 'Buena solución.',
+            criterios_evaluacion: criterios,
+        });
     });
 
     it('should return to problem solutions list', () => {

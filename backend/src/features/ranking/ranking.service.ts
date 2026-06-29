@@ -32,8 +32,8 @@ export class RankingService {
       .leftJoin(
         'soluciones',
         's',
-        's.usuarioId = u.id AND s.estado = :correcto AND s.deleted_at IS NULL',
-        { correcto: EstadoSolucion.CORRECTO },
+        's.usuarioId = u.id AND s.estado = :revisado AND s.deleted_at IS NULL',
+        { revisado: EstadoSolucion.REVISADO },
       )
       .leftJoin('personas', 'p', 'p.usuarioId = u.id')
       .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
@@ -101,7 +101,7 @@ export class RankingService {
       this.solucionRepository.count({
         where: {
           usuario: { id: usuarioId },
-          estado: EstadoSolucion.CORRECTO,
+          estado: EstadoSolucion.REVISADO,
         },
       }),
       this.inscripcionRepository.count({

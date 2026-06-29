@@ -119,7 +119,7 @@ export class ProblemasRepository {
     >(
       `SELECT "problemaId" AS "problemaId",
               COUNT(*)::int AS total,
-              COUNT(*) FILTER (WHERE estado = 'Correcto')::int AS correctas
+              COUNT(*) FILTER (WHERE estado = 'Revisado')::int AS correctas
          FROM soluciones
         WHERE "problemaId" = ANY($1)
           AND deleted_at IS NULL

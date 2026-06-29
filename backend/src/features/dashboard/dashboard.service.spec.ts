@@ -111,9 +111,8 @@ describe('DashboardService', () => {
         });
         expect(stats.solucionesPorEstado).toEqual({
             [EstadoSolucion.PENDIENTE]: 0,
-            [EstadoSolucion.CORRECTO]: 0,
-            [EstadoSolucion.INCORRECTO]: 0,
             [EstadoSolucion.REVISION]: 0,
+            [EstadoSolucion.REVISADO]: 0,
         });
     });
 

@@ -21,6 +21,7 @@ describe('AdminSolucionesPageComponent', () => {
         lenguaje_programacion: 'Python',
         estado,
         resultado_validacion: false,
+        puntaje_total: 0,
         problema_id: 1,
         problema_titulo: 'Suma',
         problema_dificultad: 'Facil',
@@ -114,8 +115,7 @@ describe('AdminSolucionesPageComponent', () => {
     });
 
     it('should map estado to severity', () => {
-        expect(component.estadoSeverity('Correcto')).toBe('success');
-        expect(component.estadoSeverity('Incorrecto')).toBe('danger');
+        expect(component.estadoSeverity('Revisado')).toBe('success');
         expect(component.estadoSeverity('Pendiente')).toBe('info');
         expect(component.estadoSeverity('En revisión')).toBe('warn');
     });
@@ -126,7 +126,7 @@ describe('AdminSolucionesPageComponent', () => {
     });
 
     it('should detect active filters when estado is set', () => {
-        component.currentEstado = 'Correcto';
+        component.currentEstado = 'Revisado';
         expect(component.hasActiveFilters).toBe(true);
     });
 
@@ -137,7 +137,7 @@ describe('AdminSolucionesPageComponent', () => {
 
     it('should reset to no filters on clearFilters', () => {
         component.currentSearch = 'juan';
-        component.currentEstado = 'Correcto';
+        component.currentEstado = 'Revisado';
         component.currentLenguaje = 'Python';
 
         component.clearFilters();
