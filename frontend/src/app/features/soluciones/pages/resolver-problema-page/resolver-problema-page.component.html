@@ -70,7 +70,38 @@
                                 s.created_at | date: 'dd/MM/yyyy HH:mm'
                             }}</span>
                         </div>
+                        @if (s.estado === 'Revisado') {
+                            <div>
+                                <span class="label">Calificación</span>
+                                <span class="score-badge">{{ s.puntaje_total }} / 100</span>
+                            </div>
+                        }
                     </div>
+
+                    @if (s.estado === 'Revisado' && s.criterios_evaluacion?.length) {
+                        <div class="evaluacion-block">
+                            <div class="evaluacion-heading">
+                                <div>
+                                    <span class="label">Evaluación</span>
+                                    <h3>Detalle de criterios</h3>
+                                </div>
+                                <strong>{{ s.puntaje_total }} / 100</strong>
+                            </div>
+
+                            <div class="criterios-list">
+                                @for (c of s.criterios_evaluacion; track c.criterio) {
+                                    <article class="criterio-item">
+                                        <div>
+                                            <span class="criterio-name">{{ c.criterio }}</span>
+                                            <span class="criterio-meta">{{ c.tipo }} · peso {{ c.peso }}%</span>
+                                        </div>
+                                        <div class="criterio-score">{{ c.puntaje }} / {{ c.peso }}</div>
+                                        <p>{{ c.comentario || 'Sin comentario.' }}</p>
+                                    </article>
+                                }
+                            </div>
+                        </div>
+                    }
 
                     <div class="formato-block">
                         <span class="label">Tu respuesta</span>
