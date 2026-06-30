@@ -23,7 +23,7 @@ export class RankingService {
 
   async getGlobalRanking(limit = 20): Promise<RankingResponseDto> {
     const totalUsers = await this.usuarioRepository.count({
-      where: { rol: Rol.USER },
+      where: { rol: Rol.ESTUDIANTE },
     });
 
     const usuarios = await this.usuarioRepository
@@ -32,14 +32,14 @@ export class RankingService {
       .leftJoin(
         'soluciones',
         's',
-        's.usuarioId = u.id AND s.estado = :correcto AND s.deleted_at IS NULL',
-        { correcto: EstadoSolucion.CORRECTO },
+        's.usuarioId = u.id AND s.estado = :revisado AND s.deleted_at IS NULL',
+        { revisado: EstadoSolucion.REVISADO },
       )
       .leftJoin('personas', 'p', 'p.usuarioId = u.id')
-      .where('u.rol = :rol', { rol: Rol.USER })
+      .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
       .select([
         'u.id AS id',
-        'u.nombre_usuario AS username',
+        'u.correo_electronico AS correo_electronico',
         'u.puntos_totales AS puntos_totales',
         'u.posicion_global AS posicion_global',
         'COUNT(DISTINCT s.id)::int AS solved_problems',
@@ -57,7 +57,7 @@ export class RankingService {
 
     interface RankingRow {
       id: number;
-      username: string;
+      correo_electronico: string;
       puntos_totales: number | string;
       posicion_global: number | null;
       solved_problems: number | string;
@@ -71,11 +71,11 @@ export class RankingService {
         const firstName = u.nombre;
         const lastName = u.apellido;
         const name =
-          [firstName, lastName].filter(Boolean).join(' ') || u.username;
+          [firstName, lastName].filter(Boolean).join(' ') ||
+          u.correo_electronico;
         return {
           position: idx + 1,
           name: this.capitalize(name),
-          username: u.username,
           points: Number(u.puntos_totales) || 0,
           solvedProblems: Number(u.solved_problems) || 0,
           competitions: Number(u.competitions) || 0,
@@ -101,13 +101,13 @@ export class RankingService {
       this.solucionRepository.count({
         where: {
           usuario: { id: usuarioId },
-          estado: EstadoSolucion.CORRECTO,
+          estado: EstadoSolucion.REVISADO,
         },
       }),
       this.inscripcionRepository.count({
         where: { usuario: { id: usuarioId } },
       }),
-      this.usuarioRepository.count({ where: { rol: Rol.USER } }),
+      this.usuarioRepository.count({ where: { rol: Rol.ESTUDIANTE } }),
     ]);
 
     let position = usuario.posicion_global ?? null;
@@ -132,7 +132,7 @@ export class RankingService {
 
     const count = await this.usuarioRepository
       .createQueryBuilder('u')
-      .where('u.rol = :rol', { rol: Rol.USER })
+      .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
       .andWhere(
         '(u.puntos_totales > :puntos) OR (u.puntos_totales = :puntos AND u.created_at < :createdAt)',
         { puntos: target.puntos_totales, createdAt: target.createdAt },

@@ -1,7 +1,6 @@
 export interface RankingUser {
     position: number;
     name: string;
-    username: string;
     points: number;
     solvedProblems: number;
     competitions: number;

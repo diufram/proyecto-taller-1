@@ -35,12 +35,10 @@ describe('CompetenciasService', () => {
     it('create hace POST /competencias con el body recibido', () => {
         const dto = {
             nombre: 'Compex',
-            descripcion: 'Test',
             fecha_inicio: '2026-07-01 10:00:00',
             fecha_fin: '2026-07-10 18:00:00',
             nivel_dificultad: 'Principiante' as const,
             estado: 'Abierta' as const,
-            tipo: 'Individual' as const,
             max_participantes: 50,
         };
         service.create(dto).subscribe();

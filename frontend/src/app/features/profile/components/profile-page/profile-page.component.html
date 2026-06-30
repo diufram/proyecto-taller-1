@@ -1,148 +1,154 @@
 <div class="profile-page">
-    <div
-        *ngIf="loading"
-        class="min-h-[70vh] flex flex-col items-center justify-center text-center"
-    >
-        <i class="pi pi-spin pi-spinner text-4xl mb-3 text-primary"></i>
-        <p class="text-color-secondary mt-2">Cargando tu perfil...</p>
+    <div *ngIf="loading" class="profile-state-card">
+        <i class="pi pi-spin pi-spinner"></i>
+        <p>Cargando tu perfil...</p>
     </div>
 
-    <div *ngIf="!loading && !profile" class="min-h-[70vh] flex flex-col items-center justify-center text-center">
-        <i class="pi pi-exclamation-circle text-4xl mb-3 text-red-400"></i>
-        <p class="text-color-secondary mb-4">No se pudo cargar el perfil</p>
-        <p-button label="Reintentar" icon="pi pi-refresh" (onClick)="loadProfile()"></p-button>
+    <div *ngIf="!loading && !profile" class="profile-state-card is-error">
+        <i class="pi pi-exclamation-circle"></i>
+        <p>No se pudo cargar el perfil</p>
+        <p-button
+            label="Reintentar"
+            icon="pi pi-refresh"
+            severity="success"
+            (onClick)="loadProfile()"
+        ></p-button>
     </div>
 
-    <div *ngIf="!loading && profile" class="mx-auto w-full max-w-5xl space-y-6">
-        <!-- Profile Header -->
-        <p-card styleClass="profile-header-card shadow-2 border-round-3xl">
-            <ng-template pTemplate="content">
-                <div class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10">
-                    <div class="flex justify-center lg:justify-start shrink-0">
-                        <div class="profile-avatar-wrapper">
-                            <ng-container *ngIf="hasPhoto(); else initials">
-                                <img [src]="getPhotoUrl()" alt="Foto de perfil" />
-                            </ng-container>
-                            <ng-template #initials>
-                                <span class="avatar-initials">{{ getInitials() }}</span>
-                            </ng-template>
-                        </div>
-                    </div>
+    <div *ngIf="!loading && profile" class="profile-shell">
+        <header class="profile-hero">
+            <div class="profile-hero-copy">
+                <span class="eyebrow">Cuenta personal</span>
+                <h1>Tu perfil en Compex</h1>
+                <p>
+                    Consulta tus datos de cuenta y administra tu seguridad sin
+                    salir del entorno público de competencias.
+                </p>
+            </div>
 
-                    <div class="flex-1 min-w-0 text-center lg:text-left">
-                        <h1 class="profile-name">{{ profile.first_name }} {{ profile.last_name }}</h1>
-                        <p class="profile-email">{{ profile.email }}</p>
-
-                        <div class="profile-tags">
-                            <p-tag [value]="profile.username" icon="pi pi-user" severity="info"></p-tag>
-                            <p-tag *ngIf="profile.is_verified" value="Verificado" icon="pi pi-check-circle" severity="success"></p-tag>
-                        </div>
-                    </div>
-
-                    
+            <div class="profile-identity-card">
+                <div class="profile-avatar-wrapper">
+                    <ng-container *ngIf="hasPhoto(); else initials">
+                        <img [src]="getPhotoUrl()" alt="Foto de perfil" />
+                    </ng-container>
+                    <ng-template #initials>
+                        <span class="avatar-initials">{{ getInitials() }}</span>
+                    </ng-template>
                 </div>
 
-                
-            </ng-template>
-        </p-card>
+                <div class="profile-identity-copy">
+                    <span class="identity-label">Participante</span>
+                    <h2>{{ displayName }}</h2>
+                    <p>{{ profile.email }}</p>
 
-        <!-- Forms Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Username Form -->
-            <p-card styleClass="profile-form-card shadow-2 border-round-3xl">
-                <ng-template pTemplate="title">
-                    <div class="flex align-items-center gap-3">
-                        <i class="pi pi-user text-xl text-color-secondary"></i>
-                        <span class="form-card-title">Nombre de Usuario</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="profile-grid">
+            <article class="profile-form-card">
+                <div class="form-card-heading">
+                    <div class="form-card-icon">
+                        <i class="pi pi-user"></i>
                     </div>
-                </ng-template>
-                <ng-template pTemplate="content">
-                    <form [formGroup]="usernameForm" (ngSubmit)="onUsernameSubmit()" class="space-y-5">
-                        <div class="form-field">
-                            <p-floatlabel variant="on">
-                                <input pInputText id="username" formControlName="username" placeholder=" " (blur)="checkUsernameAvailability()" class="w-full" />
-                                <label for="username">Nombre de usuario</label>
-                            </p-floatlabel>
-                            @if (isInvalid('username', usernameForm)) {
-                                <small class="text-red-400 mt-1 block">Mínimo 3 caracteres requeridos</small>
-                            }
-                            @if (!usernameAvailable && !checkingUsername) {
-                                <small class="text-red-400 mt-1 block flex align-items-center gap-1">
-                                    <i class="pi pi-times-circle"></i> Username no disponible
-                                </small>
-                            }
-                            @if (checkingUsername) {
-                                <small class="text-color-secondary mt-1 block flex align-items-center gap-1">
-                                    <i class="pi pi-spin pi-spinner text-sm"></i> Verificando...
-                                </small>
-                            }
-                        </div>
-
-                        <div class="form-field">
-                            <p-floatlabel variant="on">
-                                <p-password inputId="current_password_username" formControlName="current_password" placeholder=" " [toggleMask]="true" styleClass="w-full" [fluid]="true" [feedback]="false"></p-password>
-                                <label for="current_password_username">Contraseña Actual</label>
-                            </p-floatlabel>
-                            @if (isInvalid('current_password', usernameForm)) {
-                                <small class="text-red-400 mt-1 block">La contraseña es requerida</small>
-                            }
-                        </div>
-
-                        <div class="flex justify-end">
-                            <p-button type="submit" label="Guardar" icon="pi pi-save" [loading]="savingUsername" [disabled]="usernameForm.invalid || !usernameAvailable"></p-button>
-                        </div>
-                    </form>
-                </ng-template>
-            </p-card>
-
-            <!-- Password Form -->
-            <p-card styleClass="profile-form-card shadow-2 border-round-3xl">
-                <ng-template pTemplate="title">
-                    <div class="flex align-items-center gap-3">
-                        <i class="pi pi-lock text-xl text-color-secondary"></i>
-                        <span class="form-card-title">Seguridad</span>
+                    <div>
+                        <span>Identidad</span>
+                        <h3>Datos de cuenta</h3>
                     </div>
-                </ng-template>
-                <ng-template pTemplate="content">
-                    <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()" class="space-y-5">
-                        <div class="form-field">
-                            <p-floatlabel variant="on">
-                                <p-password inputId="current_password_sec" formControlName="current_password" placeholder=" " [toggleMask]="true" styleClass="w-full" [fluid]="true" [feedback]="false"></p-password>
-                                <label for="current_password_sec">Contraseña Actual</label>
-                            </p-floatlabel>
-                            @if (isInvalid('current_password', passwordForm)) {
-                                <small class="text-red-400 mt-1 block">La contraseña es requerida</small>
-                            }
-                        </div>
+                </div>
 
-                        <div class="form-field">
-                            <p-floatlabel variant="on">
-                                <p-password inputId="new_password" formControlName="new_password" placeholder=" " [toggleMask]="true" styleClass="w-full" [fluid]="true" [feedback]="false"></p-password>
-                                <label for="new_password">Nueva Contraseña</label>
-                            </p-floatlabel>
-                            @if (isInvalid('new_password', passwordForm)) {
-                                <small class="text-red-400 mt-1 block">Mínimo 8 caracteres requeridos</small>
-                            }
-                        </div>
+                <div class="profile-form">
+                    <div class="form-field">
+                        <label>Nombre</label>
+                        <input pInputText [value]="displayName" class="w-full" readonly />
+                    </div>
 
-                        <div class="form-field">
-                            <p-floatlabel variant="on">
-                                <p-password inputId="confirm_password" formControlName="confirm_password" placeholder=" " [toggleMask]="true" styleClass="w-full" [fluid]="true" [feedback]="false"></p-password>
-                                <label for="confirm_password">Confirmar Contraseña</label>
-                            </p-floatlabel>
-                            @if (hasPasswordMismatch()) {
-                                <small class="text-red-400 mt-1 block flex align-items-center gap-1">
-                                    <i class="pi pi-times-circle"></i> Las contraseñas no coinciden
-                                </small>
-                            }
-                        </div>
+                    <div class="form-field">
+                        <label>Correo electrónico</label>
+                        <input pInputText [value]="profile.email" class="w-full" readonly />
+                    </div>
+                </div>
+            </article>
 
-                        <div class="flex justify-end">
-                            <p-button type="submit" label="Actualizar" icon="pi pi-lock" severity="secondary" [loading]="savingPassword" [disabled]="passwordForm.invalid"></p-button>
-                        </div>
-                    </form>
-                </ng-template>
-            </p-card>
+            <article class="profile-form-card">
+                <div class="form-card-heading">
+                    <div class="form-card-icon">
+                        <i class="pi pi-lock"></i>
+                    </div>
+                    <div>
+                        <span>Seguridad</span>
+                        <h3>Cambiar contraseña</h3>
+                    </div>
+                </div>
+
+                <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()" class="profile-form">
+                    <div class="form-field">
+                        <label for="current_password_sec">Contraseña actual</label>
+                        <p-password
+                            inputId="current_password_sec"
+                            formControlName="current_password"
+                            [toggleMask]="true"
+                            styleClass="w-full"
+                            [fluid]="true"
+                            [feedback]="false"
+                        ></p-password>
+                        @if (isInvalid('current_password', passwordForm)) {
+                            <small class="form-error">La contraseña es requerida</small>
+                        }
+                    </div>
+
+                    <div class="form-field">
+                        <label for="new_password">Nueva contraseña</label>
+                        <p-password
+                            inputId="new_password"
+                            formControlName="new_password"
+                            [toggleMask]="true"
+                            styleClass="w-full"
+                            [fluid]="true"
+                            [feedback]="false"
+                        ></p-password>
+                        @if (isInvalid('new_password', passwordForm)) {
+                            <small class="form-error">Mínimo 8 caracteres requeridos</small>
+                        }
+                    </div>
+
+                    <div class="form-field">
+                        <label for="confirm_password">Confirmar contraseña</label>
+                        <p-password
+                            inputId="confirm_password"
+                            formControlName="confirm_password"
+                            [toggleMask]="true"
+                            styleClass="w-full"
+                            [fluid]="true"
+                            [feedback]="false"
+                        ></p-password>
+                        @if (hasPasswordMismatch()) {
+                            <small class="form-error">
+                                <i class="pi pi-times-circle"></i> Las contraseñas no coinciden
+                            </small>
+                        }
+                    </div>
+
+                    <div class="form-actions">
+                        <p-button
+                            type="submit"
+                            label="Actualizar contraseña"
+                            icon="pi pi-lock"
+                            severity="success"
+                            [loading]="savingPassword"
+                            [disabled]="passwordForm.invalid"
+                        ></p-button>
+                    </div>
+                </form>
+            </article>
+        </section>
+
+        <aside class="profile-note">
+            <i class="pi pi-info-circle"></i>
+            <p>
+                El perfil es privado. Las competencias y el ranking público se
+                mantienen en la navegación superior para explorar y competir.
+            </p>
+        </aside>
         </div>
-    </div>
 </div>

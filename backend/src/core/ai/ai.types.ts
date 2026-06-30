@@ -7,12 +7,12 @@ export type AiProvider = 'gemini' | 'openai-compatible';
  * `Type` desde ahí y armar el schema).
  */
 export interface AiSchemaNode {
-    type: string;
-    [key: string]: unknown;
+  type: string;
+  [key: string]: unknown;
 }
 
 export interface AiGenerateOptions {
-    temperature?: number;
-    maxTokens?: number;
-    responseSchema?: AiSchemaNode;
+  temperature?: number;
+  maxTokens?: number;
+  responseSchema?: AiSchemaNode;
 }

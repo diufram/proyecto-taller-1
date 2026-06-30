@@ -23,6 +23,8 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { SkeletonModule } from 'primeng/skeleton';
 import { DividerModule } from 'primeng/divider';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { MessageModule } from 'primeng/message';
 
 import { ToastService } from '@/core/services/toast.service';
 import { ProblemasService } from '@/features/problemas/services/problemas.service';
@@ -59,6 +61,8 @@ interface LenguajeOption {
         ToolbarModule,
         SkeletonModule,
         DividerModule,
+        FloatLabelModule,
+        MessageModule,
     ],
     templateUrl: './resolver-problema-page.component.html',
     styleUrl: './resolver-problema-page.component.scss',
@@ -86,6 +90,11 @@ export class ResolverProblemaPageComponent implements OnInit {
     }));
 
     form!: FormGroup;
+
+    isInvalid(fieldName: string): boolean {
+        const control = this.form?.get(fieldName);
+        return !!control && control.invalid && (control.touched || control.dirty);
+    }
 
     ngOnInit(): void {
         this.competenciaId = Number(this.route.snapshot.paramMap.get('id'));
@@ -165,7 +174,7 @@ export class ResolverProblemaPageComponent implements OnInit {
 
     volver(): void {
         this.router.navigate([
-            '/user/competencias',
+            '/competencias',
             this.competenciaId,
             'problemas',
         ]);

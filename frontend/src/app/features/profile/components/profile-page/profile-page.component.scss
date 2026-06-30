@@ -5,126 +5,339 @@
 :host ::ng-deep {
     .profile-page {
         width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 0.25rem 4rem;
     }
 
-    .profile-header-card {
-        border-radius: 2rem;
-        padding: 2rem 2.5rem;
+    .profile-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 
-        .profile-avatar-wrapper {
-            width: 9rem;
-            height: 9rem;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--surface-100);
-            display: grid;
-            place-items: center;
-            flex-shrink: 0;
+    .profile-state-card {
+        min-height: 55vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        color: var(--app-text-secondary);
+        text-align: center;
 
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-            .avatar-initials {
-                font-size: 2.5rem;
-                font-weight: 600;
-                color: var(--text-color);
-            }
+        i {
+            color: var(--app-accent);
+            font-size: 2.5rem;
         }
 
-        .profile-info {
-            .profile-name {
-                font-size: 2.5rem;
-                font-weight: 700;
-                color: var(--text-color);
-                line-height: 1.2;
-                margin: 0;
-            }
+        p {
+            margin: 0;
+            font-weight: 600;
+        }
 
-            .profile-email {
-                font-size: 1rem;
-                color: var(--text-color-secondary);
-                margin: 0.5rem 0 0;
-            }
+        &.is-error i {
+            color: var(--app-danger);
+        }
+    }
 
-            .profile-tags {
-                margin-top: 1rem;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
+    .profile-hero {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        border: 1px solid var(--app-border);
+        border-radius: 1.5rem;
+        background: var(--app-hero-gradient);
+        box-shadow: var(--app-shadow-md);
+        overflow: hidden;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: -8rem;
+            top: -8rem;
+            width: 18rem;
+            height: 18rem;
+            border-radius: 999px;
+            border: 1px solid var(--app-hero-circle-border);
+            background: var(--app-hero-circle-bg);
+        }
+
+        @media (min-width: 860px) {
+            grid-template-columns: minmax(0, 1fr) 26rem;
+            align-items: center;
+            padding: 2rem;
+        }
+    }
+
+    .profile-hero-copy,
+    .profile-identity-card {
+        position: relative;
+        z-index: 1;
+    }
+
+    .eyebrow {
+        display: inline-flex;
+        width: fit-content;
+        margin-bottom: 0.75rem;
+        padding: 0.35rem 0.7rem;
+        border: 1px solid var(--app-accent-border-soft);
+        border-radius: 999px;
+        color: var(--app-accent-text);
+        background: var(--app-accent-softer);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .profile-hero-copy h1 {
+        max-width: 720px;
+        margin: 0;
+        color: var(--app-text);
+        font-size: clamp(2.3rem, 7vw, 4.75rem);
+        font-weight: 800;
+        letter-spacing: -0.055em;
+        line-height: 0.94;
+    }
+
+    .profile-hero-copy p {
+        max-width: 600px;
+        margin: 1rem 0 0;
+        color: var(--app-text-secondary);
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .profile-identity-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid var(--app-border);
+        border-radius: 1.25rem;
+        background: var(--app-surface-translucent-strong);
+        backdrop-filter: blur(18px);
+    }
+
+    .profile-avatar-wrapper {
+        width: 6rem;
+        height: 6rem;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        background: linear-gradient(135deg, #10b981, #14b8a6);
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        box-shadow: 0 16px 35px rgba(16, 185, 129, 0.22);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .avatar-initials {
+        color: #06130f;
+        font-size: 2.35rem;
+        font-weight: 900;
+        letter-spacing: -0.06em;
+    }
+
+    .profile-identity-copy {
+        min-width: 0;
+    }
+
+    .identity-label {
+        color: var(--app-accent-text);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .profile-identity-copy h2 {
+        margin: 0.25rem 0 0;
+        color: var(--app-text);
+        font-size: 1.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .profile-identity-copy p {
+        margin: 0.35rem 0 0;
+        color: var(--app-text-secondary);
+        font-size: 0.9rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .profile-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+
+        @media (min-width: 900px) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
     .profile-form-card {
-        border-radius: 1.5rem;
-        padding: 1.5rem 2rem;
+        padding: 1.5rem;
+        border: 1px solid var(--app-border);
+        border-radius: 1.25rem;
+        background: var(--app-surface);
+        box-shadow: var(--app-shadow-md);
+        position: relative;
+        overflow: hidden;
 
-        .form-card-title {
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                520px circle at top right,
+                var(--app-accent-softer),
+                transparent 44%
+            );
+            pointer-events: none;
+        }
+    }
+
+    .form-card-heading,
+    .profile-form {
+        position: relative;
+        z-index: 1;
+    }
+
+    .form-card-heading {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-card-icon {
+        width: 2.75rem;
+        height: 2.75rem;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--app-accent-border-softer);
+        border-radius: 0.9rem;
+        background: var(--app-accent-softer);
+        color: var(--app-accent-text);
+    }
+
+    .form-card-heading span {
+        color: var(--app-accent-text);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .form-card-heading h3 {
+        margin: 0.15rem 0 0;
+        color: var(--app-text);
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+
+    .profile-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+    }
+
+    .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+    }
+
+    .form-field label {
+        color: var(--app-text-secondary);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .form-field .p-inputtext,
+    .form-field .p-password-input {
+        width: 100%;
+    }
+
+    .form-error,
+    .form-help {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .form-error {
+        color: var(--app-danger);
+    }
+
+    .form-help {
+        color: var(--app-text-secondary);
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 0.25rem;
+    }
+
+    .profile-note {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding: 1rem 1.25rem;
+        border: 1px solid var(--app-border);
+        border-radius: 1rem;
+        background: var(--app-surface-soft);
+
+        i {
+            color: var(--app-accent-text);
             font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin: 0 0 1.5rem;
         }
 
-        .form-field {
-            margin-bottom: 1.5rem;
-        }
-
-        .username-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-
-            &.available {
-                color: var(--green-500);
-            }
-
-            &.taken {
-                color: var(--red-500);
-            }
-
-            &.checking {
-                color: var(--text-color-secondary);
-            }
-        }
-    }
-
-    .p-floatlabel {
-        :host ::ng-deep .p-inputtext,
-        :host ::ng-deep .p-password {
-            width: 100%;
-        }
-    }
-
-    .p-card {
-        .p-card-content {
-            padding: 0;
+        p {
+            margin: 0;
+            color: var(--app-text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.6;
         }
     }
 
     @media (max-width: 640px) {
-        .profile-header-card {
-            padding: 1.5rem;
+        .profile-hero,
+        .profile-form-card,
+        .profile-note {
+            border-radius: 1rem;
+        }
 
-            .profile-avatar-wrapper {
-                width: 7rem;
-                height: 7rem;
+        .profile-identity-card {
+            align-items: flex-start;
+            flex-direction: column;
+        }
 
-                .avatar-initials {
-                    font-size: 2rem;
-                }
-            }
+        .profile-avatar-wrapper {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 1.25rem;
+        }
 
-            .profile-info {
-                .profile-name {
-                    font-size: 1.75rem;
-                }
-            }
+        .form-actions,
+        .form-actions .p-button {
+            width: 100%;
         }
     }
 }

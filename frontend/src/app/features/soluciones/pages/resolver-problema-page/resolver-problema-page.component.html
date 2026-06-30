@@ -1,71 +1,56 @@
 <div class="resolver-problema-page">
-    <p-toolbar styleClass="mb-3 w-full border-none p-0 bg-transparent">
-        <ng-template pTemplate="left">
-            <div class="flex gap-2 align-items-center">
+    @if (loadingProblema()) {
+        <div class="resolver-hero is-loading">
+            <p-skeleton height="1rem" width="11rem"></p-skeleton>
+            <p-skeleton height="3rem" width="70%"></p-skeleton>
+            <p-skeleton height="1rem" width="55%"></p-skeleton>
+        </div>
+    } @else if (problema(); as p) {
+        <header class="resolver-hero">
+            <div class="resolver-hero-copy">
+                <h1>{{ p.titulo }}</h1>
+            </div>
+
+            <div class="hero-actions">
                 <p-button
                     icon="pi pi-arrow-left"
-                    label="Volver"
+                    label="Volver a problemas"
                     severity="secondary"
                     [outlined]="true"
                     (onClick)="volver()"
                 ></p-button>
             </div>
-        </ng-template>
-    </p-toolbar>
+        </header>
 
-    @if (loadingProblema()) {
-        <div class="problema-skeleton">
-            <p-skeleton height="2rem" width="60%"></p-skeleton>
-            <p-skeleton height="1rem" width="40%"></p-skeleton>
-            <p-skeleton height="6rem" width="100%"></p-skeleton>
-        </div>
-    } @else if (problema(); as p) {
         <article class="problema-card">
-            <header class="problema-header">
-                <div>
-                    <h2 class="problema-titulo">{{ p.titulo }}</h2>
-                    <p class="problema-descripcion">{{ p.descripcion }}</p>
-                </div>
-                <p-tag
-                    [value]="getDificultadLabel(p.dificultad)"
-                    [severity]="getDificultadSeverity(p.dificultad)"
-                ></p-tag>
-            </header>
-
-            <div class="problema-formato">
-                <div class="formato-block">
-                    <span class="label">Formato de entrada</span>
-                    <p class="meta-value">{{ p.formato_entrada }}</p>
-                </div>
-                <div class="formato-block">
-                    <span class="label">Formato de salida</span>
-                    <p class="meta-value">{{ p.formato_salida }}</p>
-                </div>
+            <div class="formato-block">
+                <span class="label">Formato de entrada</span>
+                <p class="meta-value">{{ p.formato_entrada }}</p>
             </div>
-
-            <div class="problema-ejemplos">
-                <div class="formato-block">
-                    <span class="label">Ejemplo de entrada</span>
-                    <pre class="code-block">{{ p.ejemplo_entrada }}</pre>
-                </div>
-                <div class="formato-block">
-                    <span class="label">Ejemplo de salida</span>
-                    <pre class="code-block">{{ p.ejemplo_salida }}</pre>
-                </div>
+            <div class="formato-block">
+                <span class="label">Formato de salida</span>
+                <p class="meta-value">{{ p.formato_salida }}</p>
+            </div>
+            <div class="formato-block">
+                <span class="label">Ejemplo de entrada</span>
+                <pre class="code-block">{{ p.ejemplo_entrada }}</pre>
+            </div>
+            <div class="formato-block">
+                <span class="label">Ejemplo de salida</span>
+                <pre class="code-block">{{ p.ejemplo_salida }}</pre>
             </div>
         </article>
 
-        <p-divider></p-divider>
-
-        <section class="envio-section">
-            <h3 class="section-title">Tu solución</h3>
-
+        <section class="envio-card">
             @if (loadingSolucion()) {
                 <p-skeleton height="3rem" width="100%"></p-skeleton>
             } @else if (miSolucion(); as s) {
                 <div class="envio-existente">
-                    <div class="envio-status">
-                        <span class="label">Estado de tu envío</span>
+                    <div class="envio-status-card">
+                        <div>
+                            <span class="label">Estado de tu envío</span>
+                            <h3>{{ estadoLabel(s.estado) }}</h3>
+                        </div>
                         <p-tag
                             [value]="estadoLabel(s.estado)"
                             [severity]="estadoSeverity(s.estado)"
@@ -85,9 +70,40 @@
                                 s.created_at | date: 'dd/MM/yyyy HH:mm'
                             }}</span>
                         </div>
+                        @if (s.estado === 'Revisado') {
+                            <div>
+                                <span class="label">Calificación</span>
+                                <span class="score-badge">{{ s.puntaje_total }} / 100</span>
+                            </div>
+                        }
                     </div>
 
-                    <div class="formato-block mt-3">
+                    @if (s.estado === 'Revisado' && s.criterios_evaluacion?.length) {
+                        <div class="evaluacion-block">
+                            <div class="evaluacion-heading">
+                                <div>
+                                    <span class="label">Evaluación</span>
+                                    <h3>Detalle de criterios</h3>
+                                </div>
+                                <strong>{{ s.puntaje_total }} / 100</strong>
+                            </div>
+
+                            <div class="criterios-list">
+                                @for (c of s.criterios_evaluacion; track c.criterio) {
+                                    <article class="criterio-item">
+                                        <div>
+                                            <span class="criterio-name">{{ c.criterio }}</span>
+                                            <span class="criterio-meta">{{ c.tipo }} · peso {{ c.peso }}%</span>
+                                        </div>
+                                        <div class="criterio-score">{{ c.puntaje }} / {{ c.peso }}</div>
+                                        <p>{{ c.comentario || 'Sin comentario.' }}</p>
+                                    </article>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <div class="formato-block">
                         <span class="label">Tu respuesta</span>
                         <pre class="code-block respuesta">{{ s.respuesta }}</pre>
                     </div>
@@ -104,50 +120,63 @@
                     class="envio-form"
                 >
                     <div class="form-field">
-                        <label for="lenguaje" class="label">Lenguaje</label>
-                        <p-select
-                            inputId="lenguaje"
-                            formControlName="lenguaje_programacion"
-                            [options]="lenguajes"
-                            optionLabel="label"
-                            optionValue="value"
-                            placeholder="Selecciona un lenguaje"
-                            [filter]="true"
-                            styleClass="w-full"
-                        ></p-select>
-                        @if (
-                            form.get('lenguaje_programacion')?.invalid &&
-                            form.get('lenguaje_programacion')?.touched
-                        ) {
-                            <small class="p-error">El lenguaje es obligatorio.</small>
+                        <p-floatlabel variant="on">
+                            <p-select
+                                inputId="lenguaje"
+                                formControlName="lenguaje_programacion"
+                                [options]="lenguajes"
+                                optionLabel="label"
+                                optionValue="value"
+                                [filter]="true"
+                                class="w-full"
+                                [invalid]="isInvalid('lenguaje_programacion')"
+                                appendTo="body"
+                            ></p-select>
+                            <label for="lenguaje">Lenguaje</label>
+                        </p-floatlabel>
+                        @if (isInvalid("lenguaje_programacion")) {
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >El lenguaje es obligatorio.</p-message
+                            >
                         }
                     </div>
 
                     <div class="form-field">
-                        <label for="respuesta" class="label">Respuesta</label>
-                        <textarea
-                            pTextarea
-                            inputId="respuesta"
-                            formControlName="respuesta"
-                            rows="14"
-                            autoResize="false"
-                            class="w-full codigo-textarea"
-                            placeholder="Escribe aquí tu solución..."
-                        ></textarea>
-                        @if (
-                            form.get('respuesta')?.invalid &&
-                            form.get('respuesta')?.touched
-                        ) {
-                            <small class="p-error">La respuesta es obligatoria.</small>
+                        <p-floatlabel variant="on">
+                            <textarea
+                                pTextarea
+                                inputId="respuesta"
+                                formControlName="respuesta"
+                                rows="14"
+                                autoResize="false"
+                                class="w-full codigo-textarea"
+                                [invalid]="isInvalid('respuesta')"
+                                placeholder=" "
+                            ></textarea>
+                            <label for="respuesta">Respuesta</label>
+                        </p-floatlabel>
+                        @if (isInvalid("respuesta")) {
+                            <p-message
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >La respuesta es obligatoria.</p-message
+                            >
                         }
                     </div>
 
                     <div class="form-actions">
+                        <span class="submit-hint"
+                            >Revisa tu respuesta antes de enviar.</span
+                        >
                         <p-button
                             type="submit"
                             label="Enviar solución"
                             icon="pi pi-send"
-                            severity="primary"
+                            severity="success"
                             [loading]="submitting()"
                             [disabled]="form.invalid || submitting()"
                         ></p-button>

@@ -5,10 +5,7 @@ import {
   Competencia,
   Estado,
 } from '../../database/entities/competencia.entity';
-import {
-  Dificultad,
-  Problema,
-} from '../../database/entities/problema.entity';
+import { Dificultad, Problema } from '../../database/entities/problema.entity';
 import {
   EstadoSolucion,
   Solucion,
@@ -36,7 +33,7 @@ export class DashboardService {
       totalProblemas,
       totalUsuarios,
       totalSoluciones,
-      solucionesCorrectas,
+      solucionesRevisadas,
       competenciasPorEstado,
       problemasPorDificultad,
       solucionesPorEstado,
@@ -54,10 +51,10 @@ export class DashboardService {
         })
         .getCount(),
       this.problemaRepository.count(),
-      this.usuarioRepository.count({ where: { rol: Rol.USER } }),
+      this.usuarioRepository.count({ where: { rol: Rol.ESTUDIANTE } }),
       this.solucionRepository.count(),
       this.solucionRepository.count({
-        where: { estado: EstadoSolucion.CORRECTO },
+        where: { estado: EstadoSolucion.REVISADO },
       }),
       this.getCompetenciasPorEstado(),
       this.getProblemasPorDificultad(),
@@ -76,7 +73,7 @@ export class DashboardService {
         totalProblemas,
         totalUsuarios,
         totalSoluciones,
-        tasaAcierto: this.percent(solucionesCorrectas, totalSoluciones),
+        tasaAcierto: this.percent(solucionesRevisadas, totalSoluciones),
       },
       competenciasPorEstado,
       problemasPorDificultad,
@@ -104,7 +101,9 @@ export class DashboardService {
     return result;
   }
 
-  private async getProblemasPorDificultad(): Promise<Record<Dificultad, number>> {
+  private async getProblemasPorDificultad(): Promise<
+    Record<Dificultad, number>
+  > {
     const rows = await this.problemaRepository
       .createQueryBuilder('p')
       .select('p.dificultad', 'dificultad')
@@ -119,7 +118,9 @@ export class DashboardService {
     return result;
   }
 
-  private async getSolucionesPorEstado(): Promise<Record<EstadoSolucion, number>> {
+  private async getSolucionesPorEstado(): Promise<
+    Record<EstadoSolucion, number>
+  > {
     const rows = await this.solucionRepository
       .createQueryBuilder('s')
       .select('s.estado', 'estado')
@@ -141,14 +142,14 @@ export class DashboardService {
       .leftJoin(
         'soluciones',
         's',
-        's.usuarioId = u.id AND s.estado = :correcto AND s.deleted_at IS NULL',
-        { correcto: EstadoSolucion.CORRECTO },
+        's.usuarioId = u.id AND s.estado = :revisado AND s.deleted_at IS NULL',
+        { revisado: EstadoSolucion.REVISADO },
       )
       .leftJoin('personas', 'p', 'p.usuarioId = u.id')
-      .where('u.rol = :rol', { rol: Rol.USER })
+      .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
       .select([
         'u.id AS id',
-        'u.nombre_usuario AS username',
+        'u.correo_electronico AS correo_electronico',
         'u.puntos_totales AS points',
         'COUNT(DISTINCT s.id)::int AS solved_problems',
         'COUNT(DISTINCT i.id)::int AS competitions',
@@ -162,7 +163,7 @@ export class DashboardService {
       .addOrderBy('u.created_at', 'ASC')
       .limit(5)
       .getRawMany<{
-        username: string;
+        correo_electronico: string;
         points: number | string;
         solved_problems: number | string;
         competitions: number | string;
@@ -172,8 +173,7 @@ export class DashboardService {
 
     return rows.map((row, index) => ({
       position: index + 1,
-      username: row.username,
-      name: this.displayName(row.nombre, row.apellido, row.username),
+      name: this.displayName(row.nombre, row.apellido, row.correo_electronico),
       points: Number(row.points) || 0,
       solvedProblems: Number(row.solved_problems) || 0,
       competitions: Number(row.competitions) || 0,
@@ -190,13 +190,13 @@ export class DashboardService {
       .addSelect('c.nombre', 'competencia')
       .addSelect('COUNT(s.id)::int', 'total_soluciones')
       .addSelect(
-        `COUNT(s.id) FILTER (WHERE s.estado = '${EstadoSolucion.CORRECTO}')::int`,
+        `COUNT(s.id) FILTER (WHERE s.estado = '${EstadoSolucion.REVISADO}')::int`,
         'correctas',
       )
       .groupBy('p.id')
       .addGroupBy('c.nombre')
       .orderBy(
-        `CASE WHEN COUNT(s.id) = 0 THEN 100 ELSE (COUNT(s.id) FILTER (WHERE s.estado = '${EstadoSolucion.CORRECTO}')::float / COUNT(s.id)) END`,
+        `CASE WHEN COUNT(s.id) = 0 THEN 100 ELSE (COUNT(s.id) FILTER (WHERE s.estado = '${EstadoSolucion.REVISADO}')::float / COUNT(s.id)) END`,
         'ASC',
       )
       .addOrderBy('COUNT(s.id)', 'DESC')
@@ -279,7 +279,8 @@ export class DashboardService {
       nombre: row.nombre,
       estado: row.estado,
       nivel: row.nivel,
-      fechaInicio: row.fecha_inicio?.toISOString?.() ?? String(row.fecha_inicio),
+      fechaInicio:
+        row.fecha_inicio?.toISOString?.() ?? String(row.fecha_inicio),
       problemas: Number(row.problemas) || 0,
     }));
   }
@@ -330,9 +331,8 @@ export class DashboardService {
   private emptyEstadoSolucionRecord(): Record<EstadoSolucion, number> {
     return {
       [EstadoSolucion.PENDIENTE]: 0,
-      [EstadoSolucion.CORRECTO]: 0,
-      [EstadoSolucion.INCORRECTO]: 0,
       [EstadoSolucion.REVISION]: 0,
+      [EstadoSolucion.REVISADO]: 0,
     };
   }
 
@@ -344,9 +344,9 @@ export class DashboardService {
   private displayName(
     nombre: string | null,
     apellido: string | null,
-    username: string,
+    email: string,
   ): string {
     const fullName = [nombre, apellido].filter(Boolean).join(' ').trim();
-    return fullName || username;
+    return fullName || email;
   }
 }

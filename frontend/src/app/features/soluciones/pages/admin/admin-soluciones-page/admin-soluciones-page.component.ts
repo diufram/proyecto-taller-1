@@ -13,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TableModule, Table } from 'primeng/table';
-import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -28,11 +27,9 @@ import { MessageService } from 'primeng/api';
 import { ToastService } from '@/core/services/toast.service';
 import {
     SolucionesService,
-    CalificarResponse,
 } from '../../../services/soluciones.service';
 import {
     AdminSolucion,
-    CalificarSolucionDto,
     EstadoSolucion,
     ESTADO_SOLUCION_LABELS,
     ESTADO_SOLUCION_SEVERITY,
@@ -40,10 +37,6 @@ import {
     LENGUAJES,
     Lenguaje,
 } from '../../../models/solucion.model';
-import {
-    CalificarEvent,
-    CalificarSolucionModalComponent,
-} from '../../../components/calificar-solucion-modal/calificar-solucion-modal.component';
 import { CompetenciasService } from '@/features/competencias/services/competencias.service';
 import { Competencia } from '@/features/competencias/models/competencia.model';
 import { ProblemasService } from '@/features/problemas/services/problemas.service';
@@ -68,7 +61,6 @@ interface LenguajeFiltro {
         FormsModule,
         ButtonModule,
         TableModule,
-        ToolbarModule,
         InputTextModule,
         IconFieldModule,
         InputIconModule,
@@ -78,7 +70,6 @@ interface LenguajeFiltro {
         TagModule,
         ToastModule,
         SelectModule,
-        CalificarSolucionModalComponent,
     ],
     providers: [MessageService],
     templateUrl: './admin-soluciones-page.component.html',
@@ -123,10 +114,6 @@ export class AdminSolucionesPageComponent implements OnInit, OnDestroy {
         { label: 'Todos los lenguajes', value: null },
         ...LENGUAJES.map((l) => ({ label: l, value: l })),
     ];
-
-    calificarVisible = signal(false);
-    calificarTarget = signal<AdminSolucion | null>(null);
-    submitting = signal(false);
 
     private searchTimeout?: ReturnType<typeof setTimeout>;
 
@@ -269,46 +256,31 @@ export class AdminSolucionesPageComponent implements OnInit, OnDestroy {
     }
 
     openCalificar(s: AdminSolucion): void {
-        this.calificarTarget.set(s);
-        this.calificarVisible.set(true);
-    }
-
-    onCalificar(event: CalificarEvent): void {
-        const target = this.calificarTarget();
-        if (!target) return;
-
-        const dto: CalificarSolucionDto = {
-            estado: event.estado,
-        };
-        if (event.resultado_validacion !== undefined) {
-            dto.resultado_validacion = event.resultado_validacion;
+        if (this.problemaId && this.competenciaId) {
+            this.router.navigate([
+                '/admin/competencias/problemas',
+                this.competenciaId,
+                'problema',
+                this.problemaId,
+                'soluciones',
+                s.id,
+                'calificar',
+            ]);
+            return;
         }
 
-        this.submitting.set(true);
-        this.solucionesService.calificar(target.id, dto).subscribe({
-            next: (res: CalificarResponse) => {
-                this.submitting.set(false);
-                this.calificarVisible.set(false);
-                this.calificarTarget.set(null);
+        if (this.competenciaId) {
+            this.router.navigate([
+                '/admin/competencias/problemas',
+                this.competenciaId,
+                'soluciones',
+                s.id,
+                'calificar',
+            ]);
+            return;
+        }
 
-                const deltaTxt =
-                    res.delta_puntos > 0
-                        ? `+${res.delta_puntos}`
-                        : `${res.delta_puntos}`;
-                this.toast.success(
-                    `${res.message} (${deltaTxt} puntos)`,
-                );
-                this.load(this.currentPage());
-            },
-            error: (err) => {
-                this.submitting.set(false);
-                this.toast.error(err);
-            },
-        });
-    }
-
-    onSugerirError(err: unknown): void {
-        this.toast.error(err ?? 'No se pudo generar la sugerencia');
+        this.router.navigate(['/admin/competencias']);
     }
 
     displayName(s: AdminSolucion): string {
@@ -317,7 +289,7 @@ export class AdminSolucionesPageComponent implements OnInit, OnDestroy {
         if (nombre || apellido) {
             return `${nombre ?? ''} ${apellido ?? ''}`.trim();
         }
-        return `@${s.usuario_nombre_usuario}`;
+        return s.usuario_email;
     }
 
     estadoLabel(estado: EstadoSolucion): string {

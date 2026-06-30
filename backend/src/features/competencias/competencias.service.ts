@@ -105,7 +105,6 @@ export class CompetenciasService {
     return {
       id: competencia.id,
       nombre: competencia.nombre,
-      descripcion: competencia.descripcion,
       fecha_inicio: competencia.fecha_inicio,
       fecha_fin: competencia.fecha_fin,
       nivel_dificultad: competencia.nivel_dificultad,

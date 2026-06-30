@@ -21,13 +21,14 @@ describe('AdminSolucionesPageComponent', () => {
         lenguaje_programacion: 'Python',
         estado,
         resultado_validacion: false,
+        puntaje_total: 0,
         problema_id: 1,
         problema_titulo: 'Suma',
         problema_dificultad: 'Facil',
         competencia_id: 1,
         competencia_nombre: 'Olimpiada',
         usuario_id: 10,
-        usuario_nombre_usuario: 'juanp',
+        usuario_email: 'juan@example.com',
         usuario_nombre: 'Juan',
         usuario_apellido: 'Perez',
         created_at: '2026-01-01T00:00:00Z',
@@ -90,39 +91,31 @@ describe('AdminSolucionesPageComponent', () => {
         expect(component.displayName(solucionMock(1, 'Pendiente'))).toBe('Juan Perez');
     });
 
-    it('should fallback to username when persona missing', () => {
+    it('should fallback to email when persona missing', () => {
         const s = { ...solucionMock(1, 'Pendiente'), usuario_nombre: null, usuario_apellido: null };
-        expect(component.displayName(s)).toBe('@juanp');
+        expect(component.displayName(s)).toBe('juan@example.com');
     });
 
-    it('should open modal with target', () => {
+    it('should navigate to grading page with target', () => {
         const s = solucionMock(2, 'Pendiente');
+        component.competenciaId = 1;
+        component.problemaId = 3;
+
         component.openCalificar(s);
-        expect(component.calificarTarget()?.id).toBe(2);
-        expect(component.calificarVisible()).toBe(true);
-    });
 
-    it('should PATCH /soluciones/:id/estado on calificar', () => {
-        api.when('PATCH', 'soluciones/1/estado', {
-            solucion: solucionMock(1, 'Correcto'),
-            delta_puntos: 10,
-            message: 'ok',
-        });
-        api.when('GET', 'soluciones', listResponse([solucionMock(1, 'Correcto')], 1));
-
-        component.openCalificar(solucionMock(1, 'Pendiente'));
-        component.onCalificar({ estado: 'Correcto' });
-
-        const patch = api.requests.find(
-            (r) => r.method === 'PATCH' && r.url === 'PATCH soluciones/1/estado',
-        );
-        expect(patch).toBeDefined();
-        expect(patch?.body).toEqual({ estado: 'Correcto' });
+        expect(router.navigations.at(-1)?.commands).toEqual([
+            '/admin/competencias/problemas',
+            1,
+            'problema',
+            3,
+            'soluciones',
+            2,
+            'calificar',
+        ]);
     });
 
     it('should map estado to severity', () => {
-        expect(component.estadoSeverity('Correcto')).toBe('success');
-        expect(component.estadoSeverity('Incorrecto')).toBe('danger');
+        expect(component.estadoSeverity('Revisado')).toBe('success');
         expect(component.estadoSeverity('Pendiente')).toBe('info');
         expect(component.estadoSeverity('En revisión')).toBe('warn');
     });
@@ -133,7 +126,7 @@ describe('AdminSolucionesPageComponent', () => {
     });
 
     it('should detect active filters when estado is set', () => {
-        component.currentEstado = 'Correcto';
+        component.currentEstado = 'Revisado';
         expect(component.hasActiveFilters).toBe(true);
     });
 
@@ -144,7 +137,7 @@ describe('AdminSolucionesPageComponent', () => {
 
     it('should reset to no filters on clearFilters', () => {
         component.currentSearch = 'juan';
-        component.currentEstado = 'Correcto';
+        component.currentEstado = 'Revisado';
         component.currentLenguaje = 'Python';
 
         component.clearFilters();

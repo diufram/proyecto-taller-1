@@ -1,6 +1,5 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { Usuario } from './usuario.entity';
-import { Grupo } from './grupo.entity';
 import { Competencia } from './competencia.entity';
 import { BaseEntity } from '../../core/entities/base.entity';
 
@@ -11,9 +10,6 @@ export class Inscripcion extends BaseEntity {
 
   @ManyToOne(() => Usuario, (u) => u.inscripciones)
   usuario!: Usuario;
-
-  @ManyToOne(() => Grupo, (g) => g.inscripciones, { nullable: true })
-  grupo!: Grupo;
 
   @ManyToOne(() => Competencia, (c) => c.inscripciones)
   competencia!: Competencia;

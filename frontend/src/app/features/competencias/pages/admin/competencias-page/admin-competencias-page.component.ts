@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TableModule, Table } from 'primeng/table';
-import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -30,7 +29,6 @@ import { RowAction } from '@/shared/components/shared-table/interfaces/table-con
         FormsModule,
         ButtonModule,
         TableModule,
-        ToolbarModule,
         InputTextModule,
         IconFieldModule,
         InputIconModule,
@@ -140,9 +138,8 @@ export class AdminCompetenciasPageComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/admin/competencias/problemas', comp.id], {
                     state: {
                         competenciaNombre: comp.nombre,
-                        competenciaDescripcion: comp.descripcion,
                         nivelDificultad: comp.nivel_dificultad,
-                        tipo: comp.tipo,
+                        tipo: 'Individual',
                     },
                 });
                 break;

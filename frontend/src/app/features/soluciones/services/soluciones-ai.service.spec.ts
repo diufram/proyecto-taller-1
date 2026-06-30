@@ -26,9 +26,11 @@ describe('SolucionesAiService', () => {
     describe('sugerir', () => {
         it('should POST to /soluciones/:id/sugerir-calificacion', (done) => {
             const sugerencia: SugerenciaIA = {
-                estado: 'Correcto',
+                estado: 'Revisado',
                 confianza: 0.9,
+                puntaje_total: 90,
                 justificacion: 'La respuesta resuelve el problema.',
+                criterios: [],
             };
             const mockResponse = {
                 sugerencia,
@@ -56,9 +58,11 @@ describe('SolucionesAiService', () => {
         it('should POST with empty body when no instructions', (done) => {
             const mockResponse = {
                 sugerencia: {
-                    estado: 'Incorrecto',
+                    estado: 'En revisión',
                     confianza: 0.6,
+                    puntaje_total: 35,
                     justificacion: 'Falla en un caso borde.',
+                    criterios: [],
                 },
                 message: 'ok',
             };

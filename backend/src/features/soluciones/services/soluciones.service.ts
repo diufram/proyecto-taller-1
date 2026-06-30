@@ -116,7 +116,6 @@ export class SolucionesService {
     };
   }
 
-
   async findAllByUser(user: JwtPayload, query: QuerySolucionesDto) {
     const page = query.page ?? 1;
     const limit = Math.min(query.limit ?? 10, 100);
@@ -183,22 +182,31 @@ export class SolucionesService {
 
     const puntosProblema = PUNTOS_POR_DIFICULTAD[problema.dificultad] ?? 0;
 
-    const delta = this.calcularDeltaPuntos(
+    const puntajeAnterior = solucion.puntaje_total ?? 0;
+    const puntajeNuevo = dto.puntaje_total ?? puntajeAnterior;
+    const delta = this.calcularDeltaPuntos({
       estadoAnterior,
       estadoNuevo,
+      puntajeAnterior,
+      puntajeNuevo,
       puntosProblema,
-    );
+    });
 
     if (delta !== 0) {
       await this.ajustarPuntosUsuario(solucion.usuario.id, delta);
     }
 
     const resultadoValidacion =
-      dto.resultado_validacion ?? estadoNuevo === EstadoSolucion.CORRECTO;
+      dto.resultado_validacion ?? estadoNuevo === EstadoSolucion.REVISADO;
 
     const actualizada = await this.solucionesRepository.actualizar(solucion, {
       estado: estadoNuevo,
       resultado_validacion: resultadoValidacion,
+      puntaje_total: puntajeNuevo,
+      confianza_ia: dto.confianza_ia ?? solucion.confianza_ia ?? null,
+      justificacion_ia: dto.justificacion_ia ?? solucion.justificacion_ia ?? null,
+      criterios_evaluacion:
+        (dto.criterios_evaluacion as any) ?? solucion.criterios_evaluacion ?? null,
     });
 
     return {
@@ -234,7 +242,6 @@ export class SolucionesService {
 
     const sugerencia = await this.solucionesAiService.sugerir({
       problemaTitulo: problema.titulo,
-      problemaDescripcion: problema.descripcion,
       problemaFormatoEntrada: problema.formato_entrada,
       problemaFormatoSalida: problema.formato_salida,
       problemaEjemploEntrada: problema.ejemplo_entrada,
@@ -252,15 +259,22 @@ export class SolucionesService {
     };
   }
 
-  private calcularDeltaPuntos(
-    anterior: EstadoSolucion,
-    nuevo: EstadoSolucion,
-    puntosProblema: number,
-  ): number {
-    const otorga = (estado: EstadoSolucion) =>
-      estado === EstadoSolucion.CORRECTO ? puntosProblema : 0;
+  private calcularDeltaPuntos(input: {
+    estadoAnterior: EstadoSolucion;
+    estadoNuevo: EstadoSolucion;
+    puntajeAnterior: number;
+    puntajeNuevo: number;
+    puntosProblema: number;
+  }): number {
+    const otorga = (estado: EstadoSolucion, puntaje: number) => {
+      if (estado !== EstadoSolucion.REVISADO) return 0;
+      return Math.round(input.puntosProblema * (Math.max(0, Math.min(100, puntaje)) / 100));
+    };
 
-    return otorga(nuevo) - otorga(anterior);
+    return (
+      otorga(input.estadoNuevo, input.puntajeNuevo) -
+      otorga(input.estadoAnterior, input.puntajeAnterior)
+    );
   }
 
   private async ajustarPuntosUsuario(usuarioId: number, delta: number) {
@@ -286,7 +300,7 @@ export class SolucionesService {
         'ROW_NUMBER() OVER (ORDER BY u.puntos_totales DESC, u.created_at ASC)',
         'pos',
       )
-      .where('u.rol = :rol', { rol: 'user' })
+      .where('u.rol = :rol', { rol: Rol.ESTUDIANTE })
       .getRawMany<{ id: number; pos: string }>();
 
     for (const r of ranking) {
@@ -309,10 +323,13 @@ export class SolucionesService {
       lenguaje_programacion: solucion.lenguaje_programacion,
       estado: solucion.estado,
       resultado_validacion: solucion.resultado_validacion,
+      puntaje_total: solucion.puntaje_total ?? 0,
+      confianza_ia: solucion.confianza_ia ?? null,
+      justificacion_ia: solucion.justificacion_ia ?? null,
+      criterios_evaluacion: solucion.criterios_evaluacion ?? null,
       problema_id: solucion.problema?.id,
       problema_titulo: solucion.problema?.titulo,
       problema_dificultad: solucion.problema?.dificultad,
-      problema_descripcion: solucion.problema?.descripcion,
       problema_formato_entrada: solucion.problema?.formato_entrada,
       problema_formato_salida: solucion.problema?.formato_salida,
       problema_ejemplo_entrada: solucion.problema?.ejemplo_entrada,
@@ -320,7 +337,7 @@ export class SolucionesService {
       competencia_id: solucion.problema?.competencia?.id,
       competencia_nombre: solucion.problema?.competencia?.nombre,
       usuario_id: solucion.usuario?.id,
-      usuario_nombre_usuario: solucion.usuario?.nombre_usuario,
+      usuario_email: solucion.usuario?.correo_electronico,
       usuario_nombre: personaNombre ?? null,
       usuario_apellido: personaApellido ?? null,
       created_at: solucion.createdAt,

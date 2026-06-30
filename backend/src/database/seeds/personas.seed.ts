@@ -35,6 +35,12 @@ export const personasSeed: Seed = {
         celular: '+5491112345678',
       },
       {
+        correo: 'matias@gmail.com',
+        nombre: 'Matias',
+        apellido: 'Silva',
+        celular: '+5491111111111',
+      },
+      {
         correo: 'lucas@gmail.com',
         nombre: 'Lucas',
         apellido: 'Garcia',

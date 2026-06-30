@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
     FormBuilder,
     FormGroup,
@@ -10,11 +10,10 @@ import {
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { MessageModule } from 'primeng/message';
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '@/core/services/toast.service';
-import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconfigurator';
 
 @Component({
     selector: 'app-register',
@@ -24,16 +23,17 @@ import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconf
         ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
-        PasswordModule,
         FloatLabelModule,
+        MessageModule,
         RouterModule,
-        MyFloatingConfigurator,
     ],
     templateUrl: './register.component.html',
+    styleUrl: './register.component.scss',
 })
 export class RegisterComponent implements OnInit {
     private fb = inject(FormBuilder);
     private router = inject(Router);
+    private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
     private toast = inject(ToastService);
 
@@ -45,10 +45,6 @@ export class RegisterComponent implements OnInit {
             {
                 nombre: ['', Validators.required],
                 apellido: ['', Validators.required],
-                nombre_usuario: [
-                    '',
-                    [Validators.required, Validators.minLength(3)],
-                ],
                 correo_electronico: [
                     '',
                     [Validators.required, Validators.email],
@@ -66,9 +62,7 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.router.navigate([
-                this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
-            ]);
+            this.router.navigate([this.getDefaultRoute()]);
         }
     }
 
@@ -106,7 +100,6 @@ export class RegisterComponent implements OnInit {
         const {
             nombre,
             apellido,
-            nombre_usuario,
             correo_electronico,
             celular,
             contrasena,
@@ -116,7 +109,6 @@ export class RegisterComponent implements OnInit {
             .register({
                 nombre,
                 apellido,
-                nombre_usuario,
                 correo_electronico,
                 celular: celular || undefined,
                 contrasena,
@@ -125,9 +117,7 @@ export class RegisterComponent implements OnInit {
                 next: () => {
                     this.toast.success('Exito', 'Cuenta creada correctamente.');
                     this.loading = false;
-                    this.router.navigate([
-                        this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
-                    ]);
+                    this.router.navigate([this.getPostRegisterRoute()]);
                 },
                 error: (err) => {
                     console.error('Error en registro:', err);
@@ -136,5 +126,33 @@ export class RegisterComponent implements OnInit {
                     this.toast.error('Error', msg);
                 },
             });
+    }
+
+    private getDefaultRoute(): string {
+        return this.authService.isAdmin() ? '/dashboard' : '/mis-competencias';
+    }
+
+    private getPostRegisterRoute(): string {
+        const queryRedirect = this.route.snapshot.queryParamMap.get('redirect');
+        const storedRedirect =
+            typeof localStorage !== 'undefined'
+                ? localStorage.getItem('redirect_url')
+                : null;
+        const target = queryRedirect || storedRedirect;
+
+        if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('redirect_url');
+        }
+
+        if (target && target.startsWith('/')) {
+            if (this.authService.isAdmin()) {
+                return target.startsWith('/admin') || target === '/dashboard'
+                    ? target
+                    : '/dashboard';
+            }
+            return target;
+        }
+
+        return this.getDefaultRoute();
     }
 }

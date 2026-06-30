@@ -9,11 +9,6 @@ export class CreateProblemaDto {
   @IsNotEmpty()
   titulo!: string;
 
-  @ApiProperty({ example: 'Dado dos numeros a y b, retorna la suma.' })
-  @IsString()
-  @IsNotEmpty()
-  descripcion!: string;
-
   @ApiProperty({ enum: Dificultad, example: Dificultad.FACIL })
   @IsEnum(Dificultad)
   dificultad!: Dificultad;

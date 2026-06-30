@@ -3,7 +3,6 @@ export type Dificultad = 'Facil' | 'Medio' | 'Dificil';
 export interface Problema {
     id: number;
     titulo: string;
-    descripcion: string;
     dificultad: Dificultad;
     formato_entrada: string;
     formato_salida: string;
@@ -18,7 +17,6 @@ export interface Problema {
 
 export interface CreateProblemaDto {
     titulo: string;
-    descripcion: string;
     dificultad: Dificultad;
     formato_entrada: string;
     formato_salida: string;

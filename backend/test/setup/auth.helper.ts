@@ -13,7 +13,6 @@ export async function crearAdminYObtenerToken(
   const contrasena = 'Password123';
 
   const admin = usuarioRepository.create({
-    nombre_usuario: 'admin_test',
     correo_electronico: email,
     contrasena: await hash(contrasena, 10),
     rol: Rol.ADMIN,

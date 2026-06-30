@@ -70,7 +70,7 @@ describe('AuthService', () => {
     });
 
     describe('logout', () => {
-        it('navega a /auth/login y limpia sesión si hay refresh token', async () => {
+        it('navega a /landing y limpia sesión si hay refresh token', async () => {
             localStorage.setItem('refresh_token', 'refresh-abc');
             api.when('POST', 'auth/logout', { message: 'ok' });
 
@@ -79,11 +79,11 @@ describe('AuthService', () => {
 
             expect(api.requests.find((r) => r.url === 'POST auth/logout')).toBeDefined();
             expect(localStorage.getItem('refresh_token')).toBeNull();
-            expect(router.navigations[0]?.commands[0]).toBe('/auth/login');
+            expect(router.navigations[0]?.commands[0]).toBe('/landing');
         });
 
-        it('no navega si ya está en /auth/login', async () => {
-            router.urlValue = '/auth/login';
+        it('no navega si ya está en /landing', async () => {
+            router.urlValue = '/landing';
             localStorage.setItem('refresh_token', 'refresh-abc');
             api.when('POST', 'auth/logout', { message: 'ok' });
 
@@ -99,7 +99,7 @@ describe('AuthService', () => {
             await Promise.resolve();
 
             expect(localStorage.getItem('token')).toBeNull();
-            expect(router.navigations[0]?.commands[0]).toBe('/auth/login');
+            expect(router.navigations[0]?.commands[0]).toBe('/landing');
         });
     });
 

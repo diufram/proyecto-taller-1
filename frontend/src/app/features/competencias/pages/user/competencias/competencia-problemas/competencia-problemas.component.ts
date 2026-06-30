@@ -79,17 +79,25 @@ export class UserCompetenciaProblemasComponent implements OnInit {
     }
 
     volver(): void {
-        this.router.navigate(['/user/competencias', this.competenciaId]);
+        this.router.navigate(['/competencias', this.competenciaId]);
     }
 
     verProblema(problema: Problema): void {
         this.router.navigate([
-            '/user/competencias',
+            '/competencias',
             this.competenciaId,
             'problemas',
             problema.id,
             'resolver',
         ]);
+    }
+
+    get problemasFaciles(): number {
+        return this.problemas.filter((problema) => problema.dificultad === 'Facil').length;
+    }
+
+    get problemasMediosDificiles(): number {
+        return this.problemas.filter((problema) => problema.dificultad !== 'Facil').length;
     }
 
     getDificultadSeverity(dificultad: Dificultad): 'success' | 'warn' | 'danger' {

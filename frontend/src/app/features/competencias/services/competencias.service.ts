@@ -8,18 +8,11 @@ import {
     UpdateCompetenciaDto,
 } from '../models/competencia.model';
 
-export interface GrupoInfo {
-    id: number;
-    nombre: string;
-}
-
 export interface InscripcionInfo {
     id: number;
     competencia_id: number;
     competencia_nombre: string;
-    competencia_tipo: 'Individual' | 'Grupal';
     fecha_inscripcion: string;
-    grupo: GrupoInfo | null;
 }
 
 export interface MisInscripcionesResponse {

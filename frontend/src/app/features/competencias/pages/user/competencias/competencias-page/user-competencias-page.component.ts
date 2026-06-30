@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { SkeletonModule } from 'primeng/skeleton';
@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { ToastService } from '@/core/services/toast.service';
 import { CompetenciasService } from '@/features/competencias/services/competencias.service';
 import { Competencia } from '@/features/competencias/models/competencia.model';
+import { AuthService } from '@/features/auth/services/auth.service';
 
 @Component({
     selector: 'app-user-competencias-page',
@@ -19,6 +20,7 @@ import { Competencia } from '@/features/competencias/models/competencia.model';
     imports: [
         CommonModule,
         FormsModule,
+        RouterLink,
         ButtonModule,
         SkeletonModule,
         TagModule,
@@ -30,6 +32,7 @@ import { Competencia } from '@/features/competencias/models/competencia.model';
 })
 export class UserCompetenciasPageComponent implements OnInit, OnDestroy {
     private competenciasService = inject(CompetenciasService);
+    private authService = inject(AuthService);
     private toast = inject(ToastService);
     private router = inject(Router);
 
@@ -59,7 +62,9 @@ export class UserCompetenciasPageComponent implements OnInit, OnDestroy {
                 next: (response) => {
                     this.competencias = response.items;
                     this.loading = false;
-                    this.loadMisInscripciones();
+                    if (this.authService.isAuthenticated()) {
+                        this.loadMisInscripciones();
+                    }
                 },
                 error: (err: any) => {
                     this.toast.error('Error', 'No se pudo cargar la lista de competencias');
@@ -73,14 +78,33 @@ export class UserCompetenciasPageComponent implements OnInit, OnDestroy {
     }
 
     verDetalle(competencia: Competencia): void {
-        this.router.navigate(['/user/competencias', competencia.id]);
+        this.router.navigate(['/competencias', competencia.id]);
     }
 
     isInscrito(competenciaId: number): boolean {
         return this.inscritas.has(competenciaId);
     }
 
+    get isAuthenticated(): boolean {
+        return this.authService.isAuthenticated();
+    }
+
+    get competenciasAbiertas(): number {
+        return this.competencias.filter((comp) => comp.estado === 'Abierta').length;
+    }
+
+    get competenciasEnCurso(): number {
+        return this.competencias.filter((comp) => comp.estado === 'En curso').length;
+    }
+
     inscribirse(competencia: Competencia): void {
+        if (!this.isAuthenticated) {
+            this.router.navigate(['/auth/login'], {
+                queryParams: { redirect: `/competencias/${competencia.id}` },
+            });
+            return;
+        }
+
         if (this.inscribiendoCompetenciaId || this.isInscrito(competencia.id)) {
             return;
         }

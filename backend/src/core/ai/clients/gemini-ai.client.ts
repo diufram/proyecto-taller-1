@@ -76,7 +76,6 @@ export class GeminiAiClient implements AiClient {
         type: Type.OBJECT,
         required: [
           'titulo',
-          'descripcion',
           'dificultad',
           'formato_entrada',
           'formato_salida',
@@ -85,7 +84,6 @@ export class GeminiAiClient implements AiClient {
         ],
         properties: {
           titulo: { type: Type.STRING },
-          descripcion: { type: Type.STRING },
           dificultad: {
             type: Type.STRING,
             enum: ['Facil', 'Medio', 'Dificil'],

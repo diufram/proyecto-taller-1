@@ -22,7 +22,6 @@ describe('ProblemasService', () => {
     it('create hace POST /competencias/:id/problemas con el body recibido', () => {
         const dto = {
             titulo: 'Suma simple',
-            descripcion: 'Sumar dos numeros',
             dificultad: 'Facil' as const,
             formato_entrada: 'dos enteros',
             formato_salida: 'la suma',

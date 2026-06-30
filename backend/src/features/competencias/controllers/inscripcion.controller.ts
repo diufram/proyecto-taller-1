@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -32,7 +41,10 @@ export class InscripcionesController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Listar mis inscripciones' })
-  @ApiResponse({ status: 200, description: 'Listado de inscripciones del usuario' })
+  @ApiResponse({
+    status: 200,
+    description: 'Listado de inscripciones del usuario',
+  })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   my(@CurrentUser() user: JwtPayload) {
     return this.inscripcionesService.my(user);
@@ -45,7 +57,10 @@ export class InscripcionesController {
   @ApiResponse({ status: 200, description: 'Desinscripción exitosa' })
   @ApiResponse({ status: 401, description: 'No autorizado' })
   @ApiResponse({ status: 404, description: 'Inscripción no encontrada' })
-  remove(@CurrentUser() user: JwtPayload, @Param('id', ParseIntPipe) id: number) {
+  remove(
+    @CurrentUser() user: JwtPayload,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
     return this.inscripcionesService.remove(user, id);
   }
 }

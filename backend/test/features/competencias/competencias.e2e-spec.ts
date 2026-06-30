@@ -15,7 +15,6 @@ describe('Competencias feature (e2e)', () => {
       .post('/competencias')
       .send({
         nombre: `Competencia ${Date.now()}`,
-        descripcion: 'Competencia para pruebas e2e',
         fecha_inicio: '2026-07-01T10:00:00.000Z',
         fecha_fin: '2026-07-10T18:00:00.000Z',
         nivel_dificultad: 'Intermedio',
@@ -37,7 +36,6 @@ describe('Competencias feature (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         nombre: `Competencia ${Date.now()}`,
-        descripcion: 'Competencia para pruebas e2e',
         fecha_inicio: '2026-07-01T10:00:00.000Z',
         fecha_fin: '2026-07-10T18:00:00.000Z',
         nivel_dificultad: 'Intermedio',
@@ -61,7 +59,6 @@ describe('Competencias feature (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         nombre: `Competencia CRUD ${Date.now()}`,
-        descripcion: 'Competencia para flujo CRUD',
         fecha_inicio: '2026-08-01T10:00:00.000Z',
         fecha_fin: '2026-08-03T18:00:00.000Z',
         nivel_dificultad: 'Principiante',
@@ -101,7 +98,9 @@ describe('Competencias feature (e2e)', () => {
         expect(res.body.status).toBe('success');
       });
 
-    await request(app.getHttpServer()).get(`/competencias/${competenciaId}`).expect(404);
+    await request(app.getHttpServer())
+      .get(`/competencias/${competenciaId}`)
+      .expect(404);
   });
 
   afterEach(async () => {

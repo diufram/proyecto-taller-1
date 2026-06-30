@@ -18,7 +18,7 @@ export class QueryProblemasDto {
 
   @ApiPropertyOptional({
     example: 'suma',
-    description: 'Busca por titulo o descripcion (case insensitive)',
+    description: 'Busca por titulo (case insensitive)',
   })
   @IsOptional()
   @IsString()

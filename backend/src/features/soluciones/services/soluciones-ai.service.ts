@@ -8,17 +8,34 @@ import { ConfigService } from '@nestjs/config';
 import { Type } from '@google/genai';
 import { AI_CLIENT } from '../../../core/ai/ai.constants';
 import { AiClient } from '../../../core/ai/ai-client.interface';
-import { EstadoSolucion, Lenguaje } from '../../../database/entities/solucion.entity';
+import {
+  EstadoSolucion,
+  Lenguaje,
+  CriterioEvaluacionSolucion,
+} from '../../../database/entities/solucion.entity';
+
+export const RUBRICA_SOLUCION: Array<
+  Pick<CriterioEvaluacionSolucion, 'criterio' | 'peso' | 'tipo'>
+> = [
+  { criterio: 'Correctitud', peso: 40, tipo: 'Obligatorio' },
+  { criterio: 'Tiempo', peso: 20, tipo: 'Objetivo' },
+  { criterio: 'Memoria', peso: 15, tipo: 'Objetivo' },
+  { criterio: 'Calidad del código', peso: 10, tipo: 'Objetivo' },
+  { criterio: 'Complejidad algorítmica', peso: 5, tipo: 'Objetivo' },
+  { criterio: 'Uso de estructuras de datos', peso: 5, tipo: 'Objetivo' },
+  { criterio: 'Robustez', peso: 5, tipo: 'Objetivo' },
+];
 
 export interface SugerenciaCalificacion {
   estado: EstadoSolucion;
   confianza: number;
+  puntaje_total: number;
   justificacion: string;
+  criterios: CriterioEvaluacionSolucion[];
 }
 
 export interface DatosSolucionParaSugerir {
   problemaTitulo: string;
-  problemaDescripcion: string;
   problemaFormatoEntrada: string;
   problemaFormatoSalida: string;
   problemaEjemploEntrada: string;
@@ -48,18 +65,41 @@ export class SolucionesAiService {
       maxTokens: 800,
       responseSchema: {
         type: Type.OBJECT,
-        required: ['estado', 'confianza', 'justificacion'],
+        required: [
+          'estado',
+          'confianza',
+          'puntaje_total',
+          'justificacion',
+          'criterios',
+        ],
         properties: {
           estado: {
             type: Type.STRING,
             enum: [
-              EstadoSolucion.CORRECTO,
-              EstadoSolucion.INCORRECTO,
               EstadoSolucion.REVISION,
+              EstadoSolucion.REVISADO,
             ],
           },
           confianza: { type: Type.NUMBER },
+          puntaje_total: { type: Type.NUMBER },
           justificacion: { type: Type.STRING },
+          criterios: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              required: ['criterio', 'peso', 'tipo', 'puntaje', 'comentario'],
+              properties: {
+                criterio: { type: Type.STRING },
+                peso: { type: Type.NUMBER },
+                tipo: {
+                  type: Type.STRING,
+                  enum: ['Obligatorio', 'Objetivo'],
+                },
+                puntaje: { type: Type.NUMBER },
+                comentario: { type: Type.STRING },
+              },
+            },
+          },
         },
       },
     });
@@ -86,24 +126,40 @@ Reglas estrictas de formato de respuesta:
 Estructura obligatoria del JSON de respuesta:
 
 {
-  "estado": "Correcto",
+  "estado": "Revisado",
   "confianza": 0.85,
-  "justificacion": "La respuesta resuelve el problema correctamente siguiendo el formato solicitado."
+  "puntaje_total": 82,
+  "justificacion": "La respuesta resuelve el problema correctamente siguiendo el formato solicitado.",
+  "criterios": [
+    {
+      "criterio": "Correctitud",
+      "peso": 40,
+      "tipo": "Obligatorio",
+      "puntaje": 38,
+      "comentario": "Resuelve correctamente los casos principales."
+    }
+  ]
 }
 
 Reglas obligatorias:
-- "estado" debe ser exactamente uno de: "Correcto", "Incorrecto" o "En revisión".
+- "estado" debe ser exactamente uno de: "Revisado" o "En revisión".
 - "confianza" debe ser un número entre 0 y 1 que represente tu seguridad en la sugerencia.
+- "puntaje_total" debe ser un número entero entre 0 y 100.
 - "justificacion" debe ser un texto breve (máximo 500 caracteres) que explique el razonamiento.
-- Si la respuesta es ambigua, está vacía, no compila o no resuelve el problema, sugerí "Incorrecto" o "En revisión" con confianza baja.
-- Si la respuesta resuelve el problema correctamente, sugerí "Correcto" con confianza alta.
+- "criterios" debe contener exactamente estos 7 criterios, en este orden, con estos pesos y tipos:
+${RUBRICA_SOLUCION.map((c) => `  - ${c.criterio}: peso ${c.peso}, tipo ${c.tipo}`).join('\n')}
+- En cada criterio, "puntaje" debe estar entre 0 y el peso del criterio.
+- La suma de puntajes de criterios debe coincidir con "puntaje_total".
+- Correctitud es obligatorio: si Correctitud es 0 o muy baja, asigná puntaje bajo aunque otros criterios tengan buen puntaje.
+- Cada "comentario" debe ser breve y específico.
+- Si la respuesta es ambigua, está vacía o no podés evaluarla con seguridad, sugerí "En revisión" con confianza baja.
+- Si podés evaluar la respuesta con la rúbrica, sugerí "Revisado". El puntaje_total define la calificación, incluso si es baja.
 - No agregues campos extra.
 - No uses comentarios.
 
 Problema:
 - Título: ${datos.problemaTitulo}
 - Dificultad: ${datos.problemaDificultad}
-- Descripción: ${datos.problemaDescripcion}
 - Formato de entrada: ${datos.problemaFormatoEntrada}
 - Formato de salida: ${datos.problemaFormatoSalida}
 - Ejemplo de entrada: ${datos.problemaEjemploEntrada}
@@ -148,9 +204,7 @@ Devuelve únicamente el objeto JSON final.`;
     }
 
     if (
-      !Object.values(EstadoSolucion).includes(
-        obj.estado as EstadoSolucion,
-      ) ||
+      !Object.values(EstadoSolucion).includes(obj.estado as EstadoSolucion) ||
       obj.estado === EstadoSolucion.PENDIENTE
     ) {
       throw new BadGatewayException(
@@ -164,6 +218,12 @@ Devuelve únicamente el objeto JSON final.`;
       );
     }
 
+    if (typeof obj.puntaje_total !== 'number' || isNaN(obj.puntaje_total)) {
+      throw new BadGatewayException(
+        'La sugerencia no incluye "puntaje_total" numérico.',
+      );
+    }
+
     if (typeof obj.justificacion !== 'string' || !obj.justificacion.trim()) {
       throw new BadGatewayException(
         'La sugerencia no incluye "justificacion" textual.',
@@ -172,6 +232,8 @@ Devuelve únicamente el objeto JSON final.`;
 
     const confianza = Math.max(0, Math.min(1, obj.confianza));
     const justificacion = obj.justificacion.trim();
+    const criterios = this.parseCriterios(obj.criterios);
+    const puntaje_total = criterios.reduce((sum, c) => sum + c.puntaje, 0);
 
     if (justificacion.length > 600) {
       throw new BadGatewayException(
@@ -182,8 +244,66 @@ Devuelve únicamente el objeto JSON final.`;
     return {
       estado: obj.estado as EstadoSolucion,
       confianza,
+      puntaje_total,
       justificacion,
+      criterios,
     };
+  }
+
+  private parseCriterios(value: unknown): CriterioEvaluacionSolucion[] {
+    if (!Array.isArray(value)) {
+      throw new BadGatewayException(
+        'La sugerencia no incluye la lista de criterios.',
+      );
+    }
+
+    if (value.length !== RUBRICA_SOLUCION.length) {
+      throw new BadGatewayException(
+        'La sugerencia debe incluir todos los criterios de evaluación.',
+      );
+    }
+
+    return RUBRICA_SOLUCION.map((esperado, index) => {
+      const item = value[index] as Record<string, unknown> | undefined;
+      if (!item || typeof item !== 'object') {
+        throw new BadGatewayException('Un criterio de evaluación es inválido.');
+      }
+
+      if (item.criterio !== esperado.criterio) {
+        throw new BadGatewayException(
+          `La IA devolvió un criterio inesperado: ${String(item.criterio)}.`,
+        );
+      }
+
+      if (Number(item.peso) !== esperado.peso || item.tipo !== esperado.tipo) {
+        throw new BadGatewayException(
+          `La IA devolvió metadatos inválidos para ${esperado.criterio}.`,
+        );
+      }
+
+      if (typeof item.puntaje !== 'number' || isNaN(item.puntaje)) {
+        throw new BadGatewayException(
+          `El criterio ${esperado.criterio} no incluye puntaje numérico.`,
+        );
+      }
+
+      if (typeof item.comentario !== 'string' || !item.comentario.trim()) {
+        throw new BadGatewayException(
+          `El criterio ${esperado.criterio} no incluye comentario.`,
+        );
+      }
+
+      const puntaje = Math.max(
+        0,
+        Math.min(esperado.peso, Math.round(item.puntaje)),
+      );
+
+      return {
+        ...esperado,
+        puntaje,
+        comentario: item.comentario.trim().slice(0, 240),
+      };
+    });
   }
 
   private stripCodeFence(value: string): string {
@@ -212,8 +332,7 @@ Devuelve únicamente el objeto JSON final.`;
       return;
     }
 
-    const parseMessage =
-      error instanceof Error ? error.message : String(error);
+    const parseMessage = error instanceof Error ? error.message : String(error);
     this.logger.warn(
       `La IA devolvió JSON inválido. ${parseMessage} (rawLength=${rawText.length}, cleanLength=${cleanText.length}, preview=${cleanText.slice(0, 400)})`,
     );

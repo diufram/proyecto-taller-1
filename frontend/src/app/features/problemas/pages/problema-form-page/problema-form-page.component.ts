@@ -16,15 +16,13 @@ import { finalize } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
-import { MessageModule } from 'primeng/message';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
 import { SkeletonModule } from 'primeng/skeleton';
-import { ToolbarModule } from 'primeng/toolbar';
 
 import { ToastService } from '@/core/services/toast.service';
 import { ProblemasService } from '../../services/problemas.service';
@@ -48,15 +46,13 @@ export type ProblemaFormMode = 'create' | 'edit';
         ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
+        MessageModule,
         TextareaModule,
         SelectModule,
         ToastModule,
-        MessageModule,
         FloatLabelModule,
-        DividerModule,
         TooltipModule,
         SkeletonModule,
-        ToolbarModule,
     ],
     templateUrl: './problema-form-page.component.html',
     styleUrl: './problema-form-page.component.scss',
@@ -81,7 +77,6 @@ export class ProblemaFormPageComponent implements OnInit {
     dificultadLabels = DIFICULTAD_LABELS;
 
     readonly MAX_TITULO = 120;
-    readonly MAX_DESCRIPCION = 2000;
     readonly MAX_FORMATO = 500;
     readonly MAX_EJEMPLO = 1000;
 
@@ -90,13 +85,6 @@ export class ProblemaFormPageComponent implements OnInit {
             titulo: [
                 '',
                 [Validators.required, Validators.maxLength(this.MAX_TITULO)],
-            ],
-            descripcion: [
-                '',
-                [
-                    Validators.required,
-                    Validators.maxLength(this.MAX_DESCRIPCION),
-                ],
             ],
             dificultad: [null, Validators.required],
             formato_entrada: [
@@ -190,30 +178,6 @@ export class ProblemaFormPageComponent implements OnInit {
             .catch(() => this.toast.error('No se pudo copiar'));
     }
 
-    fillExampleEntrada(): void {
-        this.form
-            .get('ejemplo_entrada')
-            ?.setValue('3 5\n2 7\n10 20');
-    }
-
-    fillExampleSalida(): void {
-        const entrada = this.form.get('ejemplo_entrada')?.value ?? '';
-        const lineas = entrada
-            .split('\n')
-            .map((l: string) => l.trim())
-            .filter((l: string) => l.length > 0)
-            .map((l: string) => {
-                const nums = l.split(/\s+/).map(Number);
-                if (nums.length === 2 && nums.every((n) => !isNaN(n))) {
-                    return String(nums[0] + nums[1]);
-                }
-                return '';
-            })
-            .filter((s: string) => s.length > 0)
-            .join('\n');
-        this.form.get('ejemplo_salida')?.setValue(lineas);
-    }
-
     save(): void {
         if (this.form.invalid) {
             this.form.markAllAsTouched();
@@ -271,7 +235,6 @@ export class ProblemaFormPageComponent implements OnInit {
                 this.existingProblema = res.problema;
                 this.form.patchValue({
                     titulo: res.problema.titulo,
-                    descripcion: res.problema.descripcion,
                     dificultad: res.problema.dificultad,
                     formato_entrada: res.problema.formato_entrada,
                     formato_salida: res.problema.formato_salida,
@@ -291,7 +254,6 @@ export class ProblemaFormPageComponent implements OnInit {
     private resetFormForCreate(): void {
         this.form.reset({
             titulo: '',
-            descripcion: '',
             dificultad: null,
             formato_entrada: '',
             formato_salida: '',

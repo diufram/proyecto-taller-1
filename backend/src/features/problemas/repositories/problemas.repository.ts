@@ -32,10 +32,7 @@ export class ProblemasRepository {
 
     if (query.search && query.search.trim().length > 0) {
       const term = `%${query.search.trim().toLowerCase()}%`;
-      qb.andWhere(
-        '(LOWER(p.titulo) LIKE :term OR LOWER(p.descripcion) LIKE :term)',
-        { term },
-      );
+      qb.andWhere('LOWER(p.titulo) LIKE :term', { term });
     }
 
     if (query.dificultad) {
@@ -122,7 +119,7 @@ export class ProblemasRepository {
     >(
       `SELECT "problemaId" AS "problemaId",
               COUNT(*)::int AS total,
-              COUNT(*) FILTER (WHERE estado = 'Correcto')::int AS correctas
+              COUNT(*) FILTER (WHERE estado = 'Revisado')::int AS correctas
          FROM soluciones
         WHERE "problemaId" = ANY($1)
           AND deleted_at IS NULL

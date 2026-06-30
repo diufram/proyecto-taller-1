@@ -1,29 +1,46 @@
 <div class="competencia-problemas-page">
     @if (loadingCompetencia) {
-        <div class="flex flex-col gap-3 mb-4">
-            <p-skeleton height="2rem" width="40%"></p-skeleton>
-            <p-skeleton height="1rem" width="60%"></p-skeleton>
+        <div class="problemas-hero is-loading">
+            <p-skeleton height="1rem" width="11rem"></p-skeleton>
+            <p-skeleton height="3rem" width="70%"></p-skeleton>
+            <p-skeleton height="1rem" width="55%"></p-skeleton>
         </div>
     } @else if (competencia) {
-        <div class="competencia-header mb-4">
-            <h2 class="text-2xl font-bold m-0">{{ competencia.nombre }}</h2>
-            <p class="text-color-secondary m-0 mt-1">Problemas disponibles</p>
-        </div>
-    }
-
-    <p-toolbar styleClass="mb-3 w-full border-none p-0 bg-transparent">
-        <ng-template pTemplate="left">
-            <div class="flex gap-2 align-items-center">
-                <p-button
-                    icon="pi pi-arrow-left"
-                    label="Volver"
-                    severity="secondary"
-                    [outlined]="true"
-                    (onClick)="volver()"
-                ></p-button>
+        <header class="problemas-hero">
+            <div class="problemas-hero-copy">
+                <span class="eyebrow">Arena de problemas</span>
+                <h1>{{ competencia.nombre }}</h1>
+                <p>
+                    Revisa los enunciados disponibles, elige un desafío y envía
+                    tu solución para sumar progreso en la competencia.
+                </p>
+                <div class="hero-actions">
+                    <p-button
+                        icon="pi pi-arrow-left"
+                        label="Volver a competencia"
+                        severity="secondary"
+                        [outlined]="true"
+                        (onClick)="volver()"
+                    ></p-button>
+                </div>
             </div>
-        </ng-template>
-    </p-toolbar>
+
+            <div class="problemas-hero-panel" aria-label="Resumen de problemas">
+                <div class="hero-stat">
+                    <span class="hero-stat-value">{{ problemas.length }}</span>
+                    <span class="hero-stat-label">Problemas</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">{{ problemasFaciles }}</span>
+                    <span class="hero-stat-label">Fáciles</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">{{ problemasMediosDificiles }}</span>
+                    <span class="hero-stat-label">Med/Dif</span>
+                </div>
+            </div>
+        </header>
+    }
 
     @if (loading) {
         <div class="problemas-grid">
@@ -54,6 +71,11 @@
             } @else {
                 @for (problema of problemas; track problema.id) {
                     <article class="problema-card">
+                        <div class="problema-topline">
+                            <span class="problema-number">#{{ problema.id }}</span>
+                            <span class="problema-dot"></span>
+                        </div>
+
                         <div class="problema-header">
                             <h4>{{ problema.titulo }}</h4>
                             <p-tag
@@ -66,30 +88,38 @@
                             ></p-tag>
                         </div>
 
-                        <p class="problema-descripcion">
-                            {{ problema.descripcion }}
-                        </p>
-
                         <div class="problema-meta">
                             <div>
-                                <span class="label">Entrada</span>
+                                <span class="label">Formato de entrada</span>
                                 <span class="meta-value">{{
                                     problema.formato_entrada
                                 }}</span>
                             </div>
                             <div>
-                                <span class="label">Salida</span>
+                                <span class="label">Formato de salida</span>
                                 <span class="meta-value">{{
                                     problema.formato_salida
                                 }}</span>
                             </div>
                         </div>
 
+                        <div class="problema-score-row">
+                            <span>
+                                <i class="pi pi-send"></i>
+                                {{ problema.total_soluciones || 0 }} envíos
+                            </span>
+                            <span>
+                                <i class="pi pi-check-circle"></i>
+                                {{ problema.soluciones_correctas || 0 }} correctas
+                            </span>
+                        </div>
+
                         <div class="problema-actions">
+                            <span class="action-hint">Resolver una sola vez</span>
                             <p-button
                                 label="Resolver"
                                 icon="pi pi-play"
-                                severity="primary"
+                                severity="success"
                                 (onClick)="verProblema(problema)"
                             ></p-button>
                         </div>

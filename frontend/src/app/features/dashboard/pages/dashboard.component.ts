@@ -38,6 +38,19 @@ export class DashboardPage implements OnInit {
     loading = false;
     error = '';
 
+    get summary() {
+        return (
+            this.stats?.summary ?? {
+                totalCompetencias: 0,
+                competenciasActivas: 0,
+                totalProblemas: 0,
+                totalUsuarios: 0,
+                totalSoluciones: 0,
+                tasaAcierto: 0,
+            }
+        );
+    }
+
     readonly competenciaEstados: CompetenciaEstado[] = [
         'Abierta',
         'En curso',
@@ -47,9 +60,8 @@ export class DashboardPage implements OnInit {
     readonly dificultadLabels: ProblemaDificultad[] = ['Facil', 'Medio', 'Dificil'];
     readonly solucionEstados: SolucionEstado[] = [
         'Pendiente',
-        'Correcto',
-        'Incorrecto',
         'En revisión',
+        'Revisado',
     ];
 
     ngOnInit(): void {
@@ -93,7 +105,7 @@ export class DashboardPage implements OnInit {
                 value: summary.totalUsuarios,
                 icon: 'pi pi-users',
                 tone: 'blue',
-                detail: 'Participantes con rol usuario',
+                detail: 'Participantes con rol estudiante',
             },
             {
                 label: 'Soluciones enviadas',

@@ -12,16 +12,15 @@ import { finalize, forkJoin } from 'rxjs';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
 import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectModule } from 'primeng/select';
 import { TagModule } from 'primeng/tag';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DividerModule } from 'primeng/divider';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastModule } from 'primeng/toast';
-import { MessageModule } from 'primeng/message';
-import { ToolbarModule } from 'primeng/toolbar';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 import { ToastService } from '@/core/services/toast.service';
@@ -43,16 +42,15 @@ import {
         ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
+        MessageModule,
         TextareaModule,
         InputNumberModule,
         SelectModule,
         TagModule,
         CheckboxModule,
-        DividerModule,
         TooltipModule,
         ToastModule,
-        MessageModule,
-        ToolbarModule,
+        FloatLabelModule,
         ToggleSwitchModule,
     ],
     templateUrl: './problema-generate-page.component.html',
@@ -68,7 +66,6 @@ export class ProblemaGeneratePageComponent implements OnInit {
 
     competenciaId!: number;
     competenciaNombre: string = '';
-    competenciaDescripcion: string = '';
     nivelDificultad: NivelCompetencia = 'Intermedio';
     tipo: TipoCompetencia = 'Individual';
 
@@ -122,8 +119,6 @@ export class ProblemaGeneratePageComponent implements OnInit {
         this.competenciaNombre =
             history.state?.competenciaNombre ??
             `Competencia #${this.competenciaId}`;
-        this.competenciaDescripcion =
-            history.state?.competenciaDescripcion ?? '';
         this.nivelDificultad =
             (history.state?.nivelDificultad as NivelCompetencia) ??
             'Intermedio';
@@ -244,7 +239,6 @@ export class ProblemaGeneratePageComponent implements OnInit {
                 cantidad,
                 dificultad,
                 competenciaNombre: this.competenciaNombre,
-                competenciaDescripcion: this.competenciaDescripcion,
                 nivelDificultad: this.nivelDificultad,
                 tipo: this.tipo,
             })
@@ -273,7 +267,6 @@ export class ProblemaGeneratePageComponent implements OnInit {
             toSave.map((p) =>
                 this.problemasService.create(this.competenciaId!, {
                     titulo: p.titulo,
-                    descripcion: p.descripcion,
                     dificultad: p.dificultad,
                     formato_entrada: p.formato_entrada,
                     formato_salida: p.formato_salida,

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
     FormBuilder,
     FormGroup,
@@ -10,12 +10,11 @@ import {
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { MessageModule } from 'primeng/message';
 
 import { AuthService } from '../../services/auth.service';
 import { ToastService } from '@/core/services/toast.service';
-import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconfigurator';
 
 @Component({
     selector: 'app-login',
@@ -25,16 +24,17 @@ import { MyFloatingConfigurator } from '@/core/layout/component/app.floatingconf
         ReactiveFormsModule,
         ButtonModule,
         InputTextModule,
-        PasswordModule,
         FloatLabelModule,
+        MessageModule,
         RouterModule,
-        MyFloatingConfigurator,
     ],
     templateUrl: './login.component.html',
+    styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
     private fb = inject(FormBuilder);
     private router = inject(Router);
+    private route = inject(ActivatedRoute);
     private authService = inject(AuthService);
     private toast = inject(ToastService);
 
@@ -50,9 +50,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.authService.isAuthenticated()) {
-            this.router.navigate([
-                this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
-            ]);
+            this.router.navigate([this.getDefaultRoute()]);
         }
     }
 
@@ -82,9 +80,7 @@ export class LoginComponent implements OnInit {
                     'Sesión iniciada correctamente',
                 );
                 this.loading = false;
-                this.router.navigate([
-                    this.authService.isAdmin() ? '/dashboard' : '/user/competencias',
-                ]);
+                this.router.navigate([this.getPostLoginRoute()]);
             },
             error: (err) => {
                 console.error('Error en login:', err);
@@ -93,5 +89,33 @@ export class LoginComponent implements OnInit {
                 this.toast.error('Error', msg);
             },
         });
+    }
+
+    private getDefaultRoute(): string {
+        return this.authService.isAdmin() ? '/dashboard' : '/mis-competencias';
+    }
+
+    private getPostLoginRoute(): string {
+        const queryRedirect = this.route.snapshot.queryParamMap.get('redirect');
+        const storedRedirect =
+            typeof localStorage !== 'undefined'
+                ? localStorage.getItem('redirect_url')
+                : null;
+        const target = queryRedirect || storedRedirect;
+
+        if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('redirect_url');
+        }
+
+        if (target && target.startsWith('/')) {
+            if (this.authService.isAdmin()) {
+                return target.startsWith('/admin') || target === '/dashboard'
+                    ? target
+                    : '/dashboard';
+            }
+            return target;
+        }
+
+        return this.getDefaultRoute();
     }
 }

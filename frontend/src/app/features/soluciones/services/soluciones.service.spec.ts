@@ -36,6 +36,7 @@ describe('SolucionesService', () => {
                     lenguaje_programacion: 'Python' as const,
                     estado: 'Pendiente' as const,
                     resultado_validacion: false,
+                    puntaje_total: 0,
                     problema_id: 1,
                     problema_titulo: 'Suma',
                     problema_dificultad: 'Facil',
@@ -81,8 +82,9 @@ describe('SolucionesService', () => {
                     id: 5,
                     respuesta: 'x = 1',
                     lenguaje_programacion: 'Python' as const,
-                    estado: 'Correcto' as const,
+                    estado: 'Revisado' as const,
                     resultado_validacion: true,
+                    puntaje_total: 100,
                     problema_id: 2,
                     problema_titulo: 'P',
                     problema_dificultad: 'Facil',
@@ -111,12 +113,13 @@ describe('SolucionesService', () => {
                         lenguaje_programacion: 'Python' as const,
                         estado: 'Pendiente' as const,
                         resultado_validacion: false,
+                        puntaje_total: 0,
                         problema_id: 1,
                         problema_titulo: 'Suma',
                         problema_dificultad: 'Facil',
                         competencia_id: 1,
                         usuario_id: 10,
-                        usuario_nombre_usuario: 'juanp',
+                        usuario_email: 'juan@example.com',
                         usuario_nombre: 'Juan',
                         usuario_apellido: 'Perez',
                         created_at: '2026-01-01T00:00:00Z',
@@ -163,20 +166,21 @@ describe('SolucionesService', () => {
 
     describe('calificar', () => {
         it('should PATCH /soluciones/:id/estado', (done) => {
-            const dto = { estado: 'Correcto' as const };
+            const dto = { estado: 'Revisado' as const };
             const mockResponse = {
                 solucion: {
                     id: 1,
                     respuesta: 'print(1)',
                     lenguaje_programacion: 'Python' as const,
-                    estado: 'Correcto' as const,
+                    estado: 'Revisado' as const,
                     resultado_validacion: true,
+                    puntaje_total: 100,
                     problema_id: 1,
                     problema_titulo: 'Suma',
                     problema_dificultad: 'Facil',
                     competencia_id: 1,
                     usuario_id: 10,
-                    usuario_nombre_usuario: 'juanp',
+                    usuario_email: 'juan@example.com',
                     created_at: '2026-01-01T00:00:00Z',
                     updated_at: '2026-01-01T00:00:00Z',
                 },

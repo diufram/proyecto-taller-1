@@ -38,9 +38,8 @@ describe('DashboardService', () => {
             problemasPorDificultad: { Facil: 2, Medio: 0, Dificil: 0 },
             solucionesPorEstado: {
                 Pendiente: 0,
-                Correcto: 4,
-                Incorrecto: 0,
                 'En revisión': 0,
+                Revisado: 4,
             },
             topUsuarios: [],
             problemasMasDificiles: [],

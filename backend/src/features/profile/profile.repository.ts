@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Persona } from '../../database/entities/persona.entity';
@@ -24,24 +24,9 @@ export class ProfileRepository {
     return this.usuarioRepository.findOne({ where: { id } });
   }
 
-  async updateUsername(usuarioId: number, username: string): Promise<Usuario> {
-    await this.usuarioRepository.update(usuarioId, { nombre_usuario: username });
-    const usuario = await this.findUsuarioById(usuarioId);
-    if (!usuario) throw new NotFoundException('Usuario no encontrado');
-    return usuario;
-  }
-
-  async isUsernameTaken(username: string, excludeUserId?: number): Promise<boolean> {
-    const query = this.usuarioRepository.createQueryBuilder('u')
-      .where('LOWER(u.nombre_usuario) = LOWER(:username)', { username });
-    if (excludeUserId) {
-      query.andWhere('u.id != :excludeUserId', { excludeUserId });
-    }
-    const count = await query.getCount();
-    return count > 0;
-  }
-
   async updatePassword(usuarioId: number, passwordHash: string): Promise<void> {
-    await this.usuarioRepository.update(usuarioId, { contrasena: passwordHash });
+    await this.usuarioRepository.update(usuarioId, {
+      contrasena: passwordHash,
+    });
   }
 }

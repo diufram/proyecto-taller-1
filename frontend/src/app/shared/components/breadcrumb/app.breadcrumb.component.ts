@@ -37,81 +37,102 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     `,
     styles: [
         `
-            :host ::ng-deep {
-                .breadcrumb-container {
-                    background: var(--surface-card);
-                    border: 1px solid var(--surface-border);
-                    border-radius: 8px;
-                    padding: 0.5rem 0.75rem;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            :host {
+                display: block;
+                color: var(--app-text);
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
 
-                    /* Scroll horizontal */
-                    overflow-x: auto;
-                    white-space: nowrap;
-                    display: block;
-                    scroll-behavior: smooth;
-                    -webkit-overflow-scrolling: touch;
+            :host ::ng-deep .breadcrumb-container {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.65rem 0.9rem;
+                background: var(--app-surface);
+                border: 1px solid var(--app-border);
+                border-radius: 0.95rem;
+                box-shadow: var(--app-shadow-sm);
+                overflow-x: auto;
+                white-space: nowrap;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+                transition:
+                    background-color 0.3s ease,
+                    border-color 0.3s ease;
 
-                    &::-webkit-scrollbar {
-                        display: none;
-                    }
-                    scrollbar-width: none;
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+                scrollbar-width: none;
+            }
+
+            :host ::ng-deep .compact-breadcrumb {
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+
+                .p-breadcrumb-list {
+                    display: flex;
+                    align-items: center;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                    gap: 0.15rem;
                 }
 
-                .compact-breadcrumb {
-                    background: transparent !important;
-                    border: none !important;
-                    padding: 0 !important;
+                li.p-breadcrumb-chevron {
+                    font-size: 0.7rem;
+                    margin: 0 0.4rem;
+                    color: var(--app-text-secondary);
+                }
 
-                    .p-breadcrumb-list {
-                        display: flex;
-                        align-items: center;
-                        margin: 0;
-                        padding: 0;
-                        list-style: none;
+                .p-menuitem-link {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    padding: 0.25rem 0.55rem;
+                    border-radius: 0.55rem;
+                    text-decoration: none;
+                    transition:
+                        background-color 0.2s ease,
+                        color 0.2s ease;
 
-                        li.p-breadcrumb-chevron {
-                            font-size: 0.7rem;
-                            margin: 0 0.4rem;
-                            color: var(--text-color-secondary);
+                    .p-menuitem-text {
+                        font-size: 0.85rem;
+                        color: var(--app-text-secondary);
+                        white-space: nowrap;
+                        font-weight: 600;
+                    }
+                    .p-menuitem-icon {
+                        color: var(--app-accent-text);
+                        font-size: 0.95rem;
+                    }
+
+                    &:hover {
+                        background: var(--app-accent-softer);
+
+                        .p-menuitem-text {
+                            color: var(--app-accent-text);
                         }
+                    }
+                }
 
-                        .p-menuitem-link {
-                            display: flex;
-                            align-items: center;
-                            text-decoration: none;
-                            transition: all 0.2s;
+                li.active-item .p-menuitem-link {
+                    cursor: default;
+                    pointer-events: none;
+                    background: var(--app-accent-softer);
+                    border: 1px solid var(--app-accent-border-softer);
 
-                            .p-menuitem-text {
-                                font-size: 0.85rem;
-                                color: var(
-                                    --text-color-secondary
-                                ); /* Color base gris */
-                                white-space: nowrap;
-                            }
-                            .p-menuitem-icon {
-                                color: var(--text-color-secondary);
-                            }
-                        }
+                    .p-menuitem-text {
+                        color: var(--app-accent-text-strong) !important;
+                        font-weight: 800 !important;
+                        font-size: 0.9rem !important;
+                    }
 
-                        /* ✅ SOLUCIÓN DEFINITIVA: Usamos la clase que inyectamos en TS */
-                        li.active-item .p-menuitem-link {
-                            cursor: default;
-                            pointer-events: none;
-
-                            .p-menuitem-text {
-                                color: var(
-                                    --text-color
-                                ) !important; /* Blanco/Negro fuerte */
-                                /* color: var(--primary-color) !important; <--- Descomenta si prefieres AZUL */
-                                font-weight: 800 !important;
-                                font-size: 0.9rem !important; /* Un pelín más grande */
-                            }
-
-                            .p-menuitem-icon {
-                                color: var(--text-color) !important;
-                            }
-                        }
+                    .p-menuitem-icon {
+                        color: var(--app-accent-text) !important;
                     }
                 }
             }
@@ -140,7 +161,6 @@ export class AppBreadcrumbComponent implements OnInit, AfterViewChecked {
 
     ngAfterViewChecked() {
         if (this.scrollNeeded && this.containerRef) {
-            // ✅ Agregamos setTimeout para asegurar que el DOM se pintó antes de scrollear
             setTimeout(() => {
                 const el = this.containerRef.nativeElement;
                 el.scrollLeft = el.scrollWidth;
@@ -152,12 +172,9 @@ export class AppBreadcrumbComponent implements OnInit, AfterViewChecked {
     private generateBreadcrumbs() {
         const crumbs = this.createBreadcrumbs(this.activatedRoute.root);
 
-        // ✅ TRUCO: Marcar explícitamente el último item con una clase
         if (crumbs.length > 0) {
-            // Limpiamos clases anteriores por si acaso
             crumbs.forEach((c) => (c.styleClass = ''));
 
-            // Asignamos la clase al último
             const lastItem = crumbs[crumbs.length - 1];
             lastItem.styleClass = 'active-item';
         }
@@ -193,7 +210,7 @@ export class AppBreadcrumbComponent implements OnInit, AfterViewChecked {
             const result = this.createBreadcrumbs(child, url, breadcrumbs);
 
             for (const cb of result) {
-                if (!breadcrumbs.some(b => b.label === cb.label)) {
+                if (!breadcrumbs.some((b) => b.label === cb.label)) {
                     breadcrumbs.push(cb);
                 }
             }

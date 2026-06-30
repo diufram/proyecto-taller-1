@@ -9,12 +9,7 @@ import { DashboardService } from './dashboard.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      Competencia,
-      Problema,
-      Solucion,
-      Usuario,
-    ]),
+    TypeOrmModule.forFeature([Competencia, Problema, Solucion, Usuario]),
   ],
   controllers: [DashboardController],
   providers: [DashboardService],

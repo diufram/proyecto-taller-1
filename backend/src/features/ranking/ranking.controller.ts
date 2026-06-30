@@ -22,20 +22,17 @@ import { MyRankingStatsDto } from './dto/my-ranking-stats.dto';
 
 @ApiTags('Ranking')
 @Controller('ranking')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth('access-token')
 export class RankingController {
   constructor(private readonly rankingService: RankingService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Obtener el ranking global de usuarios' })
+  @ApiOperation({ summary: 'Obtener el ranking global de usuarios (público)' })
   @ApiQuery({ name: 'limit', required: false, example: 20 })
   @ApiResponse({
     status: 200,
     description: 'Ranking global',
     type: RankingResponseDto,
   })
-  @ApiResponse({ status: 401, description: 'No autorizado' })
   getGlobal(
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
   ) {
@@ -45,6 +42,8 @@ export class RankingController {
   }
 
   @Get('me')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Obtener mis estadisticas en el ranking' })
   @ApiResponse({
     status: 200,

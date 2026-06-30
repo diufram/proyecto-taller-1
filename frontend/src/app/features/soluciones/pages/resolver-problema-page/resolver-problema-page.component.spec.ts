@@ -18,7 +18,6 @@ describe('ResolverProblemaPageComponent', () => {
         problema: {
             id: 1,
             titulo: 'Suma simple',
-            descripcion: 'Sumar dos numeros',
             dificultad: 'Facil' as const,
             formato_entrada: 'a b',
             formato_salida: 'a+b',
@@ -92,6 +91,7 @@ describe('ResolverProblemaPageComponent', () => {
                     lenguaje_programacion: 'Python' as const,
                     estado: 'Pendiente' as const,
                     resultado_validacion: false,
+                    puntaje_total: 0,
                     problema_id: 1,
                     problema_titulo: 'Suma simple',
                     problema_dificultad: 'Facil',
@@ -122,6 +122,7 @@ describe('ResolverProblemaPageComponent', () => {
                 lenguaje_programacion: 'Python' as const,
                 estado: 'Pendiente' as const,
                 resultado_validacion: false,
+                puntaje_total: 0,
                 problema_id: 1,
                 problema_titulo: 'Suma simple',
                 problema_dificultad: 'Facil',
@@ -157,8 +158,9 @@ describe('ResolverProblemaPageComponent', () => {
                     id: 99,
                     respuesta: 'x',
                     lenguaje_programacion: 'Python' as const,
-                    estado: 'Correcto' as const,
+                    estado: 'Revisado' as const,
                     resultado_validacion: true,
+                    puntaje_total: 100,
                     problema_id: 1,
                     problema_titulo: 'Suma simple',
                     problema_dificultad: 'Facil',
@@ -185,15 +187,14 @@ describe('ResolverProblemaPageComponent', () => {
         component.volver();
         expect(router.navigations.length).toBe(1);
         expect(router.navigations[0].commands).toEqual([
-            '/user/competencias',
+            '/competencias',
             10,
             'problemas',
         ]);
     });
 
     it('should map estado to severity', () => {
-        expect(component.estadoSeverity('Correcto')).toBe('success');
-        expect(component.estadoSeverity('Incorrecto')).toBe('danger');
+        expect(component.estadoSeverity('Revisado')).toBe('success');
         expect(component.estadoSeverity('Pendiente')).toBe('info');
         expect(component.estadoSeverity('En revisión')).toBe('warn');
     });

@@ -13,6 +13,11 @@ import { filter } from 'rxjs/operators';
     imports: [CommonModule, MyMenuitem, RouterModule],
     styles: [
         `
+            :host {
+                display: block;
+                height: 100%;
+            }
+
             .menu-wrapper {
                 height: 100%;
                 display: flex;
@@ -20,10 +25,11 @@ import { filter } from 'rxjs/operators';
                 justify-content: space-between;
                 overflow-x: hidden;
                 width: 100%;
+                color: var(--app-text);
             }
 
             :host ::ng-deep .layout-menu {
-                padding: 0.5rem 0;
+                padding: 0.5rem 0 1rem;
                 list-style-type: none;
                 margin: 0;
             }
@@ -33,13 +39,18 @@ import { filter } from 'rxjs/operators';
             }
 
             :host ::ng-deep .layout-root-menuitem > .layout-menuitem-root-text {
-                font-size: 0.85rem;
+                display: inline-flex;
+                align-items: center;
+                font-size: 0.7rem;
                 text-transform: uppercase;
-                font-weight: 700;
-                color: var(--text-color-secondary);
-                margin: 1.5rem 0 0.5rem 1rem;
-                display: block;
-                letter-spacing: 0.5px;
+                font-weight: 800;
+                color: var(--app-accent-text);
+                margin: 1.1rem 0 0.45rem 1rem;
+                letter-spacing: 0.12em;
+                padding: 0.25rem 0.55rem;
+                border-radius: 999px;
+                background: var(--app-accent-softer);
+                border: 1px solid var(--app-accent-border-softer);
             }
 
             :host
@@ -47,45 +58,117 @@ import { filter } from 'rxjs/operators';
                 .layout-menu
                 > li:first-child
                 .layout-menuitem-root-text {
-                margin-top: 0.5rem;
+                margin-top: 0.6rem;
             }
 
             :host ::ng-deep .layout-menu li a {
-                margin: 2px 12px !important;
-                border-radius: 12px !important;
-                padding: 0.75rem 1rem !important;
+                margin: 0.2rem 0.75rem !important;
+                border-radius: 0.85rem !important;
+                padding: 0.7rem 0.95rem !important;
                 border: 1px solid transparent !important;
                 cursor: pointer;
                 display: flex;
                 align-items: center;
+                gap: 0.65rem;
                 text-decoration: none;
-                color: var(--text-color);
+                color: var(--app-text-secondary);
                 font-weight: 600;
+                font-size: 0.92rem;
+                background: transparent;
+                transition:
+                    background-color 0.2s ease,
+                    color 0.2s ease,
+                    border-color 0.2s ease,
+                    transform 0.2s ease;
+            }
+
+            :host ::ng-deep .layout-menu li a i {
+                color: var(--app-text-muted);
+                transition: color 0.2s ease;
             }
 
             :host ::ng-deep .layout-menu li a:hover {
-                background-color: var(--surface-hover) !important;
+                background: var(--app-accent-softer) !important;
+                border-color: var(--app-accent-border-softer) !important;
+                color: var(--app-text);
+                transform: translateX(2px);
+            }
+
+            :host ::ng-deep .layout-menu li a:hover i {
+                color: var(--app-accent-text);
             }
 
             :host ::ng-deep .layout-menu li a.router-link-active,
             :host ::ng-deep .layout-menu li a.active-route {
-                background-color: var(--surface-card) !important;
+                background: linear-gradient(
+                    135deg,
+                    var(--app-accent-soft),
+                    rgba(20, 184, 166, 0.18)
+                ) !important;
+                border: 1px solid var(--app-accent-border) !important;
+                color: var(--app-text) !important;
+                font-weight: 700 !important;
                 box-shadow:
-                    0 4px 12px -2px rgba(0, 0, 0, 0.08),
-                    0 2px 6px -2px rgba(0, 0, 0, 0.04) !important;
-                color: var(--primary-color) !important;
-                font-weight: 600 !important;
-                border: 1px solid var(--surface-border) !important;
-                opacity: 1 !important;
+                    0 12px 24px rgba(16, 185, 129, 0.18),
+                    inset 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
             }
 
             :host ::ng-deep .layout-menu li a.router-link-active i,
             :host ::ng-deep .layout-menu li a.active-route i {
-                color: var(--primary-color) !important;
+                color: var(--app-accent-text) !important;
             }
 
             :host ::ng-deep .layout-menu-item-icon {
-                margin-right: 0.5rem;
+                margin-right: 0;
+                font-size: 1rem;
+                width: 1.1rem;
+                display: inline-flex;
+                justify-content: center;
+            }
+
+            .sidebar-footer {
+                display: flex;
+                align-items: center;
+                gap: 0.7rem;
+                margin: 0.85rem 0.85rem 0.4rem;
+                padding: 0.85rem 1rem;
+                border-radius: 0.95rem;
+                background: var(--app-surface-soft);
+                border: 1px solid var(--app-border-soft);
+            }
+
+            .sidebar-footer-avatar {
+                width: 2.25rem;
+                height: 2.25rem;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                background: linear-gradient(135deg, #10b981, #14b8a6);
+                color: #ffffff;
+                font-weight: 800;
+                font-size: 0.9rem;
+                box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+            }
+
+            .sidebar-footer-copy {
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.15rem;
+            }
+
+            .sidebar-footer-title {
+                color: var(--app-text);
+                font-size: 0.82rem;
+                font-weight: 800;
+                letter-spacing: 0.04em;
+            }
+
+            .sidebar-footer-sub {
+                color: var(--app-text-secondary);
+                font-size: 0.7rem;
+                font-weight: 600;
+                letter-spacing: 0.04em;
             }
         `,
     ],
@@ -116,6 +199,14 @@ import { filter } from 'rxjs/operators';
                     <li *ngIf="item.separator" class="menu-separator"></li>
                 </ng-container>
             </ul>
+
+            <div class="sidebar-footer" aria-hidden="true">
+                <span class="sidebar-footer-avatar">C</span>
+                <div class="sidebar-footer-copy">
+                    <span class="sidebar-footer-title">Compex</span>
+                    <span class="sidebar-footer-sub">Panel administrativo</span>
+                </div>
+            </div>
         </div>
     `,
 })
@@ -141,8 +232,6 @@ export class MyMenu implements OnInit {
     }
 
     private buildModel(): MenuItem[] {
-        const isAdmin = this.authService.isAdmin();
-
         const model: MenuItem[] = [
             {
                 label: 'Principal',
@@ -151,7 +240,6 @@ export class MyMenu implements OnInit {
                         label: 'Dashboard',
                         icon: 'pi pi-fw pi-chart-bar',
                         routerLink: ['/dashboard'],
-                        visible: isAdmin,
                     },
                 ],
             },
@@ -161,29 +249,13 @@ export class MyMenu implements OnInit {
                     {
                         label: 'Competencias',
                         icon: 'pi pi-fw pi-trophy',
-                        routerLink: isAdmin ? ['/admin/competencias'] : ['/user/competencias'],
-                    },
-                ],
-            },
-            {
-                label: 'Competencia',
-                items: [
-                    {
-                        label: 'Ranking',
-                        icon: 'pi pi-fw pi-chart-line',
-                        routerLink: ['/user/ranking'],
-                        visible: !isAdmin,
+                        routerLink: ['/admin/competencias'],
                     },
                 ],
             },
             {
                 label: 'Cuenta',
                 items: [
-                    {
-                        label: 'Mi Perfil',
-                        icon: 'pi pi-fw pi-user',
-                        routerLink: ['/profile'],
-                    },
                     {
                         label: 'Cerrar Sesion',
                         icon: 'pi pi-fw pi-sign-out',

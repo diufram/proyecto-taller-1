@@ -20,9 +20,15 @@ import { MessageService } from 'primeng/api';
 import { appRoutes } from './app.routes';
 import { AuthService } from '@/features/auth/services/auth.service';
 import { authInterceptor } from '@/core/interceptors/auth.interceptor';
+import { LayoutService } from '@/core/layout/service/layout.service';
+import { EmeraldPreset } from '@/core/theme/emerald.preset';
 
 export function initializeAppFactory(authService: AuthService) {
     return () => authService.bootstrapSession();
+}
+
+export function initializeLayoutFactory(_layoutService: LayoutService) {
+    return () => void 0;
 }
 
 export const appConfig: ApplicationConfig = {
@@ -45,8 +51,16 @@ export const appConfig: ApplicationConfig = {
             multi: true,
         },
 
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeLayoutFactory,
+            deps: [LayoutService],
+            multi: true,
+        },
+
         providePrimeNG({
             theme: {
+                preset: EmeraldPreset,
                 options: {
                     darkModeSelector: '.app-dark',
                 },
